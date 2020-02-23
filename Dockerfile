@@ -1,7 +1,7 @@
 FROM nginx:1.16.1-alpine
 
 # static resources
-COPY oasis/ /etc/nginx/html/
+COPY oasis /etc/nginx/html/
 
 # nginx conf
 COPY jenkins/nginx/default.conf /etc/nginx/conf.d/default.conf

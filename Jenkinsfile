@@ -10,6 +10,10 @@ node {
         sh 'chmod 755 ${PWD}/jenkins/*.sh'
     }
 
+    stage('get baseline') {
+        sh '${PWD}/jenkins/get-baseline.sh'
+    }
+
     stage('package resources') {
         docker
         .image('node:12.16.0-alpine')
