@@ -5,17 +5,9 @@ node {
         git (
             url: 'ssh://git@212.129.149.40:222/rubiks-cube/frontend-oasis.git',
             credentialsId: '1aa8f007-25af-4f0b-9140-0b97570f30df',
-            branch: 'master'
+            branch: env.BRANCH_NAME
         )
         sh 'chmod 755 ${PWD}/jenkins/*.sh'
-    }
-
-    stage('get baseline') {
-        sh '${PWD}/jenkins/get-baseline.sh'
-    }
-
-    stage('service down') {
-        sh '${PWD}/jenkins/service-down.sh'
     }
 
     stage('package resources') {
@@ -34,7 +26,7 @@ node {
                 sh 'cd /opt/app && npm run test:unit'
             }
             // stage('e2e test') {
-                // sh 'cd /opt/app && npm run test:e2e'
+            // sh 'cd /opt/app && npm run test:e2e'
             // }
             stage('clear baseline') {
                 sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
@@ -42,21 +34,25 @@ node {
         }
     }
 
-    stage('release image') {
-        def registrySite = 'https://registry.cn-hangzhou.aliyuncs.com/'
-        def registry = 'seciii/frontend-proxy'
-        def registryCredential = 'aliyunhub'
-        def nginxImage = docker.build("$registry:$BUILD_NUMBER")
-        docker.withRegistry( registrySite, registryCredential ) {
-            nginxImage.push()
-            nginxImage.push('latest')
+    if (env.BRANCH_NAME =~ 'develop|hotfix.*|release.*') {
+        stage('service down') {
+            sh '${PWD}/jenkins/service-down.sh'
         }
-        sh "docker image rm $registry:$BUILD_NUMBER"
-    }
-
-    stage('service up'){
-        docker
-        .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
-        .run('-p 8080:443 --name frontend-proxy')
+        stage('release image') {
+            def registrySite = 'https://registry.cn-hangzhou.aliyuncs.com/'
+            def registry = 'seciii/frontend-proxy'
+            def registryCredential = 'aliyunhub'
+            def nginxImage = docker.build("$registry:$BUILD_NUMBER")
+            docker.withRegistry( registrySite, registryCredential ) {
+                nginxImage.push()
+                nginxImage.push('latest')
+            }
+            sh "docker image rm $registry:$BUILD_NUMBER"
+        }
+        stage('service restart'){
+            docker
+            .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
+            .run('-p 8080:443 --name frontend-proxy')
+        }
     }
 }
