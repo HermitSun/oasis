@@ -20,7 +20,7 @@ node {
             }
             stage('build') {
                 sh 'cd /opt/app && npm run build'
-                sh 'cp -a /opt/app/dist .'
+                sh 'cp -a /opt/app/oasis .'
             }
             stage('unit test') {
                 sh 'cd /opt/app && npm run test:unit'
