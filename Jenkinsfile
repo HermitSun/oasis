@@ -10,6 +10,10 @@ node {
         sh 'chmod 755 ${PWD}/jenkins/*.sh'
     }
 
+    stage('get baseline') {
+        sh '${PWD}/jenkins/get-baseline.sh'
+    }
+
     stage('package resources') {
         docker
         .image('node:12.16.0-alpine')
@@ -20,7 +24,7 @@ node {
             }
             stage('build') {
                 sh 'cd /opt/app && npm run build'
-                sh 'cp -a /opt/app/dist .'
+                sh 'cp -a /opt/app/oasis .'
             }
             stage('unit test') {
                 sh 'cd /opt/app && npm run test:unit'
