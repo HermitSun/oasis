@@ -15,7 +15,9 @@ module.exports = {
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "@typescript-eslint/camelcase": "off", // 否则TerserPlugin会报错
+    "@typescript-eslint/no-var-requires": "off" // 与JS兼容
   },
   overrides: [
     {
