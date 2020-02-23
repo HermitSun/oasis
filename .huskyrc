@@ -1,0 +1,7 @@
+{
+  'hooks': {
+    'pre-commit': 'lint-staged --config .lintstagedrc --allow-empty',
+    'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS',
+    'post-commit': 'git update-index --again'
+  }
+}
