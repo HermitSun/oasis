@@ -1,8 +1,15 @@
 # frontend-oasis
 
 ## Project setup
-```
+```shell script
 npm install
+```
+但是由于众所周知的原因，本项目在安装依赖时可能会卡住。
+国内用户请使用以下命令安装依赖：
+```shell script
+npm install chromedriver --chromedriver_cdnurl=http://npm.taobao.org/mirrors/chromedriver \
+&& npm install geckodriver --geckodriver_cdnurl=http://npm.taobao.org/mirrors/geckodriver \
+&& npm install --registry=https://registry.npm.taobao.org
 ```
 
 ### Compiles and hot-reloads for development
