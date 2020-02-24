@@ -13,58 +13,109 @@ node {
         sh 'chmod 755 ${PWD}/jenkins/*.sh'
     }
 
-    stage('get baseline') {
-        sh '${PWD}/jenkins/get-baseline.sh'
+    def changed = hasPackageChanged()
+    def baselineImage = ''
+
+    stage('rebuild baseline image') {
+        // rebuild when package.json change
+        if (changed) {
+            sh 'cp -a package.json ${PWD}/jenkins/baseline/package.json'
+            def baselineRegistry = 'seciii/frontend-baseline'
+            baselineImage = docker.build(
+                "$baselineRegistry:$BUILD_NUMBER",
+                "${PWD}/jenkins/baseline"
+            )
+        } else {
+            echo 'dependencies not changed'
+        }
     }
 
-    try {
-        stage('package resources') {
-            docker
-            .image('node:12.16.0-alpine')
-            .inside('--volumes-from frontend-baseline -v jenkins-data:/var/jenkins_home') {
-                sh 'cp -a . /opt/app'
-                stage('lint') {
-                    sh 'cd /opt/app && npm run lint'
-                }
-                stage('build') {
-                    sh 'cd /opt/app && npm run build'
-                    sh 'cp -a /opt/app/oasis .'
-                }
-                stage('unit test') {
-                    sh 'cd /opt/app && npm run test:unit'
-                }
-                // stage('e2e test') {
-                // sh 'cd /opt/app && npm run test:e2e'
-                // }
-                stage('clear baseline') {
-                    sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
-                }
-            }
-        }
+    def registrySite = 'https://registry.cn-hangzhou.aliyuncs.com/'
+    def registryCredential = 'aliyunhub'
 
-        if (env.BRANCH_NAME =~ 'develop|hotfix.*|release.*') {
-            stage('service down') {
-                sh '${PWD}/jenkins/service-down.sh'
-            }
-            stage('release image') {
-                def registrySite = 'https://registry.cn-hangzhou.aliyuncs.com/'
-                def registry = 'seciii/frontend-proxy'
-                def registryCredential = 'aliyunhub'
-                def nginxImage = docker.build("$registry:$BUILD_NUMBER")
-                docker.withRegistry( registrySite, registryCredential ) {
-                    nginxImage.push()
-                    nginxImage.push('latest')
+    parallel(
+        'push baseline image': {
+            stage('push image') {
+                if (changed) {
+                    docker.withRegistry( registrySite, registryCredential ) {
+                        baselineImage.push()
+                        baselineImage.push('latest')
+                    }
+                } else {
+                    echo 'do not need to push image'
                 }
-                sh "docker image rm $registry:$BUILD_NUMBER"
             }
-            stage('service restart'){
+        },
+        'build': {
+            stage('get baseline') {
+                if (changed) {
+                    // stop former baseline container & restart
+                    sh '${PWD}/jenkins/stop-baseline.sh'
+                    baselineImage.run('--name frontend-baseline')
+                } else {
+                    sh '${PWD}/jenkins/get-baseline.sh'
+                }
+            }
+            stage('package resources') {
                 docker
-                .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
-                .run('-p 8080:443 --name frontend-proxy')
+                .image('node:12.16.0-alpine')
+                .inside('--volumes-from frontend-baseline -v jenkins-data:/var/jenkins_home') {
+                    sh 'cp -a . /opt/app'
+                    stage('lint') {
+                        sh 'cd /opt/app && npm run lint'
+                    }
+                    stage('build') {
+                        sh 'cd /opt/app && npm run build'
+                        sh 'cp -a /opt/app/dist .'
+                    }
+                    stage('unit test') {
+                        sh 'cd /opt/app && npm run test:unit'
+                    }
+                    // stage('e2e test') {
+                    // sh 'cd /opt/app && npm run test:e2e'
+                    // }
+                    stage('clear baseline') {
+                        sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
+                    }
+                }
+            }
+
+            // deploy
+            if (env.BRANCH_NAME =~ 'develop|hotfix.*|release.*') {
+                stage('service down') {
+                    sh '${PWD}/jenkins/service-down.sh'
+                }
+                stage('release image') {
+                    def registry = 'seciii/frontend-proxy'
+                    def nginxImage = docker.build("$registry:$BUILD_NUMBER")
+                    docker.withRegistry( registrySite, registryCredential ) {
+                        nginxImage.push()
+                        nginxImage.push('latest')
+                    }
+                    sh "docker image rm $registry:$BUILD_NUMBER"
+                }
+                stage('service restart'){
+                    docker
+                    .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
+                    .run('-p 8080:443 --name frontend-proxy')
+                }
             }
         }
-    } catch (err) {
-        echo err.getMessage()
-        echo "Error detected, but we will continue."
+    )
+}
+
+@NonCPS
+def hasPackageChanged() {
+    def result = false
+    currentBuild.changeSets.each { change ->
+        change.items.each { item ->
+            item.affectedFiles.each { file ->
+                echo "${file.path}"
+                if (file.path == 'package.json') {
+                    result = true
+                }
+            }
+        }
     }
+    return result
 }
