@@ -13,4 +13,24 @@ const globalConfig = {
 
 const globalAxios = axios.create(globalConfig);
 
+// 请求过滤器
+globalAxios.interceptors.request.use(
+  config => {
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+// 响应过滤器
+globalAxios.interceptors.response.use(
+  config => {
+    return config;
+  },
+  error => {
+    return Promise.resolve(error);
+  }
+);
+
 export default globalAxios;
