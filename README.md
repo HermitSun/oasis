@@ -41,9 +41,7 @@ npm install chromedriver --chromedriver_cdnurl=http://npm.taobao.org/mirrors/chr
             ]
         }
 2. 替换为真实接口
-- 临时方案：把`src/plugins/request.ts`中`TEST_MODE`的值改为0
-- TODO：应该有更方便的写法
-
+通过`process.env.NODE_ENV !== "production"`判断
 
 ### Compiles and hot-reloads for development
 ```

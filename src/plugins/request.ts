@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "@/plugins/axios.ts";
-const TEST_MODE = 1;
+
+const TEST_MODE = process.env.NODE_ENV !== "production";
 
 export function get(
   url: string,

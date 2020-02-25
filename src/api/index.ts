@@ -5,7 +5,6 @@ import {
 import { BasicResponse } from "@/interfaces/responses/BasicResponse";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import { get } from "@/plugins/request";
-import axios from "axios";
 
 // 1. 普通搜索
 export async function basicSearch(
