@@ -12,9 +12,9 @@ export interface BasicSearchData {
 
 // 组合搜索
 export interface AdvancedSearchData {
-  author: string; // 作者
-  affiliation: string; // 机构
-  conferenceName: string; // 会议
-  keyword: string; // 研究关键字
+  author?: string; // 作者
+  affiliation?: string; // 机构
+  conferenceName?: string; // 会议
+  keyword?: string; // 研究关键字
   page: number;
 }

@@ -12,9 +12,12 @@ import { basicSearch, advancedSearch } from "../api";
 
 export default Vue.extend({
   name: "Home",
+  component: {
+    HelloWorld
+  },
   async mounted() {
-    // const basicSearchRes = await basicSearch({ keyword: "keyword", page: 1 });
-    // console.log(basicSearchRes.data);
+    const basicSearchRes = await basicSearch({ keyword: "keyword", page: 1 });
+    console.log(basicSearchRes);
     const advancedSearchRes = await advancedSearch({
       author: "123", // 作者
       affiliation: "123", // 机构

@@ -1,6 +1,7 @@
 {
-  "search": {
-    "basic": {
+  "search": [
+    {
+      "id": "basic",
       "code": 200,
       "message": "success",
       "data": [
@@ -308,7 +309,8 @@
         }
       ]
     },
-    "advanced": {
+    {
+      "id": "advanced",
       "code": 200,
       "message": "success",
       "data": [
@@ -616,5 +618,5 @@
         }
       ]
     }
-  }
+  ]
 }

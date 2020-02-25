@@ -11,6 +11,39 @@ npm install chromedriver --chromedriver_cdnurl=http://npm.taobao.org/mirrors/chr
 && npm install geckodriver --geckodriver_cdnurl=http://npm.taobao.org/mirrors/geckodriver \
 && npm install --registry=https://registry.npm.taobao.org
 ```
+## 关于json-server
+使用json-server模拟后端假数据, 默认使用本地3180端口，可在`vue.config.js`中修改
+注： 当前只有`get`方法使用了json-server
+1. `src/api/json-server/ResponseJson.json` 
+    - 访问url`/一级路由1/二级路由1`获取返回值```{code:200}```
+    - *二级路由需要id来区分*
+        ```json
+        {
+           "一级路由1":[
+                {
+                    "id":"二级路由1",
+                    "code":200
+                },
+                {
+                    "id":"二级路由2",
+                    "code":200
+                }
+           ],
+            "一级路由2":[
+                  {
+                      "id":"二级路由3",
+                      "code":200
+                  },
+                  {
+                      "id":"二级路由4",
+                      "code":200
+                  }
+            ]
+        }
+2. 替换为真实接口
+- 临时方案：把`src/plugins/request.ts`中`TEST_MODE`的值改为0
+- TODO：应该有更方便的写法
+
 
 ### Compiles and hot-reloads for development
 ```

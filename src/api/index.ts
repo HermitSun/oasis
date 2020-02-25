@@ -11,7 +11,7 @@ import axios from "axios";
 export async function basicSearch(
   args: BasicSearchData
 ): Promise<BasicResponse<SearchResponse[]>> {
-  const { data } = await axios.get("/search/basic", {
+  const { data } = await get("/search/basic", {
     params: { ...args }
   });
   return data;
