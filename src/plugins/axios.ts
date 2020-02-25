@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
     ? "https://wensun.top:5000/api"
-    : "http://localhost:3180";
+    : "http://localhost:3000";
 
 const globalConfig = {
   timeout: 60 * 1000
