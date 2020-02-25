@@ -14,8 +14,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": "off", // 在打包阶段使用Terser对console和debugger进行统一清理，此处不再检测
+    "no-debugger": "off",
     "@typescript-eslint/camelcase": "off", // 否则TerserPlugin会报错
     "@typescript-eslint/no-var-requires": "off" // 与JS兼容
   },
