@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://wensun.top:5000/api"
+    ? "https://wensun.top:8080/api"
     : "http://localhost:3180";
 
 const globalConfig = {
