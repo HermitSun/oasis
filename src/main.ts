@@ -5,6 +5,25 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
+// 全局错误捕获，防止遗漏的promise和其他错误
+window.addEventListener(
+  "error",
+  error => {
+    console.log("Error：", error);
+  },
+  true
+);
+
+window.addEventListener("unhandledrejection", e => {
+  e.preventDefault();
+  console.log("Error：", e);
+  return true;
+});
+
+Vue.config.errorHandler = (err, vm, info) => {
+  console.log("vue errorHandler:", err, vm, info);
+};
+
 new Vue({
   router,
   store,
