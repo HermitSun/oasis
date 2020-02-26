@@ -61,9 +61,9 @@ node {
                 .image('node:12.16.0-alpine')
                 .inside('--volumes-from frontend-baseline -v jenkins-data:/var/jenkins_home') {
                     sh 'cp -a . /opt/app'
-                    stage('lint') {
-                        sh 'cd /opt/app && npm run lint'
-                    }
+                    // stage('lint') {
+                    //     sh 'cd /opt/app && npm run lint'
+                    // }
                     stage('build') {
                         sh 'cd /opt/app && npm run build'
                         sh 'cp -a /opt/app/oasis .'
