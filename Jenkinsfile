@@ -75,7 +75,11 @@ node {
                     // sh 'cd /opt/app && npm run test:e2e'
                     // }
                     stage('clear baseline') {
-                        sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
+                        try {
+                            sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
+                        } catch (e) {
+                            echo 'files not exist'
+                        }
                     }
                 }
             }
