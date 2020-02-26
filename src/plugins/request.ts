@@ -3,10 +3,10 @@ import axios from "@/plugins/axios.ts";
 
 const TEST_MODE = process.env.NODE_ENV !== "production";
 
-export function get(
+export function get<T = unknown>(
   url: string,
   config?: AxiosRequestConfig
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse<T>> {
   if (TEST_MODE) {
     return axios.get(url);
   } else {
