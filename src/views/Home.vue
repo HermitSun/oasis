@@ -1,10 +1,11 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 import Vue from "vue";
@@ -12,9 +13,7 @@ import { basicSearch, advancedSearch } from "../api";
 
 export default Vue.extend({
   name: "Home",
-  component: {
-    HelloWorld
-  },
+  components: { HelloWorld },
   async mounted() {
     const basicSearchRes = await basicSearch({ keyword: "keyword", page: 1 });
     console.log(basicSearchRes);

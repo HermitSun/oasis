@@ -10,7 +10,7 @@ import { get } from "@/plugins/request";
 export async function basicSearch(
   args: BasicSearchData
 ): Promise<BasicResponse<SearchResponse[]>> {
-  const { data } = await get("/search/basic", {
+  const { data } = await get("/search/basic/mongo", {
     params: { ...args }
   });
   return data;
@@ -20,7 +20,7 @@ export async function basicSearch(
 export async function advancedSearch(
   args: AdvancedSearchData
 ): Promise<BasicResponse<SearchResponse[]>> {
-  const { data } = await get("/search/advanced", {
+  const { data } = await get("/search/advanced/mongo", {
     params: { ...args }
   });
   return data;
