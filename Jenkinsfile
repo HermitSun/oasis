@@ -69,7 +69,21 @@ node {
                         sh 'cp -a /opt/app/oasis .'
                     }
                     stage('unit test') {
-                        sh 'cd /opt/app && npm run test:unit'
+                        stage('do test') {
+                            sh 'cd /opt/app && npm run test:unit'
+                        }
+                        stage('coverage report') {
+                            sh 'cp -a /opt/app/coverage .'
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: false,
+                                reportDir: 'coverage/lcov-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Jest Coverage Report',
+                                reportTitles: 'Jest Coverage Report'
+                            ])
+                        }
                     }
                     // stage('e2e test') {
                     // sh 'cd /opt/app && npm run test:e2e'
