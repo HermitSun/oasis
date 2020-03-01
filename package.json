@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "test:unit": "vue-cli-service test:unit --no-watchman",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
@@ -18,15 +18,14 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@types/chai": "^4.2.8",
-    "@types/mocha": "^5.2.4",
+    "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "@vue/cli-plugin-e2e-nightwatch": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-plugin-router": "~4.2.0",
     "@vue/cli-plugin-typescript": "~4.2.0",
-    "@vue/cli-plugin-unit-mocha": "~4.2.0",
+    "@vue/cli-plugin-unit-jest": "~4.2.0",
     "@vue/cli-plugin-vuex": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -39,12 +38,12 @@
     "eslint-plugin-vue": "^6.1.2",
     "geckodriver": "^1.19.1",
     "husky": "^4.2.3",
+    "json-server": "^0.16.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "typescript": "~3.7.5",
-    "vue-template-compiler": "^2.6.11",
-    "json-server": "^0.16.1"
+    "vue-template-compiler": "^2.6.11"
   }
 }
