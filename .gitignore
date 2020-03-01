@@ -3,6 +3,7 @@ node_modules
 /oasis
 
 /tests/e2e/reports/
+/coverage
 selenium-debug.log
 chromedriver.log
 geckodriver.log
