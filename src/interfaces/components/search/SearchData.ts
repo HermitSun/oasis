@@ -8,6 +8,8 @@
 export interface BasicSearchData {
   keyword: string;
   page: number;
+  startYear?: number; // 开始日期
+  endYear?: number; // 结束日期
 }
 
 // 组合搜索
@@ -17,4 +19,6 @@ export interface AdvancedSearchData {
   conferenceName?: string; // 会议
   keyword?: string; // 研究关键字
   page: number;
+  startYear?: number; // 开始日期
+  endYear?: number; // 结束日期
 }
