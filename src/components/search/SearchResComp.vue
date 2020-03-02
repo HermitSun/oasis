@@ -1,6 +1,8 @@
 <template>
   <div class="searchPage-item">
-    <a :href="res.link" target="_blank">{{ res.title }}</a>
+    <div class="title">
+      <a :href="res.link" class="title" target="_blank">{{ res.title }}</a>
+    </div>
     <div>
       <span
         v-for="(author, index) in res.authors"
@@ -17,7 +19,7 @@
     <div class="abstract">{{ res.abstract }}</div>
     <div class="divider"></div>
     <div>
-      keywords:
+      <span style="margin-right: 10px">keywords:</span>
       <span
         v-for="(keyword, index) in res.keywords"
         :key="index"
@@ -25,19 +27,41 @@
         style="margin-right: 5px"
         >{{ keyword }}
       </span>
-      <span style="float: right" class="detail-hint">show reference</span>
+      <span
+        style="float: right"
+        class="detail-hint"
+        @click="showReference = !showReference"
+        >show reference</span
+      >
+    </div>
+    <div v-if="showReference" style="margin-top:5px">
+      <div
+        v-for="(ref, index) in res.references"
+        :key="index"
+        class="reference"
+      >
+        <span
+          :style="index === 0 ? {} : { color: 'transparent' }"
+          style="margin-right: 5px"
+          >references:</span
+        ><a :href="ref.googleScholarLink">{{ ref.title }}</a>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { SearchResponse } from "../../interfaces/responses/search/SearchResponse";
 
 export default Vue.extend({
   name: "SearchResComp",
   props: {
     res: {}
+  },
+  data() {
+    return {
+      showReference: false
+    };
   }
 });
 </script>

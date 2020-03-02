@@ -8,6 +8,7 @@
 @search-item-title-font-size: 20px;
 @search-item-author-font-size: 15px;
 @search-item-keyword-font-size: 10px;
+@search-item-reference-font-size: 12px;
 
 // 搜索页Header
 .searchPage-header {
@@ -40,28 +41,29 @@
   text-align: left;
   padding: 10px 5px;
 
+  .title {
+    a {
+      font-size: @search-item-title-font-size;
+      text-decoration: transparent;
+    }
 
-  a {
-    font-size: @search-item-title-font-size;
-    text-decoration: transparent;
+    a:link {
+      color: @font-gray-dark
+    }
+
+    a:visited {
+      color: @background-blue
+    }
+
+    a:hover {
+      color: @font-gray
+    }
+
+    a:active {
+      color: @background-blue
+    }
+
   }
-
-  a:link {
-    color: @font-gray-dark
-  }
-
-  a:visited {
-    color: @background-blue
-  }
-
-  a:hover {
-    color: @font-gray
-  }
-
-  a:active {
-    color: @background-blue
-  }
-
 
   .author {
     font-size: @search-item-author-font-size;
@@ -93,6 +95,13 @@
 
   .detail-hint {
 
+  }
+
+  .reference{
+    a{
+      font-size: @search-item-reference-font-size;
+      color: @font-gray-dark;
+    }
   }
 
 }

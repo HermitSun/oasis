@@ -25,7 +25,7 @@ import AdvancedSearchComp from "../components/search/AdvancedSearchComp.vue";
 import { basicSearch } from "@/api";
 
 export default Vue.extend({
-  name: "HomePage",
+  name: "Homepage",
   components: {
     AdvancedSearchComp
   },

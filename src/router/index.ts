@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "OASIS_HOME",
-    component: () => import("../views/HomePage.vue")
+    component: () => import("../views/Homepage.vue")
   },
 
   {
