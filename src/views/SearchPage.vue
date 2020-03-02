@@ -79,8 +79,8 @@ export default Vue.extend({
   methods: {
     async requestBasicSearch(
       keyword: string,
-      startYear: number,
-      endYear: number
+      startYear: string,
+      endYear: string
     ) {
       // if (this.keyword !== "") {
       const basicSearchRes = await basicSearch({

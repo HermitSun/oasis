@@ -27,3 +27,12 @@ export async function advancedSearch(
   });
   return data;
 }
+
+// 5. 查看活跃论文摘要
+export async function getActivePaperAbstract(): Promise<
+  BasicResponse<SearchResponse[]>
+> {
+  // TODO url修改为"/paper/abstract"
+  const { data } = await get("/search/advanced");
+  return data;
+}
