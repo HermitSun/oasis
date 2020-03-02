@@ -28,6 +28,7 @@
         >{{ keyword }}
       </span>
       <span
+        v-if="res.references.length !== 0"
         style="float: right"
         class="detail-hint"
         @click="showReference = !showReference"
@@ -44,7 +45,7 @@
           :style="index === 0 ? {} : { color: 'transparent' }"
           style="margin-right: 5px"
           >references:</span
-        ><a :href="ref.googleScholarLink">{{ ref.title }}</a>
+        ><a :href="ref.googleScholarLink" target="_blank">{{ ref.title }}</a>
       </div>
     </div>
   </div>
