@@ -91,8 +91,10 @@ export default Vue.extend({
 
 .homepage-content {
   .homepage-content__abstract {
-    background: @background-gray;
-    padding: 20px 10px;
+    .gray-background;
+  }
+  .homepage-content__ranking {
+    .gray-background;
   }
 }
 </style>
