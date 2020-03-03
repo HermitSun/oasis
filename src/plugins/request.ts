@@ -20,10 +20,10 @@ export function get<T = unknown>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> {
-  const jsonServerUrl = splitUrl(url);
   if (TEST_MODE) {
+    const jsonServerUrl = splitUrl(url);
     return axios.get(jsonServerUrl);
   } else {
-    return axios.get(jsonServerUrl, config);
+    return axios.get(url, config);
   }
 }
