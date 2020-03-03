@@ -36,6 +36,7 @@ export default Vue.extend({
   methods: {
     async sendBasicSearch() {
       // TODO 判断搜索字符是否为空
+      // 这一行注释是为了测试
       if (this.keyword !== "") {
         await this.$router.push({
           path: "/search",
