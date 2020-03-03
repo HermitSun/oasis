@@ -5,9 +5,7 @@
     <!--<router-link to="/about">About</router-link>-->
     <!--</div>-->
     <router-view />
-    <div
-      style="position: absolute; bottom: 1%; text-align: center; width: calc(100% - 25px)"
-    >
+    <div class="icp-license">
       © 2019-2020 孙逸伦 版权所有
       <a href="http://www.beian.miit.gov.cn" target="_blank">
         苏ICP备19048222号-1
@@ -36,5 +34,13 @@
       color: #42b983;
     }
   }
+}
+
+.icp-license {
+  position: relative;
+  bottom: 1%;
+  text-align: center;
+  width: calc(100% - 25px);
+  margin-top: 50px;
 }
 </style>
