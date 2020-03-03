@@ -1,4 +1,6 @@
 import Vue from "vue";
-import { Button } from "element-ui";
+import { Button, Icon, Pagination } from "element-ui";
 
 Vue.use(Button);
+Vue.use(Icon);
+Vue.use(Pagination);

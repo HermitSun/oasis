@@ -14,7 +14,11 @@ const routes = [
     name: "Search",
     component: () =>
       import(/* webpackChunkName: "search" */ "@/views/SearchPage.vue"),
-    props: (route: Route) => route.query
+    // 在路由里将字符串转换成数字
+    props: (route: Route) => ({
+      ...route.query,
+      page: Number(route.query.page)
+    })
   }
 ];
 

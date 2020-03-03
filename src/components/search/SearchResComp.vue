@@ -18,23 +18,29 @@
     </div>
     <div class="abstract">{{ res.abstract }}</div>
     <div class="divider"></div>
-    <div>
-      <span style="margin-right: 10px">keywords:</span>
-      <span
-        v-for="(keyword, index) in res.keywords"
-        :key="index"
-        class="keyword"
-        style="margin-right: 5px"
-        >{{ keyword }}
-      </span>
+    <!--关键词-->
+    <div style="min-height: 15px">
+      <!--没有关键词的时候不显示-->
+      <template v-if="res.keywords && res.keywords.length > 0">
+        <span style="margin-right: 10px">keywords:</span>
+        <span
+          v-for="(keyword, index) in res.keywords"
+          :key="index"
+          class="keyword"
+          style="margin-right: 5px"
+          >{{ keyword }}
+        </span>
+      </template>
+      <!--展示参考文献-->
       <span
         v-if="res.references.length !== 0"
-        style="float: right"
+        style="float: right; cursor: pointer"
         class="detail-hint"
         @click="showReference = !showReference"
         >show reference</span
       >
     </div>
+    <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
       <div
         v-for="(ref, index) in res.references"

@@ -1,17 +1,20 @@
 <template>
   <div>
+    <!--此处可以考虑重构，单独分离一个搜索框出来-->
     <div class="searchPage-header">
       <img
         src="../assets/logo.png"
         class="searchPage-header__logo"
         alt="oasis"
+        @click="$router.push('/')"
+        style="cursor: pointer"
       />
       <label>
         <input
           class="basic-search__input"
           type="text"
           v-model="searchContent"
-          @keyup.enter="requestBasicSearch(searchContent, startYear, endYear)"
+          @keyup.enter="startAnotherSearch(searchContent)"
         />
       </label>
     </div>
@@ -34,6 +37,10 @@
           >
         </template>
       </div>
+      <!--展示搜索内容-->
+      <p v-if="searchResponse.length === 0" style="min-height: 400px">
+        暂时没有数据...
+      </p>
       <div
         v-for="res in searchResponse"
         style="margin-bottom: 20px"
@@ -42,6 +49,14 @@
         <SearchResComp :res="res"></SearchResComp>
       </div>
     </div>
+    <!--分页-->
+    <el-pagination
+      @current-change="showNextPage"
+      layout="prev, pager, next"
+      :current-page="page"
+      :total="resultCount"
+      background
+    />
   </div>
 </template>
 
@@ -55,7 +70,8 @@ export default Vue.extend({
   name: "SearchPage",
   props: {
     mode: String,
-    keyword: String
+    keyword: String,
+    page: Number
   },
   components: {
     SearchResComp
@@ -70,37 +86,69 @@ export default Vue.extend({
       searchResponse: [] as SearchResponse[]
     };
   },
+  watch: {
+    $route: "doSearch"
+  },
   mounted() {
-    console.log(this.mode, this.keyword);
-    // const routerQuery = this.$route.query;
-    // const searchMode = routerQuery.searchMode;
-    if (this.mode === "basic") {
-      this.searchContent = String(this.keyword);
-      this.requestBasicSearch(this.searchContent, this.startYear, this.endYear);
-    } else if (this.mode === "advanced") {
-      this.requestAdvancedSearch();
-    }
+    this.doSearch();
   },
   methods: {
+    doSearch() {
+      if (this.mode === "basic") {
+        this.searchContent = String(this.keyword);
+        this.requestBasicSearch(
+          this.searchContent,
+          this.startYear,
+          this.endYear,
+          this.page
+        );
+      } else if (this.mode === "advanced") {
+        this.requestAdvancedSearch();
+      }
+    },
+    // 基础搜索
     async requestBasicSearch(
       keyword: string,
       startYear: string,
-      endYear: string
+      endYear: string,
+      page = 1
     ) {
-      // if (this.keyword !== "") {
       const basicSearchRes = await basicSearch({
         keyword: keyword,
-        page: 1,
+        page: page,
         startYear: startYear,
         endYear: endYear
       });
       this.searchResponse = basicSearchRes.data;
     },
+    // 高级搜索
     async requestAdvancedSearch() {
       const advancedSearchRes = await advancedSearch({
-        page: 1
+        page: this.page
       });
       this.searchResponse = advancedSearchRes.data;
+    },
+    // 展示下一页的搜索结果
+    showNextPage(page: string) {
+      this.$router.push({
+        path: "/search",
+        query: {
+          mode: "basic",
+          keyword: this.keyword,
+          page: page
+        }
+      });
+    },
+    // 开始另一次搜索（关键字不同）
+    startAnotherSearch(keyword: string) {
+      this.$router.push({
+        path: "/search",
+        query: {
+          mode: "basic",
+          keyword,
+          page: "1"
+        }
+      });
     }
   }
 });
