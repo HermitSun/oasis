@@ -21,8 +21,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import AdvancedSearchComp from "../components/search/AdvancedSearchComp.vue";
-import { basicSearch } from "@/api";
+import AdvancedSearchComp from "@/components/search/AdvancedSearchComp.vue";
 
 export default Vue.extend({
   name: "Homepage",
@@ -38,10 +37,10 @@ export default Vue.extend({
     async sendBasicSearch() {
       // TODO 判断搜索字符是否为空
       if (this.keyword !== "") {
-        this.$router.push({
+        await this.$router.push({
           path: "/search",
           query: {
-            searchMode: "basic",
+            mode: "basic",
             keyword: this.keyword
           }
         });
