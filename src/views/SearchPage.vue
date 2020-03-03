@@ -82,7 +82,7 @@ export default Vue.extend({
       searchContent: "",
       startYear: "2001",
       endYear: "2020",
-      resultCount: 314208101, // TODO  添加获取resultCount的接口
+      resultCount: 314208101,
       searchResponse: [] as SearchResponse[]
     };
   },
@@ -119,14 +119,15 @@ export default Vue.extend({
         startYear: startYear,
         endYear: endYear
       });
-      this.searchResponse = basicSearchRes.data;
+      this.searchResponse = basicSearchRes.data.papers;
+      this.resultCount = basicSearchRes.data.size;
     },
     // 高级搜索
     async requestAdvancedSearch() {
       const advancedSearchRes = await advancedSearch({
         page: this.page
       });
-      this.searchResponse = advancedSearchRes.data;
+      this.searchResponse = advancedSearchRes.data.papers;
     },
     // 展示下一页的搜索结果
     showNextPage(page: string) {
