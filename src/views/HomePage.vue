@@ -93,7 +93,7 @@ export default Vue.extend({
   .homepage-content__abstract {
     .gray-background;
   }
-  .homepage-content__ranking{
+  .homepage-content__ranking {
     .gray-background;
   }
 }
