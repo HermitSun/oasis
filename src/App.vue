@@ -5,6 +5,12 @@
     <!--<router-link to="/about">About</router-link>-->
     <!--</div>-->
     <router-view />
+    <p style="position: absolute; bottom: 0">
+      © 2019-2020 孙逸伦 版权所有 备案号：
+      <a href="http://www.beian.miit.gov.cn" target="_blank">
+        苏ICP备19048222号-1
+      </a>
+    </p>
   </div>
 </template>
 
