@@ -4,12 +4,18 @@
 @bright-yellow: #EDC22C;     // 字体亮黄色
 @background-gray: #F7F7F7;   // 背景灰色
 @background-gray-dark: #e9e9e9;// 背景深灰
+
+@font-dark: #2c3e50;
 @font-gray: #959393;          // 字体灰色
-@font-gray-dark: #6C6B6B;
+@font-gray-middle: #716F6F;
+@font-gray-dark: #676666;
 @middle-border-radius: 20px;
 
 @large-font: 1.8rem;
 @middle-font: 1.2rem;
+
+
+@subtitle-divider-height: 1.5px;
 
 @homepage-header-height:35vh;
 @searchPage-header-height:80px;
@@ -50,4 +56,21 @@
   -webkit-box-shadow: 0 0 10px @background-gray-dark;
   -moz-box-shadow: 0 0 10px @background-gray-dark;
   box-shadow: 0 0 10px @background-gray-dark;
+}
+
+// -----------小标题-------------
+.subtitle{
+  font-size: 25px;
+  color: @background-blue;
+  text-align: left;
+  font-weight: 500;
+}
+.subtitle-divider{
+  background: @background-blue;
+  height: @subtitle-divider-height;
+  margin: 10px 0;
+}
+.gray-background{
+  background: @background-gray;
+  padding: 20px 10px;
 }
