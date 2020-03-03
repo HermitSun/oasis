@@ -1,0 +1,39 @@
+@import 'default.less';
+
+@ranking-title-font-size: 23px;
+@ranking-sortKey-font-size:18px;
+@ranking-rank-width: 30px;
+@ranking-line-height: 30px;
+.ranking {
+  text-align: left;
+  .title {
+    font-size: @ranking-title-font-size;
+    color: @font-gray-dark;
+    margin: 10px 0 10px 20px;
+
+    .sortKey{
+      .flex-center-row;
+      float: right;
+      font-size: @ranking-sortKey-font-size;
+      color: @background-blue;
+      font-weight: 600;
+    }
+  }
+  .info {
+    line-height: @ranking-line-height;
+    .icon {
+      width: 40px;
+      display: inline-block;
+      text-align: center;
+      color: @background-blue
+    }
+
+    .name {
+      color: @font-gray-middle;
+    }
+
+    .count {
+      float: right;
+    }
+  }
+}
