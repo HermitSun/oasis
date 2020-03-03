@@ -30,6 +30,12 @@
           <AbstractComp :abstract="abstract"></AbstractComp>
         </div>
       </div>
+      <div class="homepage-content__ranking">
+        <div class="subtitle">🏆 OASIS RANKINGS</div>
+        <div class="subtitle-divider"></div>
+        <AuthorBasicRanking></AuthorBasicRanking>
+        <AffiliationBasicRanking></AffiliationBasicRanking>
+      </div>
     </div>
   </div>
 </template>
@@ -40,11 +46,15 @@ import AdvancedSearchComp from "../components/search/AdvancedSearchComp.vue";
 import { basicSearch, getActivePaperAbstract } from "@/api";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import AbstractComp from "../components/abstract/AbstractComp.vue";
+import AuthorBasicRanking from "../components/ranking/AuthorBasicRanking.vue";
+import AffiliationBasicRanking from "../components/ranking/AffiliationBasicRanking.vue";
 export default Vue.extend({
   name: "Homepage",
   components: {
     AdvancedSearchComp,
-    AbstractComp
+    AbstractComp,
+    AuthorBasicRanking,
+    AffiliationBasicRanking
   },
   mounted() {
     this.requestActivePaperAbstract();
@@ -52,7 +62,7 @@ export default Vue.extend({
   data() {
     return {
       keyword: "",
-      abstractResponse: [] as SearchResponse
+      abstractResponse: [] as SearchResponse[]
     };
   },
   methods: {
@@ -93,7 +103,7 @@ export default Vue.extend({
   .homepage-content__abstract {
     .gray-background;
   }
-  .homepage-content__ranking{
+  .homepage-content__ranking {
     .gray-background;
   }
 }
