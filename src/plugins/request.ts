@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "@/plugins/axios.ts";
 
 const TEST_MODE = process.env.NODE_ENV !== "production";
+
 function splitUrl(url: string): string {
   const urlPart = url.split("/");
   if (urlPart.length < 4) {
@@ -14,6 +15,7 @@ function splitUrl(url: string): string {
     return tmp;
   }
 }
+
 export function get<T = unknown>(
   url: string,
   config?: AxiosRequestConfig
@@ -22,6 +24,6 @@ export function get<T = unknown>(
   if (TEST_MODE) {
     return axios.get(jsonServerUrl);
   } else {
-    return axios.get(jsonServerUrl);
+    return axios.get(jsonServerUrl, config);
   }
 }

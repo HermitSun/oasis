@@ -48,7 +48,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { advancedSearch, basicSearch } from "@/api";
-import { BasicSearchData } from "@/interfaces/components/search/SearchData";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import SearchResComp from "@/components/search/SearchResComp.vue";
 export default Vue.extend({
