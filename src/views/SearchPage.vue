@@ -60,7 +60,7 @@ export default Vue.extend({
     return {
       searchMode: "",
       searchContent: "",
-      startYear: "2010",
+      startYear: "2001",
       endYear: "2020",
       resultCount: 314208101, // TODO  添加获取resultCount的接口
       searchResponse: [] as SearchResponse[]

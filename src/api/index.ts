@@ -52,7 +52,6 @@ export async function getAuthorBasicRanking(
 export async function getActivePaperAbstract(): Promise<
   BasicResponse<SearchResponse[]>
 > {
-  // TODO url修改为"/paper/abstract"
-  const { data } = await get("/search/advanced");
+  const { data } = await get("/paper/abstract");
   return data;
 }

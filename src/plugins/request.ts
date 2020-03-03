@@ -7,7 +7,11 @@ function splitUrl(url: string): string {
   if (urlPart.length < 4) {
     return url;
   } else {
-    return "/" + urlPart[1] + "/" + urlPart[2];
+    let tmp = "/" + urlPart[1] + "/";
+    for (let i = 2; i < urlPart.length; i++) {
+      tmp += urlPart[i];
+    }
+    return tmp;
   }
 }
 export function get<T = unknown>(

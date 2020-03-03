@@ -3,7 +3,7 @@
  * @author Alexchanchic
  * @date 2020.02.24
  */
-type sortKey = "acceptanceCount" | "citationCount";
+export type sortKey = "acceptanceCount" | "citationCount";
 
 export interface RankingData {
   sortKey: sortKey;
