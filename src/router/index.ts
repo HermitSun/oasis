@@ -1,23 +1,24 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import VueRouter, { Route } from "vue-router";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "OASIS_HOME",
+    component: () => import("@/views/HomePage.vue")
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/search",
+    name: "Search",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "search" */ "@/views/SearchPage.vue"),
+    // 在路由里将字符串转换成数字
+    props: (route: Route) => ({
+      ...route.query,
+      page: Number(route.query.page)
+    })
   }
 ];
 

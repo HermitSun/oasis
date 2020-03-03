@@ -56,29 +56,42 @@ node {
                     sh '${PWD}/jenkins/get-baseline.sh'
                 }
             }
-            stage('package resources') {
-                docker
-                .image('node:12.16.0-alpine')
-                .inside('--volumes-from frontend-baseline -v jenkins-data:/var/jenkins_home') {
-                    sh 'cp -a . /opt/app'
-                    // stage('lint') {
-                    //     sh 'cd /opt/app && npm run lint'
-                    // }
-                    stage('build') {
-                        sh 'cd /opt/app && npm run build'
-                        sh 'cp -a /opt/app/oasis .'
-                    }
-                    stage('unit test') {
-                        sh 'cd /opt/app && npm run test:unit'
-                    }
-                    // stage('e2e test') {
-                    // sh 'cd /opt/app && npm run test:e2e'
-                    // }
-                    stage('clear baseline') {
-                        try {
+            // serializable build
+            lock(resource: 'package', inversePrecedence: true) {
+                stage('package resources') {
+                    docker
+                    .image('node:12.16.0-alpine')
+                    .inside('--volumes-from frontend-baseline -v jenkins-data:/var/jenkins_home') {
+                        sh 'cp -a . /opt/app'
+                        // stage('lint') {
+                        //     sh 'cd /opt/app && npm run lint'
+                        // }
+                        stage('build') {
+                            sh 'cd /opt/app && npm run build'
+                            sh 'cp -a /opt/app/oasis .'
+                        }
+                        stage('unit test') {
+                            stage('do test') {
+                                sh 'cd /opt/app && npm run test:unit'
+                            }
+                            stage('coverage report') {
+                                sh 'cp -a /opt/app/coverage .'
+                                publishHTML([
+                                    allowMissing: false,
+                                    alwaysLinkToLastBuild: false,
+                                    keepAll: false,
+                                    reportDir: 'coverage/lcov-report',
+                                    reportFiles: 'index.html',
+                                    reportName: 'Jest Coverage Report',
+                                    reportTitles: 'Jest Coverage Report'
+                                ])
+                            }
+                        }
+                        // stage('e2e test') {
+                        // sh 'cd /opt/app && npm run test:e2e'
+                        // }
+                        stage('clear baseline') {
                             sh 'cd /opt/app && rm -rf `ls | grep -v "^node_modules$"`'
-                        } catch (e) {
-                            echo 'files not exist'
                         }
                     }
                 }
@@ -86,22 +99,25 @@ node {
 
             // deploy
             if (env.BRANCH_NAME =~ 'develop|hotfix.*|release.*') {
-                stage('service down') {
-                    sh '${PWD}/jenkins/service-down.sh'
-                }
-                stage('release image') {
-                    def registry = 'seciii/frontend-proxy'
-                    def nginxImage = docker.build("$registry:$BUILD_NUMBER")
-                    docker.withRegistry( registrySite, registryCredential ) {
-                        nginxImage.push()
-                        nginxImage.push('latest')
+                // serializable build
+                lock(resource: 'service', inversePrecedence: true) {
+                    stage('service down') {
+                        sh '${PWD}/jenkins/service-down.sh'
                     }
-                    sh "docker image rm $registry:$BUILD_NUMBER"
-                }
-                stage('service restart'){
-                    docker
-                    .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
-                    .run('-p 8080:443 --name frontend-proxy')
+                    stage('release image') {
+                        def registry = 'seciii/frontend-proxy'
+                        def nginxImage = docker.build("$registry:$BUILD_NUMBER")
+                        docker.withRegistry( registrySite, registryCredential ) {
+                            nginxImage.push()
+                            nginxImage.push('latest')
+                        }
+                        sh "docker image rm $registry:$BUILD_NUMBER"
+                    }
+                    stage('service restart'){
+                        docker
+                        .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
+                        .run('-p 8080:443 --name frontend-proxy')
+                    }
                 }
             }
         }

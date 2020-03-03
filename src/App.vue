@@ -1,10 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <!--<div id="nav">-->
+    <!--<router-link to="/">Home</router-link> |-->
+    <!--<router-link to="/about">About</router-link>-->
+    <!--</div>-->
     <router-view />
+    <div class="icp-license">
+      © 2019-2020 孙逸伦 版权所有
+      <a href="http://www.beian.miit.gov.cn" target="_blank">
+        苏ICP备19048222号-1
+      </a>
+    </div>
   </div>
 </template>
 
@@ -28,5 +34,13 @@
       color: #42b983;
     }
   }
+}
+
+.icp-license {
+  position: relative;
+  bottom: 1%;
+  text-align: center;
+  width: calc(100% - 25px);
+  margin-top: 50px;
 }
 </style>
