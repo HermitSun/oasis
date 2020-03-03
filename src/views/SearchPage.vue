@@ -48,11 +48,15 @@
 <script lang="ts">
 import Vue from "vue";
 import { advancedSearch, basicSearch } from "@/api";
-import { BasicSearchData } from "@/interfaces/components/search/SearchData";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import SearchResComp from "@/components/search/SearchResComp.vue";
+
 export default Vue.extend({
   name: "SearchPage",
+  props: {
+    mode: String,
+    keyword: String
+  },
   components: {
     SearchResComp
   },
@@ -67,12 +71,13 @@ export default Vue.extend({
     };
   },
   mounted() {
-    const routerQuery = this.$route.query;
-    const searchMode = routerQuery.searchMode;
-    if (searchMode === "basic") {
-      this.searchContent = String(routerQuery.keyword);
+    console.log(this.mode, this.keyword);
+    // const routerQuery = this.$route.query;
+    // const searchMode = routerQuery.searchMode;
+    if (this.mode === "basic") {
+      this.searchContent = String(this.keyword);
       this.requestBasicSearch(this.searchContent, this.startYear, this.endYear);
-    } else if (searchMode === "advanced") {
+    } else if (this.mode === "advanced") {
       this.requestAdvancedSearch();
     }
   },
