@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+import "@/plugins/element";
+
 Vue.config.productionTip = false;
 
 // 全局错误捕获，防止遗漏的promise和其他错误

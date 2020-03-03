@@ -19,6 +19,7 @@ export default Vue.extend({
         keyword: "123", // 研究关键字
         page: 1
       });
+      console.log(advancedSearchRes);
     }
   }
 });
