@@ -41,7 +41,7 @@ import { basicSearch, getActivePaperAbstract } from "@/api";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import AbstractComp from "../components/abstract/AbstractComp.vue";
 export default Vue.extend({
-  name: "Homepage",
+  name: "HomePage",
   components: {
     AdvancedSearchComp,
     AbstractComp
@@ -52,7 +52,7 @@ export default Vue.extend({
   data() {
     return {
       keyword: "",
-      abstractResponse: [] as SearchResponse
+      abstractResponse: [] as SearchResponse[]
     };
   },
   methods: {
