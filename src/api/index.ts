@@ -8,6 +8,8 @@ import { get } from "@/plugins/request";
 import { AffiliationBasicRankingResponse } from "@/interfaces/responses/ranking/AffiliationBasicRankingResponse";
 import { RankingData } from "@/interfaces/components/ranking/RankingData";
 import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/AuthorBasicRankingResponse";
+import { ResearcherInterestData } from "@/interfaces/components/interest/ResearcherInterestData";
+import { ResearcherInterestResponse } from "@/interfaces/responses/interest/ResearcherInterestResponse";
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -48,6 +50,17 @@ export async function getAuthorBasicRanking(
   });
   return data;
 }
+
+// 4. 查看学者研究方向
+export async function getResearcherInterest(
+  args: ResearcherInterestData
+): Promise<BasicResponse<ResearcherInterestResponse[]>> {
+  const { data } = await get("/researcher/interest", {
+    params: { ...args }
+  });
+  return data;
+}
+
 // 5. 查看活跃论文摘要
 export async function getActivePaperAbstract(): Promise<
   BasicResponse<SearchResponse[]>
