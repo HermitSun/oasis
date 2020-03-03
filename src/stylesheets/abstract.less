@@ -1,0 +1,48 @@
+@import 'default.less';
+
+@abstract-item-title-font-size: 17px;
+@abstract-item-author-font-size: 14px;
+@abstract-item-info-font-size: 14px;
+
+.abstract-item{
+  text-align: left;
+  padding: 10px 5px;
+
+  .year{
+    font-size: @abstract-item-title-font-size;
+  }
+
+  .title {
+    a {
+      font-size: @abstract-item-title-font-size;
+      text-decoration: transparent;
+    }
+
+    a:link {
+      color: @font-dark
+    }
+
+    a:visited {
+      color: @background-blue
+    }
+
+    a:hover {
+      color: @bright-yellow
+    }
+
+    a:active {
+      color: @background-blue
+    }
+  }
+  .abstract {
+    font-size: @abstract-item-info-font-size;
+    color: @font-gray;
+  }
+  .author{
+    font-weight: 600;
+    color: @background-blue;
+    font-size: @abstract-item-author-font-size;
+  }
+
+
+}
