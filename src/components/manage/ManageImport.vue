@@ -6,18 +6,22 @@
       action=""
       :limit="1"
       :auto-upload="false"
+      :on-remove="removePaper"
       :on-change="handleFileChange"
       :on-exceed="handleFileExceed"
       ref="paperUploader"
     >
       <template #trigger>
-        <el-button type="primary" :disabled="isUploadValid"
+        <el-button
+          :type="!isUploadValid ? 'primary' : 'default'"
+          :disabled="isUploadValid"
           >选取本地文件</el-button
         >
       </template>
       <el-button
-        style="margin-left: 10px;"
         @click="doUpload"
+        :type="isUploadValid ? 'primary' : 'default'"
+        style="margin-left: 10px;"
         :disabled="!isUploadValid"
       >
         导入选定文件
@@ -47,6 +51,12 @@ export default Vue.extend({
     };
   },
   methods: {
+    // 移除paper
+    removePaper(file: { status: string; raw: File }, fileList: File[]) {
+      console.log(file, fileList);
+      this.papers.delete("paperData");
+      this.isUploadValid = false;
+    },
     // 判断文件是否符合标准
     isProperJSONOrCSV(file: File) {
       const isJSON =
@@ -56,6 +66,7 @@ export default Vue.extend({
       const isUnderLimit = file.size / 1024 / 1024 <= 10;
       return (isJSON || isCSV) && isUnderLimit;
     },
+    // 文件修改时调用，主要是用来上传
     handleFileChange(file: { status: string; raw: File }, fileList: File[]) {
       console.log(file, fileList);
       if (file.status === "ready") {
