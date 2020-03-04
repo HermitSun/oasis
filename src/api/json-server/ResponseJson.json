@@ -675,52 +675,52 @@
         {
           "name": "Lajos Hanzo",
           "count": 399,
-          "researcherId": 0
+          "researcherId": "0"
         },
         {
           "name": "Guangming Zeng",
           "count": 384,
-          "researcherId": 1
+          "researcherId": "1"
         },
         {
           "name": "Frede Blaabjerg",
           "count": 355,
-          "researcherId": 2
+          "researcherId":"2"
         },
         {
           "name": "Mohamed Slim-Alouini",
           "count": 310,
-          "researcherId": 3
+          "researcherId": "3"
         },
         {
           "name": "Wei Huang",
           "count": 258,
-          "researcherId": 4
+          "researcherId": "4"
         },
         {
           "name": "Zhong Lin Wang",
           "count": 222,
-          "researcherId": 5
+          "researcherId": "5"
         },
         {
           "name": "Z. Q. Zhu",
           "count": 189,
-          "researcherId": 6
+          "researcherId": "6"
         },
         {
           "name": "H. Vincent Poor",
           "count": 178,
-          "researcherId": 7
+          "researcherId": "7"
         },
         {
           "name": "Zhu Han",
           "count": 167,
-          "researcherId": 8
+          "researcherId": "8"
         },
         {
           "name": "Mohamed Slim-Alouini",
           "count": 80,
-          "researcherId": 9
+          "researcherId": "9"
         }
       ]
     }
@@ -733,315 +733,315 @@
       "data": [
         {
           "name": "Java",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Software testing",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Electronic mail",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Software engineering",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Software maintenance",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Costs",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Information analysis",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Collaborative software",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Merging",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Software systems",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Production",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Grammar",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Sociology",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Statistics",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Trajectory",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Genetic algorithms",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Search problems",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Androids",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Humanoid robots",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Testing",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Software",
-          "count": 3
+          "value": 3
         },
         {
           "name": "Systematics",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Receivers",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Application software",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Feedback",
-          "count": 1
+          "value": 1
         },
         {
           "name": "System testing",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Database languages",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Educational institutions",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Data engineering",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Runtime",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Automata",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Doped fiber amplifiers",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Encoding",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Performance evaluation",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Analytical models",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Debugging",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Fault diagnosis",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Instruments",
-          "count": 3
+          "value": 3
         },
         {
           "name": "USA Councils",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Information filters",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Data mining",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Distance measurement",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Explosions",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Gain",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Patents",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Conferences",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Programming",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Communities",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Cloning",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Maintenance engineering",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Graphical user interfaces",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Training",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Predictive models",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Electromagnetics",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Benchmark testing",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Task analysis",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Microsoft Windows",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Computer crashes",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Optical fibers",
-          "count": 1
+          "value": 1
         },
         {
           "name": "MIMICs",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Generators",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Browsers",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Visualization",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Layout",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Web pages",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Navigation",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Feature extraction",
-          "count": 1
+          "value": 1
         },
         {
           "name": "HTML",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Heuristic algorithms",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Security",
-          "count": 2
+          "value": 2
         },
         {
           "name": "Servers",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Algorithm design and analysis",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Arrays",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Credit cards",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Privacy",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Switches",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Optimization",
-          "count": 1
+          "value": 1
         },
         {
           "name": "Prototypes",
-          "count": 1
+          "value": 1
         }
       ]
     }

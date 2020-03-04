@@ -19,26 +19,26 @@
       </div>
     </div>
     <div class="homepage-content">
-      <ResearcherInterest></ResearcherInterest>
-      <!--<div class="homepage-content__abstract">-->
-      <!--<div class="subtitle">📄 OASIS NEWS</div>-->
-      <!--<div class="subtitle-divider"></div>-->
-      <!--<div-->
-      <!--v-for="abstract in abstractResponse"-->
-      <!--:key="abstract.id"-->
-      <!--style="margin-bottom: 5px"-->
-      <!--&gt;-->
-      <!--<AbstractComp :abstract="abstract"></AbstractComp>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div class="homepage-content__ranking">-->
-      <!--<div class="subtitle">🏆 OASIS RANKINGS</div>-->
-      <!--<div class="subtitle-divider"></div>-->
-      <!--<div>-->
-      <!--<AuthorBasicRanking></AuthorBasicRanking>-->
-      <!--<AffiliationBasicRanking></AffiliationBasicRanking>-->
-      <!--</div>-->
-      <!--</div>-->
+      <div class="homepage-content__abstract">
+        <div class="subtitle">📄 OASIS NEWS</div>
+        <div class="subtitle-divider"></div>
+        <div
+          v-for="abstract in abstractResponse"
+          :key="abstract.id"
+          style="margin-bottom: 5px"
+        >
+          <AbstractComp :abstract="abstract"></AbstractComp>
+        </div>
+      </div>
+
+      <div class="homepage-content__ranking">
+        <div class="subtitle">🏆 OASIS RANKINGS</div>
+        <div class="subtitle-divider"></div>
+        <div>
+          <AuthorBasicRanking></AuthorBasicRanking>
+          <AffiliationBasicRanking></AffiliationBasicRanking>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,15 +51,13 @@ import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import AbstractComp from "../components/abstract/AbstractComp.vue";
 import AuthorBasicRanking from "../components/ranking/AuthorBasicRanking.vue";
 import AffiliationBasicRanking from "../components/ranking/AffiliationBasicRanking.vue";
-import ResearcherInterest from "../components/interest/ResearcherInterest.vue";
 export default Vue.extend({
   name: "HomePage",
   components: {
     AdvancedSearchComp,
-    // AbstractComp,
-    // AuthorBasicRanking,
-    // AffiliationBasicRanking,
-    ResearcherInterest
+    AbstractComp,
+    AuthorBasicRanking,
+    AffiliationBasicRanking
   },
   mounted() {
     this.requestActivePaperAbstract();
