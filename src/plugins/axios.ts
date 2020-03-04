@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Message } from "element-ui";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
@@ -29,6 +30,7 @@ globalAxios.interceptors.response.use(
     return config;
   },
   error => {
+    Message.error(error.toString());
     return Promise.resolve(error);
   }
 );

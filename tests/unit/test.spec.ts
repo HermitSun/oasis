@@ -18,7 +18,7 @@ describe("App.vue", () => {
       const searchRes = await basicSearch({ keyword: "keyword", page: 1 });
       expect(searchRes).not.toBeNull();
       expect(searchRes).not.toBeUndefined();
-      expect(searchRes.data.length).not.toBe(0);
+      expect(searchRes.data.size).not.toBe(0);
     } catch (e) {
       // network error
       expect(e.toString()).toContain("undefined");
@@ -36,7 +36,7 @@ describe("App.vue", () => {
       });
       expect(searchRes).not.toBeNull();
       expect(searchRes).not.toBeUndefined();
-      expect(searchRes.data.length).toBe(0);
+      expect(searchRes.data.size).toBe(0);
     } catch (e) {
       // network error
       expect(e.toString()).toContain("undefined");

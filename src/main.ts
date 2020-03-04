@@ -3,7 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+// element-ui
 import "@/plugins/element";
+// normalize css
+import "@/stylesheets/normalize.less";
 
 Vue.config.productionTip = false;
 

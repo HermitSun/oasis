@@ -3,16 +3,21 @@ import {
   BasicSearchData
 } from "@/interfaces/components/search/SearchData";
 import { BasicResponse } from "@/interfaces/responses/BasicResponse";
-import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
+import {
+  SearchFullResponse,
+  SearchResponse
+} from "@/interfaces/responses/search/SearchResponse";
+import axios from "@/plugins/axios";
 import { get } from "@/plugins/request";
 import { AffiliationBasicRankingResponse } from "@/interfaces/responses/ranking/AffiliationBasicRankingResponse";
 import { RankingData } from "@/interfaces/components/ranking/RankingData";
 import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/AuthorBasicRankingResponse";
+import { PaperImportResponse } from "@/interfaces/responses/manage/PaperImportResponse";
 
 // 1. 普通搜索
 export async function basicSearch(
   args: BasicSearchData
-): Promise<BasicResponse<SearchResponse[]>> {
+): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await get("/search/basic/mongo", {
     params: { ...args }
   });
@@ -22,7 +27,7 @@ export async function basicSearch(
 // 2. 组合搜索
 export async function advancedSearch(
   args: AdvancedSearchData
-): Promise<BasicResponse<SearchResponse[]>> {
+): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await get("/search/advanced/mongo", {
     params: { ...args }
   });
@@ -48,10 +53,19 @@ export async function getAuthorBasicRanking(
   });
   return data;
 }
+
 // 5. 查看活跃论文摘要
 export async function getActivePaperAbstract(): Promise<
   BasicResponse<SearchResponse[]>
 > {
   const { data } = await get("/paper/abstract");
+  return data;
+}
+
+// 6. 导入论文数据
+export async function importPaperData(
+  paperData: FormData
+): Promise<BasicResponse<PaperImportResponse>> {
+  const { data } = await axios.post("/import/paper", paperData);
   return data;
 }

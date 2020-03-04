@@ -1,5 +1,7 @@
 import Vue from "vue";
-import VueRouter, { Route } from "vue-router";
+import VueRouter from "vue-router";
+import search from "./search";
+import manage from "./manage";
 
 Vue.use(VueRouter);
 
@@ -9,23 +11,22 @@ const routes = [
     name: "OASIS_HOME",
     component: () => import("@/views/HomePage.vue")
   },
-  {
-    path: "/search",
-    name: "Search",
-    component: () =>
-      import(/* webpackChunkName: "search" */ "@/views/SearchPage.vue"),
-    // 在路由里将字符串转换成数字
-    props: (route: Route) => ({
-      ...route.query,
-      page: Number(route.query.page)
-    })
-  }
+  ...search,
+  ...manage
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  // 页面标题
+  if (to.meta.title) {
+    document.title = to.meta.title + " - OASIS";
+  }
+  next();
 });
 
 export default router;

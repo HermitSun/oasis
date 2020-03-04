@@ -23,3 +23,8 @@ export interface SearchResponse {
   conferenceName: string;
   link: string;
 }
+
+export interface SearchFullResponse {
+  papers: SearchResponse[];
+  size: number;
+}
