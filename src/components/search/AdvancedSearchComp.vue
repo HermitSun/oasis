@@ -57,6 +57,7 @@
         class="advanced-search__button"
         style="width:50px;float: right"
         @click="sendAdvancedSearch"
+        v-on:click="closeAdvancedSearch"
       >
         <img src="../../assets/icon/icon-search.png" width="20" alt="search" />
       </button>
