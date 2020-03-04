@@ -20,17 +20,29 @@
         </svg>
       </span>
     </div>
+    <!--现在的解决方案不支持key的变动，所以最好不要对列表进行修改-->
     <div
       v-for="(rank, index) in authorBasicRankingResponse"
       :key="index"
       class="info"
     >
       <span class="icon">{{ requestRankingIcon(index) }}</span>
-      <el-popover trigger="click" width="500">
+      <el-popover
+        trigger="click"
+        width="500"
+        @show="this.showInterest = true"
+        @hide="this.showInterest = false"
+        @click.native="showSpecifiedInterest"
+      >
+        <!--双等号可以不用强制类型转换-->
+        <!--加锁以避免额外的渲染-->
         <ResearcherInterest
+          v-if="showInterest && index == whichInterestToShow"
           :researcher-id="rank.researcherId"
-        ></ResearcherInterest>
-        <span class="name" slot="reference">{{ rank.name }}</span>
+        />
+        <span class="name" slot="reference" :interest-index="index">
+          {{ rank.name }}
+        </span>
       </el-popover>
       <span class="count">{{ rank.count }}</span>
     </div>
@@ -53,7 +65,9 @@ export default Vue.extend({
   data() {
     return {
       authorBasicRankingResponse: [] as AuthorBasicRankingResponse[],
-      sortKey: "acceptanceCount" as sortKey
+      sortKey: "acceptanceCount" as sortKey,
+      showInterest: false, // 是否显示interest
+      whichInterestToShow: "" // 显示哪个interest
     };
   },
   mounted(): void {
@@ -73,6 +87,13 @@ export default Vue.extend({
       this.sortKey =
         this.sortKey === "citationCount" ? "acceptanceCount" : "citationCount";
       this.requestAuthorBasicRanking();
+    },
+    // 只展示特定的研究兴趣
+    showSpecifiedInterest(event: Event) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.whichInterestToShow = (event.target as HTMLElement).getAttribute(
+        "interest-index"
+      ) as string;
     }
   }
 });

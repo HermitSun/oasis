@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <!--<div id="wordCloud" style="height:300px"></div>-->
-    <div id="wordcloud">
-      <wordcloud
-        :data="researcherInterestResponse"
-        nameKey="name"
-        valueKey="value"
-        :color="wordcloudColors"
-        :showTooltip="true"
-      >
-      </wordcloud>
-    </div>
-  </div>
+  <wordcloud
+    :data="researcherInterestResponse"
+    nameKey="name"
+    valueKey="value"
+    :color="wordcloudColors"
+    :showTooltip="true"
+  >
+  </wordcloud>
 </template>
 
 <script lang="ts">
@@ -36,6 +31,7 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    console.log(this.$attrs);
     await this.requestResearcherInterest();
   },
   methods: {
