@@ -120,19 +120,25 @@
 .basic-search__input {
   outline: none;
   border: @search-input-border;
-  background: @search-input-background-active;
+  background-color: @search-input-background-active;
   border-radius: @search-input-border-radius;
   padding: 0 15px;
   height: 5vh;
   width: 50vw;
+  background-image: url(../assets/icon/icon-search-dark.png);
+  background-repeat: no-repeat; /*设置图片不重复*/
+  background-position:right;
 }
 
 .basic-search__input:focus {
   border: @search-input-border;
-  background: @search-input-background;
+  background-color: @search-input-background;
   -webkit-box-shadow: 0 0 10px #e9e9e9;
   -moz-box-shadow: 0 0 10px #e9e9e9;
   box-shadow: 0 0 10px #e9e9e9;
+  background-image: url(../assets/icon/icon-search-dark.png);
+  background-repeat: no-repeat; /*设置图片不重复*/
+  background-position:right;
 }
 
 
