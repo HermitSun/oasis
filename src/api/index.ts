@@ -12,6 +12,7 @@ import { get } from "@/plugins/request";
 import { AffiliationBasicRankingResponse } from "@/interfaces/responses/ranking/AffiliationBasicRankingResponse";
 import { RankingData } from "@/interfaces/components/ranking/RankingData";
 import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/AuthorBasicRankingResponse";
+import { PaperImportResponse } from "@/interfaces/responses/manage/PaperImportResponse";
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -64,7 +65,7 @@ export async function getActivePaperAbstract(): Promise<
 // 6. 导入论文数据
 export async function importPaperData(
   paperData: FormData
-): Promise<BasicResponse> {
-  const { data } = await axios.post("/import/paper", { paperData });
+): Promise<BasicResponse<PaperImportResponse>> {
+  const { data } = await axios.post("/import/paper", paperData);
   return data;
 }

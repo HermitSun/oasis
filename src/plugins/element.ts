@@ -13,7 +13,8 @@ import {
   MenuItem,
   Message,
   Pagination,
-  Row
+  Row,
+  Upload
 } from "element-ui";
 
 Vue.use(Aside);
@@ -28,5 +29,6 @@ Vue.use(Menu);
 Vue.use(MenuItem);
 Vue.use(Pagination);
 Vue.use(Row);
+Vue.use(Upload);
 
 Vue.prototype.$message = Message;
