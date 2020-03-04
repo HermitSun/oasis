@@ -26,7 +26,12 @@
       class="info"
     >
       <span class="icon">{{ requestRankingIcon(index) }}</span>
-      <span class="name">{{ rank.name }}</span>
+      <el-popover trigger="click" width="500">
+        <ResearcherInterest
+          :researcher-id="rank.researcherId"
+        ></ResearcherInterest>
+        <span class="name" slot="reference">{{ rank.name }}</span>
+      </el-popover>
       <span class="count">{{ rank.count }}</span>
     </div>
   </div>
@@ -38,9 +43,13 @@ import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/Autho
 import { sortKey } from "@/interfaces/components/ranking/RankingData";
 import { getAuthorBasicRanking } from "@/api";
 import { getRankingIcon } from "@/components/ranking/ranking";
+import ResearcherInterest from "@/components/interest/ResearcherInterest.vue";
 
 export default Vue.extend({
   name: "AuthorBasicRanking",
+  components: {
+    ResearcherInterest
+  },
   data() {
     return {
       authorBasicRankingResponse: [] as AuthorBasicRankingResponse[],
