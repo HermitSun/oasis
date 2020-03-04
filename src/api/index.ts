@@ -7,6 +7,7 @@ import {
   SearchFullResponse,
   SearchResponse
 } from "@/interfaces/responses/search/SearchResponse";
+import axios from "@/plugins/axios";
 import { get } from "@/plugins/request";
 import { AffiliationBasicRankingResponse } from "@/interfaces/responses/ranking/AffiliationBasicRankingResponse";
 import { RankingData } from "@/interfaces/components/ranking/RankingData";
@@ -57,5 +58,13 @@ export async function getActivePaperAbstract(): Promise<
   BasicResponse<SearchResponse[]>
 > {
   const { data } = await get("/paper/abstract");
+  return data;
+}
+
+// 6. 导入论文数据
+export async function importPaperData(
+  paperData: FormData
+): Promise<BasicResponse> {
+  const { data } = await axios.post("/import/paper", { paperData });
   return data;
 }
