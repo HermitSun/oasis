@@ -31,7 +31,6 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    console.log(this.$attrs);
     await this.requestResearcherInterest();
   },
   methods: {

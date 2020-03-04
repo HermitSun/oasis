@@ -30,8 +30,8 @@
       <el-popover
         trigger="click"
         width="500"
-        @show="this.showInterest = true"
-        @hide="this.showInterest = false"
+        @show="showInterest = true"
+        @hide="showInterest = false"
         @click.native="showSpecifiedInterest"
       >
         <!--双等号可以不用强制类型转换-->
@@ -90,7 +90,6 @@ export default Vue.extend({
     },
     // 只展示特定的研究兴趣
     showSpecifiedInterest(event: Event) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.whichInterestToShow = (event.target as HTMLElement).getAttribute(
         "interest-index"
       ) as string;
