@@ -17,6 +17,18 @@
           @keyup.enter="startAnotherBasicSearch(searchContent)"
         />
       </label>
+      <button
+        class="advanced-search__button"
+        style="margin-left: 20px"
+        @click="showAdvancedSearch = true"
+      >
+        Advanced Search
+      </button>
+      <AdvancedSearchComp
+        v-if="showAdvancedSearch"
+        v-on:close="showAdvancedSearch = false"
+      ></AdvancedSearchComp>
+      <!-- TODO 响应式布局解决方案 -->
     </div>
     <div class="searchPage-content">
       <div
@@ -65,6 +77,8 @@ import Vue from "vue";
 import { advancedSearch, basicSearch } from "@/api";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import SearchResComp from "@/components/search/SearchResComp.vue";
+import { AdvancedSearchData } from "@/interfaces/components/search/SearchData";
+import AdvancedSearchComp from "@/components/search/AdvancedSearchComp.vue";
 
 export default Vue.extend({
   name: "SearchPage",
@@ -79,7 +93,8 @@ export default Vue.extend({
     endYear: String
   },
   components: {
-    SearchResComp
+    SearchResComp,
+    AdvancedSearchComp
   },
   data() {
     return {
@@ -88,7 +103,9 @@ export default Vue.extend({
       newStartYear: "2001",
       newEndYear: "2020",
       resultCount: 314208101,
-      searchResponse: [] as SearchResponse[]
+      searchResponse: [] as SearchResponse[],
+
+      showAdvancedSearch: false
     };
   },
   watch: {
@@ -139,7 +156,7 @@ export default Vue.extend({
     },
     // 高级搜索
     async requestAdvancedSearch() {
-      const advancedSearchData = {
+      const advancedSearchData: AdvancedSearchData = {
         keyword: this.keyword,
         page: this.page,
         author: this.author,
@@ -148,11 +165,7 @@ export default Vue.extend({
         startYear: this.newStartYear,
         endYear: this.newEndYear
       };
-      for (const key in advancedSearchData) {
-        if (advancedSearchData[key] === "") {
-          delete advancedSearchData[key];
-        }
-      }
+      // TODO 暂时未过滤为空字符串的关键字
       const advancedSearchRes = await advancedSearch(advancedSearchData);
       this.searchResponse = advancedSearchRes.data.papers;
       this.resultCount = advancedSearchRes.data.size;
