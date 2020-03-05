@@ -7,11 +7,15 @@
 
 @search-button-border-radius: 10px;
 @search-button-font-color: white;
+@search-button-font-size: 10px;
 
 @search-item-title-font-size: 20px;
 @search-item-author-font-size: 15px;
 @search-item-keyword-font-size: 10px;
 @search-item-reference-font-size: 12px;
+
+
+@search-advanced-input-font-size:10px;
 
 // 搜索页Header
 .searchPage-header {
@@ -114,6 +118,8 @@
   width: 125px;
   height: 30px;
   padding: 8px 15px;
+  font-size: @search-button-font-size;
+  font-weight: 500;
 }
 
 // 普通搜索输入框
@@ -228,6 +234,7 @@
     background: rgba(245, 245, 245, 0.56);
     color: #474747;
     font-weight: 500;
+    font-size: @search-advanced-input-font-size;
   }
   .item{
     margin-bottom: 10px;
