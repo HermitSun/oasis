@@ -90,7 +90,7 @@
       @current-change="showNextPage"
       layout="prev, pager, next"
       :current-page="page"
-      :total="resultCount"
+      :total="pageNum"
       background
     />
   </div>
@@ -131,6 +131,12 @@ export default Vue.extend({
 
       showAdvancedSearch: false
     };
+  },
+  computed: {
+    // 计算正确的页数
+    pageNum(): number {
+      return Math.ceil(this.resultCount / 10);
+    }
   },
   watch: {
     $route: "doSearch"
