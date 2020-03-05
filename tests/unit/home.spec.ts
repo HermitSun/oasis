@@ -1,10 +1,11 @@
 import Vue from "vue";
-import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import HomePage from "@/views/HomePage.vue";
 import router from "@/router";
 
 const localVue = createLocalVue();
 
+// abstract是首页的一部分，不单独测试
 describe("HomePage", () => {
   const wrapper = shallowMount(HomePage, { localVue, router });
   const vm = wrapper.vm as { keyword: string; abstractResponse: [] } & Vue;

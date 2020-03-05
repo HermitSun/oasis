@@ -35,10 +35,14 @@ export default Vue.extend({
   },
   methods: {
     async requestResearcherInterest() {
-      const researcherInterestRes = await getResearcherInterest({
-        researcherId: this.researcherId
-      });
-      this.researcherInterestResponse = researcherInterestRes.data;
+      try {
+        const researcherInterestRes = await getResearcherInterest({
+          researcherId: this.researcherId
+        });
+        this.researcherInterestResponse = researcherInterestRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
     }
   }
 });

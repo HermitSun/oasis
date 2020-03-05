@@ -16,7 +16,6 @@ const router = new VueRouter({
   routes: [...manage]
 });
 
-// //
 // 正式测试部分
 describe("Manage Frame", () => {
   // mount the view
@@ -35,6 +34,7 @@ describe("Manage Frame", () => {
   });
 });
 
+// 论文数据导入
 describe("Data Import", () => {
   // mount the view
   const wrapper = mount(ManageImport, { localVue, router });
@@ -50,6 +50,7 @@ describe("Data Import", () => {
   });
 });
 
+// 论文数据管理
 describe("Data Manage", () => {
   // mount the view
   const wrapper = shallowMount(ManagePapers, { localVue, router });
