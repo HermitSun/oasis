@@ -53,7 +53,8 @@ export default Vue.extend({
   methods: {
     async requestAffiliationBasicRanking() {
       const affiliationBasicRankingRes = await getAffiliationBasicRanking({
-        sortKey: this.sortKey
+        sortKey: this.sortKey,
+        year: (new Date().getFullYear() - 1).toString() // TODO 去掉 - 1
       });
       this.affiliationBasicRankingResponse = affiliationBasicRankingRes.data;
     },
