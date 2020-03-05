@@ -14,6 +14,7 @@
         <el-button
           :type="!isUploadValid ? 'primary' : 'default'"
           :disabled="isUploadValid"
+          class="upload-selector"
           >选取本地文件</el-button
         >
       </template>
@@ -22,6 +23,7 @@
         :type="isUploadValid ? 'primary' : 'default'"
         style="margin-left: 10px;"
         :disabled="!isUploadValid"
+        class="upload-uploader"
       >
         导入选定文件
       </el-button>
