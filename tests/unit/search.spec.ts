@@ -1,6 +1,8 @@
 import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
 import SearchPage from "@/views/SearchPage.vue";
+import SearchResComp from "@/components/search/SearchResComp.vue";
+import AdvancedSearchComp from "@/components/search/AdvancedSearchComp.vue";
 
 import ElementUI from "element-ui";
 import search from "@/router/search";
@@ -17,6 +19,7 @@ const router = new VueRouter({
   routes: [...search]
 });
 
+// 搜索的主体部分
 describe("Search", () => {
   it("renders correctly", async () => {
     const wrapper = shallowMount(SearchPage, {
@@ -176,6 +179,61 @@ describe("Search", () => {
         page: "1",
         startYear: "2003",
         endYear: "2019"
+      }
+    });
+  });
+});
+
+// 搜索组件本身
+describe("Search Comp", () => {
+  it("renders correctly", async () => {
+    const testData = await import("./test.json");
+    const wrapper = shallowMount(SearchResComp, {
+      localVue,
+      propsData: { res: testData }
+    });
+    expect(wrapper.find(".searchPage-item").isVisible()).toBe(true);
+  });
+});
+
+describe("Advanced Search Comp", () => {
+  const wrapper = mount(AdvancedSearchComp, { localVue, router });
+  const vm = wrapper.vm as {
+    affiliation: string;
+    author: string;
+    conferenceName: string;
+    keyword: string;
+  } & Vue;
+
+  it("renders correctly", async () => {
+    expect(wrapper.find(".mask-box-header").isVisible()).toBe(true);
+    expect(wrapper.find(".mask-box-content").isVisible()).toBe(true);
+    expect(wrapper.find(".advanced-search__button").isVisible()).toBe(true);
+  });
+
+  it("can do advanced search", async () => {
+    jest.clearAllMocks();
+    jest.spyOn(vm.$router, "push");
+
+    vm.affiliation = "foo";
+    (vm.author = "bar"), (vm.conferenceName = "buz"), (vm.keyword = "baz");
+
+    await vm.$nextTick();
+    wrapper.find(".advanced-search__button").trigger("click");
+
+    await vm.$nextTick();
+    expect(wrapper.emitted("close")).toBeTruthy();
+    expect(vm.$router.push).toBeCalledWith({
+      path: "/search",
+      query: {
+        affiliation: "foo",
+        author: "bar",
+        conferenceName: "buz",
+        endYear: "2020",
+        keyword: "baz",
+        mode: "advanced",
+        page: "1",
+        startYear: "2001"
       }
     });
   });
