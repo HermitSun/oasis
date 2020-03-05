@@ -3,6 +3,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     "src/{!(router|store),}/{!(*.d),}.{ts,vue}",
+    "src/{!(router|store),}/**/{!(*.d),}.{ts,vue}",
     "!**/node_modules/**"
   ]
 };

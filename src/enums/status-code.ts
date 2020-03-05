@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /**
  * 状态码
  * @author WenSun
