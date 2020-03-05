@@ -21,7 +21,7 @@ export function get<T = unknown>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> {
-  if (!TEST_MODE) {
+  if (TEST_MODE) {
     const jsonServerUrl = splitUrl(url);
     return axios.get(jsonServerUrl);
   } else {

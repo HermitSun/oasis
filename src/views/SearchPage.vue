@@ -225,7 +225,9 @@ export default Vue.extend({
         query: {
           mode: "basic",
           keyword: keyword,
-          page: "1"
+          page: "1",
+          startYear: this.newStartYear, // 开始日期
+          endYear: this.newEndYear
         }
       });
     }
