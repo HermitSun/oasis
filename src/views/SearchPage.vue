@@ -158,17 +158,13 @@ export default Vue.extend({
       }
     },
     doTimeChangedSearch() {
-      if (this.mode === "basic") {
-        this.requestBasicSearch();
-      } else if (this.mode === "advanced") {
-        this.requestAdvancedSearch();
-      }
+      this.showNextPage("1");
     },
     // 基础搜索
     async requestBasicSearch() {
       const basicSearchRes = await basicSearch({
         keyword: this.searchContent,
-        page: 1,
+        page: this.page,
         startYear: this.newStartYear,
         endYear: this.newEndYear
       });
