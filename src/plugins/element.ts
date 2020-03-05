@@ -14,6 +14,7 @@ import {
   MenuItem,
   Message,
   Pagination,
+  Popover,
   Row,
   Upload
 } from "element-ui";
@@ -29,6 +30,7 @@ Vue.use(Main);
 Vue.use(Menu);
 Vue.use(MenuItem);
 Vue.use(Pagination);
+Vue.use(Popover);
 Vue.use(Row);
 Vue.use(Upload);
 
