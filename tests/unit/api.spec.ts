@@ -21,7 +21,7 @@ describe("API", () => {
       expect(searchRes.data.papers.length).not.toBe(0);
       expect(searchRes.data.size).not.toBe(0);
     } catch (e) {
-      expect(e.toString()).toContain("undefined");
+      expect(e.toString()).toContain("undefined" || "null");
     }
   });
 
