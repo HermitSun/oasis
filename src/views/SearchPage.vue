@@ -124,8 +124,8 @@ export default Vue.extend({
     return {
       searchMode: "",
       searchContent: "",
-      newStartYear: "2001",
-      newEndYear: "2020",
+      newStartYear: this.startYear,
+      newEndYear: this.endYear,
       resultCount: 314208101,
       searchResponse: [] as SearchResponse[],
 

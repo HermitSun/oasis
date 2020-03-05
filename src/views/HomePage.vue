@@ -89,7 +89,9 @@ export default Vue.extend({
           query: {
             mode: "basic",
             keyword: this.keyword,
-            page: defaultPage
+            page: defaultPage,
+            startYear: "2001",
+            endYear: "2020"
           }
         });
       }
