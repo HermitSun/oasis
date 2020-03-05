@@ -13,6 +13,8 @@ import { AffiliationBasicRankingResponse } from "@/interfaces/responses/ranking/
 import { RankingData } from "@/interfaces/components/ranking/RankingData";
 import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/AuthorBasicRankingResponse";
 import { PaperImportResponse } from "@/interfaces/responses/manage/PaperImportResponse";
+import { ResearcherInterestData } from "@/interfaces/components/interest/ResearcherInterestData";
+import { ResearcherInterestResponse } from "@/interfaces/responses/interest/ResearcherInterestResponse";
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -49,6 +51,16 @@ export async function getAuthorBasicRanking(
   args: RankingData
 ): Promise<BasicResponse<AuthorBasicRankingResponse[]>> {
   const { data } = await get("/rank/basic/author", {
+    params: { ...args }
+  });
+  return data;
+}
+
+// 4. 查看学者研究方向
+export async function getResearcherInterest(
+  args: ResearcherInterestData
+): Promise<BasicResponse<ResearcherInterestResponse[]>> {
+  const { data } = await get("/researcher/interest", {
     params: { ...args }
   });
   return data;

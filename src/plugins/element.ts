@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import Vue from "vue";
+
 import {
   Aside,
   Button,
