@@ -14,9 +14,21 @@
           class="basic-search__input"
           type="text"
           v-model="searchContent"
-          @keyup.enter="startAnotherSearch(searchContent)"
+          @keyup.enter="startAnotherBasicSearch(searchContent)"
         />
       </label>
+      <button
+        class="advanced-search__button"
+        style="margin-left: 20px"
+        @click="showAdvancedSearch = true"
+      >
+        Advanced Search
+      </button>
+      <AdvancedSearchComp
+        v-if="showAdvancedSearch"
+        v-on:close="showAdvancedSearch = false"
+      ></AdvancedSearchComp>
+      <!-- TODO 响应式布局解决方案 -->
     </div>
     <div class="searchPage-content">
       <div
@@ -65,25 +77,35 @@ import Vue from "vue";
 import { advancedSearch, basicSearch } from "@/api";
 import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
 import SearchResComp from "@/components/search/SearchResComp.vue";
+import { AdvancedSearchData } from "@/interfaces/components/search/SearchData";
+import AdvancedSearchComp from "@/components/search/AdvancedSearchComp.vue";
 
 export default Vue.extend({
   name: "SearchPage",
   props: {
     mode: String,
     keyword: String,
-    page: Number
+    page: Number,
+    author: String,
+    affiliation: String,
+    conferenceName: String,
+    startYear: String,
+    endYear: String
   },
   components: {
-    SearchResComp
+    SearchResComp,
+    AdvancedSearchComp
   },
   data() {
     return {
       searchMode: "",
       searchContent: "",
-      startYear: "2001",
-      endYear: "2020",
+      newStartYear: "2001",
+      newEndYear: "2020",
       resultCount: 314208101,
-      searchResponse: [] as SearchResponse[]
+      searchResponse: [] as SearchResponse[],
+
+      showAdvancedSearch: false
     };
   },
   watch: {
@@ -98,11 +120,21 @@ export default Vue.extend({
         this.searchContent = String(this.keyword);
         this.requestBasicSearch(
           this.searchContent,
-          this.startYear,
-          this.endYear,
+          this.newStartYear,
+          this.newEndYear,
           this.page
         );
       } else if (this.mode === "advanced") {
+        this.searchContent =
+          this.author +
+          " " +
+          this.affiliation +
+          " " +
+          this.conferenceName +
+          " " +
+          this.keyword;
+        this.newStartYear = this.startYear;
+        this.newEndYear = this.endYear;
         this.requestAdvancedSearch();
       }
     },
@@ -124,29 +156,58 @@ export default Vue.extend({
     },
     // 高级搜索
     async requestAdvancedSearch() {
-      const advancedSearchRes = await advancedSearch({
-        page: this.page
-      });
+      const advancedSearchData: AdvancedSearchData = {
+        keyword: this.keyword,
+        page: this.page,
+        author: this.author,
+        affiliation: this.affiliation,
+        conferenceName: this.conferenceName,
+        startYear: this.newStartYear,
+        endYear: this.newEndYear
+      };
+      // TODO 暂时未过滤为空字符串的关键字
+      const advancedSearchRes = await advancedSearch(advancedSearchData);
       this.searchResponse = advancedSearchRes.data.papers;
+      this.resultCount = advancedSearchRes.data.size;
     },
+
     // 展示下一页的搜索结果
     showNextPage(page: string) {
-      this.$router.push({
-        path: "/search",
-        query: {
-          mode: "basic",
-          keyword: this.keyword,
-          page: page
-        }
-      });
+      if (this.mode === "basic") {
+        this.$router.push({
+          path: "/search",
+          query: {
+            mode: "basic",
+            keyword: this.keyword,
+            startYear: this.newStartYear,
+            endYear: this.newEndYear,
+            page: page
+          }
+        });
+      } else if (this.mode === "advanced") {
+        this.$router.push({
+          path: "/search",
+          query: {
+            mode: "advanced",
+            author: this.author,
+            affiliation: this.affiliation, // 机构
+            conferenceName: this.conferenceName, // 会议
+            keyword: this.keyword, // 研究关键字
+            startYear: this.newStartYear, // 开始日期
+            endYear: this.newEndYear, // 结束日期
+            page: page
+          }
+        });
+      }
     },
-    // 开始另一次搜索（关键字不同）
-    startAnotherSearch(keyword: string) {
+
+    // 开始另一次搜索（关键字不同）回车时默认为普通搜索
+    startAnotherBasicSearch(keyword: string) {
       this.$router.push({
         path: "/search",
         query: {
           mode: "basic",
-          keyword,
+          keyword: keyword,
           page: "1"
         }
       });

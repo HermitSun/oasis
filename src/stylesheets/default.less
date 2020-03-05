@@ -51,6 +51,20 @@
   flex-direction: row;
 }
 
+// ----------flex垂直水平靠左-----------
+.flex-space-between{
+  display:flex;
+  justify-content:space-between;
+  align-items: center;
+}
+
+// ----------相对居中------------
+.absolute-center {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+}
+
 // -----------灰色阴影-------------
 .gray-shadow{
   -webkit-box-shadow: 0 0 10px @background-gray-dark;
@@ -73,4 +87,45 @@
 .gray-background{
   background: @background-gray;
   padding: 20px 10px;
+}
+
+// -----------遮罩层------------
+.mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(9, 10, 11, 0.36);
+}
+
+// -----------提示框------------
+.mask-box{
+  text-align: left;
+  border-radius: 20px;
+  backdrop-filter: blur(0.5rem);
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: -0.25rem -0.25rem 0.5rem rgba(255, 255, 255, 0.07),
+  0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
+    -0.75rem -0.75rem 1.75rem rgba(255, 255, 255, 0.07),
+  0.75rem 0.75rem 1.75rem rgba(0, 0, 0, 0.12),
+  inset 8rem 8rem 8rem rgba(0, 0, 0, 0.05),
+    inset -8rem -8rem 8rem rgba(255, 255, 255, 0.05);
+}
+.mask-box-header{
+  .flex-space-between;
+  color: floralwhite;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+button{
+  outline: none;
+}
+
+.mask-box-content{
+  color: floralwhite;
 }
