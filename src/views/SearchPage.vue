@@ -164,38 +164,46 @@ export default Vue.extend({
       }
     },
     doTimeChangedSearch() {
-      this.showNextPage("1");
+      this.showNextPage(1);
     },
     // 基础搜索
     async requestBasicSearch() {
-      const basicSearchRes = await basicSearch({
-        keyword: this.searchContent,
-        page: this.page,
-        startYear: this.newStartYear,
-        endYear: this.newEndYear
-      });
-      this.searchResponse = basicSearchRes.data.papers;
-      this.resultCount = basicSearchRes.data.size;
+      try {
+        const basicSearchRes = await basicSearch({
+          keyword: this.searchContent,
+          page: this.page,
+          startYear: this.newStartYear,
+          endYear: this.newEndYear
+        });
+        this.searchResponse = basicSearchRes.data.papers;
+        this.resultCount = basicSearchRes.data.size;
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
     },
     // 高级搜索
     async requestAdvancedSearch() {
-      const advancedSearchData: AdvancedSearchData = {
-        keyword: this.keyword,
-        page: this.page,
-        author: this.author,
-        affiliation: this.affiliation,
-        conferenceName: this.conferenceName,
-        startYear: this.newStartYear,
-        endYear: this.newEndYear
-      };
-      // TODO 暂时未过滤为空字符串的关键字
-      const advancedSearchRes = await advancedSearch(advancedSearchData);
-      this.searchResponse = advancedSearchRes.data.papers;
-      this.resultCount = advancedSearchRes.data.size;
+      try {
+        const advancedSearchData: AdvancedSearchData = {
+          keyword: this.keyword,
+          page: this.page,
+          author: this.author,
+          affiliation: this.affiliation,
+          conferenceName: this.conferenceName,
+          startYear: this.newStartYear,
+          endYear: this.newEndYear
+        };
+        // TODO 暂时未过滤为空字符串的关键字
+        const advancedSearchRes = await advancedSearch(advancedSearchData);
+        this.searchResponse = advancedSearchRes.data.papers;
+        this.resultCount = advancedSearchRes.data.size;
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
     },
 
     // 展示下一页的搜索结果
-    showNextPage(page: string) {
+    showNextPage(page: number) {
       if (this.mode === "basic") {
         this.$router.push({
           path: "/search",
@@ -204,7 +212,7 @@ export default Vue.extend({
             keyword: this.keyword,
             startYear: this.newStartYear,
             endYear: this.newEndYear,
-            page: page
+            page: page.toString()
           }
         });
       } else if (this.mode === "advanced") {
@@ -218,7 +226,7 @@ export default Vue.extend({
             keyword: this.keyword, // 研究关键字
             startYear: this.newStartYear, // 开始日期
             endYear: this.newEndYear, // 结束日期
-            page: page
+            page: page.toString()
           }
         });
       }
