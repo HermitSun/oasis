@@ -4,14 +4,14 @@ export default [
     redirect: "/manage/import",
     name: "Manage",
     component: () =>
-      import(/* webpackChunkName: "manage" */ "@/views/ManagePage.vue"),
+      import(/* webpackChunkName: "manage" */ "@/views/manage/ManagePage.vue"),
     children: [
       {
         path: "/manage/import",
         name: "论文数据导入",
         component: () =>
           import(
-            /* webpackChunkName: "manage" */ "@/components/manage/ManageImport.vue"
+            /* webpackChunkName: "manage" */ "@/components/manage/import/ManageImport.vue"
           ),
         meta: {
           title: "论文数据导入",
@@ -21,7 +21,7 @@ export default [
       {
         path: "/manage/papers",
         name: "论文数据管理",
-        component: () => import("@/components/manage/ManagePapers.vue"),
+        component: () => import("@/components/manage/import/ManagePapers.vue"),
         meta: {
           title: "论文数据管理",
           icon: "el-icon-document",
