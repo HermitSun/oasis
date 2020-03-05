@@ -47,6 +47,30 @@
           <span class="searchPage-content__hint-text" style="margin-left:5px"
             >Results</span
           >
+          <div class="searchPage-time-range" style="float: right">
+            Time Range:
+            <input
+              v-model="newStartYear"
+              style="width: 53px;margin: 0 5px"
+              size="4"
+            />-<input
+              v-model="newEndYear"
+              style="width: 53px;margin-left: 5px"
+              size="4"
+            />
+            <button
+              class="basic-search__button"
+              style="width:50px;margin-left:10px"
+              @click="doTimeChangedSearch"
+            >
+              <img
+                src="../assets/icon/icon-search.png"
+                width="20"
+                style="margin-bottom:10px"
+                alt="search"
+              />
+            </button>
+          </div>
         </template>
       </div>
       <!--展示搜索内容-->
@@ -118,12 +142,7 @@ export default Vue.extend({
     doSearch() {
       if (this.mode === "basic") {
         this.searchContent = String(this.keyword);
-        this.requestBasicSearch(
-          this.searchContent,
-          this.newStartYear,
-          this.newEndYear,
-          this.page
-        );
+        this.requestBasicSearch();
       } else if (this.mode === "advanced") {
         this.searchContent =
           this.author +
@@ -138,18 +157,20 @@ export default Vue.extend({
         this.requestAdvancedSearch();
       }
     },
+    doTimeChangedSearch() {
+      if (this.mode === "basic") {
+        this.requestBasicSearch();
+      } else if (this.mode === "advanced") {
+        this.requestAdvancedSearch();
+      }
+    },
     // 基础搜索
-    async requestBasicSearch(
-      keyword: string,
-      startYear: string,
-      endYear: string,
-      page = 1
-    ) {
+    async requestBasicSearch() {
       const basicSearchRes = await basicSearch({
-        keyword: keyword,
-        page: page,
-        startYear: startYear,
-        endYear: endYear
+        keyword: this.searchContent,
+        page: 1,
+        startYear: this.newStartYear,
+        endYear: this.newEndYear
       });
       this.searchResponse = basicSearchRes.data.papers;
       this.resultCount = basicSearchRes.data.size;
