@@ -80,8 +80,8 @@ module.exports = {
   }
 };
 
-// 只在开发环境启动
-if (process.env.NODE_ENV === "development") {
+// 非生产环境启动
+if (process.env.NODE_ENV !== "production") {
   /*----------------json-server---------*/
   const jsonServer = require("json-server");
   /*搭建一个server*/
