@@ -71,9 +71,18 @@ node {
                             sh 'cp -a /opt/app/oasis .'
                         }
                         stage('unit test') {
+                            stage('start json server') {
+                                sh 'nohup node ${PWD}/json-server.js &'
+                            }
+
                             stage('do test') {
                                 sh 'cd /opt/app && npm run test:unit'
                             }
+
+                            stage('stop json server') {
+                                sh "${PWD}/jenkins/stop-json-server.sh"
+                            }
+
                             stage('coverage report') {
                                 sh 'cp -a /opt/app/coverage .'
                                 publishHTML([
