@@ -72,6 +72,7 @@ node {
                         }
                         stage('unit test') {
                             stage('do test') {
+                                sh 'nohup node ${PWD}/json-server.js &'
                                 sh 'cd /opt/app && npm run test:unit'
                                 sh "${PWD}/jenkins/stop-json-server.sh"
                             }
