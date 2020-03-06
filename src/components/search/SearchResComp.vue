@@ -41,6 +41,7 @@
     </div>
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
+      <p v-if="references.length === 0">暂无参考文献...</p>
       <div v-for="(ref, index) in references" :key="index" class="reference">
         <span
           :style="index === 0 ? {} : { color: 'transparent' }"
@@ -58,6 +59,9 @@ import { SearchReference } from "@/interfaces/responses/search/SearchResponse";
 import { getReferenceById } from "@/api";
 import { StatusCode } from "@/enums/status-code";
 
+// 参考文献的缓存
+const cachedReferences: SearchReference[] = [];
+
 export default Vue.extend({
   name: "SearchResComp",
   props: {
@@ -73,17 +77,21 @@ export default Vue.extend({
     // 展示参考文献
     showReferences() {
       this.showReference = !this.showReference;
-      this.getReferences(this.res.id);
+      // 没有缓存的时候去后端请求
+      if (cachedReferences.length === 0) {
+        this.getReferences(this.res.id);
+      } else {
+        this.references = cachedReferences;
+      }
     },
     // 手动获取参考文献
     async getReferences(paperId: string) {
       try {
         const referRes = await getReferenceById(paperId);
-        if (referRes && referRes.code === StatusCode.OK) {
-          this.references = referRes.data;
-        } else {
-          this.$message.error(referRes.msg);
-        }
+        this.references = referRes.data;
+        // 加入缓存
+        cachedReferences.splice(0, cachedReferences.length - 1);
+        cachedReferences.push(...referRes.data);
       } catch (e) {
         this.$message.error(e.toString());
       }

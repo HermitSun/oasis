@@ -30,7 +30,7 @@
       ></AdvancedSearchComp>
       <!-- TODO 响应式布局解决方案 -->
     </div>
-    <div class="searchPage-content">
+    <div v-loading="isLoading" class="searchPage-content">
       <div
         class="searchPage-content__result"
         style="text-align: left;margin:10px 0"
@@ -132,7 +132,8 @@ export default Vue.extend({
       resultCount: 0,
       searchResponse: [] as SearchResponse[],
 
-      showAdvancedSearch: false
+      showAdvancedSearch: false,
+      isLoading: false // 是否正在加载
     };
   },
   watch: {
@@ -165,21 +166,27 @@ export default Vue.extend({
     },
     // 基础搜索
     async requestBasicSearch() {
+      this.isLoading = true;
       try {
-        const basicSearchRes = await basicSearch({
-          keyword: this.searchContent,
-          page: this.page,
-          startYear: this.newStartYear,
-          endYear: this.newEndYear
-        });
-        this.searchResponse = basicSearchRes.data.papers;
-        this.resultCount = basicSearchRes.data.size;
+        setTimeout(async () => {
+          const basicSearchRes = await basicSearch({
+            keyword: this.searchContent,
+            page: this.page,
+            startYear: this.newStartYear,
+            endYear: this.newEndYear
+          });
+          this.searchResponse = basicSearchRes.data.papers;
+          this.resultCount = basicSearchRes.data.size;
+        }, 2000);
       } catch (e) {
         this.$message.error(e.toString());
+      } finally {
+        this.isLoading = false;
       }
     },
     // 高级搜索
     async requestAdvancedSearch() {
+      this.isLoading = true;
       try {
         const advancedSearchData: AdvancedSearchData = {
           keyword: this.keyword,
@@ -196,6 +203,8 @@ export default Vue.extend({
         this.resultCount = advancedSearchRes.data.size;
       } catch (e) {
         this.$message.error(e.toString());
+      } finally {
+        this.isLoading = false;
       }
     },
 
