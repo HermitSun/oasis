@@ -57,10 +57,11 @@
 import Vue from "vue";
 import AdvancedSearchComp from "@/components/search/AdvancedSearchComp.vue";
 import { getActivePaperAbstract } from "@/api";
-import { SearchResponse } from "@/interfaces/responses/search/SearchResponse";
+import { ActivePaperAbstractResponse } from "@/interfaces/responses/abstract/ActivePaperAbstractResponse";
 import AbstractComp from "../components/abstract/AbstractComp.vue";
 import AuthorBasicRanking from "../components/ranking/AuthorBasicRanking.vue";
 import AffiliationBasicRanking from "../components/ranking/AffiliationBasicRanking.vue";
+
 export default Vue.extend({
   name: "HomePage",
   components: {
@@ -75,7 +76,7 @@ export default Vue.extend({
   data() {
     return {
       keyword: "",
-      abstractResponse: [] as SearchResponse[],
+      abstractResponse: [] as ActivePaperAbstractResponse[],
       showAdvancedSearch: false
     };
   },
@@ -97,8 +98,12 @@ export default Vue.extend({
       }
     },
     async requestActivePaperAbstract() {
-      const activePaperAbstractRes = await getActivePaperAbstract();
-      this.abstractResponse = activePaperAbstractRes.data;
+      try {
+        const activePaperAbstractRes = await getActivePaperAbstract();
+        this.abstractResponse = activePaperAbstractRes.data;
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
     }
   }
 });

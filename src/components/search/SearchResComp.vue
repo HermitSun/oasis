@@ -16,7 +16,7 @@
         <span style="margin-left: 1px">{{ res.publicationYear }}</span>
       </span>
     </div>
-    <div class="abstract">{{ res.abstract }}</div>
+    <div class="abstract">{{ res._abstract }}</div>
     <div class="divider"></div>
     <!--关键词-->
     <div style="min-height: 15px">
@@ -33,20 +33,15 @@
       </template>
       <!--展示参考文献-->
       <span
-        v-if="res.references.length !== 0"
         style="float: right; cursor: pointer"
         class="detail-hint"
-        @click="showReference = !showReference"
+        @click="showReferences"
         >show reference</span
       >
     </div>
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
-      <div
-        v-for="(ref, index) in res.references"
-        :key="index"
-        class="reference"
-      >
+      <div v-for="(ref, index) in references" :key="index" class="reference">
         <span
           :style="index === 0 ? {} : { color: 'transparent' }"
           style="margin-right: 5px"
@@ -59,16 +54,40 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { SearchReference } from "@/interfaces/responses/search/SearchResponse";
+import { getReferenceById } from "@/api";
+import { StatusCode } from "@/enums/status-code";
 
 export default Vue.extend({
   name: "SearchResComp",
   props: {
-    res: {}
+    res: Object
   },
   data() {
     return {
-      showReference: false
+      showReference: false,
+      references: [] as SearchReference[] // 手动获取references
     };
+  },
+  methods: {
+    // 展示参考文献
+    showReferences() {
+      this.showReference = !this.showReference;
+      this.getReferences(this.res.id);
+    },
+    // 手动获取参考文献
+    async getReferences(paperId: string) {
+      try {
+        const referRes = await getReferenceById(paperId);
+        if (referRes && referRes.code === StatusCode.OK) {
+          this.references = referRes.data;
+        } else {
+          this.$message.error(referRes.msg);
+        }
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
+    }
   }
 });
 </script>

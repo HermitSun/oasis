@@ -74,7 +74,10 @@
         </template>
       </div>
       <!--展示搜索内容-->
-      <p v-if="searchResponse.length === 0" style="min-height: 400px">
+      <p
+        v-if="searchResponse.length === 0"
+        style="min-height: 400px; line-height: 400px"
+      >
         暂时没有数据...
       </p>
       <div
@@ -126,7 +129,7 @@ export default Vue.extend({
       searchContent: "",
       newStartYear: this.startYear,
       newEndYear: this.endYear,
-      resultCount: 314208101,
+      resultCount: 0,
       searchResponse: [] as SearchResponse[],
 
       showAdvancedSearch: false
