@@ -73,7 +73,7 @@ node {
                         stage('unit test') {
                             stage('do test') {
                                 sh 'cd /opt/app && npm run test:unit'
-                                sh "kill -9 $(netstat -nlp | grep :3180 | awk '{print $7}' | awk -F"/" '{ print $1 }')"
+                                sh "${PWD}/jenkins/stop-json-server.sh"
                             }
                             stage('coverage report') {
                                 sh 'cp -a /opt/app/coverage .'
