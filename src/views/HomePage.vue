@@ -2,7 +2,6 @@
   <div>
     <div class="homepage-header">
       <img src="../assets/logo.png" class="homepage-header__logo" alt="oasis" />
-      <AdvancedSearchComp></AdvancedSearchComp>
       <label>
         <input
           class="basic-search__input"
@@ -13,9 +12,20 @@
         />
       </label>
       <div class="flex-center-row" style="margin-top: 15px">
-        <button class="basic-search__button">OASIS搜索</button>
+        <button class="basic-search__button" @click="sendBasicSearch">
+          OASIS Search
+        </button>
         <div style="width: 15px"></div>
-        <button>高级搜索</button>
+        <button
+          class="advanced-search__button"
+          @click="showAdvancedSearch = true"
+        >
+          Advanced Search
+        </button>
+        <AdvancedSearchComp
+          v-if="showAdvancedSearch"
+          v-on:close="showAdvancedSearch = false"
+        ></AdvancedSearchComp>
       </div>
     </div>
     <div class="homepage-content">
@@ -30,6 +40,7 @@
           <AbstractComp :abstract="abstract"></AbstractComp>
         </div>
       </div>
+
       <div class="homepage-content__ranking">
         <div class="subtitle">🏆 OASIS RANKINGS</div>
         <div class="subtitle-divider"></div>
@@ -64,7 +75,8 @@ export default Vue.extend({
   data() {
     return {
       keyword: "",
-      abstractResponse: [] as SearchResponse[]
+      abstractResponse: [] as SearchResponse[],
+      showAdvancedSearch: false
     };
   },
   methods: {
@@ -77,7 +89,9 @@ export default Vue.extend({
           query: {
             mode: "basic",
             keyword: this.keyword,
-            page: defaultPage
+            page: defaultPage,
+            startYear: "2001",
+            endYear: "2020"
           }
         });
       }

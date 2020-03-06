@@ -2,7 +2,6 @@
   <div>
     <h2>论文数据导入</h2>
     <el-upload
-      :file-list="papersList"
       action=""
       :limit="1"
       :auto-upload="false"
@@ -15,6 +14,7 @@
         <el-button
           :type="!isUploadValid ? 'primary' : 'default'"
           :disabled="isUploadValid"
+          class="upload-selector"
           >选取本地文件</el-button
         >
       </template>
@@ -23,6 +23,7 @@
         :type="isUploadValid ? 'primary' : 'default'"
         style="margin-left: 10px;"
         :disabled="!isUploadValid"
+        class="upload-uploader"
       >
         导入选定文件
       </el-button>
@@ -37,7 +38,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ElUpload } from "element-ui/types/upload";
+import { ElUpload, ElUploadInternalFileDetail } from "element-ui/types/upload";
 import { importPaperData } from "@/api";
 import { StatusCode } from "@/enums/status-code";
 
@@ -46,7 +47,6 @@ export default Vue.extend({
   data() {
     return {
       papers: new FormData(),
-      papersList: [],
       isUploadValid: false
     };
   },
@@ -67,7 +67,7 @@ export default Vue.extend({
       return (isJSON || isCSV) && isUnderLimit;
     },
     // 文件修改时调用，主要是用来上传
-    handleFileChange(file: { status: string; raw: File }, fileList: File[]) {
+    handleFileChange(file: ElUploadInternalFileDetail, fileList: File[]) {
       console.log(file, fileList);
       if (file.status === "ready") {
         if (this.isProperJSONOrCSV(file.raw)) {

@@ -20,13 +20,30 @@
         </svg>
       </span>
     </div>
+    <!--现在的解决方案不支持key的变动，所以最好不要对列表进行修改-->
     <div
       v-for="(rank, index) in authorBasicRankingResponse"
       :key="index"
       class="info"
     >
       <span class="icon">{{ requestRankingIcon(index) }}</span>
-      <span class="name">{{ rank.name }}</span>
+      <el-popover
+        trigger="click"
+        width="500"
+        @show="showInterest = true"
+        @hide="showInterest = false"
+        @click.native="showSpecifiedInterest"
+      >
+        <!--双等号可以不用强制类型转换-->
+        <!--加锁以避免额外的渲染-->
+        <ResearcherInterest
+          v-if="showInterest && index == whichInterestToShow"
+          :researcher-id="rank.researcherId"
+        />
+        <span class="name" slot="reference" :interest-index="index">
+          {{ rank.name }}
+        </span>
+      </el-popover>
       <span class="count">{{ rank.count }}</span>
     </div>
   </div>
@@ -38,13 +55,19 @@ import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/Autho
 import { sortKey } from "@/interfaces/components/ranking/RankingData";
 import { getAuthorBasicRanking } from "@/api";
 import { getRankingIcon } from "@/components/ranking/ranking";
+import ResearcherInterest from "@/components/interest/ResearcherInterest.vue";
 
 export default Vue.extend({
   name: "AuthorBasicRanking",
+  components: {
+    ResearcherInterest
+  },
   data() {
     return {
       authorBasicRankingResponse: [] as AuthorBasicRankingResponse[],
-      sortKey: "acceptanceCount" as sortKey
+      sortKey: "acceptanceCount" as sortKey,
+      showInterest: false, // 是否显示interest
+      whichInterestToShow: "" // 显示哪个interest
     };
   },
   mounted(): void {
@@ -52,10 +75,15 @@ export default Vue.extend({
   },
   methods: {
     async requestAuthorBasicRanking() {
-      const authorBasicRankingRes = await getAuthorBasicRanking({
-        sortKey: this.sortKey
-      });
-      this.authorBasicRankingResponse = authorBasicRankingRes.data;
+      try {
+        const authorBasicRankingRes = await getAuthorBasicRanking({
+          sortKey: this.sortKey,
+          year: (new Date().getFullYear() - 1).toString() // TODO 去掉 - 1
+        });
+        this.authorBasicRankingResponse = authorBasicRankingRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
     },
     requestRankingIcon(rank: number): string {
       return getRankingIcon(rank);
@@ -64,6 +92,12 @@ export default Vue.extend({
       this.sortKey =
         this.sortKey === "citationCount" ? "acceptanceCount" : "citationCount";
       this.requestAuthorBasicRanking();
+    },
+    // 只展示特定的研究兴趣
+    showSpecifiedInterest(event: Event) {
+      this.whichInterestToShow = (event.target as HTMLElement).getAttribute(
+        "interest-index"
+      ) as string;
     }
   }
 });

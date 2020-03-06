@@ -52,10 +52,15 @@ export default Vue.extend({
   },
   methods: {
     async requestAffiliationBasicRanking() {
-      const affiliationBasicRankingRes = await getAffiliationBasicRanking({
-        sortKey: this.sortKey
-      });
-      this.affiliationBasicRankingResponse = affiliationBasicRankingRes.data;
+      try {
+        const affiliationBasicRankingRes = await getAffiliationBasicRanking({
+          sortKey: this.sortKey,
+          year: (new Date().getFullYear() - 1).toString() // TODO 去掉 - 1
+        });
+        this.affiliationBasicRankingResponse = affiliationBasicRankingRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
     },
     requestRankingIcon(rank: number): string {
       return getRankingIcon(rank);

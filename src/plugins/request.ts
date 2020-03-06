@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "@/plugins/axios.ts";
 
