@@ -58,9 +58,6 @@ import Vue from "vue";
 import { SearchReference } from "@/interfaces/responses/search/SearchResponse";
 import { getReferenceById } from "@/api";
 
-// 参考文献的缓存
-const cachedReferences: SearchReference[] = [];
-
 export default Vue.extend({
   name: "SearchResComp",
   props: {
@@ -69,7 +66,8 @@ export default Vue.extend({
   data() {
     return {
       showReference: false,
-      references: [] as SearchReference[] // 手动获取references
+      references: [] as SearchReference[], // 手动获取references,
+      cachedReferences: [] as SearchReference[] // 缓存
     };
   },
   methods: {
@@ -77,10 +75,10 @@ export default Vue.extend({
     showReferences() {
       this.showReference = !this.showReference;
       // 没有缓存的时候去后端请求
-      if (cachedReferences.length === 0) {
+      if (this.cachedReferences.length === 0) {
         this.getReferences(this.res.id);
       } else {
-        this.references = cachedReferences;
+        this.references = this.cachedReferences;
       }
     },
     // 手动获取参考文献
@@ -89,8 +87,8 @@ export default Vue.extend({
         const referRes = await getReferenceById(paperId);
         this.references = referRes.data;
         // 加入缓存
-        cachedReferences.splice(0, cachedReferences.length - 1);
-        cachedReferences.push(...referRes.data);
+        this.cachedReferences.splice(0, this.cachedReferences.length - 1);
+        this.cachedReferences.push(...referRes.data);
       } catch (e) {
         this.$message.error(e.toString());
       }
