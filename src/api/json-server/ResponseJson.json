@@ -5,7 +5,7 @@
       "code": 200,
       "message": "success",
       "data": {
-        "papers":  [
+        "papers": [
           {
             "id": 0,
             "title": "Programs are abstract data types",
@@ -311,14 +311,13 @@
         ],
         "size": 391023123
       }
-
     },
     {
       "id": "advancedmongo",
       "code": 200,
       "message": "success",
       "data": {
-        "papers":  [
+        "papers": [
           {
             "id": 0,
             "title": "Programs are abstract data types",
@@ -624,7 +623,6 @@
         ],
         "size": 391023123
       }
-
     }
   ],
   "rank": [
@@ -693,7 +691,7 @@
         {
           "name": "Frede Blaabjerg",
           "count": 355,
-          "researcherId":"2"
+          "researcherId": "2"
         },
         {
           "name": "Mohamed Slim-Alouini",
@@ -1331,6 +1329,35 @@
           "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=989842"
         }
       ]
+    },
+    {
+      "id": "reference",
+      "code": 200,
+      "message": "success",
+      "data": {
+        "references": [
+          {
+            "title": "Type Checking Meta Programs",
+            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Type+Checking+Meta+Programs&as_occt=title&hl=en&as_sdt=0%2C31"
+          },
+          {
+            "title": "Centaur: The System",
+            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Centaur%3A+The+System&as_occt=title&hl=en&as_sdt=0%2C31"
+          },
+          {
+            "title": "The Synthesizer Generator: A System for Constructing Language-Based Editors",
+            "googleScholarLink": "https://scholar.google.com/scholar?as_q=The+Synthesizer+Generator%3A+A+System+for+Constructing+Language-Based+Editors&as_occt=title&hl=en&as_sdt=0%2C31"
+          },
+          {
+            "title": "Building Program Optimizers with Rewriting Strategies",
+            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Building+Program+Optimizers+with+Rewriting+Strategies&as_occt=title&hl=en&as_sdt=0%2C31"
+          },
+          {
+            "title": "An Editor for Helping Novices to Learn Standard ML",
+            "googleScholarLink": "https://scholar.google.com/scholar?as_q=An+Editor+for+Helping+Novices+to+Learn+Standard+ML&as_occt=title&hl=en&as_sdt=0%2C31"
+          }
+        ]
+      }
     }
   ]
 }

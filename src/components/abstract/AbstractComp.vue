@@ -21,7 +21,9 @@
         </span>
       </span>
     </div>
-    <div class="abstract" style="margin-left:50px">{{ abstract.abstract }}</div>
+    <div class="abstract" style="margin-left:50px">
+      {{ abstract._abstract }}
+    </div>
   </div>
 </template>
 
@@ -31,7 +33,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "AbstractComp",
   props: {
-    abstract: {}
+    abstract: Object
   }
 });
 </script>

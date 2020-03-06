@@ -4,6 +4,7 @@ import {
   getActivePaperAbstract,
   getAffiliationBasicRanking,
   getAuthorBasicRanking,
+  getReferenceById,
   getResearcherInterest,
   importPaperData
 } from "@/api";
@@ -114,6 +115,15 @@ describe("API", () => {
       const uploadRes = await importPaperData(uploadData);
       expect(uploadRes.data).not.toBeUndefined();
       expect(uploadRes.data.increasedCount).not.toBeLessThan(0);
+    } catch (e) {
+      expect(e.toString()).toContain("undefined");
+    }
+  });
+
+  it("7. getReferenceById", async () => {
+    try {
+      const abstractRes = await getReferenceById("0");
+      expect(abstractRes.data).not.toBeUndefined();
     } catch (e) {
       expect(e.toString()).toContain("undefined");
     }

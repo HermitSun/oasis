@@ -5,7 +5,7 @@ import {
 import { BasicResponse } from "@/interfaces/responses/BasicResponse";
 import {
   SearchFullResponse,
-  SearchResponse
+  SearchReference
 } from "@/interfaces/responses/search/SearchResponse";
 import axios from "@/plugins/axios";
 import { get } from "@/plugins/request";
@@ -15,6 +15,7 @@ import { AuthorBasicRankingResponse } from "@/interfaces/responses/ranking/Autho
 import { PaperImportResponse } from "@/interfaces/responses/manage/PaperImportResponse";
 import { ResearcherInterestData } from "@/interfaces/components/interest/ResearcherInterestData";
 import { ResearcherInterestResponse } from "@/interfaces/responses/interest/ResearcherInterestResponse";
+import { ActivePaperAbstractResponse } from "@/interfaces/responses/abstract/ActivePaperAbstractResponse";
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -68,7 +69,7 @@ export async function getResearcherInterest(
 
 // 5. 查看活跃论文摘要
 export async function getActivePaperAbstract(): Promise<
-  BasicResponse<SearchResponse[]>
+  BasicResponse<ActivePaperAbstractResponse[]>
 > {
   const { data } = await get("/paper/abstract");
   return data;
@@ -79,5 +80,15 @@ export async function importPaperData(
   paperData: FormData
 ): Promise<BasicResponse<PaperImportResponse>> {
   const { data } = await axios.post("/import/paper", paperData);
+  return data;
+}
+
+// 7. 根据论文id获得reference
+export async function getReferenceById(
+  paperId: string
+): Promise<BasicResponse<SearchReference[]>> {
+  const { data } = await axios.get("/paper/reference", {
+    params: { paperId }
+  });
   return data;
 }
