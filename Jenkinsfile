@@ -72,7 +72,7 @@ node {
                         }
                         stage('unit test') {
                             stage('start json server') {
-                                sh 'nohup node ${PWD}/json-server.js &'
+                                sh 'cd /opt/app && nohup node json-server.js &'
                             }
 
                             stage('do test') {
