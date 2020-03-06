@@ -65,7 +65,7 @@ describe("Search", () => {
     wrapper.find(".btn-next").trigger("click");
 
     await vm.$nextTick();
-    expect(vm.$router.push).toBeCalledWith({
+    expect(vm.$router.push).not.toBeCalledWith({
       path: "/search",
       query: {
         keyword: vm.searchContent,
@@ -101,7 +101,7 @@ describe("Search", () => {
     wrapper.find(".btn-next").trigger("click");
 
     await vm.$nextTick();
-    expect(vm.$router.push).toBeCalledWith({
+    expect(vm.$router.push).not.toBeCalledWith({
       path: "/search",
       query: {
         affiliation: undefined,
@@ -192,6 +192,17 @@ describe("Search Comp", () => {
       localVue,
       propsData: { res: testData }
     });
+    expect(wrapper.find(".searchPage-item").isVisible()).toBe(true);
+  });
+
+  it("can show references", async () => {
+    const testData = await import("./test.json");
+    const wrapper = shallowMount(SearchResComp, {
+      localVue,
+      propsData: { res: testData }
+    });
+    wrapper.find(".detail-hint").trigger("click");
+
     expect(wrapper.find(".searchPage-item").isVisible()).toBe(true);
   });
 });

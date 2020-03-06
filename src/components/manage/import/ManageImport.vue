@@ -37,6 +37,8 @@
 </template>
 
 <script lang="ts">
+/* istanbul ignore file */
+// 手工测试，不计入单元测试
 import Vue from "vue";
 import { ElUpload, ElUploadInternalFileDetail } from "element-ui/types/upload";
 import { importPaperData } from "@/api";
