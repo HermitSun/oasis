@@ -57,7 +57,6 @@
 import Vue from "vue";
 import { SearchReference } from "@/interfaces/responses/search/SearchResponse";
 import { getReferenceById } from "@/api";
-import { StatusCode } from "@/enums/status-code";
 
 // 参考文献的缓存
 const cachedReferences: SearchReference[] = [];

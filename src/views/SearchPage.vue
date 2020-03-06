@@ -168,16 +168,14 @@ export default Vue.extend({
     async requestBasicSearch() {
       this.isLoading = true;
       try {
-        setTimeout(async () => {
-          const basicSearchRes = await basicSearch({
-            keyword: this.searchContent,
-            page: this.page,
-            startYear: this.newStartYear,
-            endYear: this.newEndYear
-          });
-          this.searchResponse = basicSearchRes.data.papers;
-          this.resultCount = basicSearchRes.data.size;
-        }, 2000);
+        const basicSearchRes = await basicSearch({
+          keyword: this.searchContent,
+          page: this.page,
+          startYear: this.newStartYear,
+          endYear: this.newEndYear
+        });
+        this.searchResponse = basicSearchRes.data.papers;
+        this.resultCount = basicSearchRes.data.size;
       } catch (e) {
         this.$message.error(e.toString());
       } finally {
