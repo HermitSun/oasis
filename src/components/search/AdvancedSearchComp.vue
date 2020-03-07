@@ -34,7 +34,7 @@
           <input
             v-model="conferenceName"
             id="conferenceName"
-            placeholder="e.g. IEEE"
+            placeholder="e.g. ASE"
           />
         </div>
         <div class="item">
