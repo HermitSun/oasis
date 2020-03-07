@@ -112,6 +112,12 @@
     flex-direction: row;
     word-wrap: break-word;
     line-height: calc(@search-item-keyword-font-size + 15px);
+    @media (max-width: 768px) {
+      //height: 70px;
+      //text-overflow: ellipsis;
+      //overflow:hidden;
+    }
+
 
     .keyword {
       border: @background-blue 1px solid;
@@ -130,7 +136,6 @@
     @media (min-width: 768px) {
       //>=992的设备
       min-width: 100px;
-
     }
   }
 
@@ -152,7 +157,16 @@
     flex-direction: row;
     margin: 5px 0;
     line-height: calc(@search-item-keyword-font-size + 15px);
-
+    .citation-inner-wrapper{
+      @media (max-width: 768px) {
+        //>=768的设备
+        display: inline
+      }
+      @media (min-width: 768px) {
+        //>=992的设备
+        display: flex;
+      }
+    }
     .citation {
       border: @background-blue 1px solid;
       background: @background-blue;

@@ -46,24 +46,20 @@
     <div v-if="showReference" style="margin-top:5px">
       <div class="citation-wrapper">
         <div style="margin-right: 24px">citation:</div>
-        <div>
-          <span class="citation"
-            >By Paper:
-            <span class="number">{{
-              res.metrics.citationCountPaper
-            }}</span></span
-          >
-          <span class="citation"
-            >By Patent:
-            <span class="number">{{
-              res.metrics.citationCountPatent
-            }}</span></span
-          >
-          <span class="citation"
-            >By Download:<span class="number">{{
+        <div class="citation-inner-wrapper">
+          <div class="citation">
+            By Paper:
+            <span class="number">{{ res.metrics.citationCountPaper }}</span>
+          </div>
+          <div class="citation">
+            By Patent:
+            <span class="number">{{ res.metrics.citationCountPatent }}</span>
+          </div>
+          <div class="citation">
+            By Download:<span class="number">{{
               res.metrics.totalDownloads
-            }}</span></span
-          >
+            }}</span>
+          </div>
         </div>
       </div>
       <div class="reference-wrapper" v-if="references.length !== 0">
