@@ -119,7 +119,10 @@ export default Vue.extend({
 }
 
 .homepage-header .homepage-header__logo {
-  width: 30%;
+  width: 30vw;
+  @media (max-width: 568px) {
+    width: 60vw;
+  }
 }
 
 .homepage-content {
@@ -128,6 +131,16 @@ export default Vue.extend({
   }
   .homepage-content__ranking {
     .gray-background;
+  }
+  @media (min-width: 992px) {
+    display: flex;
+    flex-direction: row;
+    .homepage-content__abstract {
+      width: 75vw;
+    }
+    .homepage-content__ranking {
+      width: 25vw;
+    }
   }
 }
 </style>

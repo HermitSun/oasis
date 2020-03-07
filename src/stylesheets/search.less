@@ -4,6 +4,8 @@
 @search-input-border-radius: @middle-border-radius;
 @search-input-background: @background-gray;
 @search-input-background-active: @background-gray-dark;
+@search-input-width-pc: 50vw;
+@search-input-width-mobile: 80vw;
 
 @search-button-border-radius: 10px;
 @search-button-font-color: white;
@@ -64,6 +66,7 @@
   .title {
     font-weight: 500;
     margin-bottom: 5px;
+
     a {
       font-size: @search-item-title-font-size;
       text-decoration: transparent;
@@ -109,7 +112,7 @@
     background: @background-blue-light;
   }
 
-  .hint{
+  .hint {
     font-weight: 500;
   }
 
@@ -164,7 +167,8 @@
     flex-direction: row;
     margin: 5px 0;
     line-height: calc(@search-item-keyword-font-size + 15px);
-    .citation-inner-wrapper{
+
+    .citation-inner-wrapper {
       @media (max-width: 768px) {
         //>=768的设备
         display: inline
@@ -174,6 +178,7 @@
         display: flex;
       }
     }
+
     .citation {
       border: @background-blue 1px solid;
       background: @background-blue;
@@ -185,7 +190,7 @@
       .number {
         color: @bright-yellow;
         font-weight: bold;
-        margin-left:4px;
+        margin-left: 4px;
       }
     }
   }
@@ -209,10 +214,17 @@
   border-radius: @search-input-border-radius;
   padding: 0 15px;
   height: 5vh;
-  width: 50vw;
+
+
   background-image: url(../assets/icon/icon-search-dark.png);
   background-repeat: no-repeat; /*设置图片不重复*/
   background-position: right;
+  @media (max-width: 568px) {
+    width: @search-input-width-mobile;
+  }
+  @media (min-width: 568px) {
+    width: @search-input-width-pc;
+  }
 }
 
 .basic-search__input:focus {
