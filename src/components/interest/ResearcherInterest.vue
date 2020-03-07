@@ -4,7 +4,6 @@
       Sorry,no keyword at present.
     </p>
     <wordcloud
-      v-else
       :data="researcherInterestResponse"
       nameKey="name"
       valueKey="value"
