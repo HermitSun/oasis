@@ -26,25 +26,27 @@
       :key="index"
       class="info"
     >
-      <span class="icon">{{ requestRankingIcon(index) }}</span>
-      <el-popover
-        trigger="click"
-        width="500"
-        @show="showInterest = true"
-        @hide="showInterest = false"
-        @click.native="showSpecifiedInterest"
-      >
-        <!--双等号可以不用强制类型转换-->
-        <!--加锁以避免额外的渲染-->
-        <ResearcherInterest
-          v-if="showInterest && index == whichInterestToShow"
-          :researcher-id="rank.researcherId"
-        />
-        <span class="name" slot="reference" :interest-index="index">
-          {{ rank.name }}
-        </span>
-      </el-popover>
-      <span class="count">{{ rank.count }}</span>
+      <div>
+        <span class="icon">{{ requestRankingIcon(index) }}</span>
+        <el-popover
+          trigger="click"
+          width="500"
+          @show="showInterest = true"
+          @hide="showInterest = false"
+          @click.native="showSpecifiedInterest"
+        >
+          <!--双等号可以不用强制类型转换-->
+          <!--加锁以避免额外的渲染-->
+          <ResearcherInterest
+            v-if="showInterest && index == whichInterestToShow"
+            :researcher-id="rank.researcherId"
+          ></ResearcherInterest>
+          <span class="name" slot="reference" :interest-index="index">
+            {{ rank.name }}
+          </span>
+        </el-popover>
+      </div>
+      <div class="count">{{ rank.count }}</div>
     </div>
   </div>
 </template>
