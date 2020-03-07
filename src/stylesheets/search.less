@@ -134,10 +134,11 @@
     }
   }
 
-  .reference-wrapper{
+  .reference-wrapper {
     display: flex;
     flex-direction: row;
     word-wrap: break-word;
+
     .reference {
       a {
         font-size: @search-item-reference-font-size;
@@ -146,6 +147,27 @@
     }
   }
 
+  .citation-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+    line-height: calc(@search-item-keyword-font-size + 15px);
+
+    .citation {
+      border: @background-blue 1px solid;
+      background: @background-blue;
+      color: whitesmoke;
+      padding: 2px;
+      font-size: @search-item-keyword-font-size;
+      margin-right: 5px;
+
+      .number {
+        color: @bright-yellow;
+        font-weight: bold;
+        margin-left:4px;
+      }
+    }
+  }
 
 }
 

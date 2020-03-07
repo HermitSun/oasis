@@ -195,7 +195,6 @@ export default Vue.extend({
           startYear: this.newStartYear,
           endYear: this.newEndYear
         };
-        // TODO 暂时未过滤为空字符串的关键字
         const advancedSearchRes = await advancedSearch(advancedSearchData);
         this.searchResponse = advancedSearchRes.data.papers;
         this.resultCount = advancedSearchRes.data.size;

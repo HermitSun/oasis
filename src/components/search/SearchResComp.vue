@@ -44,8 +44,29 @@
     </div>
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
-      <p v-if="references.length === 0">暂无参考文献...</p>
-      <div class="reference-wrapper">
+      <div class="citation-wrapper">
+        <div style="margin-right: 24px">citation:</div>
+        <div>
+          <span class="citation"
+            >By Paper:
+            <span class="number">{{
+              res.metrics.citationCountPaper
+            }}</span></span
+          >
+          <span class="citation"
+            >By Patent:
+            <span class="number">{{
+              res.metrics.citationCountPatent
+            }}</span></span
+          >
+          <span class="citation"
+            >By Download:<span class="number">{{
+              res.metrics.totalDownloads
+            }}</span></span
+          >
+        </div>
+      </div>
+      <div class="reference-wrapper" v-if="references.length !== 0">
         <div style="margin-right: 5px">references:</div>
         <div>
           <div
@@ -53,6 +74,9 @@
             :key="index"
             class="reference"
           >
+            <span style="font-size: 12px;margin-right: 3px">{{
+              index + 1
+            }}</span>
             <a :href="ref.googleScholarLink" target="_blank">{{ ref.title }}</a>
           </div>
         </div>
