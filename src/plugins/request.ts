@@ -2,7 +2,8 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "@/plugins/axios.ts";
 
-const TEST_MODE = process.env.NODE_ENV !== "production";
+// const TEST_MODE = process.env.NODE_ENV !== "production";
+const TEST_MODE = false;
 
 function splitUrl(url: string): string {
   const urlPart = url.split("/");
