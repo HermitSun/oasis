@@ -19,7 +19,12 @@
     <div class="abstract">{{ res._abstract }}</div>
     <div class="divider"></div>
     <!--关键词-->
-    <div style="min-height: 15px" class="flex-space-between">
+    <div
+      style="min-height: 15px"
+      :class="
+        res.keywords && res.keywords.length > 0 ? 'flex-space-between' : ''
+      "
+    >
       <!--没有关键词的时候不显示-->
       <span
         v-if="res.keywords && res.keywords.length > 0"
