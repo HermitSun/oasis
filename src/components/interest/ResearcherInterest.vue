@@ -4,7 +4,7 @@
     nameKey="name"
     valueKey="value"
     :color="wordcloudColors"
-    :showTooltip="true"
+    :showTooltip="false"
   >
   </wordcloud>
 </template>

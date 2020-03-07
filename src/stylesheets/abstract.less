@@ -4,12 +4,15 @@
 @abstract-item-author-font-size: 14px;
 @abstract-item-info-font-size: 14px;
 
-.abstract-item{
+.abstract-item {
   text-align: left;
-  padding: 10px 5px;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: row;
 
-  .year{
+  .year {
     font-size: @abstract-item-title-font-size;
+    width: 50px;
   }
 
   .title {
@@ -34,15 +37,23 @@
       color: @background-blue
     }
   }
+
+  .author {
+    font-weight: 600;
+    color: @background-blue;
+    font-size: @abstract-item-author-font-size;
+    @media (max-width: 768px) {
+      display: block;
+      margin-top:2px;
+      margin-bottom: 10px;
+    }
+  }
   .abstract {
     font-size: @abstract-item-info-font-size;
     color: @font-gray;
   }
-  .author{
-    font-weight: 600;
-    color: @background-blue;
-    font-size: @abstract-item-author-font-size;
-  }
+
+
 
 
 }
