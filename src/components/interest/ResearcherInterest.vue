@@ -1,14 +1,19 @@
 <template>
-  <wordcloud
-    :data="researcherInterestResponse"
-    nameKey="name"
-    valueKey="value"
-    :color="wordcloudColors"
-    :showTooltip="false"
-    :wordClick="wordClickHandler"
-    class="wordcloud"
-  >
-  </wordcloud>
+  <div class="wordcloud">
+    <p v-if="researcherInterestResponse.length === 0">
+      Sorry,no keyword at present.
+    </p>
+    <wordcloud
+      v-else
+      :data="researcherInterestResponse"
+      nameKey="name"
+      valueKey="value"
+      :color="wordcloudColors"
+      :showTooltip="false"
+      :wordClick="wordClickHandler"
+    >
+    </wordcloud>
+  </div>
 </template>
 
 <script lang="ts">
