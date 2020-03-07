@@ -1,5 +1,5 @@
 <template>
-  <div class="wordcloud">
+  <div class="wordCloud">
     <p v-if="researcherInterestResponse.length === 0">
       Sorry,no keyword at present.
     </p>
