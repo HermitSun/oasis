@@ -229,7 +229,7 @@
   padding: 20px 20px 10px;
 
   label{
-    /*右对齐*/
+    /*左对齐*/
     display: inline-block;
     float: left;
     width: 230px;
@@ -248,6 +248,15 @@
     font-size: @search-advanced-input-font-size;
   }
   .item{
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
+    .input{
+      display: inline-block;
+      .error{
+        margin-top: 3px;
+        height: 17px;
+        color: @background-blue;
+        font-size: @search-advanced-input-font-size;
+      }
+    }
   }
 }
