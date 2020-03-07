@@ -25,7 +25,7 @@
       :key="index"
       class="info"
     >
-      <div>
+      <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
         <span class="name">{{ rank.name }}</span>
       </div>

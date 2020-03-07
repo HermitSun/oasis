@@ -26,11 +26,10 @@
       :key="index"
       class="info"
     >
-      <div>
+      <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
         <el-popover
           trigger="click"
-          width="500"
           @show="showInterest = true"
           @hide="showInterest = false"
           @click.native="showSpecifiedInterest"

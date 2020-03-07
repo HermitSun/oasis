@@ -5,6 +5,8 @@
     valueKey="value"
     :color="wordcloudColors"
     :showTooltip="false"
+    :wordClick="wordClickHandler"
+    class="wordcloud"
   >
   </wordcloud>
 </template>
@@ -43,6 +45,18 @@ export default Vue.extend({
       } catch (e) {
         this.$message(e.toString());
       }
+    },
+    wordClickHandler(name: string) {
+      this.$router.push({
+        path: "/search",
+        query: {
+          mode: "basic",
+          keyword: name,
+          page: "1",
+          startYear: "2001",
+          endYear: "2020"
+        }
+      });
     }
   }
 });
