@@ -19,35 +19,43 @@
     <div class="abstract">{{ res._abstract }}</div>
     <div class="divider"></div>
     <!--关键词-->
-    <div style="min-height: 15px">
+    <div style="min-height: 15px" class="flex-space-between">
       <!--没有关键词的时候不显示-->
-      <template v-if="res.keywords && res.keywords.length > 0">
-        <span style="margin-right: 10px">keywords:</span>
-        <span
-          v-for="(keyword, index) in res.keywords"
-          :key="index"
-          class="keyword"
-          style="margin-right: 5px"
-          >{{ keyword }}
-        </span>
-      </template>
-      <!--展示参考文献-->
       <span
-        style="float: right; cursor: pointer"
-        class="detail-hint"
-        @click="showReferences"
-        >show reference</span
+        v-if="res.keywords && res.keywords.length > 0"
+        class="keyword-wrapper"
+      >
+        <div style="margin-right: 10px">keywords:</div>
+        <div>
+          <span
+            v-for="(keyword, index) in res.keywords"
+            :key="index"
+            class="keyword"
+            style="margin-right: 5px"
+          >
+            {{ keyword }}
+          </span>
+        </div>
+      </span>
+      <!--展示参考文献-->
+      <span style=" cursor: pointer" class="detail-hint" @click="showReferences"
+        >show more</span
       >
     </div>
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
       <p v-if="references.length === 0">暂无参考文献...</p>
-      <div v-for="(ref, index) in references" :key="index" class="reference">
-        <span
-          :style="index === 0 ? {} : { color: 'transparent' }"
-          style="margin-right: 5px"
-          >references:</span
-        ><a :href="ref.googleScholarLink" target="_blank">{{ ref.title }}</a>
+      <div class="reference-wrapper">
+        <div style="margin-right: 5px">references:</div>
+        <div>
+          <div
+            v-for="(ref, index) in references"
+            :key="index"
+            class="reference"
+          >
+            <a :href="ref.googleScholarLink" target="_blank">{{ ref.title }}</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

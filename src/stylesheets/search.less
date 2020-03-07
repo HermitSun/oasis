@@ -15,7 +15,7 @@
 @search-item-reference-font-size: 12px;
 
 
-@search-advanced-input-font-size:10px;
+@search-advanced-input-font-size: 10px;
 
 // 搜索页Header
 .searchPage-header {
@@ -43,9 +43,10 @@
 }
 
 // 搜索页时间范围
-.searchPage-time-range{
+.searchPage-time-range {
   .flex-center-row;
-  input{
+
+  input {
     border-radius: 8px;
     padding-left: 5px;
     outline: 0
@@ -53,6 +54,7 @@
 
 
 }
+
 // 搜索结果条目
 .searchPage-item {
   background: @background-gray;
@@ -105,22 +107,45 @@
     background: @background-blue-light;
   }
 
-  .keyword {
-    border: @background-blue 1px solid;
-    padding: 2px;
-    font-size: @search-item-keyword-font-size;
-  }
+  .keyword-wrapper {
+    display: flex;
+    flex-direction: row;
+    word-wrap: break-word;
+    line-height: calc(@search-item-keyword-font-size + 15px);
 
-  .detail-hint {
-
-  }
-
-  .reference {
-    a {
-      font-size: @search-item-reference-font-size;
-      color: @font-gray-dark;
+    .keyword {
+      border: @background-blue 1px solid;
+      padding: 2px;
+      font-size: @search-item-keyword-font-size;
     }
   }
+
+
+  .detail-hint {
+    text-align: right;
+    @media (max-width: 768px) {
+      //>=768的设备
+      min-width: 50px;
+    }
+    @media (min-width: 768px) {
+      //>=992的设备
+      min-width: 100px;
+
+    }
+  }
+
+  .reference-wrapper{
+    display: flex;
+    flex-direction: row;
+    word-wrap: break-word;
+    .reference {
+      a {
+        font-size: @search-item-reference-font-size;
+        color: @font-gray-dark;
+      }
+    }
+  }
+
 
 }
 
@@ -144,7 +169,7 @@
   width: 50vw;
   background-image: url(../assets/icon/icon-search-dark.png);
   background-repeat: no-repeat; /*设置图片不重复*/
-  background-position:right;
+  background-position: right;
 }
 
 .basic-search__input:focus {
@@ -155,7 +180,7 @@
   box-shadow: 0 0 10px #e9e9e9;
   background-image: url(../assets/icon/icon-search-dark.png);
   background-repeat: no-repeat; /*设置图片不重复*/
-  background-position:right;
+  background-position: right;
 }
 
 
@@ -225,10 +250,10 @@
   background: #9dc2d6;
 }
 
-.advanced-search__mask-content{
+.advanced-search__mask-content {
   padding: 20px 20px 10px;
 
-  label{
+  label {
     /*左对齐*/
     display: inline-block;
     float: left;
@@ -236,7 +261,8 @@
     text-align: left;
     font-size: 1rem;
   }
-  input{
+
+  input {
     outline: 0;
     border: 0;
     height: 20px;
@@ -247,11 +273,13 @@
     font-weight: 500;
     font-size: @search-advanced-input-font-size;
   }
-  .item{
+
+  .item {
     //margin-bottom: 10px;
-    .input{
+    .input {
       display: inline-block;
-      .error{
+
+      .error {
         margin-top: 3px;
         height: 17px;
         color: @background-blue;
