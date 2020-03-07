@@ -30,7 +30,7 @@
         v-if="res.keywords && res.keywords.length > 0"
         class="keyword-wrapper"
       >
-        <div style="margin-right: 10px">keywords:</div>
+        <div style="margin-right: 10px" class="hint">keywords:</div>
         <div>
           <span
             v-for="(keyword, index) in res.keywords"
@@ -50,7 +50,7 @@
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
       <div class="citation-wrapper">
-        <div style="margin-right: 24px">citation:</div>
+        <div style="margin-right: 24px" class="hint">citation:</div>
         <div class="citation-inner-wrapper">
           <div class="citation">
             By Paper:
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="reference-wrapper" v-if="references.length !== 0">
-        <div style="margin-right: 5px">references:</div>
+        <div style="margin-right: 5px" class="hint">references:</div>
         <div>
           <div
             v-for="(ref, index) in references"
