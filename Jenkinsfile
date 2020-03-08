@@ -125,7 +125,7 @@ node {
                     stage('service restart'){
                         docker
                         .image('registry.cn-hangzhou.aliyuncs.com/seciii/frontend-proxy:latest')
-                        .run('-p 8080:443 --name frontend-proxy')
+                        .run('-p 443:443 --name frontend-proxy')
                     }
                 }
             }
