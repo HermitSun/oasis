@@ -25,9 +25,11 @@
       :key="index"
       class="info"
     >
-      <span class="icon">{{ requestRankingIcon(index) }}</span>
-      <span class="name">{{ rank.name }}</span>
-      <span class="count">{{ rank.count }}</span>
+      <div class="name-wrapper">
+        <span class="icon">{{ requestRankingIcon(index) }}</span>
+        <span class="name">{{ rank.name }}</span>
+      </div>
+      <div class="count">{{ rank.count }}</div>
     </div>
   </div>
 </template>

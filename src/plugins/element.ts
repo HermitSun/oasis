@@ -9,6 +9,7 @@ import {
   Footer,
   Header,
   Icon,
+  Loading,
   Main,
   Menu,
   MenuItem,
@@ -34,4 +35,7 @@ Vue.use(Popover);
 Vue.use(Row);
 Vue.use(Upload);
 
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;

@@ -12,7 +12,7 @@
             "authors": [
               "M. Erwig"
             ],
-            "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+            "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -21,6 +21,16 @@
               "totalDownloads": 46
             },
             "keywords": [
+              "Costs",
+              "Calculus",
+              "Computer languages",
+              "Software maintenance",
+              "Programming profession",
+              "Program processors",
+              "Error correction",
+              "Reactive power",
+              "Synthesizers",
+              "Pattern matching",
               "Costs",
               "Calculus",
               "Computer languages",
@@ -64,7 +74,7 @@
               "D. Hutter",
               "A. Schairer"
             ],
-            "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+            "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -133,7 +143,7 @@
               "J.L. Fiadeiro",
               "M. Wermelinger"
             ],
-            "abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
+            "_abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -163,7 +173,7 @@
             "authors": [
               "M. Erwig"
             ],
-            "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+            "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -215,7 +225,7 @@
               "D. Hutter",
               "A. Schairer"
             ],
-            "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+            "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -284,7 +294,7 @@
               "J.L. Fiadeiro",
               "M. Wermelinger"
             ],
-            "abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
+            "_abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -324,7 +334,7 @@
             "authors": [
               "M. Erwig"
             ],
-            "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+            "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -376,7 +386,7 @@
               "D. Hutter",
               "A. Schairer"
             ],
-            "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+            "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -445,7 +455,7 @@
               "J.L. Fiadeiro",
               "M. Wermelinger"
             ],
-            "abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
+            "_abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -475,7 +485,7 @@
             "authors": [
               "M. Erwig"
             ],
-            "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+            "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -527,7 +537,7 @@
               "D. Hutter",
               "A. Schairer"
             ],
-            "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+            "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -596,7 +606,7 @@
               "J.L. Fiadeiro",
               "M. Wermelinger"
             ],
-            "abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
+            "_abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
             "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
             "publicationYear": "2001",
             "metrics": {
@@ -1064,7 +1074,7 @@
           "authors": [
             "M. Erwig"
           ],
-          "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+          "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
           "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
           "publicationYear": "2001",
           "metrics": {
@@ -1116,7 +1126,7 @@
             "D. Hutter",
             "A. Schairer"
           ],
-          "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+          "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
           "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
           "publicationYear": "2001",
           "metrics": {
@@ -1185,7 +1195,7 @@
             "J.L. Fiadeiro",
             "M. Wermelinger"
           ],
-          "abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
+          "_abstract": "In this paper, we address dynamic reconfiguration from the point of view of the enforcement of the policies that organisations wish to see imposed through the way information systems support business. We address the process of evolution by proposing a primitive-coordination context-for modelling the circumstances in which reconfiguration can and should take place. The idea is for business policies to emerge as properties of process executions when controlled through the coordination contexts that will have been defined for supporting business activities.",
           "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
           "publicationYear": "2001",
           "metrics": {
@@ -1215,7 +1225,7 @@
           "authors": [
             "M. Erwig"
           ],
-          "abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
+          "_abstract": "We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.",
           "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
           "publicationYear": "2001",
           "metrics": {
@@ -1267,7 +1277,7 @@
             "D. Hutter",
             "A. Schairer"
           ],
-          "abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
+          "_abstract": "Although formal methods have been successfully applied in various industrial applications, their use in software development is still restricted to individual case studies. To overcome this situation we aim at a methodology for an evolutionary formal software development which allows for a stepwise and incremental development process along the line of rapid prototyping. The approach is based on work on a formal management of change for formal developments which is able to maintain proofs when changing specifications.",
           "publicationTitle": "Proceedings 16th Annual International Conference on Automated Software Engineering (ASE 2001)",
           "publicationYear": "2001",
           "metrics": {
@@ -1334,30 +1344,28 @@
       "id": "reference",
       "code": 200,
       "message": "success",
-      "data": {
-        "references": [
-          {
-            "title": "Type Checking Meta Programs",
-            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Type+Checking+Meta+Programs&as_occt=title&hl=en&as_sdt=0%2C31"
-          },
-          {
-            "title": "Centaur: The System",
-            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Centaur%3A+The+System&as_occt=title&hl=en&as_sdt=0%2C31"
-          },
-          {
-            "title": "The Synthesizer Generator: A System for Constructing Language-Based Editors",
-            "googleScholarLink": "https://scholar.google.com/scholar?as_q=The+Synthesizer+Generator%3A+A+System+for+Constructing+Language-Based+Editors&as_occt=title&hl=en&as_sdt=0%2C31"
-          },
-          {
-            "title": "Building Program Optimizers with Rewriting Strategies",
-            "googleScholarLink": "https://scholar.google.com/scholar?as_q=Building+Program+Optimizers+with+Rewriting+Strategies&as_occt=title&hl=en&as_sdt=0%2C31"
-          },
-          {
-            "title": "An Editor for Helping Novices to Learn Standard ML",
-            "googleScholarLink": "https://scholar.google.com/scholar?as_q=An+Editor+for+Helping+Novices+to+Learn+Standard+ML&as_occt=title&hl=en&as_sdt=0%2C31"
-          }
-        ]
-      }
+      "data": [
+        {
+          "title": "Type Checking Meta Programs",
+          "googleScholarLink": "https://scholar.google.com/scholar?as_q=Type+Checking+Meta+Programs&as_occt=title&hl=en&as_sdt=0%2C31"
+        },
+        {
+          "title": "Centaur: The System",
+          "googleScholarLink": "https://scholar.google.com/scholar?as_q=Centaur%3A+The+System&as_occt=title&hl=en&as_sdt=0%2C31"
+        },
+        {
+          "title": "The Synthesizer Generator: A System for Constructing Language-Based Editors",
+          "googleScholarLink": "https://scholar.google.com/scholar?as_q=The+Synthesizer+Generator%3A+A+System+for+Constructing+Language-Based+Editors&as_occt=title&hl=en&as_sdt=0%2C31"
+        },
+        {
+          "title": "Building Program Optimizers with Rewriting Strategies",
+          "googleScholarLink": "https://scholar.google.com/scholar?as_q=Building+Program+Optimizers+with+Rewriting+Strategies&as_occt=title&hl=en&as_sdt=0%2C31"
+        },
+        {
+          "title": "An Editor for Helping Novices to Learn Standard ML",
+          "googleScholarLink": "https://scholar.google.com/scholar?as_q=An+Editor+for+Helping+Novices+to+Learn+Standard+ML&as_occt=title&hl=en&as_sdt=0%2C31"
+        }
+      ]
     }
   ]
 }

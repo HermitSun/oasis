@@ -1,15 +1,18 @@
 @import 'default.less';
 
-@abstract-item-title-font-size: 17px;
+@abstract-item-title-font-size: @middle-font;
 @abstract-item-author-font-size: 14px;
-@abstract-item-info-font-size: 14px;
+@abstract-item-info-font-size: @small-font;
 
-.abstract-item{
+.abstract-item {
   text-align: left;
-  padding: 10px 5px;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: row;
 
-  .year{
+  .year {
     font-size: @abstract-item-title-font-size;
+    width: 50px;
   }
 
   .title {
@@ -34,14 +37,27 @@
       color: @background-blue
     }
   }
-  .abstract {
-    font-size: @abstract-item-info-font-size;
-    color: @font-gray;
-  }
-  .author{
+
+  .author {
     font-weight: 600;
     color: @background-blue;
     font-size: @abstract-item-author-font-size;
+
+    @media (max-width: 768px) {
+      display: block;
+      margin-top: 2px;
+      margin-bottom: 10px;
+    }
+    @media (min-width: 768px) {
+      margin-left: 10px
+    }
+  }
+
+  .abstract {
+    font-size: @abstract-item-info-font-size;
+    line-height: calc(@abstract-item-author-font-size + 5px);
+    color: @font-gray;
+    margin-top: 10px;
   }
 
 
