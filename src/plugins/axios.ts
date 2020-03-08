@@ -3,7 +3,7 @@ import { Message } from "element-ui";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://wensun.top:8080/api"
+    ? "https://wensun.top/api"
     : "http://116.62.23.105:8081";
 
 const globalConfig = {
