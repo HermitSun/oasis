@@ -1,12 +1,18 @@
 <template>
-  <wordcloud
-    :data="researcherInterestResponse"
-    nameKey="name"
-    valueKey="value"
-    :color="wordcloudColors"
-    :showTooltip="false"
-  >
-  </wordcloud>
+  <div class="wordCloud">
+    <p v-if="researcherInterestResponse.length === 0">
+      Sorry,no keyword at present.
+    </p>
+    <wordcloud
+      :data="researcherInterestResponse"
+      nameKey="name"
+      valueKey="value"
+      :color="wordcloudColors"
+      :showTooltip="false"
+      :wordClick="wordClickHandler"
+    >
+    </wordcloud>
+  </div>
 </template>
 
 <script lang="ts">
@@ -43,6 +49,18 @@ export default Vue.extend({
       } catch (e) {
         this.$message(e.toString());
       }
+    },
+    wordClickHandler(name: string) {
+      this.$router.push({
+        path: "/search",
+        query: {
+          mode: "basic",
+          keyword: name,
+          page: "1",
+          startYear: "2001",
+          endYear: "2020"
+        }
+      });
     }
   }
 });
