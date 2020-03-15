@@ -1,10 +1,16 @@
-FROM nginx:1.16.1-alpine
+# basic image
+FROM seciii/frontend-baseline:latest
 
-# static resources
-COPY oasis/ /etc/nginx/html/oasis/
+# set env
+ENV NODE_ENV=production
+ENV HOST 0.0.0.0
+# expose port
+EXPOSE 3000
 
-# nginx conf
-COPY jenkins/nginx/default.conf /etc/nginx/conf.d/default.conf
-# https conf
-COPY jenkins/nginx/2670671_wensun.top.pem /etc/nginx/cert/2670671_wensun.top.pem
-COPY jenkins/nginx/2670671_wensun.top.key /etc/nginx/cert/2670671_wensun.top.key
+# build
+COPY . /opt/app/
+RUN cd /opt/app && npm run build
+
+# start service
+WORKDIR /opt/app
+CMD npm run start
