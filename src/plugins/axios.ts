@@ -3,9 +3,9 @@ import { Message } from "element-ui";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://wensun.top/api"
-    : "http://116.62.23.105:8081";
-
+    ? "https://wensun.top:8080/api"
+    : // : "http://116.62.23.105:8081";
+      "http://localhost:3180";
 const globalConfig = {
   timeout: 60 * 1000
   // 如果启用凭据，后端必须在AllowOrigin里指定源，而不能是*
