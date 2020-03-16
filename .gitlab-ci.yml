@@ -7,6 +7,9 @@ cache:
   key: ${CI_BUILD_REF_NAME}
   paths:
     - node_modules/
+    - .nuxt/
+    - server/
+    - static/
 
 build:
   stage: build
@@ -33,4 +36,5 @@ deploy:
     - /^release\/.*$/
     - /^hotfix\/.*$/
   script:
+    - sudo . ./ci/service-down.sh
     - sudo nohup npm run start &
