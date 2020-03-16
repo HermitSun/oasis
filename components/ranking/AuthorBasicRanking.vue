@@ -45,7 +45,7 @@
             <!--加锁以避免额外的渲染-->
             <ResearcherInterest
               v-if="showInterest && index == whichInterestToShow"
-              :researcher-id="rank.researcherId"
+              :author-id="rank.authorId"
             />
             <span slot="reference" class="name" :interest-index="index">
               {{ rank.name }}

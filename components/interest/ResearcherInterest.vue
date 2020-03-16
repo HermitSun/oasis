@@ -23,7 +23,7 @@ import { ResearcherInterestResponse } from '~/interfaces/responses/interest/Rese
 export default Vue.extend({
   name: 'ResearcherInterest',
   props: {
-    researcherId: {
+    authorId: {
       type: String,
       default: ''
     }
@@ -41,7 +41,7 @@ export default Vue.extend({
     async requestResearcherInterest() {
       try {
         const researcherInterestRes = await getResearcherInterest({
-          researcherId: this.researcherId
+          authorId: this.authorId
         });
         this.researcherInterestResponse = researcherInterestRes.data;
       } catch (e) {
