@@ -54,13 +54,6 @@ node {
                 frontendImage = docker.build("$frontendRegistry:$BUILD_NUMBER")
             }
 
-            stage('push frontend image') {
-                docker.withRegistry( registrySite, registryCredential ) {
-                    frontendImage.push()
-                    frontendImage.push('latest')
-                }
-            }
-
             stage('service down') {
                 sh '${PWD}/jenkins/service-down.sh'
             }
