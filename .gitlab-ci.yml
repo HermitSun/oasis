@@ -16,8 +16,7 @@ build:
   tags:
     - WenSun
   script:
-    - npm install
-    - npm run build
+    - sudo docker build -t seciii/frontend-app:${CI_PIPELINE_ID} .
 
 test:
   stage: test
@@ -36,5 +35,4 @@ deploy:
     - /^release\/.*$/
     - /^hotfix\/.*$/
   script:
-    - sudo sh ./ci/service-down.sh
-    - sudo nohup npm run start &
+    - sudo cd ci/ && docker-compose down && docker-compose up -d
