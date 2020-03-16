@@ -47,6 +47,8 @@ node {
             }
         },
         'build': {
+            def frontendImage = ''
+
             stage('build frontend image') {
                 def frontendRegistry = 'seciii/frontend-app'
                 frontendImage = docker.build("$frontendRegistry:$BUILD_NUMBER")
@@ -54,8 +56,8 @@ node {
 
             stage('push frontend image') {
                 docker.withRegistry( registrySite, registryCredential ) {
-                    baselineImage.push()
-                    baselineImage.push('latest')
+                    frontendImage.push()
+                    frontendImage.push('latest')
                 }
             }
 
