@@ -16,6 +16,8 @@ build:
   tags:
     - WenSun
   script:
+    - npm install
+    - npm run build
     - sudo docker build -t seciii/frontend-app:${CI_PIPELINE_ID} .
 
 test:
