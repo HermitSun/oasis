@@ -36,5 +36,5 @@ deploy:
     - /^release\/.*$/
     - /^hotfix\/.*$/
   script:
-    - sudo . ./ci/service-down.sh
+    - sudo sh ./ci/service-down.sh
     - sudo nohup npm run start &
