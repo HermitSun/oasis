@@ -1,0 +1,37 @@
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  tags:
+    - WenSun
+  script:
+    - npm install
+    - npm run build
+
+test:
+  stage: test
+  tags:
+    - WenSun
+  script:
+    - echo 'developing in process'
+
+deploy:
+  stage: deploy
+  tags:
+    - WenSun
+  only:
+    - master
+    - develop
+    - /^release\/.*$/
+    - /^hotfix\/.*$/
+  script:
+    - sudo docker-compose down
+    - sudo docker-compose up -d
