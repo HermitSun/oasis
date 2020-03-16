@@ -1,5 +1,5 @@
-# basic image
-FROM seciii/frontend-baseline:latest
+# base image
+FROM node:12.16.1-alpine
 
 # set env
 ENV NODE_ENV=production
@@ -9,7 +9,6 @@ EXPOSE 3000
 
 # build
 COPY . /opt/app/
-RUN cd /opt/app && npm run build
 
 # start service
 WORKDIR /opt/app

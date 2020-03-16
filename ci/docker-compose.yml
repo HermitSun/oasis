@@ -1,19 +1,19 @@
 version: '3'
 services:
   app1:
-    image: test:latest
+    image: seciii/frontend-app:latest
     networks:
       - seciii
     hostname: app1
 
   app2:
-    image: test:latest
+    image: seciii/frontend-app:latest
     networks:
       - seciii
     hostname: app2
 
   backup:
-    image: test:latest
+    image: seciii/frontend-app:latest
     networks:
       - seciii
     hostname: backup
