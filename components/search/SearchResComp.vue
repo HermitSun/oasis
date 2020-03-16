@@ -13,7 +13,7 @@
         {{ author }}
       </span>
       <span class="info" style="margin-left:10px">
-        {{ res.conferenceName }}
+        {{ res.publicationName }}
         <span style="margin-left: 1px">{{ res.publicationYear }}</span>
       </span>
     </div>

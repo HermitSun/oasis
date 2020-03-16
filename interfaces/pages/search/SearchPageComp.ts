@@ -5,7 +5,7 @@
  * @date 2020.03.15
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
-import { AdvancedSearchData } from '~/interfaces/components/search/SearchData';
+import { AdvancedSearchPayload } from '~/interfaces/requests/search/SearchPayload';
 
 interface AsyncSearchData {
   searchResponse: SearchResponse[];
@@ -14,7 +14,7 @@ interface AsyncSearchData {
 
 export type SearchDataFromProp = {
   mode: 'basic' | 'advanced';
-} & AdvancedSearchData;
+} & AdvancedSearchPayload;
 
 interface SearchLocalData {
   searchContent: string;

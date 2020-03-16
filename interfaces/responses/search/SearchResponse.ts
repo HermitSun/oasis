@@ -2,8 +2,9 @@
  * 搜索返回值：普通搜索和高级搜索接口共用
  * @author Alexchanchic, Wen Sun
  * @date 2020.02.24
- * @update 2020.03.06
+ * @update 2020.03.16
  */
+export type contentType = 'conference' | 'periodicals'; // 会议或期刊
 
 export interface SearchResponse {
   id: string;
@@ -17,7 +18,8 @@ export interface SearchResponse {
     totalDownloads: number;
   };
   keywords: string[];
-  conferenceName: string;
+  contentType: contentType;
+  publicationName: string; // 会议或期刊的名字
   link: string;
 }
 

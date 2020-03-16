@@ -107,6 +107,9 @@ import {
   SearchDataFromProp,
   SearchPageComp
 } from '~/interfaces/pages/search/SearchPageComp';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+
+const defaultSortKey = 'related';
 
 export default Vue.extend({
   name: 'IndexVue',
@@ -147,11 +150,12 @@ export default Vue.extend({
         this.mode = query.mode;
         this.author = query.author;
         this.affiliation = query.affiliation;
-        this.conferenceName = query.conferenceName;
+        this.publicationName = query.publicationName;
         this.keyword = query.keyword;
         this.startYear = query.startYear;
         this.endYear = query.endYear;
         this.page = Number(query.page);
+        this.sortKey = query.sortKey;
         // 然后进行搜索
         this.doSearch();
       }
@@ -169,7 +173,7 @@ export default Vue.extend({
           ' ' +
           this.affiliation +
           ' ' +
-          this.conferenceName +
+          this.publicationName +
           ' ' +
           this.keyword;
         this.requestAdvancedSearch();
@@ -186,7 +190,8 @@ export default Vue.extend({
           keyword: this.searchContent,
           page: this.page,
           startYear: Number(this.startYear),
-          endYear: Number(this.endYear)
+          endYear: Number(this.endYear),
+          sortKey: this.sortKey
         });
         this.searchResponse = basicSearchRes.data.papers;
         this.resultCount = basicSearchRes.data.size;
@@ -205,9 +210,10 @@ export default Vue.extend({
           page: this.page,
           author: this.author,
           affiliation: this.affiliation,
-          conferenceName: this.conferenceName,
+          publicationName: this.publicationName,
           startYear: Number(this.startYear),
-          endYear: Number(this.endYear)
+          endYear: Number(this.endYear),
+          sortKey: this.sortKey
         };
         const advancedSearchRes = await advancedSearch(advancedSearchData);
         this.searchResponse = advancedSearchRes.data.papers;
@@ -227,9 +233,10 @@ export default Vue.extend({
           query: {
             mode: 'basic',
             keyword: this.keyword,
-            startYear: this.startYear,
-            endYear: this.endYear,
-            page: page.toString()
+            startYear: String(this.startYear), // 开始日期
+            endYear: String(this.endYear), // 结束日期
+            page: page.toString(),
+            sortKey: this.sortKey as sortKey
           }
         });
       } else if (this.mode === 'advanced') {
@@ -239,11 +246,12 @@ export default Vue.extend({
             mode: 'advanced',
             author: this.author,
             affiliation: this.affiliation, // 机构
-            conferenceName: this.conferenceName, // 会议
+            publicationName: this.publicationName, // 会议|期刊
             keyword: this.keyword, // 研究关键字
-            startYear: this.startYear, // 开始日期
-            endYear: this.endYear, // 结束日期
-            page: page.toString()
+            startYear: String(this.startYear), // 开始日期
+            endYear: String(this.endYear), // 结束日期
+            page: page.toString(),
+            sortKey: this.sortKey as sortKey
           }
         });
       }
@@ -257,8 +265,9 @@ export default Vue.extend({
           mode: 'basic',
           keyword,
           page: '1',
-          startYear: this.startYear, // 开始日期
-          endYear: this.endYear
+          startYear: String(this.startYear), // 开始日期
+          endYear: String(this.endYear), // 结束日期
+          sortKey: defaultSortKey as sortKey
         }
       });
     }

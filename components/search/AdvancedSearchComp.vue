@@ -59,13 +59,13 @@
           <label>return papers published in</label>
           <div class="input">
             <input
-              id="conferenceName"
-              v-model="conferenceName"
+              id="publicationName"
+              v-model="publicationName"
               placeholder="e.g. ASE"
               maxlength="33"
             />
             <div class="error">
-              {{ getInputLengthError(conferenceName) }}
+              {{ getInputLengthError(publicationName) }}
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default Vue.extend({
     return {
       author: '', // 作者
       affiliation: '', // 机构
-      conferenceName: '', // 会议
+      publicationName: '', // 会议|期刊
       keyword: '', // 研究关键字
       startYear: '2001', // 开始日期
       endYear: '2020', // 结束日期
@@ -123,7 +123,7 @@ export default Vue.extend({
         !(
           this.author === '' &&
           this.affiliation === '' &&
-          this.conferenceName === '' &&
+          this.publicationName === '' &&
           this.keyword === ''
         ) &&
         !this.isError
@@ -135,7 +135,7 @@ export default Vue.extend({
             mode: 'advanced',
             author: this.author,
             affiliation: this.affiliation, // 机构
-            conferenceName: this.conferenceName, // 会议
+            publicationName: this.publicationName, // 会议
             keyword: this.keyword, // 研究关键字
             startYear: this.startYear, // 开始日期
             endYear: this.endYear, // 结束日期

@@ -3447,7 +3447,7 @@ function generateImage(options) {
   }
 }
 
-router.get('/chart', async(_, res) => {
+router.get('/chart', async (_, res) => {
   const image = await generateImage(
     options,
     path.join(__dirname, '../../static/foo.jpg')
