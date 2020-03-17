@@ -100,7 +100,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { basicSearch, advancedSearch } from '~/api';
+import {
+  basicSearch,
+  advancedSearch,
+  getBasicSearchFilterCondition
+} from '~/api';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import {
@@ -126,6 +130,8 @@ export default Vue.extend({
     };
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
+    console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
+
     return {
       searchResponse: searchRes.data.papers,
       resultCount: searchRes.data.size,
