@@ -164,7 +164,8 @@ export default Vue.extend({
             keyword: this.keyword,
             page: defaultPage,
             startYear: '2001',
-            endYear: '2020'
+            endYear: '2020',
+            sortKey: 'related'
           }
         });
       }

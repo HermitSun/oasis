@@ -43,9 +43,12 @@
           >
             <!--双等号可以不用强制类型转换-->
             <!--加锁以避免额外的渲染-->
+            <!--此处判断authorId是为了应对低网速情况，低网速环境下可能会返回null-->
             <ResearcherInterest
-              v-if="showInterest && index == whichInterestToShow"
-              :researcher-id="rank.researcherId"
+              v-if="
+                rank.authorId && showInterest && index == whichInterestToShow
+              "
+              :author-id="rank.authorId"
             />
             <span slot="reference" class="name" :interest-index="index">
               {{ rank.name }}
@@ -108,6 +111,7 @@ export default Vue.extend({
     },
     // 只展示特定的研究兴趣
     showSpecifiedInterest(event: Event) {
+      console.log('invoked');
       this.whichInterestToShow = (event.target as HTMLElement).getAttribute(
         'interest-index'
       ) as string;
