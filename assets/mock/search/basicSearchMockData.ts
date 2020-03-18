@@ -244,7 +244,7 @@ const basicSearchMockData = {
         link: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=989838'
       }
     ],
-    size: 391023123
+    size: 3910
   }
 };
 export default basicSearchMockData;

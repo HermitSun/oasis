@@ -8,11 +8,13 @@ app.get('/echo/:what', (req, res) => {
   res.json(req.params);
 });
 
-app.get('/search/basic/mongo', (res) => {
+app.get('/search/basic/mongo', (req,res) => {
+  console.log(req.params);
   res.json(basicSearchMockData);
 });
 
-app.get('/search/basic/filter', (res) => {
+app.get('/search/basic/filter', (req,res) => {
+  console.log(req.params);
   res.json(searchFilterMockData);
 });
 // const charts = require('./routes/charts');

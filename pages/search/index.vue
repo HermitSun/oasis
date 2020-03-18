@@ -18,7 +18,7 @@
         />
       </label>
       <button
-        class="advanced-search__button"
+        class="mobile-hidden advanced-search__button"
         style="margin-left: 20px"
         @click="showAdvancedSearch = true"
       >
