@@ -185,7 +185,7 @@ export default Vue.extend({
 
 .homepage-header .homepage-header__logo {
   width: 30vw;
-  @media (max-width: 568px) {
+  @media @max-mobile-width {
     width: 60vw;
   }
 }
@@ -199,7 +199,7 @@ export default Vue.extend({
     .gray-background;
   }
 
-  @media (min-width: 992px) {
+  @media @min-pc-width {
     display: flex;
     flex-direction: row;
     .homepage-content__abstract {
