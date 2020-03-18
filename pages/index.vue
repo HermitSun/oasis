@@ -149,7 +149,7 @@ export default Vue.extend({
   },
   mounted() {
     console.log(this.abstractResponse);
-    axios.get('/api/echo/123').then((res) => {
+    axios.get('/echo/123').then((res) => {
       console.log(res);
     });
   },

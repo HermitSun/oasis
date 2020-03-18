@@ -13,7 +13,7 @@ export default Vue.extend({
     return { url: '' };
   },
   async mounted() {
-    const { data } = await axios.get('/api/chart', {
+    const { data } = await axios.get('/chart', {
       responseType: 'blob'
     });
     console.log(data);
