@@ -91,6 +91,7 @@
       layout="prev, pager, next"
       :current-page="page"
       :total="resultCount"
+      :pager-count="pagerSize"
       background
       style="text-align: center; margin-bottom: 20px"
       @current-change="showNextPage"
@@ -112,6 +113,7 @@ import {
   SearchPageComp
 } from '~/interfaces/pages/search/SearchPageComp';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { isMobile } from '~/utils/breakpoint';
 
 const defaultSortKey = 'related';
 
@@ -146,6 +148,12 @@ export default Vue.extend({
       showAdvancedSearch: false,
       isLoading: false // 是否正在加载
     } as SearchPageComp;
+  },
+  computed: {
+    // 分页的大小
+    pagerSize(): number {
+      return isMobile() ? 5 : 7;
+    }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
   // 在SSR时路由是非响应的，需要手动watch
