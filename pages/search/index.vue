@@ -31,70 +31,84 @@
       <!-- TODO 响应式布局解决方案 -->
     </div>
     <div v-loading="isLoading" class="searchPage-content">
-      <div
-        class="searchPage-content__result"
-        style="text-align: left;margin:10px 0"
-      >
-        <template>
-          <span class="searchPage-content__hint-text" style="margin-left:10px">
-            About
-          </span>
-          <span class="searchPage-content__result-text" style="margin-left:5px">
-            {{ resultCount }}
-          </span>
-          <span class="searchPage-content__hint-text" style="margin-left:5px">
-            Results
-          </span>
-          <div class="searchPage-time-range" style="float: right">
-            Time Range:
-            <input
-              v-model="startYear"
-              style="width: 53px;margin: 0 5px"
-              size="4"
-            />-<input
-              v-model="endYear"
-              style="width: 53px;margin-left: 5px"
-              size="4"
-            />
-            <button
-              class="basic-search__button"
-              style="width:50px;margin-left:10px"
-              @click="doTimeChangedSearch"
-            >
-              <img
-                src="~/assets/icon/icon-search.png"
-                width="20"
-                style="margin-bottom:10px"
-                alt="search"
-              />
-            </button>
-          </div>
-        </template>
+      <!--About 3190 Results-->
+      <div style="margin: 10px 0">
+        <span class="searchPage-content__hint-text" style="margin-left:10px">
+          About
+        </span>
+        <span class="searchPage-content__result-text" style="margin-left:5px">
+          {{ resultCount }}
+        </span>
+        <span class="searchPage-content__hint-text" style="margin-left:5px">
+          Results
+        </span>
       </div>
-      <!--展示搜索内容-->
-      <p
-        v-if="searchResponse.length === 0"
-        style="min-height: 400px; line-height: 400px; text-align: center"
-      >
-        暂时没有数据...
-      </p>
+      <!--搜索结果+过滤条件-->
       <div
-        v-for="res in searchResponse"
-        :key="res.id"
-        style="margin-bottom: 20px"
+        style="display: flex; align-items: flex-start; justify-content: flex-start"
       >
-        <SearchResComp :res="res" />
+        <div class="searchPage-content__result" style="text-align: left">
+          <template>
+            <div class="flex-space-between">
+              <span style="margin-right: 10px">Papers</span>
+              <!--<span class="searchPage-time-range">-->
+              <!--Time Range:-->
+              <!--<input-->
+              <!--v-model="startYear"-->
+              <!--style="width: 53px;margin: 0 5px"-->
+              <!--size="4"-->
+              <!--/>-<input-->
+              <!--v-model="endYear"-->
+              <!--style="width: 53px;margin-left: 5px"-->
+              <!--size="4"-->
+              <!--/>-->
+              <!--<button-->
+              <!--class="basic-search__button"-->
+              <!--style="width:50px;margin-left:10px"-->
+              <!--@click="doTimeChangedSearch"-->
+              <!--&gt;-->
+              <!--<img-->
+              <!--src="~/assets/icon/icon-search.png"-->
+              <!--width="20"-->
+              <!--style="margin-bottom:10px"-->
+              <!--alt="search"-->
+              <!--/>-->
+              <!--</button>-->
+              <!--</span>-->
+              <span style="float: right">
+                Sort By
+              </span>
+            </div>
+          </template>
+          <!--展示搜索内容-->
+          <p
+            v-if="searchResponse.length === 0"
+            style="min-height: 400px; line-height: 400px; text-align: center"
+          >
+            暂时没有数据...
+          </p>
+          <div
+            v-for="res in searchResponse"
+            :key="res.id"
+            style="margin-bottom: 20px"
+          >
+            <SearchResComp :res="res" />
+          </div>
+          <!--分页-->
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="resultCount"
+            background
+            style="text-align: center; margin-bottom: 20px"
+            @current-change="showNextPage"
+          />
+        </div>
+        <div class="searchPage-content__filter">
+          Filter By
+        </div>
       </div>
     </div>
-    <!--分页-->
-    <el-pagination
-      layout="prev, pager, next"
-      :current-page="page"
-      :total="resultCount"
-      background
-      style="text-align: center; margin-bottom: 20px"
-      @current-change="showNextPage"
-    />
   </div>
 </template>
 

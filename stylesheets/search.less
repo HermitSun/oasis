@@ -23,7 +23,6 @@
   background: @background-blue;
   .mobile-height(@searchPage-header-height__mobile);
   .pc-height__mobile(@searchPage-header-height__pc);
-
 }
 
 .searchPage-header__logo {
@@ -33,7 +32,17 @@
 
 .searchPage-content {
   padding: 0 10px;
+
 }
+.searchPage-content__result {
+  width: 75%;
+  padding: 10px;
+}
+.searchPage-content__filter {
+  width: 25%;
+  padding: 10px;
+}
+
 
 // 搜索页内容
 .searchPage-content__hint-text {
@@ -50,7 +59,7 @@
 
 // 搜索页时间范围
 .searchPage-time-range {
-  .flex-center-row;
+
 
   input {
     border-radius: 8px;
@@ -216,7 +225,6 @@
   .pc-height__mobile(@search-input-height__pc);
   .mobile-width(@search-input-width__mobile);
   .pc-width__mobile(@search-input-width__pc);
-
 
   &:focus {
     border: @search-input-border;

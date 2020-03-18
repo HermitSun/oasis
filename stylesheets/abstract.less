@@ -43,12 +43,12 @@
     color: @background-blue;
     font-size: @abstract-item-author-font-size;
 
-    @media (max-width: 768px) {
+    @media @min-pc-width {
       display: block;
       margin-top: 2px;
       margin-bottom: 10px;
     }
-    @media (min-width: 768px) {
+    @media @max-pad-width {
       margin-left: 10px
     }
   }
