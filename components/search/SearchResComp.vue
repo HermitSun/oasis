@@ -12,7 +12,7 @@
       >
         {{ author }}
       </span>
-      <span class="info" style="margin-left:10px">
+      <span class="info">
         {{ res.publicationName }}
         <span style="margin-left: 1px">{{ res.publicationYear }}</span>
       </span>

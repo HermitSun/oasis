@@ -18,7 +18,7 @@
 
 // 搜索页Header
 .searchPage-header {
-  .flex-left-row;
+  .flex-left-center-row;
   text-align: left;
   background: @background-blue;
   .mobile-height(@searchPage-header-height__mobile);
@@ -41,10 +41,31 @@
 .searchPage-content__filter {
   width: 25%;
   padding: 10px;
+  .filter{
+    background: @background-gray;
+    padding: 20px 10px;
+    width: 100%;
+    .flex-left-left-column;
+    .hint{
+      color:@background-blue;
+      font-size:@sub-middle-font;
+    }
+    .divider{
+      background-color: @background-blue-light;
+      height: 1.5px;
+      margin:10px 0;
+    }
+
+  }
 }
 
 
 // 搜索页内容
+.searchPage-content__sub-hint{
+  font-size: @small-font;
+  color: @font-gray;
+}
+
 .searchPage-content__hint-text {
   font-size: @middle-font;
   color: @background-blue;
@@ -59,8 +80,6 @@
 
 // 搜索页时间范围
 .searchPage-time-range {
-
-
   input {
     border-radius: 8px;
     padding-left: 5px;
@@ -156,8 +175,7 @@
   }
 
   .reference-wrapper {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     word-wrap: break-word;
 
     .reference {
@@ -169,8 +187,7 @@
   }
 
   .citation-wrapper {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     margin: 5px 0;
     line-height: calc(@search-item-keyword-font-size + 15px);
 
@@ -311,7 +328,7 @@
     float: left;
     width: 230px;
     text-align: left;
-    font-size: 1rem;
+    font-size: @sub-middle-font;
   }
 
   input {

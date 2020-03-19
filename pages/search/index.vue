@@ -44,13 +44,16 @@
         </span>
       </div>
       <!--搜索结果+过滤条件-->
-      <div
-        style="display: flex; align-items: flex-start; justify-content: flex-start"
-      >
+      <div class="flex-left-left-row">
+        <!--搜索结果-->
         <div class="searchPage-content__result" style="text-align: left">
           <template>
             <div class="flex-space-between">
-              <span style="margin-right: 10px">Papers</span>
+              <span
+                style="margin-right: 10px"
+                class="searchPage-content__sub-hint"
+                >Papers</span
+              >
               <!--<span class="searchPage-time-range">-->
               <!--Time Range:-->
               <!--<input-->
@@ -75,7 +78,7 @@
               <!--/>-->
               <!--</button>-->
               <!--</span>-->
-              <span style="float: right">
+              <span style="float: right" class="searchPage-content__sub-hint">
                 Sort By
               </span>
             </div>
@@ -104,8 +107,34 @@
             @current-change="showNextPage"
           />
         </div>
+        <!--过滤条件-->
         <div class="searchPage-content__filter">
-          Filter By
+          <span class="searchPage-content__sub-hint">Filter By</span>
+          <div class="filter">
+            <div>
+              <div class="hint">
+                Time Range
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div>
+              <div class="hint">
+                Authors
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div>
+              <div class="hint">
+                Affiliations
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div>
+              <div class="hint">
+                Journals
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

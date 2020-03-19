@@ -15,6 +15,7 @@
 @large-font: 1.8rem;
 @sub-large-font: 1.4rem;
 @middle-font: 1.2rem;
+@sub-middle-font: 1rem;
 @small-font: 0.9rem;
 
 @subtitle-divider-height: 1.5px;
@@ -47,20 +48,35 @@
   flex-direction: row;
 }
 
-// ----------flex垂直水平靠左-----------
-.flex-left-column {
+// ----------flex水平靠左-----------
+// 垂直居中
+.flex-left-center-column {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
 }
 
-.flex-left-row {
+.flex-left-center-row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
 }
+// 垂直靠左
+.flex-left-left-column{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.flex-left-left-row{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
 
 // ----------flex垂直水平靠左-----------
 .flex-space-between {

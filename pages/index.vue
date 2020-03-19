@@ -200,8 +200,7 @@ export default Vue.extend({
   }
 
   @media @min-pc-width {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     .homepage-content__abstract {
       width: 75vw;
     }
