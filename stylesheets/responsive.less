@@ -1,28 +1,71 @@
-//@import 'default.less';
-//
-//@media (min-width: 768px) {
-//  .homepage-header-height {
-//    height: 35vh
-//  }
-//  .searchPage-header-height {
-//    height: 10px
-//  }
-//}
-//
-//@media (min-width: 992px) {
-//  .homepage-header-height {
-//    height: 35vh
-//  }
-//  .searchPage-header-height {
-//    height: 10px
-//  }
-//}
-//
-//@media (min-width: 1200px) {
-//  .homepage-header-height {
-//    height: 35vh
-//  }
-//  .searchPage-header-height {
-//    height: 10px
-//  }
-//}
+// ----------全局响应式布局方案-----------
+
+@max-mobile-width: ~'(max-width: 568px)';
+@min-mobile-width: ~'(min-width: 568px)';
+@max-pad-width: ~'(max-width: 768px)';
+@min-pad-width: ~'(min-width: 768px)';
+@min-pc-width: ~'(min-width: 992px)';
+
+// width
+.mobile-width(@width) {
+  @media @max-mobile-width {
+    width: @width;
+  }
+}
+
+.pad-width(@width) {
+  @media @max-pad-width {
+    width: @width;
+  }
+}
+
+.pc-width__mobile(@width) {
+  @media @min-mobile-width {
+    width: @width;
+  }
+}
+
+.pc-width__pad(@width) {
+  @media @min-pad-width {
+    width: @width;
+  }
+}
+
+// height
+.mobile-height(@height) {
+  @media @max-mobile-width {
+    height: @height;
+  }
+}
+
+.pad-height(@height) {
+  @media @max-pad-width {
+    height: @height;
+  }
+}
+
+.pc-height__mobile(@height) {
+  @media @min-mobile-width {
+    height: @height;
+  }
+}
+
+.pc-height__pad(@height) {
+  @media @min-pad-width {
+    height: @height;
+  }
+}
+
+// 手机端隐藏
+.mobile-hidden {
+  @media @max-mobile-width {
+    display: none;
+  }
+}
+
+// PC端隐藏
+.pc-hidden_mobile{
+  @media @min-mobile-width{
+    display: none;
+  }
+}

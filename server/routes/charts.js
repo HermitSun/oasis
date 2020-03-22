@@ -3446,7 +3446,6 @@ function generateImage(options) {
     console.error('Error: Write File failed' + err.message);
   }
 }
-
 router.get('/chart', async (_, res) => {
   const image = await generateImage(
     options,

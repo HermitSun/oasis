@@ -16,6 +16,8 @@ import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportRe
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { ResearcherInterestResponse } from '@/interfaces/responses/interest/ResearcherInterestResponse';
 import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
+import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -89,6 +91,17 @@ export async function getReferenceById(
 ): Promise<BasicResponse<SearchReference[]>> {
   const { data } = await axios.get('/paper/reference', {
     params: { paperId }
+  });
+  return data;
+}
+
+// 8. 获取普通搜索的二次筛选条件
+export async function getBasicSearchFilterCondition(
+  args: SearchFilterPayload
+): Promise<BasicResponse<SearchFilterResponse>> {
+  // TODO 替换为后端真实url
+  const { data } = await axios.get('/search/basic/filter', {
+    params: { ...args }
   });
   return data;
 }
