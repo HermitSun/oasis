@@ -1,6 +1,9 @@
-const searchFilterMockData = {
+import { BasicResponse } from '~/interfaces/responses/BasicResponse';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
+
+const searchFilterMockData: BasicResponse<SearchFilterResponse> = {
   code: 200,
-  message: 'success',
+  msg: 'success',
   data: {
     authors: [
       {
