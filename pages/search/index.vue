@@ -87,25 +87,24 @@
       </div>
     </div>
     <!--分页-->
-    <el-pagination
-      layout="prev, pager, next"
-      :current-page="page"
-      :total="resultCount"
-      :pager-count="pagerSize"
-      background
-      style="text-align: center; margin-bottom: 20px"
-      @current-change="showNextPage"
-    />
+    <!--交给客户端渲染，因为分页的大小会随客户端大小而发生变化-->
+    <client-only>
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="resultCount"
+        :pager-count="pagerSize"
+        background
+        style="text-align: center; margin-bottom: 20px"
+        @current-change="showNextPage"
+      />
+    </client-only>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  basicSearch,
-  advancedSearch,
-  getBasicSearchFilterCondition
-} from '~/api';
+import { basicSearch, advancedSearch } from '~/api';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import {
@@ -132,7 +131,7 @@ export default Vue.extend({
     };
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
-    console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
+    // console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
 
     return {
       searchResponse: searchRes.data.papers,
@@ -151,8 +150,9 @@ export default Vue.extend({
   },
   computed: {
     // 分页的大小
+    // 在移动端的客户端渲染为5个
     pagerSize(): number {
-      return isMobile() ? 5 : 7;
+      return process.client && isMobile() ? 5 : 7;
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
