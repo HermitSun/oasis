@@ -104,6 +104,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination } from 'element-ui';
 import { basicSearch, advancedSearch } from '~/api';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
@@ -120,7 +121,8 @@ export default Vue.extend({
   name: 'IndexVue',
   components: {
     SearchResComp,
-    AdvancedSearchComp
+    AdvancedSearchComp,
+    [Pagination.name]: Pagination
   },
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
