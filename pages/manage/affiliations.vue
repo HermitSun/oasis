@@ -6,7 +6,8 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'ManageAffiliations'
+  name: 'ManageAffiliations',
+  middleware: 'authenticated'
 });
 </script>
 

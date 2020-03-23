@@ -22,6 +22,10 @@ import { ResearcherInterestResponse } from '~/interfaces/responses/interest/Rese
 
 export default Vue.extend({
   name: 'ResearcherInterest',
+  // 异步加载词云
+  components: {
+    wordcloud: () => import('vue-wordcloud')
+  },
   props: {
     authorId: {
       type: String,

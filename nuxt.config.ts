@@ -1,4 +1,9 @@
-export default {
+import { Configuration } from '@nuxt/types';
+import { Options } from 'webpack';
+
+type SplitChunksOptions = Options.SplitChunksOptions;
+
+const config: Configuration = {
   mode: 'universal',
   /*
    ** Headers of the page
@@ -7,7 +12,10 @@ export default {
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      },
       {
         hid: 'description',
         name: 'description',
@@ -22,10 +30,11 @@ export default {
       }
     ]
   },
-  // router: {
-  //   base: '/oasis/'
-  // },
-  serverMiddleware: ['~/server/index.js'],
+  router: {
+    middleware: ['authenticated']
+    // base: '/oasis/'
+  },
+  serverMiddleware: ['~/server/index.ts'],
   /*
    ** Customize the progress-bar color
    */
@@ -38,9 +47,14 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '@/plugins/element-ui', ssr: true },
-    { src: '@/plugins/word-cloud', ssr: false },
-    { src: '@/plugins/echarts', ssr: true }
+    {
+      src: '@/plugins/element-ui',
+      ssr: true
+    },
+    {
+      src: '@/plugins/echarts',
+      ssr: true
+    }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -63,6 +77,7 @@ export default {
    ** Build configuration
    */
   build: {
+    // analyze: true,
     // 按需引入element-ui
     babel: {
       plugins: [
@@ -90,13 +105,17 @@ export default {
       }
     },
     transpile: [/^element-ui/]
-    /*
-     ** You can extend webpack config here
-     */
-    // extend(config, { isClient }) {
-    //   if (isClient) {
-    //     config.optimization.splitChunks.maxSize = 200_000
-    //   }
+    // extend(config) {
+    //   // 外部引入
+    //   config.externals = {
+    //     'vue-wordcloud': 'WordCloud'
+    //   };
+    //   // if (isClient) {
+    //   //   (config.optimization!
+    //   //     .splitChunks! as SplitChunksOptions).maxSize = 244_000;
+    //   // }
     // }
   }
 };
+
+export default config;
