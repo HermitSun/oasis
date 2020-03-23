@@ -1,4 +1,7 @@
 import { Configuration } from '@nuxt/types';
+import { Options } from 'webpack';
+
+type SplitChunksOptions = Options.SplitChunksOptions;
 
 const config: Configuration = {
   mode: 'universal',
@@ -49,10 +52,6 @@ const config: Configuration = {
       ssr: true
     },
     {
-      src: '@/plugins/word-cloud',
-      ssr: false
-    },
-    {
       src: '@/plugins/echarts',
       ssr: true
     }
@@ -78,6 +77,7 @@ const config: Configuration = {
    ** Build configuration
    */
   build: {
+    // analyze: true,
     // 按需引入element-ui
     babel: {
       plugins: [
@@ -105,13 +105,15 @@ const config: Configuration = {
       }
     },
     transpile: [/^element-ui/]
-    /*
-     ** You can extend webpack config here
-     */
-    // extend(config, { isClient }) {
-    //   if (isClient) {
-    //     config.optimization.splitChunks.maxSize = 200_000
-    //   }
+    // extend(config) {
+    //   // 外部引入
+    //   config.externals = {
+    //     'vue-wordcloud': 'WordCloud'
+    //   };
+    //   // if (isClient) {
+    //   //   (config.optimization!
+    //   //     .splitChunks! as SplitChunksOptions).maxSize = 244_000;
+    //   // }
     // }
   }
 };
