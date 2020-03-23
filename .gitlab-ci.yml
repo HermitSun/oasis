@@ -39,4 +39,4 @@ deploy:
     - sudo docker build -t seciii/frontend-app:${CI_PIPELINE_ID} .
     - sudo docker tag seciii/frontend-app:${CI_PIPELINE_ID} seciii/frontend-app:latest
     - sudo sh ./ci/service-down.sh
-    - sudo docker run --name frontend-app -d seciii/frontend-app:latest
+    - sudo docker run --name frontend-app -d -p 3000:3000 seciii/frontend-app:latest
