@@ -33,9 +33,27 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {
+  Aside,
+  Container,
+  Footer,
+  Header,
+  Main,
+  Menu,
+  MenuItem
+} from 'element-ui';
 
 export default Vue.extend({
   name: 'Manage',
+  components: {
+    [Aside.name]: Aside,
+    [Container.name]: Container,
+    [Footer.name]: Footer,
+    [Header.name]: Header,
+    [Main.name]: Main,
+    [Menu.name]: Menu,
+    [MenuItem.name]: MenuItem
+  },
   computed: {
     // 当前导航
     currentRoute() {

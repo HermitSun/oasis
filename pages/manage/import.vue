@@ -39,11 +39,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Upload } from 'element-ui';
 import { ElUpload, ElUploadInternalFileDetail } from 'element-ui/types/upload';
 import { importPaperData } from '~/api';
 
 export default Vue.extend({
   name: 'ManageImport',
+  components: {
+    [Upload.name]: Upload
+  },
   data() {
     return {
       papers: process.client ? new FormData() : undefined,
