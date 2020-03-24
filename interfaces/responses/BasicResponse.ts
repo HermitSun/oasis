@@ -6,10 +6,10 @@
  * @update 2020.03.22
  */
 
-interface BasicResponseWrapper<T = undefined> {
+interface BasicResponseWrapper<T> {
   code: number; // 状态码
   msg: string; // 额外返回的信息
   data: T; // 接口返回的数据部分
 }
 
-export type BasicResponse<T> = BasicResponseWrapper<T> & object;
+export type BasicResponse<T = undefined> = BasicResponseWrapper<T> & object;
