@@ -12,7 +12,7 @@
       <el-table-column prop="authorName" label="姓名" width="180" />
       <el-table-column prop="count" label="论文数" width="180" />
       <el-table-column prop="citation" label="被引数" width="180" />
-      <!--搜索框-->
+      <!--搜索框和操作-->
       <el-table-column>
         <template #header>
           <el-input
@@ -30,6 +30,10 @@
             </template>
           </el-input>
         </template>
+        <!--TODO: 跳转到作者主页-->
+        <el-button size="mini" type="primary" @click="$router.push('/')">
+          查看详情
+        </el-button>
       </el-table-column>
     </el-table>
     <!--合并操作-->
