@@ -182,8 +182,8 @@ export async function updatePaperInfo(
 
 // 33. 获取作者信息 getAuthorInfo
 export async function getAuthorInfo(
-  name?: string,
-  page: number = 1
+  page: number = 1,
+  name?: string
 ): Promise<BasicResponse<AuthorInfoResponse>> {
   // TODO: 切换成真实的URL
   const { data } = await axios.get('/authors/info', {

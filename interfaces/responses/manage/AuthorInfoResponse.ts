@@ -4,7 +4,7 @@
  * @date 2020.03.24
  */
 
-interface AuthorInfo {
+export interface AuthorInfo {
   authorId: string;
   authorName: string;
   count: number; // 发论文总数
