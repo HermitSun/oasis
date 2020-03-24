@@ -114,10 +114,11 @@ export async function getBasicSearchFilterCondition(
 // 以下为管理员端
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
-  name?: string,
-  page: number = 1
+  page: number = 1,
+  name?: string
 ): Promise<BasicResponse<AffiliationInfoResponse>> {
-  const { data } = await axios.get('/', {
+  // TODO: 切换成真实的URL
+  const { data } = await axios.get('/affiliations/info', {
     params: { name, page }
   });
   return data;
@@ -128,7 +129,8 @@ export async function mergeAffiliationInfo(
   src: string[],
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await axios.put('/', { src, dest });
+  // TODO: 切换成真实的URL
+  const { data } = await axios.put('/affiliations/merge', { src, dest });
   return data;
 }
 

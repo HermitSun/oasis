@@ -4,7 +4,7 @@
  * @date 2020.03.24
  */
 
-interface AffiliationInfo {
+export interface AffiliationInfo {
   name: string; // 机构名称
 }
 

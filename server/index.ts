@@ -4,6 +4,7 @@ import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-mid
 import basicSearchMockData from './mock/search/basicSearchMockData';
 import searchFilterMockData from './mock/search/searchFilterMockData';
 import authors from './routes/authors';
+import affiliations from './routes/affiliations';
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.get('/search/basic/filter', (req, res) => {
 // 管理员部分
 // 作者信息管理
 app.use('/authors', authors);
+// 机构信息管理
+app.use('/affiliations', affiliations);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '',
