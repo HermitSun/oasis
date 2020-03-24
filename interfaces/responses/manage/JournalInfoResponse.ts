@@ -4,6 +4,11 @@
  * @date 2020.03.24
  */
 
-export interface JournalInfoResponse {
+interface JournalInfo {
   name: string;
+}
+
+export interface JournalInfoResponse {
+  journals: JournalInfo[];
+  size: number;
 }

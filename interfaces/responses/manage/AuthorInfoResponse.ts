@@ -4,9 +4,14 @@
  * @date 2020.03.24
  */
 
-export interface AuthorInfoResponse {
+interface AuthorInfo {
   authorId: string;
   authorName: string;
   count: number; // 发论文总数
   citation: number; // 总被引用数
+}
+
+export interface AuthorInfoResponse {
+  authors: AuthorInfo[];
+  size: number;
 }

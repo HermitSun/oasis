@@ -116,7 +116,7 @@ export async function getBasicSearchFilterCondition(
 export async function getAffiliationInfo(
   name?: string,
   page: number = 1
-): Promise<BasicResponse<AffiliationInfoResponse[]>> {
+): Promise<BasicResponse<AffiliationInfoResponse>> {
   const { data } = await axios.get('/', {
     params: { name, page }
   });
@@ -136,7 +136,7 @@ export async function mergeAffiliationInfo(
 export async function getConferenceInfo(
   name?: string,
   page: number = 1
-): Promise<BasicResponse<ConferenceInfoResponse[]>> {
+): Promise<BasicResponse<ConferenceInfoResponse>> {
   const { data } = await axios.get('/', {
     params: { name, page }
   });
@@ -156,7 +156,7 @@ export async function updateConferenceInfo(
 export async function getJournalInfo(
   name?: string,
   page: number = 1
-): Promise<BasicResponse<JournalInfoResponse[]>> {
+): Promise<BasicResponse<JournalInfoResponse>> {
   const { data } = await axios.get('/', {
     params: { name, page }
   });
@@ -184,8 +184,9 @@ export async function updatePaperInfo(
 export async function getAuthorInfo(
   name?: string,
   page: number = 1
-): Promise<BasicResponse<AuthorInfoResponse[]>> {
-  const { data } = await axios.get('/', {
+): Promise<BasicResponse<AuthorInfoResponse>> {
+  // TODO: 切换成真实的URL
+  const { data } = await axios.get('/authors/info', {
     params: { name, page }
   });
   return data;
@@ -196,6 +197,7 @@ export async function mergeAuthorInfo(
   src: string[],
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await axios.put('/', { src, dest });
+  // TODO: 切换成真实的URL
+  const { data } = await axios.put('/authors/merge', { src, dest });
   return data;
 }

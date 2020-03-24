@@ -4,6 +4,11 @@
  * @date 2020.03.24
  */
 
-export interface ConferenceInfoResponse {
+interface ConferenceInfo {
   name: string;
+}
+
+export interface ConferenceInfoResponse {
+  conferences: ConferenceInfo[];
+  size: number;
 }
