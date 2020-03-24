@@ -75,7 +75,7 @@
     <!--分页-->
     <el-pagination
       layout="prev, pager, next"
-      :current-page="page"
+      :current-page.sync="page"
       :total="resultCount"
       background
       style="text-align: center; margin-bottom: 20px"
@@ -178,13 +178,15 @@ export default Vue.extend({
     async doSearch(name: string) {
       const authorsRes = await getAuthorInfo(1, name);
       this.authors = authorsRes.data.authors;
+      // 重置页码和搜索内容
+      this.page = 1;
+      this.authorName = '';
     },
     // 请求下一页
     async showNextPage(page: number) {
       // 重新请求数据
       const authorsRes = await getAuthorInfo(page);
       this.authors = authorsRes.data.authors;
-      // 设置选择状态
     },
     // 清理工作
     clearSelection() {
