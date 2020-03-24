@@ -18,13 +18,18 @@ import { ResearcherInterestResponse } from '@/interfaces/responses/interest/Rese
 import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
+import { AffiliationInfoResponse } from '~/interfaces/responses/manage/AffiliationInfoResponse';
+import { ConferenceInfoResponse } from '~/interfaces/responses/manage/ConferenceInfoResponse';
+import { JournalInfoResponse } from '~/interfaces/responses/manage/JournalInfoResponse';
+import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResponse';
+import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 
 // 1. 普通搜索
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/search/basic/mongo', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -34,7 +39,7 @@ export async function advancedSearch(
   args: AdvancedSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/search/advanced/mongo', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -44,7 +49,7 @@ export async function getAffiliationBasicRanking(
   args: RankingPayload
 ): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/affiliation', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -54,7 +59,7 @@ export async function getAuthorBasicRanking(
   args: RankingPayload
 ): Promise<BasicResponse<AuthorBasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/author', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -64,7 +69,7 @@ export async function getResearcherInterest(
   args: ResearcherInterestPayload
 ): Promise<BasicResponse<ResearcherInterestResponse[]>> {
   const { data } = await axios.get('/researcher/interest', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -101,7 +106,96 @@ export async function getBasicSearchFilterCondition(
 ): Promise<BasicResponse<SearchFilterResponse>> {
   // TODO 替换为后端真实url
   const { data } = await axios.get('/search/basic/filter', {
-    params: { ...args }
+    params: args
   });
+  return data;
+}
+
+// 以下为管理员端
+// 26. 获取机构信息 getAffiliationInfo
+export async function getAffiliationInfo(
+  name?: string,
+  page: number = 1
+): Promise<BasicResponse<AffiliationInfoResponse[]>> {
+  const { data } = await axios.get('/', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 27. 合并机构信息 mergeAffiliationInfo
+export async function mergeAffiliationInfo(
+  src: string[],
+  dest: string
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/', { src, dest });
+  return data;
+}
+
+// 28. 获取会议信息 getConferenceInfo
+export async function getConferenceInfo(
+  name?: string,
+  page: number = 1
+): Promise<BasicResponse<ConferenceInfoResponse[]>> {
+  const { data } = await axios.get('/', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 29. 修改会议信息 updateConferenceInfo
+export async function updateConferenceInfo(
+  src: string,
+  dest: string
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/', { src, dest });
+  return data;
+}
+
+// 30. 获取期刊信息 getJournalInfo
+export async function getJournalInfo(
+  name?: string,
+  page: number = 1
+): Promise<BasicResponse<JournalInfoResponse[]>> {
+  const { data } = await axios.get('/', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 31. 修改期刊信息 updateJournalInfo
+export async function updateJournalInfo(
+  src: string,
+  dest: string
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/', { src, dest });
+  return data;
+}
+
+// 32. 修改论文信息 updatePaperInfo
+export async function updatePaperInfo(
+  args: UpdatePaperInfoPayload
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/', args);
+  return data;
+}
+
+// 33. 获取作者信息 getAuthorInfo
+export async function getAuthorInfo(
+  name?: string,
+  page: number = 1
+): Promise<BasicResponse<AuthorInfoResponse[]>> {
+  const { data } = await axios.get('/', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 34. 合并作者信息 mergeAuthorInfo
+export async function mergeAuthorInfo(
+  src: string[],
+  dest: string
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/', { src, dest });
   return data;
 }
