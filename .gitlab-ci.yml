@@ -1,30 +1,5 @@
 stages:
-  - build
-  - test
   - deploy
-
-cache:
-  key: ${CI_BUILD_REF_NAME}
-  paths:
-    - node_modules/
-    - .nuxt/
-    - server/
-    - static/
-
-build:
-  stage: build
-  tags:
-    - WenSun
-  script:
-    - npm install
-    - npm run build
-
-test:
-  stage: test
-  tags:
-    - WenSun
-  script:
-    - echo 'developing in process'
 
 deploy:
   stage: deploy
@@ -36,6 +11,6 @@ deploy:
     - /^release\/.*$/
     - /^hotfix\/.*$/
   script:
-    - sudo docker build -t seciii/frontend-app:${CI_PIPELINE_ID} .
-    - sudo docker tag seciii/frontend-app:${CI_PIPELINE_ID} seciii/frontend-app:latest
-    - cd ci/ && sudo docker-compose down && sudo docker-compose up -d
+    - sudo docker pull registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest
+    - sudo sh ./ci/service-down.sh
+    - sudo docker run --name frontend-app -d -p 3000:3000 registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest

@@ -5,8 +5,8 @@ const globalConfig = {
   baseURL:
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top/api'
-      : 'http://localhost:3000',
-  // : "http://116.62.23.105:8081";
+      : 'http://47.101.33.219:8081',
+  // : "http://47.101.33.219:8081";
   timeout: 60 * 1000
   // 如果启用凭据，后端必须在AllowOrigin里指定源，而不能是*
   // withCredentials: true

@@ -65,6 +65,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Popover } from 'element-ui';
 import { getRankingIcon } from './ranking';
 import { getAuthorBasicRanking } from '~/api';
 import ResearcherInterest from '~/components/interest/ResearcherInterest.vue';
@@ -73,7 +74,8 @@ import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
 export default Vue.extend({
   name: 'AuthorBasicRanking',
   components: {
-    ResearcherInterest
+    ResearcherInterest,
+    [Popover.name]: Popover
   },
   props: {
     ranking: {

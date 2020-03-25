@@ -34,8 +34,10 @@ module.exports = {
       'svg': 'always',
       'math': 'always'
     }],
-    'vue/max-attributes-per-line': 'off', // 不限制每行的属性数，交给prettier
-    'indent': 'off', // 不限制缩进，交给prettier
-    'func-call-spacing':'off'
+    // 以下内容交给prettier处理
+    'vue/max-attributes-per-line': 'off',
+    'indent': 'off',
+    'func-call-spacing': 'off',
+    'arrow-parens': 'off'
   }
 };

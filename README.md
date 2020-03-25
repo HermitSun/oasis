@@ -1,6 +1,26 @@
-# oasis-search
+# OASIS
 
-> OASIS&#39;s search part
+因为服务器性能过低，无法完成CI，故放弃。
+
+每次想要发布版本前，请在本地的**项目根目录**执行如下命令：
+
+Windows命令行：
+
+```shell script
+call ci/build-windows.cmd
+```
+
+Windows PowerShell：
+
+```shell script
+ci/build-windows.cmd
+```
+
+*NIX（未测试OSX）:
+
+```shell script
+sh ci/build-unix.sh
+```
 
 ## Build Setup
 

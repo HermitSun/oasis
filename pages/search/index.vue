@@ -138,16 +138,81 @@
         </div>
       </div>
     </div>
+    <div
+      class="searchPage-content__result"
+      style="text-align: left;margin:10px 0"
+    >
+      <template>
+        <span class="searchPage-content__hint-text" style="margin-left:10px">
+          About
+        </span>
+        <span class="searchPage-content__result-text" style="margin-left:5px">
+          {{ resultCount }}
+        </span>
+        <span class="searchPage-content__hint-text" style="margin-left:5px">
+          Results
+        </span>
+        <div class="searchPage-time-range" style="float: right">
+          Time Range:
+          <input
+            v-model="startYear"
+            style="width: 53px;margin: 0 5px"
+            size="4"
+          />-<input
+            v-model="endYear"
+            style="width: 53px;margin-left: 5px"
+            size="4"
+          />
+          <button
+            class="basic-search__button"
+            style="width:50px;margin-left:10px"
+            @click="doTimeChangedSearch"
+          >
+            <img
+              src="~/assets/icon/icon-search.png"
+              width="20"
+              style="margin-bottom:10px"
+              alt="search"
+            />
+          </button>
+        </div>
+      </template>
+    </div>
+    <!--展示搜索内容-->
+    <p
+      v-if="searchResponse.length === 0"
+      style="min-height: 400px; line-height: 400px; text-align: center"
+    >
+      暂时没有数据...
+    </p>
+    <div
+      v-for="res in searchResponse"
+      :key="res.id"
+      style="margin-bottom: 20px"
+    >
+      <SearchResComp :res="res" />
+    </div>
+    <client-only>
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="resultCount"
+        :pager-count="pagerSize"
+        background
+        style="text-align: center; margin-bottom: 20px"
+        @current-change="showNextPage"
+      />
+    </client-only>
   </div>
+
+  <!--分页-->
+  <!--交给客户端渲染，因为分页的大小会随客户端大小而发生变化-->
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  basicSearch,
-  advancedSearch,
-  getBasicSearchFilterCondition
-} from '~/api';
+import { Pagination } from 'element-ui';
+import { basicSearch, advancedSearch } from '~/api';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import {
@@ -155,6 +220,7 @@ import {
   SearchPageComp
 } from '~/interfaces/pages/search/SearchPageComp';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { isMobile } from '~/utils/breakpoint';
 
 const defaultSortKey = 'related';
 
@@ -162,7 +228,8 @@ export default Vue.extend({
   name: 'IndexVue',
   components: {
     SearchResComp,
-    AdvancedSearchComp
+    AdvancedSearchComp,
+    [Pagination.name]: Pagination
   },
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
@@ -173,7 +240,7 @@ export default Vue.extend({
     };
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
-    console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
+    // console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
 
     return {
       searchResponse: searchRes.data.papers,
@@ -189,6 +256,13 @@ export default Vue.extend({
       showAdvancedSearch: false,
       isLoading: false // 是否正在加载
     } as SearchPageComp;
+  },
+  computed: {
+    // 分页的大小
+    // 在移动端的客户端渲染为5个
+    pagerSize(): number {
+      return process.client && isMobile() ? 5 : 7;
+    }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
   // 在SSR时路由是非响应的，需要手动watch
