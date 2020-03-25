@@ -65,7 +65,8 @@
         <el-button @click="clearMergeDest">
           取 消
         </el-button>
-        <el-button type="primary" @click="doMerge">
+        <!--未选择时不能合并-->
+        <el-button :disabled="!mergeDest" type="primary" @click="doMerge">
           确 定
         </el-button>
       </template>
