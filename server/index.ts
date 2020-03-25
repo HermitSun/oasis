@@ -1,8 +1,13 @@
 import express from 'express';
 import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-middleware';
 // 因为服务端不走webpack，所以只能使用相对路径
-import basicSearchMockData from '../assets/mock/search/basicSearchMockData';
-import searchFilterMockData from '../assets/mock/search/searchFilterMockData';
+import basicSearchMockData from './mock/search/basicSearchMockData';
+import searchFilterMockData from './mock/search/searchFilterMockData';
+// 路由
+import authors from './routes/authors';
+import affiliations from './routes/affiliations';
+import journals from './routes/journals';
+import conferences from './routes/conferences';
 
 const app = express();
 
@@ -15,12 +20,24 @@ app.get('/search/basic/mongo', (req, res) => {
   res.json(basicSearchMockData);
 });
 
+app.get('/search/basic/es', (_, res) => {
+  res.json(basicSearchMockData);
+});
+
 app.get('/search/basic/filter', (req, res) => {
   console.log(req.params);
   res.json(searchFilterMockData);
 });
-// const charts = require('./routes/charts');
-// app.use(charts);
+
+// 管理员部分
+// 作者信息管理
+app.use('/authors', authors);
+// 机构信息管理
+app.use('/affiliations', affiliations);
+// 期刊信息管理
+app.use('/journals', journals);
+// 会议信息管理
+app.use('/conferences', conferences);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '',

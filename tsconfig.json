@@ -12,6 +12,7 @@
     "skipLibCheck": true, // 不检查依赖
     "allowJs": true,
     "jsx": "preserve", // 保留JSX，交给babel
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "noEmit": true,

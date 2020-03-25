@@ -6,9 +6,10 @@
  */
 
 import Vue from 'vue';
-import { Button, Loading, Message } from 'element-ui';
+import { Button, Loading, Message, MessageBox } from 'element-ui';
 
 Vue.use(Button);
 Vue.use(Loading.directive);
 
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$message = Message;
