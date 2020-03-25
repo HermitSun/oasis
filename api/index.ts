@@ -1,3 +1,4 @@
+import globalAxios from 'axios';
 import axios from './config';
 import {
   AdvancedSearchPayload,
@@ -112,13 +113,21 @@ export async function getBasicSearchFilterCondition(
 }
 
 // 以下为管理员端
+const mockConfig = {
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://wensun.top'
+      : 'http://localhost:3000',
+  timeout: 60 * 1000
+};
+const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
   name?: string
 ): Promise<BasicResponse<AffiliationInfoResponse>> {
   // TODO: 切换成真实的URL
-  const { data } = await axios.get('/affiliations/info', {
+  const { data } = await mockAxios.get('/affiliations/info', {
     params: { name, page }
   });
   return data;
@@ -130,7 +139,7 @@ export async function mergeAffiliationInfo(
   dest: string
 ): Promise<BasicResponse> {
   // TODO: 切换成真实的URL
-  const { data } = await axios.put('/affiliations/merge', { src, dest });
+  const { data } = await mockAxios.put('/affiliations/merge', { src, dest });
   return data;
 }
 
@@ -139,7 +148,7 @@ export async function getConferenceInfo(
   name?: string,
   page: number = 1
 ): Promise<BasicResponse<ConferenceInfoResponse>> {
-  const { data } = await axios.get('/', {
+  const { data } = await mockAxios.get('/', {
     params: { name, page }
   });
   return data;
@@ -150,7 +159,7 @@ export async function updateConferenceInfo(
   src: string,
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await axios.put('/', { src, dest });
+  const { data } = await mockAxios.put('/', { src, dest });
   return data;
 }
 
@@ -159,7 +168,7 @@ export async function getJournalInfo(
   name?: string,
   page: number = 1
 ): Promise<BasicResponse<JournalInfoResponse>> {
-  const { data } = await axios.get('/', {
+  const { data } = await mockAxios.get('/', {
     params: { name, page }
   });
   return data;
@@ -170,7 +179,7 @@ export async function updateJournalInfo(
   src: string,
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await axios.put('/', { src, dest });
+  const { data } = await mockAxios.put('/', { src, dest });
   return data;
 }
 
@@ -178,7 +187,7 @@ export async function updateJournalInfo(
 export async function updatePaperInfo(
   args: UpdatePaperInfoPayload
 ): Promise<BasicResponse> {
-  const { data } = await axios.put('/', args);
+  const { data } = await mockAxios.put('/', args);
   return data;
 }
 
@@ -188,7 +197,7 @@ export async function getAuthorInfo(
   name?: string
 ): Promise<BasicResponse<AuthorInfoResponse>> {
   // TODO: 切换成真实的URL
-  const { data } = await axios.get('/authors/info', {
+  const { data } = await mockAxios.get('/authors/info', {
     params: { name, page }
   });
   return data;
@@ -200,6 +209,6 @@ export async function mergeAuthorInfo(
   dest: string
 ): Promise<BasicResponse> {
   // TODO: 切换成真实的URL
-  const { data } = await axios.put('/authors/merge', { src, dest });
+  const { data } = await mockAxios.put('/authors/merge', { src, dest });
   return data;
 }
