@@ -13,3 +13,5 @@ registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest
 # push image
 sudo docker push registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:"${version}"
 sudo docker push registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest
+# do push
+sudo git push
