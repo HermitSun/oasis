@@ -4,7 +4,7 @@
  * @date 2020.03.24
  */
 
-interface ConferenceInfo {
+export interface ConferenceInfo {
   name: string;
 }
 
