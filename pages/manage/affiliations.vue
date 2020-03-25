@@ -9,9 +9,9 @@
       @selection-change="selectToMerge"
     >
       <el-table-column type="selection" reserve-selection width="55" />
-      <el-table-column prop="name" label="机构名" width="300" />
+      <el-table-column prop="name" label="机构名" />
       <!--搜索框和操作-->
-      <el-table-column>
+      <el-table-column align="right">
         <template #header>
           <el-input
             v-model="affiliationName"

@@ -9,11 +9,11 @@
       @selection-change="selectToMerge"
     >
       <el-table-column type="selection" reserve-selection width="55" />
-      <el-table-column prop="authorName" label="姓名" width="180" />
-      <el-table-column prop="count" label="论文数" width="180" />
-      <el-table-column prop="citation" label="被引数" width="180" />
+      <el-table-column prop="authorName" label="姓名" />
+      <el-table-column prop="count" label="论文数" />
+      <el-table-column prop="citation" label="被引数" />
       <!--搜索框和操作-->
-      <el-table-column>
+      <el-table-column align="right">
         <template #header>
           <el-input
             v-model="authorName"
