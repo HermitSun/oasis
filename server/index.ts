@@ -3,8 +3,10 @@ import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-mid
 // 因为服务端不走webpack，所以只能使用相对路径
 import basicSearchMockData from './mock/search/basicSearchMockData';
 import searchFilterMockData from './mock/search/searchFilterMockData';
+// 路由
 import authors from './routes/authors';
 import affiliations from './routes/affiliations';
+import journals from './routes/journals';
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.get('/search/basic/filter', (req, res) => {
 app.use('/authors', authors);
 // 机构信息管理
 app.use('/affiliations', affiliations);
+// 期刊信息管理
+app.use('/journals', journals);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '',

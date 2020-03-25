@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import affiliations from '../mock/affiliations/affiliationsInfoMockData.json';
+import journals from '../mock/journals/journalsInfoMockData.json';
 
 const router = Router();
 
@@ -8,18 +8,18 @@ router.get('/info', (req, res) => {
     res.json({
       code: 200,
       msg: 'Success',
-      data: { affiliations: (affiliations as {}[]).slice(0, 5), size: 666 }
+      data: { journals: (journals as {}[]).slice(0, 5), size: 888 }
     });
   } else {
     res.json({
       code: 200,
       msg: 'Success',
-      data: { affiliations: (affiliations as {}[]).slice(5), size: 666 }
+      data: { journals: (journals as {}[]).slice(5), size: 888 }
     });
   }
 });
 
-router.put('/merge', (req, res) => {
+router.put('/update', (req, res) => {
   console.log(req.body);
   res.json({ code: 200, msg: 'Success' });
 });

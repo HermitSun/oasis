@@ -168,7 +168,8 @@ export async function getJournalInfo(
   name?: string,
   page: number = 1
 ): Promise<BasicResponse<JournalInfoResponse>> {
-  const { data } = await mockAxios.get('/', {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/journals/info', {
     params: { name, page }
   });
   return data;
@@ -179,7 +180,8 @@ export async function updateJournalInfo(
   src: string,
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await mockAxios.put('/', { src, dest });
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/journals/update', { src, dest });
   return data;
 }
 
