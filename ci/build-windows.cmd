@@ -11,3 +11,5 @@ registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest
 :: push image
 docker push registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:%version%
 docker push registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:latest
+:: do push
+git push
