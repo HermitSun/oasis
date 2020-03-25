@@ -1,5 +1,5 @@
 {
-  '(src|tests)/**/*.(vue|ts|js)': [
+  '(components|pages|server)/**/*.(vue|ts|js)': [
     'eslint --fix',
     'git add'
   ]
