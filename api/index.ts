@@ -29,7 +29,7 @@ import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaper
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/mongo', {
+  const { data } = await axios.get('/search/basic/es', {
     params: args
   });
   return data;
