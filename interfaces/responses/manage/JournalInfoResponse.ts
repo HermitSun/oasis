@@ -4,7 +4,7 @@
  * @date 2020.03.24
  */
 
-interface JournalInfo {
+export interface JournalInfo {
   name: string;
 }
 

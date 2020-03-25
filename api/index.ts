@@ -165,8 +165,8 @@ export async function updateConferenceInfo(
 
 // 30. 获取期刊信息 getJournalInfo
 export async function getJournalInfo(
-  name?: string,
-  page: number = 1
+  page: number = 1,
+  name?: string
 ): Promise<BasicResponse<JournalInfoResponse>> {
   // TODO: 切换成真实的URL
   const { data } = await mockAxios.get('/journals/info', {
