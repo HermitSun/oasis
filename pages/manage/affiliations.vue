@@ -49,7 +49,7 @@
       </el-button>
     </div>
     <!--确认选择的对话框-->
-    <el-dialog :visible="showSelectDestDialog">
+    <el-dialog :visible="showSelectDestDialog" :before-close="clearDialog">
       <el-select v-model="mergeDest" filterable placeholder="请选择合并目标">
         <el-option
           v-for="affiliation in waitToMerge"
@@ -154,7 +154,7 @@ export default Vue.extend({
           this.mergeDest
         );
         if (mergeRes.code === 200) {
-          this.$message.success('合并成功!');
+          this.$message.success('合并成功');
           // 刷新当前页面
           this.showNextPage(1);
         } else {
@@ -185,13 +185,16 @@ export default Vue.extend({
       this.affiliations = affiliationsRes.data.affiliations;
     },
     // 清理工作
+    clearDialog() {
+      this.showSelectDestDialog = false;
+      this.mergeDest = '';
+    },
     clearSelection() {
       const affiliationsTable = this.$refs.affiliationsTable as ElTable;
       affiliationsTable.clearSelection();
     },
     clearMergeDest() {
-      this.showSelectDestDialog = false;
-      this.mergeDest = '';
+      this.clearDialog();
       // 同时清空备选项
       this.clearSelection();
     }
