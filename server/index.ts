@@ -7,6 +7,7 @@ import searchFilterMockData from './mock/search/searchFilterMockData';
 import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
+import conferences from './routes/conferences';
 
 const app = express();
 
@@ -35,6 +36,8 @@ app.use('/authors', authors);
 app.use('/affiliations', affiliations);
 // 期刊信息管理
 app.use('/journals', journals);
+// 会议信息管理
+app.use('/conferences', conferences);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '',

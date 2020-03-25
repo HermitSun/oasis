@@ -148,7 +148,8 @@ export async function getConferenceInfo(
   name?: string,
   page: number = 1
 ): Promise<BasicResponse<ConferenceInfoResponse>> {
-  const { data } = await mockAxios.get('/', {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/conferences/info', {
     params: { name, page }
   });
   return data;
@@ -159,7 +160,8 @@ export async function updateConferenceInfo(
   src: string,
   dest: string
 ): Promise<BasicResponse> {
-  const { data } = await mockAxios.put('/', { src, dest });
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/conferences/update', { src, dest });
   return data;
 }
 
