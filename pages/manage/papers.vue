@@ -116,7 +116,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Dialog,
   Form,
   FormItem,
   Input,
@@ -127,13 +126,12 @@ import {
 import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
 import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
-import PapersUpdateDialog from '~/components/manage/PapersUpdateDialog.vue';
 
 export default Vue.extend({
   name: 'ManagePapers',
   components: {
-    PapersUpdateDialog,
-    [Dialog.name]: Dialog,
+    PapersUpdateDialog: () =>
+      import('~/components/manage/PapersUpdateDialog.vue'),
     [Form.name]: Form,
     [FormItem.name]: FormItem,
     [Input.name]: Input,
