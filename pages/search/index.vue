@@ -133,11 +133,14 @@ export default Vue.extend({
     };
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
-    // console.log(getBasicSearchFilterCondition({ keyword: 'software' }));
+    // 增加默认值，相当于静默失败，避免500
+    const searchData = searchRes.data
+      ? searchRes.data
+      : { papers: [], size: 0 };
 
     return {
-      searchResponse: searchRes.data.papers,
-      resultCount: searchRes.data.size,
+      searchResponse: searchData.papers,
+      resultCount: searchData.size,
       ...query,
       page: Number(query.page),
       // 保留这个属性是为了在高级搜索时显示更精细的搜索内容
@@ -209,10 +212,17 @@ export default Vue.extend({
           endYear: Number(this.endYear),
           sortKey: this.sortKey
         });
-        this.searchResponse = basicSearchRes.data.papers;
-        this.resultCount = basicSearchRes.data.size;
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData = basicSearchRes.data
+          ? basicSearchRes.data
+          : { papers: [], size: this.page };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
       } catch (e) {
         this.$message.error(e.toString());
+        // 增加一个默认值
+        this.searchResponse = [];
       } finally {
         this.isLoading = false;
       }
@@ -232,10 +242,16 @@ export default Vue.extend({
           sortKey: this.sortKey
         };
         const advancedSearchRes = await advancedSearch(advancedSearchData);
-        this.searchResponse = advancedSearchRes.data.papers;
-        this.resultCount = advancedSearchRes.data.size;
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData = advancedSearchRes.data
+          ? advancedSearchRes.data
+          : { papers: [], size: this.page };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
       } catch (e) {
         this.$message.error(e.toString());
+        this.searchResponse = [];
       } finally {
         this.isLoading = false;
       }
