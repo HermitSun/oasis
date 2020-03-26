@@ -1,5 +1,7 @@
 # OASIS
 
+## 发布
+
 因为服务器性能过低，无法完成CI，故放弃。
 
 每次想要发布版本前，请在本地的**项目根目录**执行如下命令：
@@ -21,6 +23,10 @@ ci/build-windows.cmd
 ```shell script
 sh ci/build-unix.sh
 ```
+
+## 分页
+
+关于分页，后面可能需要对管理端的分页进行调整。
 
 ## Build Setup
 

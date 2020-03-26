@@ -92,12 +92,18 @@
       <el-pagination
         layout="prev, pager, next"
         :current-page="page"
-        :total="resultCount"
+        :total="totalRecords"
         :pager-count="pagerSize"
         background
-        style="text-align: center; margin-bottom: 20px"
+        style="text-align: center; margin-bottom: 10px"
         @current-change="showNextPage"
       />
+      <p
+        v-if="page === 100"
+        style="color: #C0C4CC; font-style: italic; text-align: center; margin-bottom: 10px"
+      >
+        我们已为您隐藏了相关度较低的搜索结果。
+      </p>
     </client-only>
   </div>
 </template>
@@ -116,6 +122,7 @@ import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
 
 const defaultSortKey = 'related';
+const MAX_RECORDS = 100 * 10;
 
 export default Vue.extend({
   name: 'IndexVue',
@@ -158,6 +165,10 @@ export default Vue.extend({
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
       return process.client && isMobile() ? 5 : 7;
+    },
+    // 限制最大页数
+    totalRecords(): number {
+      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
@@ -216,7 +227,7 @@ export default Vue.extend({
         // size不变
         const searchData = basicSearchRes.data
           ? basicSearchRes.data
-          : { papers: [], size: this.page };
+          : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
       } catch (e) {
@@ -246,7 +257,7 @@ export default Vue.extend({
         // size不变
         const searchData = advancedSearchRes.data
           ? advancedSearchRes.data
-          : { papers: [], size: this.page };
+          : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
       } catch (e) {
