@@ -16,14 +16,13 @@ export interface PaperFrom extends Omit<PaperInfo, 'authors' | 'keywords'> {
   keywords: string;
 }
 
-interface AsyncManagePapersData {
-  papers: PaperInfo[];
-  resultCount: number;
-}
+interface AsyncManagePapersData {}
 
 export type ManagePapersDataFromProp = {};
 
 interface ManagePapersLocalData {
+  papers: PaperInfo[];
+  resultCount: number;
   page: number;
   paperTitle: string;
   showUpdateDialog: boolean;

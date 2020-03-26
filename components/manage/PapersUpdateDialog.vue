@@ -1,5 +1,5 @@
 <template>
-  <el-dialog visible :before-close="closeDialog">
+  <el-dialog visible :before-close="closeDialogWithoutChange">
     <!--修改的表单-->
     <el-form
       ref="paperForm"
@@ -62,7 +62,7 @@
     </el-form>
     <!--底部的操作栏-->
     <template #footer>
-      <el-button @click="closeDialog">
+      <el-button @click="closeDialogWithoutChange">
         取 消
       </el-button>
       <el-button type="primary" @click="submitPaperUpdate">
@@ -217,18 +217,21 @@ export default Vue.extend({
         } else {
           this.$message.error('修改失败：' + updateRes.msg);
         }
+        this.closeDialog();
       } catch {
         this.$message({
           type: 'info',
           message: '修改已取消'
         });
-      } finally {
-        this.closeDialog();
+        this.closeDialogWithoutChange();
       }
     },
     // 清理工作
     closeDialog() {
       this.$emit('close');
+    },
+    closeDialogWithoutChange() {
+      this.$emit('cancel');
     }
   }
 });

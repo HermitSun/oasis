@@ -2,6 +2,9 @@
   <div class="manage-papers-wrapper">
     <!--论文基本信息-->
     <el-table ref="papersTable" :data="papers" style="width: 100%">
+      <template #empty>
+        <span class="el-table__empty-text">检索论文以进行管理↗</span>
+      </template>
       <!--过长的字段展开时显示-->
       <el-table-column type="expand">
         <template #default="paperProps">
@@ -46,7 +49,7 @@
       </el-table-column>
       <!--简略信息-->
       <el-table-column prop="title" label="标题" width="250" />
-      <el-table-column label="作者">
+      <el-table-column label="作者" width="180">
         <template #default="paperProps">
           <span>{{ paperProps.row.authors[0] }}等</span>
         </template>
@@ -76,11 +79,11 @@
             </template>
           </el-input>
         </template>
-        <template #default="papers">
+        <template #default="papersData">
           <el-button
             size="mini"
             type="danger"
-            @click="openUpdateDialog(papers.row)"
+            @click="openUpdateDialog(papersData.row)"
           >
             修改
           </el-button>
@@ -96,6 +99,7 @@
       v-if="showUpdateDialog"
       :paper="paperWaitToUpdate"
       @close="closeUpdateDialog"
+      @cancel="showUpdateDialog = false"
     />
     <!--分页-->
     <el-pagination
@@ -120,10 +124,7 @@ import {
   Table,
   TableColumn
 } from 'element-ui';
-import {
-  ManagePapersPageComp,
-  PaperInfo
-} from '~/interfaces/pages/manage/ManagePapersPageComp';
+import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
 import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
 import PapersUpdateDialog from '~/components/manage/PapersUpdateDialog.vue';
@@ -140,24 +141,15 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  async asyncData() {
-    const papersRes = await basicSearch({
-      keyword: '',
-      page: 1,
-      sortKey: 'related'
-    });
-    return {
-      papers: papersRes.data.papers,
-      resultCount: papersRes.data.size
-    };
-  },
   data() {
     return {
+      papers: [] as PaperInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
       paperTitle: '', // 根据输入的论文名称进行搜索
       showUpdateDialog: false, // 是否显示修改的对话框
       paperWaitToUpdate: {} as PaperInfo // 待修改的paper
-    } as ManagePapersPageComp;
+    };
   },
   methods: {
     // 对论文类型进行更语义化的转换
@@ -182,10 +174,14 @@ export default Vue.extend({
         page: 1,
         sortKey: 'related'
       });
-      this.papers = papersRes.data.papers;
-      // 重置页码和搜索内容
+      // 增加默认值，相当于静默失败，避免500
+      const papersData = papersRes.data
+        ? papersRes.data
+        : { papers: [], size: this.resultCount };
+      this.papers = papersData.papers;
+      this.resultCount = papersData.size;
+      // 重置页码
       this.page = 1;
-      this.paperTitle = '';
     },
     // 请求下一页
     async showNextPage(page: number) {
