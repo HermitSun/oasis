@@ -127,6 +127,8 @@ import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
 import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
 
+const MAX_RECORDS = 100 * 10;
+
 export default Vue.extend({
   name: 'ManagePapers',
   components: {
@@ -148,6 +150,12 @@ export default Vue.extend({
       showUpdateDialog: false, // 是否显示修改的对话框
       paperWaitToUpdate: {} as PaperInfo // 待修改的paper
     };
+  },
+  computed: {
+    // 限制最大页数
+    totalRecords(): number {
+      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
+    }
   },
   methods: {
     // 对论文类型进行更语义化的转换
