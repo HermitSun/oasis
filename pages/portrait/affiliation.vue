@@ -90,7 +90,7 @@ export default Vue.extend({
 
 .affiliation-basic {
   margin: 10px 0;
-  @media @min-mobile-width {
+  @media @min-pad-width {
     .flex-space-between;
   }
 }
