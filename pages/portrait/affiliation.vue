@@ -1,6 +1,13 @@
 <template>
   <div>
     affiliationPortrait
+    <div class="subtitle">
+      📝 All Papers
+    </div>
+    <div class="subtitle-divider"></div>
+    <div id="bar">
+      123
+    </div>
   </div>
 </template>
 
@@ -11,6 +18,7 @@ import {
   getAffiliationPortrait,
   getAffiliatonPapers
 } from '~/api';
+import Bar from '~/utils/charts/bar';
 
 export default Vue.extend({
   name: 'Affiliation',
@@ -32,7 +40,10 @@ export default Vue.extend({
       ...query
     };
   },
-  mounted(): void {}
+  mounted(): void {
+    const bar = new Bar('#bar');
+    bar.addColor();
+  }
 });
 </script>
 
