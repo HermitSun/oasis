@@ -3,6 +3,9 @@
     <div style="padding: 20px">
       <div class="affiliation-basic">
         <PortraitProfileComp :profile="affiliationProfile" />
+        <div>研究方向词云</div>
+      </div>
+      <div class="affiliation-basic">
         <div>Citation Trend</div>
         <div>Publication Trends</div>
       </div>
