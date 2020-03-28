@@ -98,14 +98,24 @@
             <SearchResComp :res="res" />
           </div>
           <!--分页-->
-          <el-pagination
-            layout="prev, pager, next"
-            :current-page="page"
-            :total="resultCount"
-            background
-            style="text-align: center; margin-bottom: 20px"
-            @current-change="showNextPage"
-          />
+          <!--交给客户端渲染，因为分页的大小会随客户端大小而发生变化-->
+          <client-only>
+            <el-pagination
+              layout="prev, pager, next"
+              :current-page="page"
+              :total="totalRecords"
+              :pager-count="pagerSize"
+              background
+              style="text-align: center; margin-bottom: 10px"
+              @current-change="showNextPage"
+            />
+            <p
+              v-if="page === 100"
+              style="color: #C0C4CC; font-style: italic; text-align: center; margin-bottom: 10px"
+            >
+              我们已为您隐藏了相关度较低的搜索结果。
+            </p>
+          </client-only>
         </div>
         <!--过滤条件-->
         <div class="searchPage-content__filter">
@@ -138,81 +148,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="searchPage-content__result"
-      style="text-align: left;margin:10px 0"
-    >
-      <template>
-        <span class="searchPage-content__hint-text" style="margin-left:10px">
-          About
-        </span>
-        <span class="searchPage-content__result-text" style="margin-left:5px">
-          {{ resultCount }}
-        </span>
-        <span class="searchPage-content__hint-text" style="margin-left:5px">
-          Results
-        </span>
-        <div class="searchPage-time-range" style="float: right">
-          Time Range:
-          <input
-            v-model="startYear"
-            style="width: 53px;margin: 0 5px"
-            size="4"
-          />-<input
-            v-model="endYear"
-            style="width: 53px;margin-left: 5px"
-            size="4"
-          />
-          <button
-            class="basic-search__button"
-            style="width:50px;margin-left:10px"
-            @click="doTimeChangedSearch"
-          >
-            <img
-              src="~/assets/icon/icon-search.png"
-              width="20"
-              style="margin-bottom:10px"
-              alt="search"
-            />
-          </button>
-        </div>
-      </template>
-    </div>
-    <!--展示搜索内容-->
-    <p
-      v-if="searchResponse.length === 0"
-      style="min-height: 400px; line-height: 400px; text-align: center"
-    >
-      暂时没有数据...
-    </p>
-    <div
-      v-for="res in searchResponse"
-      :key="res.id"
-      style="margin-bottom: 20px"
-    >
-      <SearchResComp :res="res" />
-    </div>
-    <client-only>
-      <el-pagination
-        layout="prev, pager, next"
-        :current-page="page"
-        :total="totalRecords"
-        :pager-count="pagerSize"
-        background
-        style="text-align: center; margin-bottom: 10px"
-        @current-change="showNextPage"
-      />
-      <p
-        v-if="page === 100"
-        style="color: #C0C4CC; font-style: italic; text-align: center; margin-bottom: 10px"
-      >
-        我们已为您隐藏了相关度较低的搜索结果。
-      </p>
-    </client-only>
   </div>
-
-  <!--分页-->
-  <!--交给客户端渲染，因为分页的大小会随客户端大小而发生变化-->
 </template>
 
 <script lang="ts">
