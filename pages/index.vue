@@ -30,10 +30,7 @@
     </div>
     <div class="homepage-content">
       <div class="homepage-content__abstract">
-        <div class="subtitle">
-          📄 OASIS NEWS
-        </div>
-        <div class="subtitle-divider"></div>
+        <Subtitle title="📄 OASIS NEWS" />
         <div
           v-for="abstract in abstractResponse"
           :key="abstract.id"
@@ -44,10 +41,7 @@
       </div>
 
       <div class="homepage-content__ranking">
-        <div class="subtitle">
-          🏆 OASIS RANKINGS
-        </div>
-        <div class="subtitle-divider"></div>
+        <Subtitle title="🏆 OASIS RANKINGS" />
         <div>
           <AuthorBasicRanking :ranking="authorRanking" />
           <AffiliationBasicRanking :ranking="affiliationRanking" />
@@ -70,10 +64,12 @@ import AbstractComp from '~/components/abstract/AbstractComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
+
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { AffiliationBasicRankingResponse } from '~/interfaces/responses/ranking/AffiliationBasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
+import Subtitle from '~/components/public/Subtitle.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -127,7 +123,8 @@ export default Vue.extend({
     AbstractComp,
     AdvancedSearchComp,
     AuthorBasicRanking,
-    AffiliationBasicRanking
+    AffiliationBasicRanking,
+    Subtitle
   },
   // 渲染初始数据
   async asyncData() {
