@@ -141,9 +141,8 @@ export default Vue.extend({
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
     // 增加默认值，相当于静默失败，避免500
-    const searchData = searchRes.data
-      ? searchRes.data
-      : { papers: [], size: 0 };
+    const searchData =
+      searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
 
     return {
       searchResponse: searchData.papers,
@@ -225,9 +224,10 @@ export default Vue.extend({
         });
         // 增加默认值，相当于静默失败，避免500
         // size不变
-        const searchData = basicSearchRes.data
-          ? basicSearchRes.data
-          : { papers: [], size: this.resultCount };
+        const searchData =
+          basicSearchRes && basicSearchRes.data
+            ? basicSearchRes.data
+            : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
       } catch (e) {
@@ -255,9 +255,10 @@ export default Vue.extend({
         const advancedSearchRes = await advancedSearch(advancedSearchData);
         // 增加默认值，相当于静默失败，避免500
         // size不变
-        const searchData = advancedSearchRes.data
-          ? advancedSearchRes.data
-          : { papers: [], size: this.resultCount };
+        const searchData =
+          advancedSearchRes && advancedSearchRes.data
+            ? advancedSearchRes.data
+            : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
       } catch (e) {
