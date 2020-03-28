@@ -1,5 +1,6 @@
 <template>
   <div>
+    <PortraitProfileComp :profile="affiliationProfile" />
     <div class="affiliation-main">
       <div class="affiliation-main__authors portrait-module">
         <Subtitle title="🏆 Top Authors" />
@@ -32,12 +33,14 @@ import {
 } from '~/api';
 import Bar from '~/utils/charts/bar';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
+import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 
 export default Vue.extend({
   name: 'Affiliation',
   components: {
     Subtitle,
-    PaperInfoComp
+    PaperInfoComp,
+    PortraitProfileComp
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
@@ -49,11 +52,23 @@ export default Vue.extend({
       sorKey: 'recent'
     });
     const affiliationInterestRes = await getAffiliationInterest(affiliation);
+    const affiliationProfile = {
+      name: affiliation,
+      statistics: [
+        { prop: '📝 Papers', number: affiliationPortraitRes.data.count },
+        { prop: '📃 Citations', number: affiliationPortraitRes.data.citation },
+        { prop: '💻 Authors', number: affiliationPortraitRes.data.authorNum }
+      ]
+    };
     return {
-      affiliationPortrait: affiliationPortraitRes.data,
+      affiliationProfile,
+      affiliationCitationTrend: affiliationPortraitRes.data.citationTrend,
+      affiliationPublicationTrend:
+        affiliationPortraitRes.data.publicationTrends,
       affiliationPapers: affiliationPapersRes.data.papers,
       affiliationPaperSize: affiliationPapersRes.data.size,
       affiliationInterest: affiliationInterestRes.data,
+      affiliation,
       ...query
     };
   },
@@ -66,12 +81,14 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
 .affiliation-main {
   @media @min-pad-width {
     .flex-left-left-row;
     .affiliation-main__authors {
       width: 45vw;
     }
+
     .affiliation-main__paper {
       width: 55vw;
     }
