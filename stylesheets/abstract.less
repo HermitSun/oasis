@@ -3,6 +3,7 @@
 @abstract-item-title-font-size: @middle-font;
 @abstract-item-author-font-size: 14px;
 @abstract-item-info-font-size: @small-font;
+@abstract-item-info-max-height: 200px;
 
 .abstract-item {
   text-align: left;
@@ -42,15 +43,6 @@
     font-weight: 600;
     color: @background-blue;
     font-size: @abstract-item-author-font-size;
-
-    @media (max-width: 768px) {
-      display: block;
-      margin-top: 2px;
-      margin-bottom: 10px;
-    }
-    @media (min-width: 768px) {
-      margin-left: 10px
-    }
   }
 
   .abstract {
@@ -58,6 +50,8 @@
     line-height: calc(@abstract-item-author-font-size + 5px);
     color: @font-gray;
     margin-top: 10px;
+    max-height: @abstract-item-info-max-height;
+    .overflow-hidden-height(2);
   }
 
 

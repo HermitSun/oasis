@@ -34,7 +34,7 @@
         class="keyword-wrapper"
       >
         <div style="margin-right: 10px" class="hint">keywords:</div>
-        <div>
+        <div class="keyword-inner-wrapper">
           <span
             v-for="(keyword, index) in res.keywords"
             :key="index"

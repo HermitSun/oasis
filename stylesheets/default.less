@@ -48,17 +48,17 @@
 }
 
 // ----------flex垂直水平靠左-----------
-.flex-left-column {
+.flex-left-column(@align) {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: @align;
   flex-direction: column;
 }
 
-.flex-left-row {
+.flex-left-row(@align) {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: @align;
   flex-direction: row;
 }
 
@@ -73,6 +73,21 @@
   position: absolute;
   top: 50vh;
   left: 50vw;
+}
+
+// ----------超出部分用...省略, 传递行数------------
+.overflow-hidden-height(@line){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+  overflow: hidden;
+}
+
+.overflow-hidden-width(@width:''){
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  max-width: @width;
 }
 
 // -----------灰色阴影-------------
