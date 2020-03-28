@@ -13,10 +13,9 @@
 @search-item-author-font-size: 15px;
 @search-item-keyword-font-size: 10px;
 @search-item-reference-font-size: 12px;
-@search-item-abstract-max-height:200px;
+@search-item-abstract-max-height: 200px;
 
 @search-advanced-input-font-size: 10px;
-
 
 // 搜索页Header
 .searchPage-header {
@@ -34,7 +33,6 @@
 
 .searchPage-content {
   padding: 0 10px;
-
 }
 .searchPage-content__result {
   width: 75%;
@@ -43,27 +41,28 @@
 .searchPage-content__filter {
   width: 25%;
   padding: 10px;
-  .filter{
+  .filter {
     background: @background-gray;
     padding: 20px 10px;
     width: 100%;
     .flex-left-left-column;
-    .hint{
-      color:@background-blue;
-      font-size:@sub-middle-font;
+    .filter-wrapper {
+      width: 100%;
+      .hint {
+        color: @background-blue;
+        font-size: @sub-middle-font;
+      }
+      .divider {
+        background-color: @background-blue-light;
+        height: 1.5px;
+        margin: 10px 0;
+      }
     }
-    .divider{
-      background-color: @background-blue-light;
-      height: 1.5px;
-      margin:10px 0;
-    }
-
   }
 }
 
-
 // 搜索页内容
-.searchPage-content__sub-hint{
+.searchPage-content__sub-hint {
   font-size: @small-font;
   color: @font-gray;
 }
@@ -154,7 +153,7 @@
     line-height: calc(@search-item-keyword-font-size + 15px);
     .flex-left-left-row;
 
-    .keyword-inner-wrapper{
+    .keyword-inner-wrapper {
       .overflow-hidden-height(2);
       .keyword {
         border: @background-blue 1px solid;

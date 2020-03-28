@@ -111,25 +111,25 @@
         <div class="searchPage-content__filter">
           <span class="searchPage-content__sub-hint">Filter By</span>
           <div class="filter">
-            <div>
+            <div class="filter-wrapper">
               <div class="hint">
                 Time Range
               </div>
               <div class="divider"></div>
             </div>
-            <div>
+            <div class="filter-wrapper">
               <div class="hint">
                 Authors
               </div>
               <div class="divider"></div>
             </div>
-            <div>
+            <div class="filter-wrapper">
               <div class="hint">
                 Affiliations
               </div>
               <div class="divider"></div>
             </div>
-            <div>
+            <div class="filter-wrapper">
               <div class="hint">
                 Journals
               </div>
