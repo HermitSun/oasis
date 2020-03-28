@@ -4,7 +4,7 @@
  * @date 2020.02.24
  * @update 2020.03.16
  */
-export type contentType = 'conference' | 'periodicals'; // 会议或期刊
+export type contentType = 'conferences' | 'periodicals'; // 会议或期刊
 
 export interface SearchResponse {
   id: string;

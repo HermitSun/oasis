@@ -24,6 +24,8 @@ import { ConferenceInfoResponse } from '~/interfaces/responses/manage/Conference
 import { JournalInfoResponse } from '~/interfaces/responses/manage/JournalInfoResponse';
 import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResponse';
 import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
+import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
+import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -112,12 +114,44 @@ export async function getBasicSearchFilterCondition(
   return data;
 }
 
+// 16. 获取某机构画像
+export async function getAffiliationPortrait(
+  affiliation: string
+): Promise<BasicResponse<AffiliationPortraitResponse>> {
+  const { data } = await axios.get('/portrait/affiliation', {
+    params: { affiliation }
+  });
+  return data;
+}
+
+// 17. 获取某机构发表的所有论文
+export async function getAffiliatonPapers(
+  args: AffiliationPapersPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/paper/affiliation', {
+    params: args
+  });
+  return data;
+}
+
+// 18. 查看某机构研究方向
+export async function getAffiliationInterest(
+  affiliation: string
+): Promise<BasicResponse<ResearcherInterestResponse[]>> {
+  const { data } = await axios.get('/affiliation/interest', {
+    params: { affiliation }
+  });
+  return data;
+}
+
+// 19. 查看某机构下的作者排名详情
+
 // 以下为管理员端
 const mockConfig = {
   baseURL:
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top'
-      : 'http://localhost:3000',
+      : 'http://localhost:3000/test',
   timeout: 60 * 1000
 };
 const mockAxios = globalAxios.create(mockConfig);
