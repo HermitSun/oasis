@@ -1,4 +1,5 @@
 @import "default.less";
+@portrait-profile-min-width: 450px;
 @portrait-paper-title-font-size: @small-font;
 @portrait-paper-info-font-size: @sub-small-font;
 
@@ -9,13 +10,14 @@
 .portrait-profile{
   background-image: linear-gradient( 135deg, @background-blue-light 10%, @background-blue 100%);
   border-radius: 20px;
-  padding: 15px;
+  padding: 30px;
+  min-width: @portrait-profile-min-width;
   .name{
     color: @background-blue;
     font-size: @large-font;
     font-style: italic;
     font-weight: 500;
-    margin: 20px 0;
+    margin: 20px 0 40px;
   }
   .info{
     line-height: 40px;

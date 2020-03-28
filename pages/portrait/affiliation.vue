@@ -1,24 +1,30 @@
 <template>
   <div>
-    <PortraitProfileComp :profile="affiliationProfile" />
-    <div class="affiliation-main">
-      <div class="affiliation-main__authors portrait-module">
-        <Subtitle title="🏆 Top Authors" />
+    <div style="padding: 20px">
+      <div class="affiliation-basic">
+        <PortraitProfileComp :profile="affiliationProfile" />
+        <div>Citation Trend</div>
+        <div>Publication Trends</div>
       </div>
-      <div class="affiliation-main__paper portrait-module">
-        <Subtitle title="📝 All Paper" />
-        <div
-          v-for="paper in affiliationPapers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <!--TODO 这里也要做一下分页-->
-          <PaperInfoComp :paper="paper" />
+      <div class="affiliation-main">
+        <div class="affiliation-main__authors portrait-module">
+          <Subtitle title="🏆 Top Authors" />
+        </div>
+        <div class="affiliation-main__paper portrait-module">
+          <Subtitle title="📝 All Paper" />
+          <div
+            v-for="paper in affiliationPapers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <!--TODO 这里也要做一下分页-->
+            <PaperInfoComp :paper="paper" />
+          </div>
         </div>
       </div>
-    </div>
-    <div id="bar">
-      bar chart test
+      <div id="bar">
+        bar chart test
+      </div>
     </div>
   </div>
 </template>
@@ -81,6 +87,13 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+.affiliation-basic {
+  margin: 10px 0;
+  @media @min-mobile-width {
+    .flex-space-between;
+  }
+}
 
 .affiliation-main {
   @media @min-pad-width {
