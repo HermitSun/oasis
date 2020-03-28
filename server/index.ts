@@ -38,6 +38,8 @@ app.use('/affiliations', affiliations);
 app.use('/journals', journals);
 // 会议信息管理
 app.use('/conferences', conferences);
+// 论文信息管理
+app.use('/papers', conferences);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '',

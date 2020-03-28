@@ -9,7 +9,7 @@ const basicSearchMockData: BasicResponse<SearchFullResponse> = {
       {
         id: '0',
         title: 'Programs are abstract data types',
-        authors: ['M. Erwig'],
+        authors: ['M. Erwig', 'M. Erwig', 'M. Erwig'],
         _abstract:
           'We propose to view programs as abstract data types and to perform program changes by applying well-defined operations on programs. The ADT view of programs goes beyond the approach of syntax-directed editors and proof-editors since it is possible to combine basic update operations into larger update programs that can be stored and reused. It is crucial for the design of update operations and their composition to know which properties they can preserve when they are applied to a program. The author argues in favor of the abstract data type view of programs, and presents a general framework in which different programming languages, update languages, and properties can be studied.',
         // publicationTitle:

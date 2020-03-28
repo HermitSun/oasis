@@ -3,6 +3,7 @@
 @abstract-item-title-font-size: @middle-font;
 @abstract-item-author-font-size: 14px;
 @abstract-item-info-font-size: @small-font;
+@abstract-item-info-max-height: 200px;
 
 .abstract-item {
   text-align: left;
@@ -57,6 +58,8 @@
     line-height: calc(@abstract-item-author-font-size + 5px);
     color: @font-gray;
     margin-top: 10px;
+    max-height: @abstract-item-info-max-height;
+    .overflow-hidden-height(2);
   }
 
 

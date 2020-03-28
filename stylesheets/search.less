@@ -13,8 +13,10 @@
 @search-item-author-font-size: 15px;
 @search-item-keyword-font-size: 10px;
 @search-item-reference-font-size: 12px;
+@search-item-abstract-max-height:200px;
 
 @search-advanced-input-font-size: 10px;
+
 
 // 搜索页Header
 .searchPage-header {
@@ -132,6 +134,8 @@
   .abstract {
     color: @font-gray;
     margin: 10px 0;
+    max-height: @search-item-abstract-max-height;
+    .overflow-hidden-height(3);
   }
 
   .divider {
@@ -148,16 +152,15 @@
   .keyword-wrapper {
     word-wrap: break-word;
     line-height: calc(@search-item-keyword-font-size + 15px);
-    @media @max-pad-width {
-      //height: 70px;
-      //text-overflow: ellipsis;
-      //overflow:hidden;
-    }
+    .flex-left-left-row;
 
-    .keyword {
-      border: @background-blue 1px solid;
-      padding: 2px;
-      font-size: @search-item-keyword-font-size;
+    .keyword-inner-wrapper{
+      .overflow-hidden-height(2);
+      .keyword {
+        border: @background-blue 1px solid;
+        padding: 2px;
+        font-size: @search-item-keyword-font-size;
+      }
     }
   }
 
@@ -220,7 +223,7 @@
 }
 
 .search-button {
-  width: 125px;
+  width: 140px;
   height: 30px;
   padding: 8px 15px;
   font-size: @search-button-font-size;

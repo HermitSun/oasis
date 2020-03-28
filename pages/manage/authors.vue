@@ -77,7 +77,7 @@
     <el-pagination
       layout="prev, pager, next"
       :current-page.sync="page"
-      :total="resultCount"
+      :total="totalRecords"
       background
       style="text-align: center; margin-bottom: 20px"
       @current-change="showNextPage"
@@ -103,6 +103,8 @@ import {
   WaitToMergeAuthorInfo
 } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
+
+const MAX_RECORDS = 100 * 10;
 
 export default Vue.extend({
   name: 'ManageAuthors',
@@ -132,6 +134,12 @@ export default Vue.extend({
       authorName: '', // 根据输入的学者姓名进行搜索
       showSelectDestDialog: false
     } as ManageAuthorsPageComp;
+  },
+  computed: {
+    // 限制最大页数
+    totalRecords(): number {
+      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
+    }
   },
   methods: {
     // 获取row-key，用于跨页记忆
