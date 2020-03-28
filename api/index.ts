@@ -191,7 +191,8 @@ export async function updateJournalInfo(
 export async function updatePaperInfo(
   args: UpdatePaperInfoPayload
 ): Promise<BasicResponse> {
-  const { data } = await mockAxios.put('/', args);
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/papers/update', args);
   return data;
 }
 

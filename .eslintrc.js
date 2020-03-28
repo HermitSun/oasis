@@ -36,6 +36,8 @@ module.exports = {
     }],
     // 以下内容交给prettier处理
     'vue/max-attributes-per-line': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/html-indent': 'off',
     'indent': 'off',
     'func-call-spacing': 'off',
     'arrow-parens': 'off'

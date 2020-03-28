@@ -56,7 +56,7 @@
     <el-pagination
       layout="prev, pager, next"
       :current-page.sync="page"
-      :total="resultCount"
+      :total="totalRecords"
       background
       style="text-align: center; margin-bottom: 20px"
       @current-change="showNextPage"
@@ -69,6 +69,8 @@ import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getConferenceInfo, updateJournalInfo } from '~/api';
 import { ManageConferencesPageComp } from '~/interfaces/pages/manage/ManageConferencesPageComp';
+
+const MAX_RECORDS = 100 * 10;
 
 export default Vue.extend({
   name: 'ManageConferences',
@@ -94,6 +96,12 @@ export default Vue.extend({
       waitToUpdateName: '', // 等待更新的名称
       updateDestName: '' // 更新后的名称
     } as ManageConferencesPageComp;
+  },
+  computed: {
+    // 限制最大页数
+    totalRecords(): number {
+      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
+    }
   },
   methods: {
     // 打开对话框
