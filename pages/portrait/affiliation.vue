@@ -1,15 +1,23 @@
 <template>
   <div>
     <div class="affiliation-main">
-      <div class="affiliation-main__authors">
+      <div class="affiliation-main__authors portrait-module">
         <Subtitle title="🏆 Top Authors" />
       </div>
-      <div class="affiliation-main__paper">
+      <div class="affiliation-main__paper portrait-module">
         <Subtitle title="📝 All Paper" />
+        <div
+          v-for="paper in affiliationPapers"
+          :key="paper.id"
+          style="margin-bottom: 20px"
+        >
+          <!--TODO 这里也要做一下分页-->
+          <PaperInfoComp :paper="paper" />
+        </div>
       </div>
     </div>
     <div id="bar">
-      123
+      bar chart test
     </div>
   </div>
 </template>
@@ -23,15 +31,17 @@ import {
   getAffiliatonPapers
 } from '~/api';
 import Bar from '~/utils/charts/bar';
+import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 
 export default Vue.extend({
   name: 'Affiliation',
   components: {
-    Subtitle
+    Subtitle,
+    PaperInfoComp
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
-    // TODO() const affiliation = query.affiliation;
+    // TODO const affiliation = query.affiliation;
     const affiliationPortraitRes = await getAffiliationPortrait(affiliation);
     const affiliationPapersRes = await getAffiliatonPapers({
       affiliation,

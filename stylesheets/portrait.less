@@ -1,1 +1,96 @@
 @import "default.less";
+@portrait-paper-title-font-size: @small-font;
+@portrait-paper-info-font-size: @sub-small-font;
+
+.portrait-module{
+  padding: 5px 10px;
+}
+
+.portrait-paper {
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 20px;
+  border: 1px solid @border-gray;
+
+  .title {
+    font-weight: 500;
+    margin-bottom: 2px;
+
+    a {
+      font-size: @portrait-paper-title-font-size;
+      text-decoration: transparent;
+    }
+
+    a:link {
+      color: @font-gray-dark;
+    }
+
+    a:visited {
+      color: @background-blue;
+    }
+
+    a:hover {
+      color: @bright-yellow;
+    }
+
+    a:active {
+      color: @background-blue;
+    }
+  }
+
+  .author {
+    font-size: @portrait-paper-info-font-size;
+    color: @background-blue;
+  }
+
+  .info {
+    color: @font-gray;
+    font-size: @portrait-paper-info-font-size;
+  }
+
+  .abstract {
+    color: @font-gray;
+    margin: 10px 0;
+    font-size: @portrait-paper-info-font-size;
+    .overflow-hidden-height(3);
+  }
+
+  .divider {
+    width: 100%;
+    height: 1.5px;
+    margin-bottom: 8px;
+    background: @background-blue-light;
+  }
+
+
+  .keyword-wrapper {
+    .flex-left-left-row;
+    word-wrap: break-word;
+    line-height: calc(@portrait-paper-info-font-size + 12px);
+    font-size: @portrait-paper-info-font-size;
+    .keyword-inner-wrapper {
+      .overflow-hidden-height(2);
+      .keyword {
+        border: @border-gray 1px solid;
+        padding: 1px;
+
+      }
+    }
+  }
+
+  .detail-hint {
+    text-align: right;
+    float: right;
+    font-size: @portrait-paper-info-font-size;
+    @media @max-pad-width {
+      //>=768的设备
+      min-width: 60px;
+    }
+    @media @min-pad-width {
+      //>=992的设备
+      min-width: 100px;
+    }
+  }
+
+
+}
