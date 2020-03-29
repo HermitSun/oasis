@@ -47,12 +47,12 @@ export default Vue.extend({
       default: ''
     },
     startYear: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '2001'
     },
     endYear: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '2020'
     }
   },
   data() {
@@ -70,8 +70,8 @@ export default Vue.extend({
           mode: 'basic',
           keyword,
           page: '1',
-          startYear: String(this.startYear), // 开始日期
-          endYear: String(this.endYear), // 结束日期
+          startYear: this.startYear, // 开始日期
+          endYear: this.endYear, // 结束日期
           sortKey: defaultSortKey as sortKey
         }
       });
