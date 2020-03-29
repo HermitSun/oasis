@@ -1,62 +1,87 @@
+@import 'responsive.less';
 // ----------default-----------
-@background-blue: #2C5F77;   // 背景蓝色
+@background-blue: #2c5f77; // 背景蓝色
 @background-blue-light: rgba(44, 95, 119, 0.15);
-@bright-yellow: #EDC22C;     // 字体亮黄色
-@background-gray: #F7F7F7;   // 背景灰色
-@background-gray-dark: #e9e9e9;// 背景深灰
+@bright-yellow: #edc22c; // 字体亮黄色
+@background-gray: #f7f7f7; // 背景灰色
+@background-gray-dark: #e9e9e9; // 背景深灰
 
 @font-dark: #2c3e50;
-@font-gray: #959393;          // 字体灰色
-@font-gray-middle: #716F6F;
+@font-gray: #959393; // 字体灰色
+@font-gray-middle: #716f6f;
 @font-gray-dark: #676666;
 @middle-border-radius: 20px;
 
 @large-font: 1.8rem;
 @sub-large-font: 1.4rem;
 @middle-font: 1.2rem;
+@sub-middle-font: 1rem;
 @small-font: 0.9rem;
 
-
 @subtitle-divider-height: 1.5px;
+@homepage-header-height: 35vh;
 
-@homepage-header-height:35vh;
-@searchPage-header-height:80px;
+@searchPage-header-height__mobile: 60px;
+@searchPage-header-height__pc: 80px;
+
+@searchPage-logo-height__mobile: 20px;
+@searchPage-logo-height__pc: 40px;
+
+@search-input-width__mobile: 60vw;
+@search-input-width__pc: 50vw;
+
+@search-input-height__mobile: @searchPage-logo-height__mobile+10px;
+@search-input-height__pc:@searchPage-logo-height__pc;
 
 // ----------flex垂直水平居中-----------
-.flex-center-column{
+.flex-center-column {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.flex-center-row{
+.flex-center-row {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
 }
 
-
-// ----------flex垂直水平靠左-----------
-.flex-left-column{
+// ----------flex水平靠左-----------
+// 垂直居中
+.flex-left-center-column {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
 }
 
-.flex-left-row{
+.flex-left-center-row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
 }
+// 垂直靠左
+.flex-left-left-column{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.flex-left-left-row{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
 
 // ----------flex垂直水平靠左-----------
-.flex-space-between{
-  display:flex;
-  justify-content:space-between;
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 // ----------绝对居中------------
@@ -66,32 +91,47 @@
   left: 50vw;
 }
 
+// ----------超出部分用...省略, 传递行数------------
+.overflow-hidden-height(@line){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+  overflow: hidden;
+}
+
+.overflow-hidden-width(@width:''){
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  max-width: @width;
+}
+
 // -----------灰色阴影-------------
-.gray-shadow{
+.gray-shadow {
   -webkit-box-shadow: 0 0 10px @background-gray-dark;
   -moz-box-shadow: 0 0 10px @background-gray-dark;
   box-shadow: 0 0 10px @background-gray-dark;
 }
 
 // -----------小标题-------------
-.subtitle{
+.subtitle {
   font-size: @sub-large-font;
   color: @background-blue;
   text-align: left;
   font-weight: 500;
 }
-.subtitle-divider{
+.subtitle-divider {
   background: @background-blue;
   height: @subtitle-divider-height;
   margin: 10px 0;
 }
-.gray-background{
+.gray-background {
   background: @background-gray;
   padding: 20px 10px;
 }
 
 // -----------遮罩层------------
-.mask{
+.mask {
   position: fixed;
   top: 0;
   left: 0;
@@ -101,7 +141,7 @@
 }
 
 // -----------提示框------------
-.mask-box{
+.mask-box {
   text-align: left;
   border-radius: 20px;
   backdrop-filter: blur(0.5rem);
@@ -110,23 +150,23 @@
   padding: 0.5rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: -0.25rem -0.25rem 0.5rem rgba(255, 255, 255, 0.07),
-  0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
+    0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
     -0.75rem -0.75rem 1.75rem rgba(255, 255, 255, 0.07),
-  0.75rem 0.75rem 1.75rem rgba(0, 0, 0, 0.12),
-  inset 8rem 8rem 8rem rgba(0, 0, 0, 0.05),
+    0.75rem 0.75rem 1.75rem rgba(0, 0, 0, 0.12),
+    inset 8rem 8rem 8rem rgba(0, 0, 0, 0.05),
     inset -8rem -8rem 8rem rgba(255, 255, 255, 0.05);
 }
-.mask-box-header{
+.mask-box-header {
   .flex-space-between;
   color: floralwhite;
   font-weight: 500;
   font-size: 1.2rem;
 }
 
-button{
+button {
   outline: none;
 }
 
-.mask-box-content{
+.mask-box-content {
   color: floralwhite;
 }

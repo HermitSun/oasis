@@ -1,3 +1,4 @@
+import globalAxios from 'axios';
 import axios from './config';
 import {
   AdvancedSearchPayload,
@@ -16,13 +17,20 @@ import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportRe
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { ResearcherInterestResponse } from '@/interfaces/responses/interest/ResearcherInterestResponse';
 import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
+import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
+import { AffiliationInfoResponse } from '~/interfaces/responses/manage/AffiliationInfoResponse';
+import { ConferenceInfoResponse } from '~/interfaces/responses/manage/ConferenceInfoResponse';
+import { JournalInfoResponse } from '~/interfaces/responses/manage/JournalInfoResponse';
+import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResponse';
+import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 
 // 1. 普通搜索
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/mongo', {
-    params: { ...args }
+  const { data } = await axios.get('/search/basic/es', {
+    params: args
   });
   return data;
 }
@@ -32,7 +40,7 @@ export async function advancedSearch(
   args: AdvancedSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/search/advanced/mongo', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -42,7 +50,7 @@ export async function getAffiliationBasicRanking(
   args: RankingPayload
 ): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/affiliation', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -52,7 +60,7 @@ export async function getAuthorBasicRanking(
   args: RankingPayload
 ): Promise<BasicResponse<AuthorBasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/author', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -62,7 +70,7 @@ export async function getResearcherInterest(
   args: ResearcherInterestPayload
 ): Promise<BasicResponse<ResearcherInterestResponse[]>> {
   const { data } = await axios.get('/researcher/interest', {
-    params: { ...args }
+    params: args
   });
   return data;
 }
@@ -90,5 +98,122 @@ export async function getReferenceById(
   const { data } = await axios.get('/paper/reference', {
     params: { paperId }
   });
+  return data;
+}
+
+// 8. 获取普通搜索的二次筛选条件
+export async function getBasicSearchFilterCondition(
+  args: SearchFilterPayload
+): Promise<BasicResponse<SearchFilterResponse>> {
+  // TODO 替换为后端真实url
+  const { data } = await axios.get('/search/basic/filter', {
+    params: args
+  });
+  return data;
+}
+
+// 以下为管理员端
+const mockConfig = {
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://wensun.top'
+      : 'http://localhost:3000',
+  timeout: 60 * 1000
+};
+const mockAxios = globalAxios.create(mockConfig);
+// 26. 获取机构信息 getAffiliationInfo
+export async function getAffiliationInfo(
+  page: number = 1,
+  name?: string
+): Promise<BasicResponse<AffiliationInfoResponse>> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/affiliations/info', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 27. 合并机构信息 mergeAffiliationInfo
+export async function mergeAffiliationInfo(
+  src: string[],
+  dest: string
+): Promise<BasicResponse> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/affiliations/merge', { src, dest });
+  return data;
+}
+
+// 28. 获取会议信息 getConferenceInfo
+export async function getConferenceInfo(
+  page: number = 1,
+  name?: string
+): Promise<BasicResponse<ConferenceInfoResponse>> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/conferences/info', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 29. 修改会议信息 updateConferenceInfo
+export async function updateConferenceInfo(
+  src: string,
+  dest: string
+): Promise<BasicResponse> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/conferences/update', { src, dest });
+  return data;
+}
+
+// 30. 获取期刊信息 getJournalInfo
+export async function getJournalInfo(
+  page: number = 1,
+  name?: string
+): Promise<BasicResponse<JournalInfoResponse>> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/journals/info', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 31. 修改期刊信息 updateJournalInfo
+export async function updateJournalInfo(
+  src: string,
+  dest: string
+): Promise<BasicResponse> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/journals/update', { src, dest });
+  return data;
+}
+
+// 32. 修改论文信息 updatePaperInfo
+export async function updatePaperInfo(
+  args: UpdatePaperInfoPayload
+): Promise<BasicResponse> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/papers/update', args);
+  return data;
+}
+
+// 33. 获取作者信息 getAuthorInfo
+export async function getAuthorInfo(
+  page: number = 1,
+  name?: string
+): Promise<BasicResponse<AuthorInfoResponse>> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.get('/authors/info', {
+    params: { name, page }
+  });
+  return data;
+}
+
+// 34. 合并作者信息 mergeAuthorInfo
+export async function mergeAuthorInfo(
+  src: string[],
+  dest: string
+): Promise<BasicResponse> {
+  // TODO: 切换成真实的URL
+  const { data } = await mockAxios.put('/authors/merge', { src, dest });
   return data;
 }

@@ -18,7 +18,7 @@
         />
       </label>
       <button
-        class="advanced-search__button"
+        class="mobile-hidden advanced-search__button"
         style="margin-left: 20px"
         @click="showAdvancedSearch = true"
       >
@@ -31,75 +31,193 @@
       <!-- TODO 响应式布局解决方案 -->
     </div>
     <div v-loading="isLoading" class="searchPage-content">
-      <div
-        class="searchPage-content__result"
-        style="text-align: left;margin:10px 0"
-      >
-        <template>
-          <span class="searchPage-content__hint-text" style="margin-left:10px">
-            About
-          </span>
-          <span class="searchPage-content__result-text" style="margin-left:5px">
-            {{ resultCount }}
-          </span>
-          <span class="searchPage-content__hint-text" style="margin-left:5px">
-            Results
-          </span>
-          <div class="searchPage-time-range" style="float: right">
-            Time Range:
-            <input
-              v-model="startYear"
-              style="width: 53px;margin: 0 5px"
-              size="4"
-            />-<input
-              v-model="endYear"
-              style="width: 53px;margin-left: 5px"
-              size="4"
-            />
-            <button
-              class="basic-search__button"
-              style="width:50px;margin-left:10px"
-              @click="doTimeChangedSearch"
-            >
-              <img
-                src="~/assets/icon/icon-search.png"
-                width="20"
-                style="margin-bottom:10px"
-                alt="search"
-              />
-            </button>
-          </div>
-        </template>
+      <!--About 3190 Results-->
+      <div style="margin: 10px 0">
+        <span class="searchPage-content__hint-text" style="margin-left:10px">
+          About
+        </span>
+        <span class="searchPage-content__result-text" style="margin-left:5px">
+          {{ resultCount }}
+        </span>
+        <span class="searchPage-content__hint-text" style="margin-left:5px">
+          Results
+        </span>
       </div>
-      <!--展示搜索内容-->
-      <p
-        v-if="searchResponse.length === 0"
-        style="min-height: 400px; line-height: 400px; text-align: center"
-      >
-        暂时没有数据...
-      </p>
-      <div
-        v-for="res in searchResponse"
-        :key="res.id"
-        style="margin-bottom: 20px"
-      >
-        <SearchResComp :res="res" />
+      <!--搜索结果+过滤条件-->
+      <div class="flex-left-left-row">
+        <!--搜索结果-->
+        <div class="searchPage-content__result" style="text-align: left">
+          <template>
+            <div class="flex-space-between">
+              <span
+                style="margin-right: 10px"
+                class="searchPage-content__sub-hint"
+                >Papers</span
+              >
+              <!--<span class="searchPage-time-range">-->
+              <!--Time Range:-->
+              <!--<input-->
+              <!--v-model="startYear"-->
+              <!--style="width: 53px;margin: 0 5px"-->
+              <!--size="4"-->
+              <!--/>-<input-->
+              <!--v-model="endYear"-->
+              <!--style="width: 53px;margin-left: 5px"-->
+              <!--size="4"-->
+              <!--/>-->
+              <!--<button-->
+              <!--class="basic-search__button"-->
+              <!--style="width:50px;margin-left:10px"-->
+              <!--@click="doTimeChangedSearch"-->
+              <!--&gt;-->
+              <!--<img-->
+              <!--src="~/assets/icon/icon-search.png"-->
+              <!--width="20"-->
+              <!--style="margin-bottom:10px"-->
+              <!--alt="search"-->
+              <!--/>-->
+              <!--</button>-->
+              <!--</span>-->
+              <span style="float: right" class="searchPage-content__sub-hint">
+                Sort By
+              </span>
+            </div>
+          </template>
+          <!--展示搜索内容-->
+          <p
+            v-if="searchResponse.length === 0"
+            style="min-height: 400px; line-height: 400px; text-align: center"
+          >
+            暂时没有数据...
+          </p>
+          <div
+            v-for="res in searchResponse"
+            :key="res.id"
+            style="margin-bottom: 20px"
+          >
+            <SearchResComp :res="res" />
+          </div>
+          <!--分页-->
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="resultCount"
+            background
+            style="text-align: center; margin-bottom: 20px"
+            @current-change="showNextPage"
+          />
+        </div>
+        <!--过滤条件-->
+        <div class="searchPage-content__filter">
+          <span class="searchPage-content__sub-hint">Filter By</span>
+          <div class="filter">
+            <div class="filter-wrapper">
+              <div class="hint">
+                Time Range
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div class="filter-wrapper">
+              <div class="hint">
+                Authors
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div class="filter-wrapper">
+              <div class="hint">
+                Affiliations
+              </div>
+              <div class="divider"></div>
+            </div>
+            <div class="filter-wrapper">
+              <div class="hint">
+                Journals
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!--分页-->
-    <el-pagination
-      layout="prev, pager, next"
-      :current-page="page"
-      :total="resultCount"
-      background
-      style="text-align: center; margin-bottom: 20px"
-      @current-change="showNextPage"
-    />
+    <div
+      class="searchPage-content__result"
+      style="text-align: left;margin:10px 0"
+    >
+      <template>
+        <span class="searchPage-content__hint-text" style="margin-left:10px">
+          About
+        </span>
+        <span class="searchPage-content__result-text" style="margin-left:5px">
+          {{ resultCount }}
+        </span>
+        <span class="searchPage-content__hint-text" style="margin-left:5px">
+          Results
+        </span>
+        <div class="searchPage-time-range" style="float: right">
+          Time Range:
+          <input
+            v-model="startYear"
+            style="width: 53px;margin: 0 5px"
+            size="4"
+          />-<input
+            v-model="endYear"
+            style="width: 53px;margin-left: 5px"
+            size="4"
+          />
+          <button
+            class="basic-search__button"
+            style="width:50px;margin-left:10px"
+            @click="doTimeChangedSearch"
+          >
+            <img
+              src="~/assets/icon/icon-search.png"
+              width="20"
+              style="margin-bottom:10px"
+              alt="search"
+            />
+          </button>
+        </div>
+      </template>
+    </div>
+    <!--展示搜索内容-->
+    <p
+      v-if="searchResponse.length === 0"
+      style="min-height: 400px; line-height: 400px; text-align: center"
+    >
+      暂时没有数据...
+    </p>
+    <div
+      v-for="res in searchResponse"
+      :key="res.id"
+      style="margin-bottom: 20px"
+    >
+      <SearchResComp :res="res" />
+    </div>
+    <client-only>
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="totalRecords"
+        :pager-count="pagerSize"
+        background
+        style="text-align: center; margin-bottom: 10px"
+        @current-change="showNextPage"
+      />
+      <p
+        v-if="page === 100"
+        style="color: #C0C4CC; font-style: italic; text-align: center; margin-bottom: 10px"
+      >
+        我们已为您隐藏了相关度较低的搜索结果。
+      </p>
+    </client-only>
   </div>
+
+  <!--分页-->
+  <!--交给客户端渲染，因为分页的大小会随客户端大小而发生变化-->
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination } from 'element-ui';
 import { basicSearch, advancedSearch } from '~/api';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
@@ -108,14 +226,17 @@ import {
   SearchPageComp
 } from '~/interfaces/pages/search/SearchPageComp';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { isMobile } from '~/utils/breakpoint';
 
 const defaultSortKey = 'related';
+const MAX_RECORDS = 100 * 10;
 
 export default Vue.extend({
   name: 'IndexVue',
   components: {
     SearchResComp,
-    AdvancedSearchComp
+    AdvancedSearchComp,
+    [Pagination.name]: Pagination
   },
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
@@ -126,9 +247,14 @@ export default Vue.extend({
     };
     // 这里非常不优雅，但是没有办法
     const searchRes = await basicSearch(searchPayload);
+    // 增加默认值，相当于静默失败，避免500
+    const searchData = searchRes.data
+      ? searchRes.data
+      : { papers: [], size: 0 };
+
     return {
-      searchResponse: searchRes.data.papers,
-      resultCount: searchRes.data.size,
+      searchResponse: searchData.papers,
+      resultCount: searchData.size,
       ...query,
       page: Number(query.page),
       // 保留这个属性是为了在高级搜索时显示更精细的搜索内容
@@ -140,6 +266,17 @@ export default Vue.extend({
       showAdvancedSearch: false,
       isLoading: false // 是否正在加载
     } as SearchPageComp;
+  },
+  computed: {
+    // 分页的大小
+    // 在移动端的客户端渲染为5个
+    pagerSize(): number {
+      return process.client && isMobile() ? 5 : 7;
+    },
+    // 限制最大页数
+    totalRecords(): number {
+      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
+    }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
   // 在SSR时路由是非响应的，需要手动watch
@@ -193,10 +330,17 @@ export default Vue.extend({
           endYear: Number(this.endYear),
           sortKey: this.sortKey
         });
-        this.searchResponse = basicSearchRes.data.papers;
-        this.resultCount = basicSearchRes.data.size;
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData = basicSearchRes.data
+          ? basicSearchRes.data
+          : { papers: [], size: this.resultCount };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
       } catch (e) {
         this.$message.error(e.toString());
+        // 增加一个默认值
+        this.searchResponse = [];
       } finally {
         this.isLoading = false;
       }
@@ -216,10 +360,16 @@ export default Vue.extend({
           sortKey: this.sortKey
         };
         const advancedSearchRes = await advancedSearch(advancedSearchData);
-        this.searchResponse = advancedSearchRes.data.papers;
-        this.resultCount = advancedSearchRes.data.size;
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData = advancedSearchRes.data
+          ? advancedSearchRes.data
+          : { papers: [], size: this.resultCount };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
       } catch (e) {
         this.$message.error(e.toString());
+        this.searchResponse = [];
       } finally {
         this.isLoading = false;
       }
