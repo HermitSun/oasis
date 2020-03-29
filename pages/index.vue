@@ -42,12 +42,12 @@
 
       <div class="homepage-content__ranking">
         <Subtitle title="🏆 OASIS RANKINGS" />
-        <div>
-          <AuthorBasicRanking :ranking="authorRanking" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" />
-          <ConferenceBasicRanking :ranking="conferenceRanking" />
-          <JournalBasicRanking :ranking="journalRanking" />
-          <KeywordBasicRanking :ranking="keywordRanking" />
+        <div class="homepage-content__rankings">
+          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+          <JournalBasicRanking :ranking="journalRanking" class="rank" />
+          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
+          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
+          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
         </div>
       </div>
     </div>
@@ -93,7 +93,6 @@ async function requestActivePaperAbstract() {
   }
   return res;
 }
-
 async function requestAffiliationBasicRanking() {
   const res: { affiliationRanking: BasicRankingResponse[] } = {
     affiliationRanking: []
@@ -109,7 +108,6 @@ async function requestAffiliationBasicRanking() {
   }
   return res;
 }
-
 async function requestAuthorBasicRanking() {
   const res: { authorRanking: AuthorBasicRankingResponse[] } = {
     authorRanking: []
@@ -125,7 +123,6 @@ async function requestAuthorBasicRanking() {
   }
   return res;
 }
-
 async function requestConferenceBasicRanking() {
   const res: { conferenceRanking: BasicRankingResponse[] } = {
     conferenceRanking: []
@@ -141,7 +138,6 @@ async function requestConferenceBasicRanking() {
   }
   return res;
 }
-
 async function requestJournalBasicRanking() {
   const res: { journalRanking: BasicRankingResponse[] } = {
     journalRanking: []
@@ -157,7 +153,6 @@ async function requestJournalBasicRanking() {
   }
   return res;
 }
-
 async function requestKeywordBasicRanking() {
   const res: { keywordRanking: BasicRankingResponse[] } = {
     keywordRanking: []
@@ -258,6 +253,16 @@ export default Vue.extend({
 
   .homepage-content__ranking {
     .gray-background;
+    .homepage-content__rankings {
+      @media @min-pc-width {
+        .flex-space-between;
+        flex-wrap: wrap;
+        .rank {
+          width: 30%;
+          margin: 0 10px;
+        }
+      }
+    }
   }
   /*
   @media @min-pc-width {
