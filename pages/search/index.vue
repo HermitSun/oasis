@@ -1,35 +1,11 @@
 <template>
   <div>
-    <!--此处可以考虑重构，单独分离一个搜索框出来-->
-    <div class="searchPage-header">
-      <img
-        src="~/assets/logo.png"
-        class="searchPage-header__logo"
-        alt="oasis"
-        style="cursor: pointer"
-        @click="$router.push('/')"
-      />
-      <label>
-        <input
-          v-model="searchContent"
-          class="basic-search__input"
-          type="text"
-          @keyup.enter="startAnotherBasicSearch(searchContent)"
-        />
-      </label>
-      <button
-        class="mobile-hidden advanced-search__button"
-        style="margin-left: 20px"
-        @click="showAdvancedSearch = true"
-      >
-        Advanced Search
-      </button>
-      <AdvancedSearchComp
-        v-if="showAdvancedSearch"
-        @close="showAdvancedSearch = false"
-      />
-      <!-- TODO 响应式布局解决方案 -->
-    </div>
+    <!--搜索框-->
+    <SearchBar
+      :keyword="searchContent"
+      :start-year="startYear"
+      :end-year="endYear"
+    />
     <div v-loading="isLoading" class="searchPage-content">
       <!--About 3190 Results-->
       <div style="margin: 10px 0">
@@ -219,8 +195,8 @@
 import Vue from 'vue';
 import { Pagination } from 'element-ui';
 import { basicSearch, advancedSearch } from '~/api';
+import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
-import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import {
   SearchDataFromProp,
   SearchPageComp
@@ -234,8 +210,8 @@ const MAX_RECORDS = 100 * 10;
 export default Vue.extend({
   name: 'IndexVue',
   components: {
+    SearchBar,
     SearchResComp,
-    AdvancedSearchComp,
     [Pagination.name]: Pagination
   },
   // 数据根据路由在服务端进行渲染
