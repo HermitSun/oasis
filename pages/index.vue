@@ -45,6 +45,9 @@
         <div>
           <AuthorBasicRanking :ranking="authorRanking" />
           <AffiliationBasicRanking :ranking="affiliationRanking" />
+          <ConferenceBasicRanking :ranking="conferenceRanking" />
+          <JournalBasicRanking :ranking="journalRanking" />
+          <KeywordBasicRanking :ranking="keywordRanking" />
         </div>
       </div>
     </div>
@@ -58,7 +61,10 @@ import axios from 'axios';
 import {
   getActivePaperAbstract,
   getAffiliationBasicRanking,
-  getAuthorBasicRanking
+  getAuthorBasicRanking,
+  getConferenceBasicRanking,
+  getJournalBasicRanking,
+  getKeywordBasicRanking
 } from '~/api';
 import AbstractComp from '~/components/abstract/AbstractComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
@@ -66,10 +72,13 @@ import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { AffiliationBasicRankingResponse } from '~/interfaces/responses/ranking/AffiliationBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
 import Subtitle from '~/components/public/Subtitle.vue';
+import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
+import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
+import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -86,7 +95,7 @@ async function requestActivePaperAbstract() {
 }
 
 async function requestAffiliationBasicRanking() {
-  const res: { affiliationRanking: AffiliationBasicRankingResponse[] } = {
+  const res: { affiliationRanking: BasicRankingResponse[] } = {
     affiliationRanking: []
   };
   try {
@@ -117,6 +126,52 @@ async function requestAuthorBasicRanking() {
   return res;
 }
 
+async function requestConferenceBasicRanking() {
+  const res: { conferenceRanking: BasicRankingResponse[] } = {
+    conferenceRanking: []
+  };
+  try {
+    const conferenceBasicRankingRes = await getConferenceBasicRanking({
+      sortKey: 'acceptanceCount',
+      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+    });
+    res.conferenceRanking = conferenceBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestJournalBasicRanking() {
+  const res: { journalRanking: BasicRankingResponse[] } = {
+    journalRanking: []
+  };
+  try {
+    const journalBasicRankingRes = await getJournalBasicRanking({
+      sortKey: 'acceptanceCount',
+      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+    });
+    res.journalRanking = journalBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestKeywordBasicRanking() {
+  const res: { keywordRanking: BasicRankingResponse[] } = {
+    keywordRanking: []
+  };
+  try {
+    const keywordBasicRankingRes = await getKeywordBasicRanking(
+      Number(new Date().getFullYear() - 1)
+    ); // TODO 去掉 - 1);
+    res.keywordRanking = keywordBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
 export default Vue.extend({
   name: 'HomePage',
   components: {
@@ -124,6 +179,9 @@ export default Vue.extend({
     AdvancedSearchComp,
     AuthorBasicRanking,
     AffiliationBasicRanking,
+    ConferenceBasicRanking,
+    KeywordBasicRanking,
+    JournalBasicRanking,
     Subtitle
   },
   // 渲染初始数据
@@ -131,11 +189,17 @@ export default Vue.extend({
     const abstract = await requestActivePaperAbstract();
     const affiliationRanking = await requestAffiliationBasicRanking();
     const authorRanking = await requestAuthorBasicRanking();
+    const conferenceRanking = await requestConferenceBasicRanking();
+    const journalRanking = await requestJournalBasicRanking();
+    const keywordRanking = await requestKeywordBasicRanking();
 
     return {
       ...abstract,
       ...affiliationRanking,
-      ...authorRanking
+      ...authorRanking,
+      ...conferenceRanking,
+      ...journalRanking,
+      ...keywordRanking
     };
   },
   data() {

@@ -10,7 +10,7 @@ import {
   SearchReference
 } from '@/interfaces/responses/search/SearchResponse';
 // import { get } from '@/plugins/request';
-import { AffiliationBasicRankingResponse } from '@/interfaces/responses/ranking/AffiliationBasicRankingResponse';
+import { BasicRankingResponse } from '@/interfaces/responses/ranking/BasicRankingResponse';
 import { RankingPayload } from '~/interfaces/requests/ranking/RankingPayload';
 import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/AuthorBasicRankingResponse';
 import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportResponse';
@@ -26,7 +26,6 @@ import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResp
 import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
-import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -51,7 +50,7 @@ export async function advancedSearch(
 // 3.1 查看机构论文简略排名
 export async function getAffiliationBasicRanking(
   args: RankingPayload
-): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
+): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/affiliation', {
     params: args
   });
@@ -71,7 +70,7 @@ export async function getAuthorBasicRanking(
 // 3.3 查看会议论文简略排名
 export async function getConferenceBasicRanking(
   args: RankingPayload
-): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
+): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/conference', {
     params: args
   });
@@ -79,9 +78,9 @@ export async function getConferenceBasicRanking(
 }
 
 // 3.4 查看期刊论文简略排名
-export async function getJounralBasicRanking(
+export async function getJournalBasicRanking(
   args: RankingPayload
-): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
+): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/journal', {
     params: args
   });
@@ -91,13 +90,12 @@ export async function getJounralBasicRanking(
 // 3.5 查看研究方向论文简略排名
 export async function getKeywordBasicRanking(
   year: number
-): Promise<BasicResponse<AffiliationBasicRankingResponse[]>> {
+): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/keyword', {
-    params: {year}
+    params: { year }
   });
   return data;
 }
-
 
 // 4. 查看学者研究方向
 export async function getResearcherInterest(

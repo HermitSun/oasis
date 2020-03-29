@@ -5,13 +5,13 @@
  * @date 2020.03.15
  */
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { AffiliationBasicRankingResponse } from '~/interfaces/responses/ranking/AffiliationBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
 
 export interface HomePageComp {
   keyword: string;
   showAdvancedSearch: boolean;
   abstractResponse: ActivePaperAbstractResponse[];
-  affiliationRanking: AffiliationBasicRankingResponse[];
+  affiliationRanking: BasicRankingResponse[];
   authorRanking: AuthorBasicRankingResponse[];
 }
