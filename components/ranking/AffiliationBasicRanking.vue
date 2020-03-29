@@ -1,5 +1,5 @@
 <template>
-  <div class="ranking">
+  <div class="ranking-basic">
     <div class="title">
       Top Affiliation
       <span class="sortKey">

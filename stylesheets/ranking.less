@@ -1,16 +1,25 @@
 @import 'default.less';
 
-@ranking-title-font-size: 23px;
-@ranking-sortKey-font-size: 18px;
-@ranking-rank-width: 30px;
-@ranking-line-height: 30px;
-.ranking {
+@ranking-title-font-size: @middle-font;
+@ranking-sortKey-font-size: @small-font;
+@ranking-name-font-size: @small-font;
+@ranking-line-height: 25px;
+
+// advanced-ranking
+.ranking-advanced{
+
+}
+
+
+// basic-ranking
+.ranking-basic {
   text-align: left;
 
   .title {
     font-size: @ranking-title-font-size;
     color: @font-gray-dark;
-    margin: 10px 0 10px 20px;
+    font-weight: 500;
+    margin: 12px 0 12px 20px;
 
     .sortKey {
       .flex-center-row;
@@ -27,23 +36,22 @@
 
     .name-wrapper {
       .flex-left-left-row;
+      font-size: @ranking-name-font-size;
       .icon {
         width: 40px;
         text-align: center;
         color: @background-blue
       }
-
       .name {
         color: @font-gray-middle;
         display: inline-block;
         word-wrap: break-word;
         width: 100%;
+
       }
     }
-
-
     .count {
-      //float: right;
+      font-size: @ranking-name-font-size;
     }
   }
 }

@@ -160,7 +160,7 @@ export default Vue.extend({
   methods: {
     // 对论文类型进行更语义化的转换
     getPaperContentType(type: contentType) {
-      return type === 'conference' ? '会议' : '期刊';
+      return type === 'conferences' ? '会议' : '期刊';
     },
     // 打开对话框
     openUpdateDialog(paper: PaperInfo) {
