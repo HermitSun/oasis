@@ -195,7 +195,7 @@ export default Vue.extend({
   .homepage-content__ranking {
     .gray-background;
   }
-
+  /*
   @media @min-pc-width {
     .flex-left-left-row;
     .homepage-content__abstract {
@@ -206,5 +206,6 @@ export default Vue.extend({
       width: 25vw;
     }
   }
+  */
 }
 </style>
