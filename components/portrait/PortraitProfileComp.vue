@@ -3,12 +3,8 @@
     <div class="name">
       {{ profile.name }}
     </div>
-    <div>
-      <div
-        v-for="(info, index) in profile.statistics"
-        :key="index"
-        class="info"
-      >
+    <div class="info">
+      <div v-for="(info, index) in profile.statistics" :key="index">
         <div class="flex-space-between">
           <span class="prop">
             {{ info.prop }}
