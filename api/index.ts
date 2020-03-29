@@ -209,10 +209,9 @@ export async function mergeAffiliationInfo(
 // 28. 获取会议信息 getConferenceInfo
 export async function getConferenceInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<ConferenceInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/conferences/info', {
+  const { data } = await axios.get('/info/conference', {
     params: { name, page }
   });
   return data;

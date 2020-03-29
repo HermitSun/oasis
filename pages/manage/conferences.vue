@@ -84,9 +84,14 @@ export default Vue.extend({
   mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const conferencesRes = await getConferenceInfo();
+    // 增加默认值，相当于静默失败，避免500
+    const conferencesData =
+      conferencesRes && conferencesRes.data
+        ? conferencesRes.data
+        : { conferences: [], size: 0 };
     return {
-      conferences: conferencesRes.data.conferences,
-      resultCount: conferencesRes.data.size
+      conferences: conferencesData.conferences,
+      resultCount: conferencesData.size
     };
   },
   data() {
@@ -136,7 +141,12 @@ export default Vue.extend({
     // 进行搜索
     async doSearch(name: string) {
       const conferencesRes = await getConferenceInfo(1, name);
-      this.conferences = conferencesRes.data.conferences;
+      // 增加默认值，相当于静默失败，避免500
+      const conferencesData =
+        conferencesRes && conferencesRes.data
+          ? conferencesRes.data
+          : { conferences: [], size: 0 };
+      this.conferences = conferencesData.conferences;
       // 重置页码和搜索内容
       this.page = 1;
       this.conferenceName = '';
@@ -145,7 +155,13 @@ export default Vue.extend({
     async showNextPage(page: number) {
       // 重新请求数据
       const conferencesRes = await getConferenceInfo(page);
-      this.conferences = conferencesRes.data.conferences;
+      // 增加默认值，相当于静默失败，避免500
+      // 总页数不变
+      const conferencesData =
+        conferencesRes && conferencesRes.data
+          ? conferencesRes.data
+          : { conferences: [], size: this.resultCount };
+      this.conferences = conferencesData.conferences;
     },
     // 清理工作
     clearUpdate() {
