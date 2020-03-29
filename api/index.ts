@@ -188,10 +188,9 @@ const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<AffiliationInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/affiliations/info', {
+  const { data } = await axios.get('/info/affiliation', {
     params: { name, page }
   });
   return data;

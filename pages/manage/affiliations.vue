@@ -116,9 +116,13 @@ export default Vue.extend({
   mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const affiliationsRes = await getAffiliationInfo();
+    // 请求失败时静默失败
+    const affiliationsData = affiliationsRes.data
+      ? affiliationsRes.data
+      : { affiliations: [], size: 0 };
     return {
-      affiliations: affiliationsRes.data.affiliations,
-      resultCount: affiliationsRes.data.size
+      affiliations: affiliationsData.affiliations,
+      resultCount: affiliationsData.size
     };
   },
   data() {
@@ -177,7 +181,11 @@ export default Vue.extend({
     // 进行搜索
     async doSearch(name: string) {
       const affiliationsRes = await getAffiliationInfo(1, name);
-      this.affiliations = affiliationsRes.data.affiliations;
+      // 请求失败时静默失败
+      const affiliationsData = affiliationsRes.data
+        ? affiliationsRes.data
+        : { affiliations: [], size: 0 };
+      this.affiliations = affiliationsData.affiliations;
       // 重置页码和搜索内容
       this.page = 1;
       this.affiliationName = '';
