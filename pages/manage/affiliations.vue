@@ -99,8 +99,7 @@ import { getAffiliationInfo, mergeAffiliationInfo } from '~/api';
 import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AffiliationInfo } from '~/interfaces/responses/manage/AffiliationInfoResponse';
 import { ManageAffiliationsPageComp } from '~/interfaces/pages/manage/ManageAffiliationsPageComp';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageAffiliations',
@@ -113,6 +112,8 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const affiliationsRes = await getAffiliationInfo();
     return {
@@ -130,12 +131,6 @@ export default Vue.extend({
       affiliationName: '', // 根据输入的机构名称进行搜索
       showSelectDestDialog: false
     } as ManageAffiliationsPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
   },
   methods: {
     // 获取row-key，用于跨页记忆
