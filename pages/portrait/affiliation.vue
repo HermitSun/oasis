@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SearchBar />
     <div style="padding: 20px">
       <div class="affiliation-basic">
         <PortraitProfileComp :profile="affiliationProfile" />
@@ -43,13 +44,15 @@ import {
 import Bar from '~/utils/charts/bar';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
+import SearchBar from '~/components/search/SearchBar.vue';
 
 export default Vue.extend({
   name: 'Affiliation',
   components: {
     Subtitle,
     PaperInfoComp,
-    PortraitProfileComp
+    PortraitProfileComp,
+    SearchBar
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
