@@ -12,12 +12,12 @@
             {{ abstract.title }}
           </a>
         </span>
-        <span class="author">
+        <div class="author">
           <span v-for="(author, index) in abstract.authors" :key="index">
             <span v-if="index !== 0">,</span>
             {{ author }}
           </span>
-        </span>
+        </div>
       </div>
       <div class="abstract">
         {{ abstract._abstract }}

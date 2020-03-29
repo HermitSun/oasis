@@ -50,10 +50,6 @@ const config: Configuration = {
     {
       src: '@/plugins/element-ui',
       ssr: true
-    },
-    {
-      src: '@/plugins/echarts',
-      ssr: true
     }
   ],
   /*

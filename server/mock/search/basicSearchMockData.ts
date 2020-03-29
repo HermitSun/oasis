@@ -42,7 +42,7 @@ const basicSearchMockData: BasicResponse<SearchFullResponse> = {
           'Synthesizers',
           'Pattern matching'
         ],
-        contentType: 'conference',
+        contentType: 'conferences',
         publicationName: 'ASE',
         link: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=989838'
       },
@@ -122,7 +122,7 @@ const basicSearchMockData: BasicResponse<SearchFullResponse> = {
           'Synthesizers',
           'Pattern matching'
         ],
-        contentType: 'conference',
+        contentType: 'conferences',
         publicationName: 'ASE',
         link: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=989838'
       },
@@ -202,7 +202,7 @@ const basicSearchMockData: BasicResponse<SearchFullResponse> = {
           'Synthesizers',
           'Pattern matching'
         ],
-        contentType: 'conference',
+        contentType: 'conferences',
         publicationName: 'ASE',
         link: 'https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=989838'
       },

@@ -69,8 +69,7 @@ import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getJournalInfo, updateJournalInfo } from '~/api';
 import { ManageJournalsPageComp } from '~/interfaces/pages/manage/ManageJournalsPageComp';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageJournals',
@@ -81,6 +80,8 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const journalsRes = await getJournalInfo();
     return {
@@ -96,12 +97,6 @@ export default Vue.extend({
       waitToUpdateName: '', // 等待更新的名称
       updateDestName: '' // 更新后的名称
     } as ManageJournalsPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
   },
   methods: {
     // 打开对话框

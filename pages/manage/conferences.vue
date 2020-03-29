@@ -69,8 +69,7 @@ import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getConferenceInfo, updateJournalInfo } from '~/api';
 import { ManageConferencesPageComp } from '~/interfaces/pages/manage/ManageConferencesPageComp';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageConferences',
@@ -81,6 +80,8 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const conferencesRes = await getConferenceInfo();
     return {
@@ -96,12 +97,6 @@ export default Vue.extend({
       waitToUpdateName: '', // 等待更新的名称
       updateDestName: '' // 更新后的名称
     } as ManageConferencesPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
   },
   methods: {
     // 打开对话框
@@ -161,5 +156,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped></style>

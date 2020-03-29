@@ -30,10 +30,7 @@
     </div>
     <div class="homepage-content">
       <div class="homepage-content__abstract">
-        <div class="subtitle">
-          📄 OASIS NEWS
-        </div>
-        <div class="subtitle-divider"></div>
+        <Subtitle title="📄 OASIS NEWS" />
         <div
           v-for="abstract in abstractResponse"
           :key="abstract.id"
@@ -44,13 +41,13 @@
       </div>
 
       <div class="homepage-content__ranking">
-        <div class="subtitle">
-          🏆 OASIS RANKINGS
-        </div>
-        <div class="subtitle-divider"></div>
-        <div>
-          <AuthorBasicRanking :ranking="authorRanking" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" />
+        <Subtitle title="🏆 OASIS RANKINGS" />
+        <div class="homepage-content__rankings">
+          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+          <JournalBasicRanking :ranking="journalRanking" class="rank" />
+          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
+          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
+          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
         </div>
       </div>
     </div>
@@ -64,16 +61,24 @@ import axios from 'axios';
 import {
   getActivePaperAbstract,
   getAffiliationBasicRanking,
-  getAuthorBasicRanking
+  getAuthorBasicRanking,
+  getConferenceBasicRanking,
+  getJournalBasicRanking,
+  getKeywordBasicRanking
 } from '~/api';
 import AbstractComp from '~/components/abstract/AbstractComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
+
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { AffiliationBasicRankingResponse } from '~/interfaces/responses/ranking/AffiliationBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
+import Subtitle from '~/components/public/Subtitle.vue';
+import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
+import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
+import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -88,9 +93,8 @@ async function requestActivePaperAbstract() {
   }
   return res;
 }
-
 async function requestAffiliationBasicRanking() {
-  const res: { affiliationRanking: AffiliationBasicRankingResponse[] } = {
+  const res: { affiliationRanking: BasicRankingResponse[] } = {
     affiliationRanking: []
   };
   try {
@@ -104,7 +108,6 @@ async function requestAffiliationBasicRanking() {
   }
   return res;
 }
-
 async function requestAuthorBasicRanking() {
   const res: { authorRanking: AuthorBasicRankingResponse[] } = {
     authorRanking: []
@@ -120,25 +123,78 @@ async function requestAuthorBasicRanking() {
   }
   return res;
 }
-
+async function requestConferenceBasicRanking() {
+  const res: { conferenceRanking: BasicRankingResponse[] } = {
+    conferenceRanking: []
+  };
+  try {
+    const conferenceBasicRankingRes = await getConferenceBasicRanking({
+      sortKey: 'acceptanceCount',
+      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+    });
+    res.conferenceRanking = conferenceBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+async function requestJournalBasicRanking() {
+  const res: { journalRanking: BasicRankingResponse[] } = {
+    journalRanking: []
+  };
+  try {
+    const journalBasicRankingRes = await getJournalBasicRanking({
+      sortKey: 'acceptanceCount',
+      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+    });
+    res.journalRanking = journalBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+async function requestKeywordBasicRanking() {
+  const res: { keywordRanking: BasicRankingResponse[] } = {
+    keywordRanking: []
+  };
+  try {
+    const keywordBasicRankingRes = await getKeywordBasicRanking(
+      Number(new Date().getFullYear() - 1)
+    ); // TODO 去掉 - 1);
+    res.keywordRanking = keywordBasicRankingRes.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
 export default Vue.extend({
   name: 'HomePage',
   components: {
     AbstractComp,
     AdvancedSearchComp,
     AuthorBasicRanking,
-    AffiliationBasicRanking
+    AffiliationBasicRanking,
+    ConferenceBasicRanking,
+    KeywordBasicRanking,
+    JournalBasicRanking,
+    Subtitle
   },
   // 渲染初始数据
   async asyncData() {
     const abstract = await requestActivePaperAbstract();
     const affiliationRanking = await requestAffiliationBasicRanking();
     const authorRanking = await requestAuthorBasicRanking();
+    const conferenceRanking = await requestConferenceBasicRanking();
+    const journalRanking = await requestJournalBasicRanking();
+    const keywordRanking = await requestKeywordBasicRanking();
 
     return {
       ...abstract,
       ...affiliationRanking,
-      ...authorRanking
+      ...authorRanking,
+      ...conferenceRanking,
+      ...journalRanking,
+      ...keywordRanking
     };
   },
   data() {
@@ -197,11 +253,20 @@ export default Vue.extend({
 
   .homepage-content__ranking {
     .gray-background;
+    .homepage-content__rankings {
+      @media @min-pc-width {
+        .flex-space-between;
+        flex-wrap: wrap;
+        .rank {
+          width: 30%;
+          margin: 0 10px;
+        }
+      }
+    }
   }
-
+  /*
   @media @min-pc-width {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     .homepage-content__abstract {
       width: 75vw;
     }
@@ -210,5 +275,6 @@ export default Vue.extend({
       width: 25vw;
     }
   }
+  */
 }
 </style>

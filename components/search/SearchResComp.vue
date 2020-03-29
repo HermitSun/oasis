@@ -12,7 +12,7 @@
       >
         {{ author }}
       </span>
-      <span class="info" style="margin-left:10px">
+      <span class="info">
         {{ res.publicationName }}
         <span style="margin-left: 1px">{{ res.publicationYear }}</span>
       </span>
@@ -34,7 +34,7 @@
         class="keyword-wrapper"
       >
         <div style="margin-right: 10px" class="hint">keywords:</div>
-        <div>
+        <div class="keyword-inner-wrapper">
           <span
             v-for="(keyword, index) in res.keywords"
             :key="index"

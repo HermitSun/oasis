@@ -126,8 +126,7 @@ import {
 import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
 import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManagePapers',
@@ -141,6 +140,8 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   data() {
     return {
       papers: [] as PaperInfo[],
@@ -151,16 +152,10 @@ export default Vue.extend({
       paperWaitToUpdate: {} as PaperInfo // 待修改的paper
     };
   },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
-  },
   methods: {
     // 对论文类型进行更语义化的转换
     getPaperContentType(type: contentType) {
-      return type === 'conference' ? '会议' : '期刊';
+      return type === 'conferences' ? '会议' : '期刊';
     },
     // 打开对话框
     openUpdateDialog(paper: PaperInfo) {

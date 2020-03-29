@@ -103,8 +103,7 @@ import {
   WaitToMergeAuthorInfo
 } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageAuthors',
@@ -117,6 +116,8 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   async asyncData() {
     const authorsRes = await getAuthorInfo();
     return {
@@ -134,12 +135,6 @@ export default Vue.extend({
       authorName: '', // 根据输入的学者姓名进行搜索
       showSelectDestDialog: false
     } as ManageAuthorsPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
   },
   methods: {
     // 获取row-key，用于跨页记忆

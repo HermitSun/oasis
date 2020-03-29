@@ -1,7 +1,7 @@
 <template>
   <div class="ranking-basic">
     <div class="title">
-      Top Authors
+      Top Conference
       <span class="sortKey">
         {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
         <svg
@@ -20,41 +20,14 @@
         </svg>
       </span>
     </div>
-    <!--现在的解决方案不支持key的变动，所以最好不要对列表进行修改-->
     <div
-      v-for="(rank, index) in authorBasicRankingResponse"
+      v-for="(rank, index) in conferenceBasicRankingResponse"
       :key="index"
       class="info"
     >
       <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
-        <!--只在客户端渲染词云-->
-        <client-only>
-          <!--服务端渲染的占位符-->
-          <span slot="placeholder" class="name">
-            {{ rank.name }}
-          </span>
-          <!--真正的词云-->
-          <el-popover
-            trigger="click"
-            @show="showInterest = true"
-            @hide="showInterest = false"
-            @click.native="showSpecifiedInterest"
-          >
-            <!--双等号可以不用强制类型转换-->
-            <!--加锁以避免额外的渲染-->
-            <!--此处判断authorId是为了应对低网速情况，低网速环境下可能会返回null-->
-            <ResearcherInterest
-              v-if="
-                rank.authorId && showInterest && index == whichInterestToShow
-              "
-              :author-id="rank.authorId"
-            />
-            <span slot="reference" class="name" :interest-index="index">
-              {{ rank.name }}
-            </span>
-          </el-popover>
-        </client-only>
+        <span class="name">{{ rank.name }}</span>
       </div>
       <div class="count">
         {{ rank.count }}
@@ -65,18 +38,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Popover } from 'element-ui';
-import { getRankingIcon } from './ranking';
-import { getAuthorBasicRanking } from '~/api';
-import ResearcherInterest from '~/components/interest/ResearcherInterest.vue';
+import { getRankingIcon } from '~/components/ranking/ranking';
+import { getConferenceBasicRanking } from '~/api';
 import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
-
 export default Vue.extend({
-  name: 'AuthorBasicRanking',
-  components: {
-    ResearcherInterest,
-    [Popover.name]: Popover
-  },
+  name: 'ConferenceBasicRanking',
   props: {
     ranking: {
       type: Array,
@@ -85,20 +51,18 @@ export default Vue.extend({
   },
   data() {
     return {
-      authorBasicRankingResponse: this.ranking,
       sortKey: 'acceptanceCount' as sortKey,
-      showInterest: false, // 是否显示interest
-      whichInterestToShow: '' // 显示哪个interest
+      conferenceBasicRankingResponse: this.ranking
     };
   },
   methods: {
-    async requestAuthorBasicRanking() {
+    async requestConferenceBasicRanking() {
       try {
-        const authorBasicRankingRes = await getAuthorBasicRanking({
+        const conferenceBasicRankingRes = await getConferenceBasicRanking({
           sortKey: this.sortKey,
           year: new Date().getFullYear() - 1 // TODO 去掉 - 1
         });
-        this.authorBasicRankingResponse = authorBasicRankingRes.data;
+        this.conferenceBasicRankingResponse = conferenceBasicRankingRes.data;
       } catch (e) {
         this.$message(e.toString());
       }
@@ -109,14 +73,7 @@ export default Vue.extend({
     changeSortKey() {
       this.sortKey =
         this.sortKey === 'citationCount' ? 'acceptanceCount' : 'citationCount';
-      this.requestAuthorBasicRanking();
-    },
-    // 只展示特定的研究兴趣
-    showSpecifiedInterest(event: Event) {
-      console.log('invoked');
-      this.whichInterestToShow = (event.target as HTMLElement).getAttribute(
-        'interest-index'
-      ) as string;
+      this.requestConferenceBasicRanking();
     }
   }
 });

@@ -4,7 +4,7 @@
  * @date 2020.03.03
  */
 
-export interface AffiliationBasicRankingResponse {
+export interface BasicRankingResponse {
   name: string;
   count: number;
 }
