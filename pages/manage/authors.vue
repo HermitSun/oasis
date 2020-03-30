@@ -3,6 +3,7 @@
     <!--学者基本信息-->
     <el-table
       ref="authorsTable"
+      v-loading="isLoading"
       :data="authors"
       style="width: 100%"
       :row-key="getRowKey"
@@ -119,10 +120,15 @@ export default Vue.extend({
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
   async asyncData() {
-    const authorsRes = await getAuthorInfo();
+    const authorsRes = await getAuthorInfo(1, 'Jia Liu');
+    // 请求失败时静默失败
+    const authorsData =
+      authorsRes && authorsRes.data
+        ? authorsRes.data
+        : { authors: [], size: 0 };
     return {
-      authors: authorsRes.data.authors,
-      resultCount: authorsRes.data.size
+      authors: authorsData.authors,
+      resultCount: authorsData.size
     };
   },
   data() {
@@ -132,8 +138,9 @@ export default Vue.extend({
       // 此处需要特别注意的是，需要能够跨页记录
       waitToMerge: [] as WaitToMergeAuthorInfo[],
       mergeDest: '', // 合并目标
-      authorName: '', // 根据输入的学者姓名进行搜索
-      showSelectDestDialog: false
+      authorName: 'Jia Liu', // 根据输入的学者姓名进行搜索，默认Jia Liu
+      showSelectDestDialog: false,
+      isLoading: false
     } as ManageAuthorsPageComp;
   },
   methods: {
@@ -180,17 +187,33 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      const authorsRes = await getAuthorInfo(1, name);
-      this.authors = authorsRes.data.authors;
-      // 重置页码和搜索内容
-      this.page = 1;
-      this.authorName = '';
+      if (name) {
+        this.isLoading = true;
+        const authorsRes = await getAuthorInfo(1, name);
+        // 请求失败时静默失败
+        const authorsData =
+          authorsRes && authorsRes.data
+            ? authorsRes.data
+            : { authors: [], size: 0 };
+        this.authors = authorsData.authors;
+        // 重置页码和搜索内容
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
+      this.isLoading = true;
       // 重新请求数据
-      const authorsRes = await getAuthorInfo(page);
-      this.authors = authorsRes.data.authors;
+      const authorsRes = await getAuthorInfo(page, this.authorName);
+      const authorsData =
+        authorsRes && authorsRes.data
+          ? authorsRes.data
+          : { authors: [], size: this.resultCount };
+      this.authors = authorsData.authors;
+      this.isLoading = false;
     },
     // 清理工作
     clearDialog() {

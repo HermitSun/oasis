@@ -260,10 +260,9 @@ export async function updatePaperInfo(
 // 33. 获取作者信息 getAuthorInfo
 export async function getAuthorInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<AuthorInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/authors/info', {
+  const { data } = await axios.get('/info/author', {
     params: { name, page }
   });
   return data;
