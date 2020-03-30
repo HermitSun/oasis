@@ -12,6 +12,10 @@ import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
+import authorAdvancedRankingMockData from '~/server/mock/rankings/author/authorAdvancedRankingMockData';
+import affiliationDetailRankingMockData from '~/server/mock/rankings/affiliation/affiliationDetailRankingMockData';
+import affiliationAdvancedMockData from '~/server/mock/rankings/affiliation/affiliationAdvancedRankingMockData';
+import authorDetailRankingMockData from '~/server/mock/rankings/author/authorDetailRankingMockData';
 
 const app = express();
 
@@ -31,6 +35,26 @@ app.get('/search/basic/es', (_, res) => {
 app.get('/search/basic/filter', (req, res) => {
   console.log(req.params);
   res.json(searchFilterMockData);
+});
+
+app.get('/rank/advanced/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorAdvancedRankingMockData);
+});
+
+app.get('/rank/detail/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorDetailRankingMockData);
+});
+
+app.get('/rank/advanced/affiliation', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationAdvancedMockData);
+});
+
+app.get('/rank/advanced/affiliation', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationDetailRankingMockData);
 });
 
 app.get('/portrait/affiliation', (req, res) => {

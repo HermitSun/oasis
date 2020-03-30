@@ -10,9 +10,12 @@ import {
   SearchReference
 } from '@/interfaces/responses/search/SearchResponse';
 // import { get } from '@/plugins/request';
-import { BasicRankingResponse } from '@/interfaces/responses/ranking/BasicRankingResponse';
-import { RankingPayload } from '~/interfaces/requests/ranking/RankingPayload';
-import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/AuthorBasicRankingResponse';
+import { BasicRankingResponse } from '@/interfaces/responses/ranking/basic/BasicRankingResponse';
+import {
+  RankingAdvancedPayload,
+  RankingBasicPayload
+} from '~/interfaces/requests/ranking/RankingPayload';
+import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { ResearcherInterestResponse } from '@/interfaces/responses/interest/ResearcherInterestResponse';
@@ -26,6 +29,14 @@ import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResp
 import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
+import {
+  AuthorAdvancedRankingResponse,
+  AuthorDetailRankingResponse
+} from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import {
+  AffiliationAdvancedRankingResponse,
+  AffiliationDetailRankingResponse
+} from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -49,7 +60,7 @@ export async function advancedSearch(
 
 // 3.1 查看机构论文简略排名
 export async function getAffiliationBasicRanking(
-  args: RankingPayload
+  args: RankingBasicPayload
 ): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/affiliation', {
     params: args
@@ -59,7 +70,7 @@ export async function getAffiliationBasicRanking(
 
 // 3.2 查看学者论文简略排名
 export async function getAuthorBasicRanking(
-  args: RankingPayload
+  args: RankingBasicPayload
 ): Promise<BasicResponse<AuthorBasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/author', {
     params: args
@@ -69,7 +80,7 @@ export async function getAuthorBasicRanking(
 
 // 3.3 查看会议论文简略排名
 export async function getConferenceBasicRanking(
-  args: RankingPayload
+  args: RankingBasicPayload
 ): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/conference', {
     params: args
@@ -79,7 +90,7 @@ export async function getConferenceBasicRanking(
 
 // 3.4 查看期刊论文简略排名
 export async function getJournalBasicRanking(
-  args: RankingPayload
+  args: RankingBasicPayload
 ): Promise<BasicResponse<BasicRankingResponse[]>> {
   const { data } = await axios.get('/rank/basic/journal', {
     params: args
@@ -140,6 +151,46 @@ export async function getBasicSearchFilterCondition(
   // TODO 替换为后端真实url
   const { data } = await axios.get('/search/basic/filter', {
     params: args
+  });
+  return data;
+}
+
+// 9. 查看作者排名详情
+export async function getAuthorAdvancedRanking(
+  args: RankingAdvancedPayload
+): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
+  const { data } = await axios.get('/rank/advanced/author', {
+    params: args
+  });
+  return data;
+}
+
+// 10. 根据作者id获取排名细节
+export async function getAuthorDetailRankingById(
+  authorId: string
+): Promise<BasicResponse<AuthorDetailRankingResponse>> {
+  const { data } = await axios.get('/rank/detail/author', {
+    params: { authorId }
+  });
+  return data;
+}
+
+// 11. 查看机构排名详情
+export async function getAffiliationAdvancedRanking(
+  args: RankingAdvancedPayload
+): Promise<BasicResponse<AffiliationAdvancedRankingResponse[]>> {
+  const { data } = await axios.get('/rank/advanced/affiliation', {
+    params: args
+  });
+  return data;
+}
+
+// 12. 根据机构id获取排名细节
+export async function getAffiliationDetailRankingById(
+  affiliationId: string
+): Promise<BasicResponse<AffiliationDetailRankingResponse>> {
+  const { data } = await axios.get('/rank/advanced/affiliation', {
+    params: { affiliationId }
   });
   return data;
 }

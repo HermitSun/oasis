@@ -72,8 +72,8 @@ import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
-import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
+import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
 import Subtitle from '~/components/public/Subtitle.vue';
 import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';

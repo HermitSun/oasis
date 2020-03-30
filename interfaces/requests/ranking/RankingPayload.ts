@@ -5,7 +5,12 @@
  */
 export type sortKey = 'acceptanceCount' | 'citationCount';
 
-export interface RankingPayload {
+export interface RankingBasicPayload {
   sortKey: sortKey;
   year: number;
+}
+export interface RankingAdvancedPayload{
+  sortKey: sortKey;
+  startYear: number;
+  endYear: number;
 }
