@@ -1,7 +1,12 @@
 <template>
   <div class="manage-papers-wrapper">
     <!--论文基本信息-->
-    <el-table ref="papersTable" :data="papers" style="width: 100%">
+    <el-table
+      ref="papersTable"
+      v-loading="isLoading"
+      :data="papers"
+      style="width: 100%"
+    >
       <template #empty>
         <span class="el-table__empty-text">检索论文以进行管理↗</span>
       </template>
@@ -149,7 +154,8 @@ export default Vue.extend({
       page: 1, // 当前页码
       paperTitle: '', // 根据输入的论文名称进行搜索
       showUpdateDialog: false, // 是否显示修改的对话框
-      paperWaitToUpdate: {} as PaperInfo // 待修改的paper
+      paperWaitToUpdate: {} as PaperInfo, // 待修改的paper
+      isLoading: false
     };
   },
   methods: {
@@ -170,9 +176,33 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(title: string) {
+      if (title) {
+        this.isLoading = true;
+        const papersRes = await basicSearch({
+          keyword: title,
+          page: 1,
+          sortKey: 'related'
+        });
+        // 增加默认值，相当于静默失败，避免500
+        const papersData = papersRes.data
+          ? papersRes.data
+          : { papers: [], size: 0 };
+        this.papers = papersData.papers;
+        this.resultCount = papersData.size;
+        // 重置页码
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
+    },
+    // 请求下一页
+    async showNextPage(page: number) {
+      this.isLoading = true;
+      // 重新请求数据
       const papersRes = await basicSearch({
-        keyword: title,
-        page: 1,
+        keyword: this.paperTitle,
+        page,
         sortKey: 'related'
       });
       // 增加默认值，相当于静默失败，避免500
@@ -180,19 +210,7 @@ export default Vue.extend({
         ? papersRes.data
         : { papers: [], size: this.resultCount };
       this.papers = papersData.papers;
-      this.resultCount = papersData.size;
-      // 重置页码
-      this.page = 1;
-    },
-    // 请求下一页
-    async showNextPage(page: number) {
-      // 重新请求数据
-      const papersRes = await basicSearch({
-        keyword: this.paperTitle,
-        page,
-        sortKey: 'related'
-      });
-      this.papers = papersRes.data.papers;
+      this.isLoading = false;
     }
   }
 });
