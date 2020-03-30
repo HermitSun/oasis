@@ -1,7 +1,12 @@
 <template>
   <div class="manage-journals-wrapper">
     <!--机构基本信息-->
-    <el-table ref="journals" :data="journals" style="width: 100%">
+    <el-table
+      ref="journals"
+      v-loading="isLoading"
+      :data="journals"
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" />
       <el-table-column prop="name" label="期刊名" />
       <!--搜索框和操作-->
@@ -83,19 +88,25 @@ export default Vue.extend({
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
   async asyncData() {
-    const journalsRes = await getJournalInfo();
+    // 初始时加载ICSE的数据
+    const journalsRes = await getJournalInfo(1, 'ME');
+    const journalsData =
+      journalsRes && journalsRes.data
+        ? journalsRes.data
+        : { journals: [], size: 0 };
     return {
-      journals: journalsRes.data.journals,
-      resultCount: journalsRes.data.size
+      journals: journalsData.journals,
+      resultCount: journalsData.size
     };
   },
   data() {
     return {
       page: 1, // 当前页码
-      journalName: '', // 根据输入的期刊名称进行搜索
+      journalName: 'ME', // 根据输入的期刊名称进行搜索，初始ME
       showUpdateDialog: false, // 显示修改的对话框
       waitToUpdateName: '', // 等待更新的名称
-      updateDestName: '' // 更新后的名称
+      updateDestName: '', // 更新后的名称
+      isLoading: false // 是否正在加载
     } as ManageJournalsPageComp;
   },
   methods: {
@@ -135,17 +146,32 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      const journalsRes = await getJournalInfo(1, name);
-      this.journals = journalsRes.data.journals;
-      // 重置页码和搜索内容
-      this.page = 1;
-      this.journalName = '';
+      if (name) {
+        this.isLoading = true;
+        const journalsRes = await getJournalInfo(1, name);
+        const journalsData =
+          journalsRes && journalsRes.data
+            ? journalsRes.data
+            : { journals: [], size: 0 };
+        this.journals = journalsData.journals;
+        // 重置页码
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
+      this.isLoading = true;
       // 重新请求数据
-      const journalsRes = await getJournalInfo(page);
-      this.journals = journalsRes.data.journals;
+      const journalsRes = await getJournalInfo(page, this.journalName);
+      const journalsData =
+        journalsRes && journalsRes.data
+          ? journalsRes.data
+          : { journals: [], size: this.resultCount };
+      this.journals = journalsData.journals;
+      this.isLoading = false;
     },
     // 清理工作
     clearUpdate() {
