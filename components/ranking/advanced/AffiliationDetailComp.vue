@@ -1,14 +1,19 @@
 <template>
   <div>
-    AuthorDetail
+    {{ rank.affiliationName }}
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 export default Vue.extend({
-  name: 'AuthorDetail',
-  props: {}
+  name: 'AffiliationDetailComp',
+  props: {
+    rank: {
+      type: Object,
+      default: () => ({})
+    }
+  }
 });
 </script>
 
