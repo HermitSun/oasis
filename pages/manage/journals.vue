@@ -165,7 +165,7 @@ export default Vue.extend({
     async showNextPage(page: number) {
       this.isLoading = true;
       // 重新请求数据
-      const journalsRes = await getJournalInfo(page);
+      const journalsRes = await getJournalInfo(page, this.journalName);
       const journalsData =
         journalsRes && journalsRes.data
           ? journalsRes.data
