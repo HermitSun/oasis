@@ -1,7 +1,12 @@
 <template>
   <div class="manage-conferences-wrapper">
     <!--机构基本信息-->
-    <el-table ref="conferences" :data="conferences" style="width: 100%">
+    <el-table
+      ref="conferences"
+      v-loading="isLoading"
+      :data="conferences"
+      style="width: 100%"
+    >
       <el-table-column type="index" width="50" />
       <el-table-column prop="name" label="会议名" />
       <!--搜索框和操作-->
@@ -11,13 +16,13 @@
             v-model="conferenceName"
             size="mini"
             placeholder="检索会议名称"
-            @keyup.enter.native="doSearch(conferences)"
+            @keyup.enter.native="doSearch(conferenceName)"
           >
             <template #suffix>
               <i
                 class="el-input__icon el-icon-search"
                 style="cursor: pointer"
-                @click="doSearch(conferences)"
+                @click="doSearch(conferenceName)"
               ></i>
             </template>
           </el-input>
@@ -69,8 +74,7 @@ import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getConferenceInfo, updateJournalInfo } from '~/api';
 import { ManageConferencesPageComp } from '~/interfaces/pages/manage/ManageConferencesPageComp';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageConferences',
@@ -81,27 +85,29 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   async asyncData() {
-    const conferencesRes = await getConferenceInfo();
+    const conferencesRes = await getConferenceInfo(1, 'ICSE');
+    // 增加默认值，相当于静默失败，避免500
+    const conferencesData =
+      conferencesRes && conferencesRes.data
+        ? conferencesRes.data
+        : { conferences: [], size: 0 };
     return {
-      conferences: conferencesRes.data.conferences,
-      resultCount: conferencesRes.data.size
+      conferences: conferencesData.conferences,
+      resultCount: conferencesData.size
     };
   },
   data() {
     return {
       page: 1, // 当前页码
-      conferenceName: '', // 根据输入的期刊名称进行搜索
+      conferenceName: 'ICSE', // 根据输入的期刊名称进行搜索，默认值ICSE
       showUpdateDialog: false, // 显示修改的对话框
       waitToUpdateName: '', // 等待更新的名称
-      updateDestName: '' // 更新后的名称
+      updateDestName: '', // 更新后的名称
+      isLoading: false
     } as ManageConferencesPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
   },
   methods: {
     // 打开对话框
@@ -140,17 +146,35 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      const conferencesRes = await getConferenceInfo(1, name);
-      this.conferences = conferencesRes.data.conferences;
-      // 重置页码和搜索内容
-      this.page = 1;
-      this.conferenceName = '';
+      if (name) {
+        this.isLoading = true;
+        const conferencesRes = await getConferenceInfo(1, name);
+        // 增加默认值，相当于静默失败，避免500
+        const conferencesData =
+          conferencesRes && conferencesRes.data
+            ? conferencesRes.data
+            : { conferences: [], size: 0 };
+        this.conferences = conferencesData.conferences;
+        // 重置页码
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
+      this.isLoading = true;
       // 重新请求数据
-      const conferencesRes = await getConferenceInfo(page);
-      this.conferences = conferencesRes.data.conferences;
+      const conferencesRes = await getConferenceInfo(page, this.conferenceName);
+      // 增加默认值，相当于静默失败，避免500
+      // 总页数不变
+      const conferencesData =
+        conferencesRes && conferencesRes.data
+          ? conferencesRes.data
+          : { conferences: [], size: this.resultCount };
+      this.conferences = conferencesData.conferences;
+      this.isLoading = false;
     },
     // 清理工作
     clearUpdate() {
@@ -161,5 +185,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped></style>

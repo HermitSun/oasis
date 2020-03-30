@@ -24,6 +24,7 @@ interface ManageAuthorsLocalData {
   mergeDest: string;
   authorName: string;
   showSelectDestDialog: boolean;
+  isLoading: boolean;
 }
 
 export type ManageAuthorsPageComp = AsyncManageAuthorsData &

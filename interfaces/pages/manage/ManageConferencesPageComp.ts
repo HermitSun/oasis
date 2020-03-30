@@ -19,6 +19,7 @@ interface ManageConferencesLocalData {
   showUpdateDialog: boolean;
   waitToUpdateName: string;
   updateDestName: string;
+  isLoading: boolean;
 }
 
 export type ManageConferencesPageComp = AsyncManageConferencesData &

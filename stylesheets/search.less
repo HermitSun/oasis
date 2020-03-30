@@ -13,17 +13,17 @@
 @search-item-author-font-size: 15px;
 @search-item-keyword-font-size: 10px;
 @search-item-reference-font-size: 12px;
+@search-item-abstract-max-height: 200px;
 
 @search-advanced-input-font-size: 10px;
 
 // 搜索页Header
 .searchPage-header {
-  .flex-left-row;
+  .flex-left-center-row;
   text-align: left;
   background: @background-blue;
   .mobile-height(@searchPage-header-height__mobile);
   .pc-height__mobile(@searchPage-header-height__pc);
-
 }
 
 .searchPage-header__logo {
@@ -34,8 +34,39 @@
 .searchPage-content {
   padding: 0 10px;
 }
+.searchPage-content__result {
+  width: 75%;
+  padding: 10px;
+}
+.searchPage-content__filter {
+  width: 25%;
+  padding: 10px;
+  .filter {
+    background: @background-gray;
+    padding: 20px 10px;
+    width: 100%;
+    .flex-left-left-column;
+    .filter-wrapper {
+      width: 100%;
+      .hint {
+        color: @background-blue;
+        font-size: @sub-middle-font;
+      }
+      .divider {
+        background-color: @background-blue-light;
+        height: 1.5px;
+        margin: 10px 0;
+      }
+    }
+  }
+}
 
 // 搜索页内容
+.searchPage-content__sub-hint {
+  font-size: @small-font;
+  color: @font-gray;
+}
+
 .searchPage-content__hint-text {
   font-size: @middle-font;
   color: @background-blue;
@@ -50,8 +81,6 @@
 
 // 搜索页时间范围
 .searchPage-time-range {
-  .flex-center-row;
-
   input {
     border-radius: 8px;
     padding-left: 5px;
@@ -104,6 +133,8 @@
   .abstract {
     color: @font-gray;
     margin: 10px 0;
+    max-height: @search-item-abstract-max-height;
+    .overflow-hidden-height(3);
   }
 
   .divider {
@@ -120,16 +151,15 @@
   .keyword-wrapper {
     word-wrap: break-word;
     line-height: calc(@search-item-keyword-font-size + 15px);
-    @media @max-pad-width {
-      //height: 70px;
-      //text-overflow: ellipsis;
-      //overflow:hidden;
-    }
+    .flex-left-left-row;
 
-    .keyword {
-      border: @background-blue 1px solid;
-      padding: 2px;
-      font-size: @search-item-keyword-font-size;
+    .keyword-inner-wrapper {
+      .overflow-hidden-height(2);
+      .keyword {
+        border: @background-blue 1px solid;
+        padding: 2px;
+        font-size: @search-item-keyword-font-size;
+      }
     }
   }
 
@@ -147,8 +177,7 @@
   }
 
   .reference-wrapper {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     word-wrap: break-word;
 
     .reference {
@@ -160,8 +189,7 @@
   }
 
   .citation-wrapper {
-    display: flex;
-    flex-direction: row;
+    .flex-left-left-row;
     margin: 5px 0;
     line-height: calc(@search-item-keyword-font-size + 15px);
 
@@ -216,7 +244,6 @@
   .pc-height__mobile(@search-input-height__pc);
   .mobile-width(@search-input-width__mobile);
   .pc-width__mobile(@search-input-width__pc);
-
 
   &:focus {
     border: @search-input-border;
@@ -303,7 +330,7 @@
     float: left;
     width: 230px;
     text-align: left;
-    font-size: 1rem;
+    font-size: @sub-middle-font;
   }
 
   input {
