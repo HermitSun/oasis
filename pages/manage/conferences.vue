@@ -16,13 +16,13 @@
             v-model="conferenceName"
             size="mini"
             placeholder="检索会议名称"
-            @keyup.enter.native="doSearch(conferences)"
+            @keyup.enter.native="doSearch(conferenceName)"
           >
             <template #suffix>
               <i
                 class="el-input__icon el-icon-search"
                 style="cursor: pointer"
-                @click="doSearch(conferences)"
+                @click="doSearch(conferenceName)"
               ></i>
             </template>
           </el-input>
@@ -146,17 +146,21 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      this.isLoading = false;
-      const conferencesRes = await getConferenceInfo(1, name);
-      // 增加默认值，相当于静默失败，避免500
-      const conferencesData =
-        conferencesRes && conferencesRes.data
-          ? conferencesRes.data
-          : { conferences: [], size: 0 };
-      this.conferences = conferencesData.conferences;
-      // 重置页码
-      this.page = 1;
-      this.isLoading = true;
+      if (name) {
+        this.isLoading = true;
+        const conferencesRes = await getConferenceInfo(1, name);
+        // 增加默认值，相当于静默失败，避免500
+        const conferencesData =
+          conferencesRes && conferencesRes.data
+            ? conferencesRes.data
+            : { conferences: [], size: 0 };
+        this.conferences = conferencesData.conferences;
+        // 重置页码
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
