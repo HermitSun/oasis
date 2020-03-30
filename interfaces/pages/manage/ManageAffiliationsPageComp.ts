@@ -24,6 +24,7 @@ interface ManageAffiliationsLocalData {
   mergeDest: string;
   affiliationName: string;
   showSelectDestDialog: boolean;
+  isLoading: boolean;
 }
 
 export type ManageAffiliationsPageComp = AsyncManageAffiliationsData &

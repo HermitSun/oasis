@@ -3,6 +3,7 @@
     <!--机构基本信息-->
     <el-table
       ref="affiliationsTable"
+      v-loading="isLoading"
       :data="affiliations"
       style="width: 100%"
       :row-key="getRowKey"
@@ -115,7 +116,7 @@ export default Vue.extend({
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
   async asyncData() {
-    const affiliationsRes = await getAffiliationInfo();
+    const affiliationsRes = await getAffiliationInfo(1, 'Nanjing');
     // 请求失败时静默失败
     const affiliationsData = affiliationsRes.data
       ? affiliationsRes.data
@@ -132,8 +133,9 @@ export default Vue.extend({
       // 此处需要特别注意的是，需要能够跨页记录
       waitToMerge: [] as WaitToMergeAuthorInfo[],
       mergeDest: '', // 合并目标
-      affiliationName: '', // 根据输入的机构名称进行搜索
-      showSelectDestDialog: false
+      affiliationName: 'Nanjing', // 根据输入的机构名称进行搜索，默认Nanjing
+      showSelectDestDialog: false,
+      isLoading: false
     } as ManageAffiliationsPageComp;
   },
   methods: {
@@ -180,21 +182,35 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      const affiliationsRes = await getAffiliationInfo(1, name);
-      // 请求失败时静默失败
-      const affiliationsData = affiliationsRes.data
-        ? affiliationsRes.data
-        : { affiliations: [], size: 0 };
-      this.affiliations = affiliationsData.affiliations;
-      // 重置页码和搜索内容
-      this.page = 1;
-      this.affiliationName = '';
+      if (name) {
+        this.isLoading = true;
+        const affiliationsRes = await getAffiliationInfo(1, name);
+        // 请求失败时静默失败
+        const affiliationsData = affiliationsRes.data
+          ? affiliationsRes.data
+          : { affiliations: [], size: 0 };
+        this.affiliations = affiliationsData.affiliations;
+        // 重置页码
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
+      this.isLoading = true;
       // 重新请求数据
-      const affiliationsRes = await getAffiliationInfo(page);
-      this.affiliations = affiliationsRes.data.affiliations;
+      const affiliationsRes = await getAffiliationInfo(
+        page,
+        this.affiliationName
+      );
+      // 请求失败时静默失败
+      const affiliationsData = affiliationsRes.data
+        ? affiliationsRes.data
+        : { affiliations: [], size: this.resultCount };
+      this.affiliations = affiliationsData.affiliations;
+      this.isLoading = false;
     },
     // 清理工作
     clearDialog() {
