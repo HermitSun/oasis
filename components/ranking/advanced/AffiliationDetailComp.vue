@@ -1,6 +1,9 @@
 <template>
-  <div>
-    {{ rank.affiliationName }}
+  <div class="ranking-advanced-detail">
+    <span class="value">{{ rank.affiliationName }}</span>
+    <span class="value">{{ rank.count }}</span>
+    <span class="value">{{ rank.citation }}</span>
+    <span class="value">{{ rank.authorNum }}</span>
   </div>
 </template>
 

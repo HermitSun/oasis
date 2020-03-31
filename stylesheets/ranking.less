@@ -1,19 +1,54 @@
 @import 'default.less';
 
+// basic
 @ranking-title-font-size: @middle-font;
 @ranking-sortKey-font-size: @small-font;
 @ranking-name-font-size: @small-font;
 @ranking-line-height: 25px;
 
+// advanced
+@ranking-advanced-header-font-size: @sub-middle-font;
+@ranking-advanced-body-font-size: @small-font;
+
 // advanced-ranking page
-.advanced-ranking-page{
+.advanced-ranking-page {
   margin: 20px 20px;
-  background: @background-gray;
 }
-.ranking-advanced{
-
+.ranking-advanced {
+  .header {
+    margin-bottom: 15px;
+    padding: 10px 0;
+    display: flex;
+    text-align: center;
+    background: @background-blue-normal;
+    border-radius: 20px;
+    color: @background-blue;
+    font-size: @ranking-advanced-header-font-size;
+    .prop {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .prop:first-child {
+      margin-left: 10px;
+    }
+  }
+  .body {
+  }
 }
-
+.ranking-advanced-detail {
+  padding: 5px 0;
+  margin: 0 10px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  border-radius: 20px;
+  border: 1px solid @border-gray;
+  color: @font-dark;
+  font-size: @ranking-advanced-body-font-size;
+  .value {
+    flex: 1;
+  }
+}
 
 // basic-ranking
 .ranking-basic {
@@ -44,14 +79,13 @@
       .icon {
         width: 40px;
         text-align: center;
-        color: @background-blue
+        color: @background-blue;
       }
       .name {
         color: @font-gray-middle;
         display: inline-block;
         word-wrap: break-word;
         width: 100%;
-
       }
     }
     .count {

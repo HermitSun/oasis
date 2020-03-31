@@ -6,16 +6,16 @@ import searchFilterMockData from './mock/search/searchFilterMockData';
 import affiliationPortraitMockData from './mock/portrait/affiliation/affiliationPortraitMockData';
 import affiliationPapersMockData from './mock/portrait/affiliation/affiliationPapersMockData';
 import affiliationInterestMockData from './mock/portrait/affiliation/affiliationInterestMockData';
+import authorAdvancedRankingMockData from './mock/ranking/author/authorAdvancedRankingMockData';
+import affiliationDetailRankingMockData from './mock/ranking/affiliation/affiliationDetailRankingMockData';
+import affiliationAdvancedMockData from './mock/ranking/affiliation/affiliationAdvancedRankingMockData';
+import authorDetailRankingMockData from './mock/ranking/author/authorDetailRankingMockData';
 
 // 路由
 import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
-import authorAdvancedRankingMockData from '~/server/mock/rankings/author/authorAdvancedRankingMockData';
-import affiliationDetailRankingMockData from '~/server/mock/rankings/affiliation/affiliationDetailRankingMockData';
-import affiliationAdvancedMockData from '~/server/mock/rankings/affiliation/affiliationAdvancedRankingMockData';
-import authorDetailRankingMockData from '~/server/mock/rankings/author/authorDetailRankingMockData';
 
 const app = express();
 

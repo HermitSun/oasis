@@ -3,8 +3,22 @@
     <SearchBar />
     <div class="advanced-ranking-page">
       <Subtitle title="🏆 OASIS RANKING" />
-      <div v-for="(rank, index) in rankings" :key="index">
-        <AuthorDetailComp :rank="rank" />
+      <div class="ranking-advanced">
+        <div class="header">
+          <span class="prop">Author</span>
+          <span class="prop">Count</span>
+          <span class="prop">Citation</span>
+          <span class="prop">Publication Trend</span>
+        </div>
+        <div class="body">
+          <div
+            v-for="(rank, index) in rankings"
+            :key="index"
+            style="margin-bottom: 5px"
+          >
+            <AuthorDetailComp :rank="rank" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
