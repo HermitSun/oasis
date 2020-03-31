@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="affiliation-main__paper portrait-module">
-          <Subtitle title="📝 All Paper" />
+          <PapersSubtitle title="📝 All Papers" />
           <div
             v-for="paper in papers"
             :key="paper.id"
@@ -73,6 +73,7 @@ import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 import { ResearcherInterestResponse } from '~/interfaces/responses/interest/ResearcherInterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: AffiliationPortraitResponse } = {
@@ -132,6 +133,7 @@ export default Vue.extend({
   name: 'Affiliation',
   components: {
     Subtitle,
+    PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
     SearchBar,
