@@ -23,6 +23,7 @@ export default Vue.extend({
         height: 600,
         // nodeColor: '#666',
         nodeRadius: (_) => Math.random() * 10,
+        tooltip: (d) => `<p>id: ${d.id}</p>`,
         draggable: true
       });
     }

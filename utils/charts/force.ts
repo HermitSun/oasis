@@ -16,17 +16,15 @@ export interface ForceGraphNode extends SimulationNodeDatum {
   id: string;
   [key: string]: any;
 }
-
 export interface ForceGraphLink extends SimulationLinkDatum<ForceGraphNode> {
   [key: string]: any;
 }
-
 export interface ForceGraphData {
   nodes: ForceGraphNode[];
   links: ForceGraphLink[];
 }
 
-type D3CallbackFn<T> = ValueFn<Element, T, string | number>;
+type D3CallbackFn<T, R = string | number> = ValueFn<Element, T, R>;
 type D3SelectionElement<T> = T extends Selection<
   infer _,
   infer T2,
@@ -35,6 +33,7 @@ type D3SelectionElement<T> = T extends Selection<
 >
   ? Selection<Element, T2, T3, T4>
   : T;
+type TooltipFn<T> = (data: T) => string;
 
 interface ForceGraphOptions {
   width: number;
@@ -46,6 +45,7 @@ interface ForceGraphOptions {
   nodeBorderWidth?: number;
   nodeRadius?: number | D3CallbackFn<ForceGraphNode>;
   nodeColor?: string | D3CallbackFn<ForceGraphNode>;
+  tooltip?: D3CallbackFn<ForceGraphNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
 }
 
@@ -142,24 +142,31 @@ export function createForceGraph(
     .data(data.nodes)
     .join('circle')
     .attr('r', config.nodeRadius as number)
-    .attr('fill', config.nodeColor as string)
-    .on('mouseover', (d) => {
-      // 渐变
-      tooltip
-        .transition()
-        .duration(500)
-        .style('opacity', 0.9);
-      tooltip
-        .text(`id: ${d.id}`)
-        .style('position', 'absolute')
-        .style('left', d.x + 'px')
-        .style('top', d.y + 'px')
-        .style('cursor', 'default')
-        .style('user-select', 'none');
-    })
-    .on('mouseout', (_) => {
-      tooltip.style('opacity', 0);
-    });
+    .attr('fill', config.nodeColor as string);
+
+  // 配置tooltip内容
+  if (options.tooltip) {
+    node
+      .on('mouseover', (d) => {
+        // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
+        const tooltipHTML = (options.tooltip as TooltipFn<ForceGraphNode>)(d);
+        // 渐变效果
+        tooltip
+          .transition()
+          .duration(500)
+          .style('opacity', 0.9);
+        tooltip
+          .html(tooltipHTML)
+          .style('position', 'absolute')
+          .style('left', d.x + 'px')
+          .style('top', d.y + 'px')
+          .style('cursor', 'default')
+          .style('user-select', 'none');
+      })
+      .on('mouseout', (_) => {
+        tooltip.style('opacity', 0);
+      });
+  }
 
   // 是否可拖拽
   if (config.draggable) {
