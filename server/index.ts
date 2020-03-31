@@ -16,6 +16,11 @@ import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
+import authorPortraitMockData from '~/server/mock/portrait/author/authorPortraitMockData';
+import keywordPortraitMockData from '~/server/mock/portrait/keyword/keywordPortraitMockData';
+import conferencePortraitMockData from '~/server/mock/portrait/conference/conferencePortraitMockData';
+import journalPortraitMockData from '~/server/mock/portrait/journal/journalPortraitMockData';
+import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
 
 const app = express();
 
@@ -61,13 +66,13 @@ app.get('/rank/detail/affiliation', (req, res) => {
 // 13
 app.get('/portrait/author', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(authorPortraitMockData);
 });
 
 // 14
 app.get('/paper/author', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(affiliationPapersMockData);
 });
 
 // 16
@@ -97,37 +102,37 @@ app.get('/rank/affiliation/author', (req, res) => {
 // 20
 app.get('/portrait/keyword', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(keywordPortraitMockData);
 });
 
 // 21
 app.get('/paper/keyword', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(affiliationPapersMockData);
 });
 
 // 22
 app.get('/portrait/conference', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(conferencePortraitMockData);
 });
 
 // 23
 app.get('/conference/interest', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(journalInterestMockData);
 });
 
 // 24
 app.get('/portrait/journal', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(journalPortraitMockData);
 });
 
 // 25
 app.get('/journal/interest', (req, res) => {
   console.log(req.params);
-  res.json();
+  res.json(journalInterestMockData);
 });
 
 // 管理员部分
