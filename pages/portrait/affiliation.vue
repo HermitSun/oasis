@@ -67,17 +67,17 @@ import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
-import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
+import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { Message } from '~/node_modules/element-ui';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
-import { ResearcherInterestResponse } from '~/interfaces/responses/interest/ResearcherInterestResponse';
+import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 
 async function requestPortrait(affiliation: string) {
-  const res: { portrait: AffiliationPortraitResponse } = {
-    portrait: {} as AffiliationPortraitResponse
+  const res: { portrait: PortraitResponse } = {
+    portrait: {} as PortraitResponse
   };
   try {
     const portraitResponse = await getAffiliationPortrait(affiliation);
@@ -104,7 +104,7 @@ async function requestPapers(args: AffiliationPapersPayload) {
 }
 
 async function requestInterests(affiliation: string) {
-  const res: { interests: ResearcherInterestResponse[] } = { interests: [] };
+  const res: { interests: InterestResponse[] } = { interests: [] };
   try {
     const interestsResponse = await getAffiliationInterest(affiliation);
     res.interests = interestsResponse.data;

@@ -58,6 +58,18 @@ app.get('/rank/detail/affiliation', (req, res) => {
   res.json(affiliationDetailRankingMockData);
 });
 
+// 13
+app.get('/portrait/author', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 14
+app.get('/paper/author', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
 // 16
 app.get('/portrait/affiliation', (req, res) => {
   console.log(req.params);
@@ -80,6 +92,42 @@ app.get('/affiliation/interest', (req, res) => {
 app.get('/rank/affiliation/author', (req, res) => {
   console.log(req.params);
   res.json(authorAdvancedRankingMockData);
+});
+
+// 20
+app.get('/portrait/keyword', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 21
+app.get('/paper/keyword', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 22
+app.get('/portrait/conference', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 23
+app.get('/conference/interest', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 24
+app.get('/portrait/journal', (req, res) => {
+  console.log(req.params);
+  res.json();
+});
+
+// 25
+app.get('/journal/interest', (req, res) => {
+  console.log(req.params);
+  res.json();
 });
 
 // 管理员部分
