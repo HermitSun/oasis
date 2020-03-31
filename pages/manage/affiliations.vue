@@ -9,6 +9,11 @@
       :row-key="getRowKey"
       @selection-change="selectToMerge"
     >
+      <!--无数据的提示-->
+      <template #empty>
+        <span class="el-table__empty-text">检索机构以进行管理↗</span>
+      </template>
+      <!--table的内容-->
       <el-table-column type="selection" reserve-selection width="55" />
       <el-table-column prop="name" label="机构名" />
       <!--搜索框和操作-->
@@ -17,7 +22,7 @@
           <el-input
             v-model="affiliationName"
             size="mini"
-            placeholder="检索机构名称"
+            placeholder="检索机构名称，例如：Nanjing"
             @keyup.enter.native="doSearch(affiliationName)"
           >
             <template #suffix>
@@ -99,7 +104,6 @@ import { ElTable } from 'element-ui/types/table';
 import { getAffiliationInfo, mergeAffiliationInfo } from '~/api';
 import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AffiliationInfo } from '~/interfaces/responses/manage/AffiliationInfoResponse';
-import { ManageAffiliationsPageComp } from '~/interfaces/pages/manage/ManageAffiliationsPageComp';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
@@ -115,28 +119,19 @@ export default Vue.extend({
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
-  async asyncData() {
-    const affiliationsRes = await getAffiliationInfo(1, 'Nanjing');
-    // 请求失败时静默失败
-    const affiliationsData = affiliationsRes.data
-      ? affiliationsRes.data
-      : { affiliations: [], size: 0 };
-    return {
-      affiliations: affiliationsData.affiliations,
-      resultCount: affiliationsData.size
-    };
-  },
   data() {
     return {
+      affiliations: [] as AffiliationInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
       // 待合并的机构
       // 此处需要特别注意的是，需要能够跨页记录
       waitToMerge: [] as WaitToMergeAuthorInfo[],
       mergeDest: '', // 合并目标
-      affiliationName: 'Nanjing', // 根据输入的机构名称进行搜索，默认Nanjing
+      affiliationName: '', // 根据输入的机构名称进行搜索
       showSelectDestDialog: false,
       isLoading: false
-    } as ManageAffiliationsPageComp;
+    };
   },
   methods: {
     // 获取row-key，用于跨页记忆

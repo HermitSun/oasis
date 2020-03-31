@@ -9,6 +9,11 @@
       :row-key="getRowKey"
       @selection-change="selectToMerge"
     >
+      <!--无数据的提示-->
+      <template #empty>
+        <span class="el-table__empty-text">检索学者以进行管理↗</span>
+      </template>
+      <!--table的内容-->
       <el-table-column type="selection" reserve-selection width="55" />
       <el-table-column prop="authorName" label="姓名" />
       <el-table-column prop="count" label="论文数" />
@@ -19,7 +24,7 @@
           <el-input
             v-model="authorName"
             size="mini"
-            placeholder="检索学者姓名"
+            placeholder="检索学者姓名，例如：Jia Liu"
             @keyup.enter.native="doSearch(authorName)"
           >
             <template #suffix>
@@ -99,10 +104,7 @@ import {
 } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import { getAuthorInfo, mergeAuthorInfo } from '~/api';
-import {
-  ManageAuthorsPageComp,
-  WaitToMergeAuthorInfo
-} from '~/interfaces/pages/manage/ManageAuthorsPageComp';
+import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
@@ -119,29 +121,19 @@ export default Vue.extend({
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
-  async asyncData() {
-    const authorsRes = await getAuthorInfo(1, 'Jia Liu');
-    // 请求失败时静默失败
-    const authorsData =
-      authorsRes && authorsRes.data
-        ? authorsRes.data
-        : { authors: [], size: 0 };
-    return {
-      authors: authorsData.authors,
-      resultCount: authorsData.size
-    };
-  },
   data() {
     return {
+      authors: [] as AuthorInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
       // 待合并的学者
       // 此处需要特别注意的是，需要能够跨页记录
       waitToMerge: [] as WaitToMergeAuthorInfo[],
       mergeDest: '', // 合并目标
-      authorName: 'Jia Liu', // 根据输入的学者姓名进行搜索，默认Jia Liu
+      authorName: '', // 根据输入的学者姓名进行搜索
       showSelectDestDialog: false,
       isLoading: false
-    } as ManageAuthorsPageComp;
+    };
   },
   methods: {
     // 获取row-key，用于跨页记忆

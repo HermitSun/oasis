@@ -6,10 +6,7 @@
  */
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
 
-interface AsyncManageAuthorsData {
-  authors: AuthorInfo[];
-  resultCount: number;
-}
+interface AsyncManageAuthorsData {}
 
 export type ManageAuthorsDataFromProp = {};
 
@@ -19,6 +16,8 @@ export interface WaitToMergeAuthorInfo {
 }
 
 interface ManageAuthorsLocalData {
+  authors: AuthorInfo[];
+  resultCount: number;
   page: number;
   waitToMerge: WaitToMergeAuthorInfo[];
   mergeDest: string;

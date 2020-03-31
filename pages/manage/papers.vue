@@ -72,7 +72,7 @@
           <el-input
             v-model="paperTitle"
             size="mini"
-            placeholder="检索论文"
+            placeholder="检索论文，例如：DevOps"
             @keyup.enter.native="doSearch(paperTitle)"
           >
             <template #suffix>

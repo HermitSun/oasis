@@ -7,6 +7,11 @@
       :data="journals"
       style="width: 100%"
     >
+      <!--无数据的提示-->
+      <template #empty>
+        <span class="el-table__empty-text">检索期刊以进行管理↗</span>
+      </template>
+      <!--table的内容-->
       <el-table-column type="index" width="50" />
       <el-table-column prop="name" label="期刊名" />
       <!--搜索框和操作-->
@@ -15,7 +20,7 @@
           <el-input
             v-model="journalName"
             size="mini"
-            placeholder="检索期刊名称"
+            placeholder="检索期刊名称，例如：ME"
             @keyup.enter.native="doSearch(journalName)"
           >
             <template #suffix>
@@ -27,11 +32,11 @@
             </template>
           </el-input>
         </template>
-        <template #default="journals">
+        <template #default="journalsData">
           <el-button
             size="mini"
             type="danger"
-            @click="openUpdateDialog(journals.row.name)"
+            @click="openUpdateDialog(journalsData.row.name)"
           >
             修改名称
           </el-button>
@@ -73,8 +78,8 @@
 import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getJournalInfo, updateJournalInfo } from '~/api';
-import { ManageJournalsPageComp } from '~/interfaces/pages/manage/ManageJournalsPageComp';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import { JournalInfo } from '~/interfaces/responses/manage/JournalInfoResponse';
 
 export default Vue.extend({
   name: 'ManageJournals',
@@ -87,27 +92,17 @@ export default Vue.extend({
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
-  async asyncData() {
-    // 初始时加载ICSE的数据
-    const journalsRes = await getJournalInfo(1, 'ME');
-    const journalsData =
-      journalsRes && journalsRes.data
-        ? journalsRes.data
-        : { journals: [], size: 0 };
-    return {
-      journals: journalsData.journals,
-      resultCount: journalsData.size
-    };
-  },
   data() {
     return {
+      journals: [] as JournalInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
-      journalName: 'ME', // 根据输入的期刊名称进行搜索，初始ME
+      journalName: '', // 根据输入的期刊名称进行搜索
       showUpdateDialog: false, // 显示修改的对话框
       waitToUpdateName: '', // 等待更新的名称
       updateDestName: '', // 更新后的名称
       isLoading: false // 是否正在加载
-    } as ManageJournalsPageComp;
+    };
   },
   methods: {
     // 打开对话框

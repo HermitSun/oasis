@@ -7,6 +7,11 @@
       :data="conferences"
       style="width: 100%"
     >
+      <!--无数据的提示-->
+      <template #empty>
+        <span class="el-table__empty-text">检索会议以进行管理↗</span>
+      </template>
+      <!--table的内容-->
       <el-table-column type="index" width="50" />
       <el-table-column prop="name" label="会议名" />
       <!--搜索框和操作-->
@@ -15,7 +20,7 @@
           <el-input
             v-model="conferenceName"
             size="mini"
-            placeholder="检索会议名称"
+            placeholder="检索会议名称，例如：ICSE"
             @keyup.enter.native="doSearch(conferenceName)"
           >
             <template #suffix>
@@ -27,11 +32,11 @@
             </template>
           </el-input>
         </template>
-        <template #default="conferences">
+        <template #default="conferencesData">
           <el-button
             size="mini"
             type="danger"
-            @click="openUpdateDialog(conferences.row.name)"
+            @click="openUpdateDialog(conferencesData.row.name)"
           >
             修改名称
           </el-button>
@@ -73,8 +78,8 @@
 import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getConferenceInfo, updateJournalInfo } from '~/api';
-import { ManageConferencesPageComp } from '~/interfaces/pages/manage/ManageConferencesPageComp';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import { ConferenceInfo } from '~/interfaces/responses/manage/ConferenceInfoResponse';
 
 export default Vue.extend({
   name: 'ManageConferences',
@@ -87,27 +92,17 @@ export default Vue.extend({
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
-  async asyncData() {
-    const conferencesRes = await getConferenceInfo(1, 'ICSE');
-    // 增加默认值，相当于静默失败，避免500
-    const conferencesData =
-      conferencesRes && conferencesRes.data
-        ? conferencesRes.data
-        : { conferences: [], size: 0 };
-    return {
-      conferences: conferencesData.conferences,
-      resultCount: conferencesData.size
-    };
-  },
   data() {
     return {
+      conferences: [] as ConferenceInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
-      conferenceName: 'ICSE', // 根据输入的期刊名称进行搜索，默认值ICSE
+      conferenceName: '', // 根据输入的期刊名称进行搜索
       showUpdateDialog: false, // 显示修改的对话框
       waitToUpdateName: '', // 等待更新的名称
       updateDestName: '', // 更新后的名称
       isLoading: false
-    } as ManageConferencesPageComp;
+    };
   },
   methods: {
     // 打开对话框

@@ -6,10 +6,7 @@
  */
 import { AffiliationInfo } from '~/interfaces/responses/manage/AffiliationInfoResponse';
 
-interface AsyncManageAffiliationsData {
-  affiliations: AffiliationInfo[];
-  resultCount: number;
-}
+interface AsyncManageAffiliationsData {}
 
 export type ManageAffiliationsDataFromProp = {};
 
@@ -19,6 +16,8 @@ export interface WaitToMergeAffiliationInfo {
 }
 
 interface ManageAffiliationsLocalData {
+  affiliations: AffiliationInfo[];
+  resultCount: number;
   page: number;
   waitToMerge: WaitToMergeAffiliationInfo[];
   mergeDest: string;
