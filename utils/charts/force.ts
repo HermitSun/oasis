@@ -27,7 +27,7 @@ export interface ForceGraphData {
 
 type D3CallbackFn<T> = ValueFn<Element, T, string | number>;
 type D3SelectionElement<T> = T extends Selection<
-  infer T1,
+  infer _,
   infer T2,
   infer T3,
   infer T4
@@ -103,6 +103,8 @@ export function createForceGraph(
   };
 
   // 力导向图的配置
+  // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
+  // 辣鸡D3
   const simulation = force
     .forceSimulation(data.nodes)
     .force(
