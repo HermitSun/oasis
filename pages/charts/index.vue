@@ -23,7 +23,6 @@ export default Vue.extend({
         height: 600,
         // nodeColor: '#666',
         nodeRadius: (_) => Math.random() * 10,
-        nodeTitle: (d) => 'id: ' + d.id,
         draggable: true
       });
     }

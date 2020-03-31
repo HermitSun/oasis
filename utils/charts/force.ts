@@ -1,4 +1,5 @@
 import * as d3 from 'd3-selection';
+import 'd3-transition';
 import * as force from 'd3-force';
 import { drag as d3Drag } from 'd3-drag';
 import { scaleOrdinal } from 'd3-scale';
@@ -45,7 +46,6 @@ interface ForceGraphOptions {
   nodeBorderWidth?: number;
   nodeRadius?: number | D3CallbackFn<ForceGraphNode>;
   nodeColor?: string | D3CallbackFn<ForceGraphNode>;
-  nodeTitle?: string | D3CallbackFn<ForceGraphNode>;
   draggable?: boolean;
 }
 
@@ -68,7 +68,6 @@ export function createForceGraph(
     nodeBorderWidth: 1.5,
     nodeRadius: 5,
     nodeColor: groupByColor,
-    nodeTitle: (d: ForceGraphNode) => d.id,
     draggable: false,
     ...options
   };
@@ -101,6 +100,14 @@ export function createForceGraph(
       .on('drag', dragged)
       .on('end', dragEnded);
   };
+
+  // tooltip
+  // 暂时没想好怎么配置tooltip的内容，先放着
+  const tooltip = d3
+    .select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
 
   // 力导向图的配置
   // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
@@ -135,15 +142,29 @@ export function createForceGraph(
     .data(data.nodes)
     .join('circle')
     .attr('r', config.nodeRadius as number)
-    .attr('fill', config.nodeColor as string);
+    .attr('fill', config.nodeColor as string)
+    .on('mouseover', (d) => {
+      // 渐变
+      tooltip
+        .transition()
+        .duration(500)
+        .style('opacity', 0.9);
+      tooltip
+        .text(`id: ${d.id}`)
+        .style('position', 'absolute')
+        .style('left', d.x + 'px')
+        .style('top', d.y + 'px')
+        .style('cursor', 'default')
+        .style('user-select', 'none');
+    })
+    .on('mouseout', (_) => {
+      tooltip.style('opacity', 0);
+    });
 
   // 是否可拖拽
   if (config.draggable) {
     (node as D3SelectionElement<typeof node>).call(drag(simulation));
   }
-
-  // title
-  node.append('title').text(config.nodeTitle as string);
 
   // 引导
   simulation.on('tick', () => {
