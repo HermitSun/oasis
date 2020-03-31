@@ -4,11 +4,18 @@
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp :profile="profile" />
-        <div>研究方向词云</div>
-      </div>
-      <div class="profile-module">
-        <div>Citation Trend</div>
-        <div>Publication Trends</div>
+        <div class="module">
+          <Subtitle title="🌥 Keywords WordCloud" />
+          <!--<div>{{ interests }}</div>-->
+        </div>
+        <div class="module">
+          <Subtitle title="📉 Citation Trend" />
+          <div>{{ citationTrend }}</div>
+        </div>
+        <div class="module">
+          <Subtitle title="📈 Publication Trends" />
+          <div>{{ publicationTrend }}</div>
+        </div>
       </div>
       <div class="affiliation-main">
         <div class="affiliation-main__authors portrait-module">
@@ -43,9 +50,6 @@
           </div>
         </div>
       </div>
-      <div id="bar">
-        bar chart test
-      </div>
     </div>
   </div>
 </template>
@@ -59,7 +63,6 @@ import {
   getAffiliationPortrait,
   getAuthorDetailRanking
 } from '~/api';
-import Bar from '~/utils/charts/bar';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
@@ -124,6 +127,7 @@ async function requestAuthorDetailRanking(affiliation: string) {
   }
   return res;
 }
+
 export default Vue.extend({
   name: 'Affiliation',
   components: {
@@ -135,7 +139,11 @@ export default Vue.extend({
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
+    const sortKey = 'recent';
+    const page = 1;
     // TODO const affiliation = query.affiliation;
+    // TODO const sortKey = query.sortKey
+    // TODO const page = query.page
     const portraitRes = await requestPortrait(affiliation);
     const profile = {
       name: affiliation,
@@ -157,11 +165,7 @@ export default Vue.extend({
     const citationTrend = portraitRes.portrait.citationTrend;
     const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const papersReq = requestPapers({
-      affiliation,
-      page: 1,
-      sorKey: 'recent'
-    });
+    const papersReq = requestPapers({ affiliation, page, sortKey });
     const interestsReq = requestInterests(affiliation);
     const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
 
@@ -175,16 +179,13 @@ export default Vue.extend({
       ...(await interestsReq),
       ...(await affiliationAuthorRankingReq)
     };
-  },
-  mounted(): void {
-    const bar = new Bar('#bar');
-    bar.addColor();
   }
 });
 </script>
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
 .affiliation-main {
   @media @min-pad-width {
     .flex-left-left-row;
