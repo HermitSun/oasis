@@ -13,18 +13,18 @@
       <div class="detail">
         <div class="info">
           <div class="title">
-            Publication Trend
+            📉 Publication Trend
           </div>
           <div class="content">
-            {{ rankingDetail.publicationTrend }}
+            <!--{{ rankingDetail.publicationTrend }}-->
           </div>
         </div>
         <div class="info">
           <div class="title">
-            Keywords
+            📃 Keywords
           </div>
           <div class="content">
-            {{ rankingDetail.keywords }}
+            <!--{{ rankingDetail.keywords }}-->
           </div>
         </div>
       </div>
