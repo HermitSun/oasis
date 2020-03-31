@@ -226,6 +226,14 @@ export async function getAffiliationInterest(
 }
 
 // 19. 查看某机构下的作者排名详情
+export async function getAuthorDetailRanking(
+  affiliation: string
+): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
+  const { data } = await axios.get('/rank/affiliation/author', {
+    params: { affiliation }
+  });
+  return data;
+}
 
 // 以下为管理员端
 const mockConfig = {

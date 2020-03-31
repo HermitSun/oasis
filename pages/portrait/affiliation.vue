@@ -13,6 +13,23 @@
       <div class="affiliation-main">
         <div class="affiliation-main__authors portrait-module">
           <Subtitle title="🏆 Top Authors" />
+          <div class="ranking-advanced">
+            <div class="header">
+              <span class="prop">Author</span>
+              <span class="prop">Count</span>
+              <span class="prop">Citation</span>
+              <span class="prop">Publication Trend</span>
+            </div>
+            <div class="body">
+              <div
+                v-for="(rank, index) in affiliationAuthorRanking"
+                :key="index"
+                style="margin-bottom: 5px"
+              >
+                <AuthorDetailComp :rank="rank" />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="affiliation-main__paper portrait-module">
           <Subtitle title="📝 All Paper" />
@@ -39,12 +56,14 @@ import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
   getAffiliationPortrait,
-  getAffiliatonPapers
+  getAffiliatonPapers,
+  getAuthorDetailRanking
 } from '~/api';
 import Bar from '~/utils/charts/bar';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
+import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
 
 export default Vue.extend({
   name: 'Affiliation',
@@ -52,7 +71,8 @@ export default Vue.extend({
     Subtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    AuthorDetailComp
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
@@ -72,6 +92,9 @@ export default Vue.extend({
         { prop: '💻 Authors', number: affiliationPortraitRes.data.authorNum }
       ]
     };
+    const affiliationAuthorRankingRes = await getAuthorDetailRanking(
+      affiliation
+    );
     return {
       affiliationProfile,
       affiliationCitationTrend: affiliationPortraitRes.data.citationTrend,
@@ -80,6 +103,7 @@ export default Vue.extend({
       affiliationPapers: affiliationPapersRes.data.papers,
       affiliationPaperSize: affiliationPapersRes.data.size,
       affiliationInterest: affiliationInterestRes.data,
+      affiliationAuthorRanking: affiliationAuthorRankingRes.data,
       affiliation,
       ...query
     };

@@ -52,24 +52,34 @@ app.get('/rank/advanced/affiliation', (req, res) => {
   res.json(affiliationAdvancedMockData);
 });
 
+// 12
 app.get('/rank/detail/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationDetailRankingMockData);
 });
 
+// 16
 app.get('/portrait/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationPortraitMockData);
 });
 
+// 17
 app.get('/paper/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationPapersMockData);
 });
 
+// 18
 app.get('/affiliation/interest', (req, res) => {
   console.log(req.params);
   res.json(affiliationInterestMockData);
+});
+
+// 19
+app.get('/rank/affiliation/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorAdvancedRankingMockData);
 });
 
 // 管理员部分
