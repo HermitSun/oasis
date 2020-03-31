@@ -19,6 +19,7 @@ interface ManageJournalsLocalData {
   showUpdateDialog: boolean;
   waitToUpdateName: string;
   updateDestName: string;
+  isLoading: boolean;
 }
 
 export type ManageJournalsPageComp = AsyncManageJournalsData &

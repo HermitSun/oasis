@@ -134,6 +134,7 @@ import { Pagination } from 'element-ui';
 import { basicSearch, advancedSearch } from '~/api';
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import {
   SearchDataFromProp,
   SearchPageComp
@@ -142,7 +143,6 @@ import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
 
 const defaultSortKey = 'related';
-const MAX_RECORDS = 100 * 10;
 
 export default Vue.extend({
   name: 'IndexVue',
@@ -151,6 +151,8 @@ export default Vue.extend({
     SearchResComp,
     [Pagination.name]: Pagination
   },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
     const searchPayload = {
@@ -184,10 +186,6 @@ export default Vue.extend({
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
       return process.client && isMobile() ? 5 : 7;
-    },
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染

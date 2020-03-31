@@ -3,11 +3,17 @@
     <!--学者基本信息-->
     <el-table
       ref="authorsTable"
+      v-loading="isLoading"
       :data="authors"
       style="width: 100%"
       :row-key="getRowKey"
       @selection-change="selectToMerge"
     >
+      <!--无数据的提示-->
+      <template #empty>
+        <span class="el-table__empty-text">检索学者以进行管理↗</span>
+      </template>
+      <!--table的内容-->
       <el-table-column type="selection" reserve-selection width="55" />
       <el-table-column prop="authorName" label="姓名" />
       <el-table-column prop="count" label="论文数" />
@@ -18,7 +24,7 @@
           <el-input
             v-model="authorName"
             size="mini"
-            placeholder="检索学者姓名"
+            placeholder="检索学者姓名，例如：Jia Liu"
             @keyup.enter.native="doSearch(authorName)"
           >
             <template #suffix>
@@ -98,13 +104,9 @@ import {
 } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import { getAuthorInfo, mergeAuthorInfo } from '~/api';
-import {
-  ManageAuthorsPageComp,
-  WaitToMergeAuthorInfo
-} from '~/interfaces/pages/manage/ManageAuthorsPageComp';
+import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
-
-const MAX_RECORDS = 100 * 10;
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 export default Vue.extend({
   name: 'ManageAuthors',
@@ -117,29 +119,21 @@ export default Vue.extend({
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  async asyncData() {
-    const authorsRes = await getAuthorInfo();
-    return {
-      authors: authorsRes.data.authors,
-      resultCount: authorsRes.data.size
-    };
-  },
+  // 限制分页的最大页数
+  mixins: [PaginationMaxSizeLimit],
   data() {
     return {
+      authors: [] as AuthorInfo[],
+      resultCount: 0,
       page: 1, // 当前页码
       // 待合并的学者
       // 此处需要特别注意的是，需要能够跨页记录
       waitToMerge: [] as WaitToMergeAuthorInfo[],
       mergeDest: '', // 合并目标
       authorName: '', // 根据输入的学者姓名进行搜索
-      showSelectDestDialog: false
-    } as ManageAuthorsPageComp;
-  },
-  computed: {
-    // 限制最大页数
-    totalRecords(): number {
-      return this.resultCount > MAX_RECORDS ? MAX_RECORDS : this.resultCount;
-    }
+      showSelectDestDialog: false,
+      isLoading: false
+    };
   },
   methods: {
     // 获取row-key，用于跨页记忆
@@ -185,17 +179,33 @@ export default Vue.extend({
     },
     // 进行搜索
     async doSearch(name: string) {
-      const authorsRes = await getAuthorInfo(1, name);
-      this.authors = authorsRes.data.authors;
-      // 重置页码和搜索内容
-      this.page = 1;
-      this.authorName = '';
+      if (name) {
+        this.isLoading = true;
+        const authorsRes = await getAuthorInfo(1, name);
+        // 请求失败时静默失败
+        const authorsData =
+          authorsRes && authorsRes.data
+            ? authorsRes.data
+            : { authors: [], size: 0 };
+        this.authors = authorsData.authors;
+        // 重置页码和搜索内容
+        this.page = 1;
+        this.isLoading = false;
+      } else {
+        this.$message.warning('请输入搜索内容');
+      }
     },
     // 请求下一页
     async showNextPage(page: number) {
+      this.isLoading = true;
       // 重新请求数据
-      const authorsRes = await getAuthorInfo(page);
-      this.authors = authorsRes.data.authors;
+      const authorsRes = await getAuthorInfo(page, this.authorName);
+      const authorsData =
+        authorsRes && authorsRes.data
+          ? authorsRes.data
+          : { authors: [], size: this.resultCount };
+      this.authors = authorsData.authors;
+      this.isLoading = false;
     },
     // 清理工作
     clearDialog() {

@@ -239,10 +239,9 @@ const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<AffiliationInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/affiliations/info', {
+  const { data } = await axios.get('/info/affiliation', {
     params: { name, page }
   });
   return data;
@@ -261,10 +260,9 @@ export async function mergeAffiliationInfo(
 // 28. 获取会议信息 getConferenceInfo
 export async function getConferenceInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<ConferenceInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/conferences/info', {
+  const { data } = await axios.get('/info/conference', {
     params: { name, page }
   });
   return data;
@@ -283,10 +281,9 @@ export async function updateConferenceInfo(
 // 30. 获取期刊信息 getJournalInfo
 export async function getJournalInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<JournalInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/journals/info', {
+  const { data } = await axios.get('/info/journal', {
     params: { name, page }
   });
   return data;
@@ -314,10 +311,9 @@ export async function updatePaperInfo(
 // 33. 获取作者信息 getAuthorInfo
 export async function getAuthorInfo(
   page: number = 1,
-  name?: string
+  name: string = ''
 ): Promise<BasicResponse<AuthorInfoResponse>> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.get('/authors/info', {
+  const { data } = await axios.get('/info/author', {
     params: { name, page }
   });
   return data;
