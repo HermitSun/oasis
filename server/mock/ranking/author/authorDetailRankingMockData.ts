@@ -1473,102 +1473,6 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Wind speed',
-        value: 4
-      },
-      {
-        name: 'Junctions',
-        value: 5
-      },
-      {
-        name: 'Wind power generation',
-        value: 4
-      },
-      {
-        name: 'fault diagnosis',
-        value: 1
-      },
-      {
-        name: 'reactive power control',
-        value: 2
-      },
-      {
-        name: 'wind power plants',
-        value: 9
-      },
-      {
-        name: 'wind turbines',
-        value: 8
-      },
-      {
-        name: 'reactive power control methods',
-        value: 1
-      },
-      {
-        name: 'wind speed variations',
-        value: 1
-      },
-      {
-        name: 'thermal cycling',
-        value: 2
-      },
-      {
-        name: 'power switching devices',
-        value: 1
-      },
-      {
-        name: 'power converters reliability',
-        value: 1
-      },
-      {
-        name: 'power grid faults',
-        value: 1
-      },
-      {
-        name: 'parallel power converters',
-        value: 1
-      },
-      {
-        name: 'WTS',
-        value: 1
-      },
-      {
-        name: 'wind park',
-        value: 1
-      },
-      {
-        name: 'junction temperature fluctuation',
-        value: 1
-      },
-      {
-        name: 'model-based control system',
-        value: 1
-      },
-      {
-        name: 'three-level neutral-point- clamped grid-connected converters',
-        value: 1
-      },
-      {
-        name: '3L-NPC wind power inverter',
-        value: 1
-      },
-      {
-        name: '3L-NPC',
-        value: 1
-      },
-      {
-        name: 'Thermal cycling',
-        value: 2
-      },
-      {
-        name: 'Wind power',
-        value: 1
-      },
-      {
-        name: 'Reactive power control',
-        value: 1
-      },
-      {
         name: 'Generators',
         value: 4
       },
@@ -1698,6 +1602,102 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'Indirect matrix converter',
+        value: 1
+      },
+      {
+        name: 'Wind speed',
+        value: 4
+      },
+      {
+        name: 'Junctions',
+        value: 5
+      },
+      {
+        name: 'Wind power generation',
+        value: 4
+      },
+      {
+        name: 'fault diagnosis',
+        value: 1
+      },
+      {
+        name: 'reactive power control',
+        value: 2
+      },
+      {
+        name: 'wind power plants',
+        value: 9
+      },
+      {
+        name: 'wind turbines',
+        value: 8
+      },
+      {
+        name: 'reactive power control methods',
+        value: 1
+      },
+      {
+        name: 'wind speed variations',
+        value: 1
+      },
+      {
+        name: 'thermal cycling',
+        value: 2
+      },
+      {
+        name: 'power switching devices',
+        value: 1
+      },
+      {
+        name: 'power converters reliability',
+        value: 1
+      },
+      {
+        name: 'power grid faults',
+        value: 1
+      },
+      {
+        name: 'parallel power converters',
+        value: 1
+      },
+      {
+        name: 'WTS',
+        value: 1
+      },
+      {
+        name: 'wind park',
+        value: 1
+      },
+      {
+        name: 'junction temperature fluctuation',
+        value: 1
+      },
+      {
+        name: 'model-based control system',
+        value: 1
+      },
+      {
+        name: 'three-level neutral-point- clamped grid-connected converters',
+        value: 1
+      },
+      {
+        name: '3L-NPC wind power inverter',
+        value: 1
+      },
+      {
+        name: '3L-NPC',
+        value: 1
+      },
+      {
+        name: 'Thermal cycling',
+        value: 2
+      },
+      {
+        name: 'Wind power',
+        value: 1
+      },
+      {
+        name: 'Reactive power control',
         value: 1
       },
       {
@@ -2229,117 +2229,12 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Leakage currents',
-        value: 2
-      },
-      {
-        name: 'Stress',
-        value: 7
-      },
-      {
-        name: 'PWM invertors',
-        value: 5
+        name: 'network topology',
+        value: 1
       },
       {
         name: 'switching convertors',
         value: 12
-      },
-      {
-        name: 'modulation technique',
-        value: 1
-      },
-      {
-        name: 'inverter family',
-        value: 1
-      },
-      {
-        name: 'single-phase solar photovoltaic systems',
-        value: 1
-      },
-      {
-        name: 'capacitor transformerless inverters',
-        value: 1
-      },
-      {
-        name: 'flying capacitor principle',
-        value: 1
-      },
-      {
-        name: 'power switches',
-        value: 1
-      },
-      {
-        name: 'simple unipolar sinusoidal pulse',
-        value: 1
-      },
-      {
-        name: 'switching loss',
-        value: 2
-      },
-      {
-        name: 'output current ripple',
-        value: 1
-      },
-      {
-        name: 'filter requirements',
-        value: 1
-      },
-      {
-        name: 'inverter topologies',
-        value: 1
-      },
-      {
-        name: 'negative polarity',
-        value: 1
-      },
-      {
-        name: 'leakage current',
-        value: 1
-      },
-      {
-        name: 'power compensation capability',
-        value: 1
-      },
-      {
-        name: 'output ac voltage peak',
-        value: 1
-      },
-      {
-        name: 'input dc voltage',
-        value: 1
-      },
-      {
-        name: 'peak ac voltage',
-        value: 1
-      },
-      {
-        name: 'common-ground-type transformerless inverters',
-        value: 1
-      },
-      {
-        name: 'Flying capacitor',
-        value: 1
-      },
-      {
-        name: 'microinverter',
-        value: 1
-      },
-      {
-        name: 'photovoltaic (PV) system',
-        value: 1
-      },
-      {
-        name:
-          'reverse blocking insulated-gate bipolar transistor (RB-IGBT) inverters',
-        value: 1
-      },
-      {
-        name: 'transformerless inverter',
-        value: 2
-      },
-      {
-        name: 'network topology',
-        value: 1
       },
       {
         name: 'voltage-source convertors',
@@ -2454,6 +2349,111 @@ const authorDetailRankingMockData = {
         value: 2
       },
       {
+        name: 'Leakage currents',
+        value: 2
+      },
+      {
+        name: 'Stress',
+        value: 7
+      },
+      {
+        name: 'PWM invertors',
+        value: 5
+      },
+      {
+        name: 'modulation technique',
+        value: 1
+      },
+      {
+        name: 'inverter family',
+        value: 1
+      },
+      {
+        name: 'single-phase solar photovoltaic systems',
+        value: 1
+      },
+      {
+        name: 'capacitor transformerless inverters',
+        value: 1
+      },
+      {
+        name: 'flying capacitor principle',
+        value: 1
+      },
+      {
+        name: 'power switches',
+        value: 1
+      },
+      {
+        name: 'simple unipolar sinusoidal pulse',
+        value: 1
+      },
+      {
+        name: 'switching loss',
+        value: 2
+      },
+      {
+        name: 'output current ripple',
+        value: 1
+      },
+      {
+        name: 'filter requirements',
+        value: 1
+      },
+      {
+        name: 'inverter topologies',
+        value: 1
+      },
+      {
+        name: 'negative polarity',
+        value: 1
+      },
+      {
+        name: 'leakage current',
+        value: 1
+      },
+      {
+        name: 'power compensation capability',
+        value: 1
+      },
+      {
+        name: 'output ac voltage peak',
+        value: 1
+      },
+      {
+        name: 'input dc voltage',
+        value: 1
+      },
+      {
+        name: 'peak ac voltage',
+        value: 1
+      },
+      {
+        name: 'common-ground-type transformerless inverters',
+        value: 1
+      },
+      {
+        name: 'Flying capacitor',
+        value: 1
+      },
+      {
+        name: 'microinverter',
+        value: 1
+      },
+      {
+        name: 'photovoltaic (PV) system',
+        value: 1
+      },
+      {
+        name:
+          'reverse blocking insulated-gate bipolar transistor (RB-IGBT) inverters',
+        value: 1
+      },
+      {
+        name: 'transformerless inverter',
+        value: 2
+      },
+      {
         name: 'Integrated circuits',
         value: 4
       },
@@ -2539,62 +2539,6 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'frequency droop',
-        value: 1
-      },
-      {
-        name: 'Renewable energy sources',
-        value: 2
-      },
-      {
-        name: 'power system restoration',
-        value: 1
-      },
-      {
-        name: 'power system stability',
-        value: 8
-      },
-      {
-        name: 'synchronous generators',
-        value: 4
-      },
-      {
-        name: 'active power sharing',
-        value: 1
-      },
-      {
-        name: 'autonomous networked microgrid',
-        value: 1
-      },
-      {
-        name: 'renewable energy resources',
-        value: 1
-      },
-      {
-        name: 'droop control systems',
-        value: 1
-      },
-      {
-        name: 'frequency restoration method',
-        value: 1
-      },
-      {
-        name: 'Distributed generation (DG)',
-        value: 1
-      },
-      {
-        name: 'frequency restoration',
-        value: 1
-      },
-      {
-        name: 'microgrid (MG)',
-        value: 1
-      },
-      {
-        name: 'power control',
-        value: 1
-      },
-      {
-        name: 'renewable energy resources (RESs)',
         value: 1
       },
       {
@@ -2723,6 +2667,62 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'sea wave energy (SWE)',
+        value: 1
+      },
+      {
+        name: 'Renewable energy sources',
+        value: 2
+      },
+      {
+        name: 'power system restoration',
+        value: 1
+      },
+      {
+        name: 'power system stability',
+        value: 8
+      },
+      {
+        name: 'synchronous generators',
+        value: 4
+      },
+      {
+        name: 'active power sharing',
+        value: 1
+      },
+      {
+        name: 'autonomous networked microgrid',
+        value: 1
+      },
+      {
+        name: 'renewable energy resources',
+        value: 1
+      },
+      {
+        name: 'droop control systems',
+        value: 1
+      },
+      {
+        name: 'frequency restoration method',
+        value: 1
+      },
+      {
+        name: 'Distributed generation (DG)',
+        value: 1
+      },
+      {
+        name: 'frequency restoration',
+        value: 1
+      },
+      {
+        name: 'microgrid (MG)',
+        value: 1
+      },
+      {
+        name: 'power control',
+        value: 1
+      },
+      {
+        name: 'renewable energy resources (RESs)',
         value: 1
       },
       {
@@ -3456,58 +3456,6 @@ const authorDetailRankingMockData = {
         value: 3
       },
       {
-        name: 'Semiconductor diodes',
-        value: 1
-      },
-      {
-        name: 'Inductance',
-        value: 3
-      },
-      {
-        name: 'y-source inverter',
-        value: 1
-      },
-      {
-        name: 'impedance-source inverters',
-        value: 1
-      },
-      {
-        name: 'coupled inductors',
-        value: 1
-      },
-      {
-        name: 'leakage inductances',
-        value: 1
-      },
-      {
-        name: 'DC-link voltage spikes',
-        value: 1
-      },
-      {
-        name: 'step-up voltages',
-        value: 1
-      },
-      {
-        name: 'smooth DC-link voltage',
-        value: 1
-      },
-      {
-        name: 'Impedance-source inverter',
-        value: 1
-      },
-      {
-        name: 'leakage and coupled inductances',
-        value: 1
-      },
-      {
-        name: 'voltage spikes',
-        value: 1
-      },
-      {
-        name: 'Y-source inverters (YSI)',
-        value: 1
-      },
-      {
         name: 'Standards',
         value: 2
       },
@@ -3593,12 +3541,116 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Stability criteria',
-        value: 2
+        name: 'Semiconductor diodes',
+        value: 1
+      },
+      {
+        name: 'Inductance',
+        value: 3
+      },
+      {
+        name: 'y-source inverter',
+        value: 1
+      },
+      {
+        name: 'impedance-source inverters',
+        value: 1
+      },
+      {
+        name: 'coupled inductors',
+        value: 1
+      },
+      {
+        name: 'leakage inductances',
+        value: 1
+      },
+      {
+        name: 'DC-link voltage spikes',
+        value: 1
+      },
+      {
+        name: 'step-up voltages',
+        value: 1
+      },
+      {
+        name: 'smooth DC-link voltage',
+        value: 1
+      },
+      {
+        name: 'Impedance-source inverter',
+        value: 1
+      },
+      {
+        name: 'leakage and coupled inductances',
+        value: 1
+      },
+      {
+        name: 'voltage spikes',
+        value: 1
+      },
+      {
+        name: 'Y-source inverters (YSI)',
+        value: 1
+      },
+      {
+        name: 'Feedforward neural networks',
+        value: 1
       },
       {
         name: 'feedback',
         value: 3
+      },
+      {
+        name: 'feedforward',
+        value: 2
+      },
+      {
+        name: 'filter capacitor voltage',
+        value: 1
+      },
+      {
+        name: 'active damping strategies',
+        value: 1
+      },
+      {
+        name: 'filter resonance frequency',
+        value: 1
+      },
+      {
+        name: 'feedback control',
+        value: 1
+      },
+      {
+        name: 'inverter-side current',
+        value: 1
+      },
+      {
+        name: 'current control loop',
+        value: 1
+      },
+      {
+        name: 'digital time delays',
+        value: 1
+      },
+      {
+        name: 'grid-voltage feedforward control improvement',
+        value: 1
+      },
+      {
+        name: 'LCL-filtered grid-connected inverter',
+        value: 1
+      },
+      {
+        name: 'extended stable boundary',
+        value: 1
+      },
+      {
+        name: 'improved grid-voltage feedforward scheme',
+        value: 1
+      },
+      {
+        name: 'Stability criteria',
+        value: 2
       },
       {
         name: 'grid-current-feedback control',
@@ -3651,58 +3703,6 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'Active damping (AD)',
-        value: 1
-      },
-      {
-        name: 'Feedforward neural networks',
-        value: 1
-      },
-      {
-        name: 'feedforward',
-        value: 2
-      },
-      {
-        name: 'filter capacitor voltage',
-        value: 1
-      },
-      {
-        name: 'active damping strategies',
-        value: 1
-      },
-      {
-        name: 'filter resonance frequency',
-        value: 1
-      },
-      {
-        name: 'feedback control',
-        value: 1
-      },
-      {
-        name: 'inverter-side current',
-        value: 1
-      },
-      {
-        name: 'current control loop',
-        value: 1
-      },
-      {
-        name: 'digital time delays',
-        value: 1
-      },
-      {
-        name: 'grid-voltage feedforward control improvement',
-        value: 1
-      },
-      {
-        name: 'LCL-filtered grid-connected inverter',
-        value: 1
-      },
-      {
-        name: 'extended stable boundary',
-        value: 1
-      },
-      {
-        name: 'improved grid-voltage feedforward scheme',
         value: 1
       },
       {
@@ -3846,6 +3846,62 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
+        name: 'Thermal stresses',
+        value: 2
+      },
+      {
+        name: 'Computer architecture',
+        value: 1
+      },
+      {
+        name: 'Thermal analysis',
+        value: 1
+      },
+      {
+        name: 'temperature measurement',
+        value: 2
+      },
+      {
+        name: 'thermal stress analysis',
+        value: 1
+      },
+      {
+        name: 'medium-voltage converters',
+        value: 1
+      },
+      {
+        name: 'smart transformers',
+        value: 1
+      },
+      {
+        name: 'modular multilevel converter',
+        value: 3
+      },
+      {
+        name: 'medium voltage grid faults',
+        value: 1
+      },
+      {
+        name: 'MMC cell',
+        value: 1
+      },
+      {
+        name: 'high-speed temperature measurement',
+        value: 1
+      },
+      {
+        name: 'inrush currents',
+        value: 1
+      },
+      {
+        name: 'Power converter',
+        value: 2
+      },
+      {
+        name: 'smart transformer (ST)',
+        value: 1
+      },
+      {
         name: 'frequency response',
         value: 1
       },
@@ -3982,91 +4038,95 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Thermal stresses',
+        name: 'Doubly fed induction generators',
+        value: 1
+      },
+      {
+        name: 'fault current limiters',
         value: 2
       },
       {
-        name: 'Computer architecture',
+        name: 'stators',
         value: 1
       },
       {
-        name: 'Thermal analysis',
+        name: 'fault ride-through capability',
         value: 1
       },
       {
-        name: 'temperature measurement',
-        value: 2
-      },
-      {
-        name: 'thermal stress analysis',
+        name: 'back-to-back converters',
         value: 1
       },
       {
-        name: 'medium-voltage converters',
+        name: 'stator side',
         value: 1
       },
       {
-        name: 'smart transformers',
+        name: 'controllable resistanc',
         value: 1
       },
       {
-        name: 'modular multilevel converter',
-        value: 3
-      },
-      {
-        name: 'medium voltage grid faults',
+        name: 'voltage sag compensation',
         value: 1
       },
       {
-        name: 'MMC cell',
+        name: 'FRT capability',
         value: 1
       },
       {
-        name: 'high-speed temperature measurement',
+        name: 'grid code requirements',
         value: 1
       },
       {
-        name: 'inrush currents',
+        name: 'Fixed Speed Wind Turbine',
         value: 1
       },
       {
-        name: 'Power converter',
-        value: 2
-      },
-      {
-        name: 'smart transformer (ST)',
+        name: 'power network',
         value: 1
       },
       {
-        name: 'active damping',
-        value: 3
-      },
-      {
-        name: 'system stability',
+        name: 'Doubly-Fed Induction Generator',
         value: 1
       },
       {
-        name: 'high order filter',
+        name: 'DFIG based wind turbine',
         value: 1
       },
       {
-        name: 'grid-connected inverters',
-        value: 2
-      },
-      {
-        name: 'three-phase grid-tied inverter',
+        name: 'wind speed variation',
         value: 1
       },
       {
-        name: 'damping methods',
+        name: 'pre-fault output active power',
         value: 1
       },
       {
-        name: 'Passive damping',
+        name: 'fault current level',
         value: 1
       },
       {
-        name: 'Grid-tied inverter',
+        name: 'FCLs',
+        value: 1
+      },
+      {
+        name: 'doubly fed induction generator',
+        value: 1
+      },
+      {
+        name: 'controllable resistance',
+        value: 1
+      },
+      {
+        name: 'fault current limiter',
+        value: 1
+      },
+      {
+        name: 'fault ride through',
+        value: 1
+      },
+      {
+        name: 'switching pattern',
         value: 1
       },
       {
@@ -4170,95 +4230,35 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Doubly fed induction generators',
+        name: 'active damping',
+        value: 3
+      },
+      {
+        name: 'system stability',
         value: 1
       },
       {
-        name: 'fault current limiters',
+        name: 'high order filter',
+        value: 1
+      },
+      {
+        name: 'grid-connected inverters',
         value: 2
       },
       {
-        name: 'stators',
+        name: 'three-phase grid-tied inverter',
         value: 1
       },
       {
-        name: 'fault ride-through capability',
+        name: 'damping methods',
         value: 1
       },
       {
-        name: 'back-to-back converters',
+        name: 'Passive damping',
         value: 1
       },
       {
-        name: 'stator side',
-        value: 1
-      },
-      {
-        name: 'controllable resistanc',
-        value: 1
-      },
-      {
-        name: 'voltage sag compensation',
-        value: 1
-      },
-      {
-        name: 'FRT capability',
-        value: 1
-      },
-      {
-        name: 'grid code requirements',
-        value: 1
-      },
-      {
-        name: 'Fixed Speed Wind Turbine',
-        value: 1
-      },
-      {
-        name: 'power network',
-        value: 1
-      },
-      {
-        name: 'Doubly-Fed Induction Generator',
-        value: 1
-      },
-      {
-        name: 'DFIG based wind turbine',
-        value: 1
-      },
-      {
-        name: 'wind speed variation',
-        value: 1
-      },
-      {
-        name: 'pre-fault output active power',
-        value: 1
-      },
-      {
-        name: 'fault current level',
-        value: 1
-      },
-      {
-        name: 'FCLs',
-        value: 1
-      },
-      {
-        name: 'doubly fed induction generator',
-        value: 1
-      },
-      {
-        name: 'controllable resistance',
-        value: 1
-      },
-      {
-        name: 'fault current limiter',
-        value: 1
-      },
-      {
-        name: 'fault ride through',
-        value: 1
-      },
-      {
-        name: 'switching pattern',
+        name: 'Grid-tied inverter',
         value: 1
       },
       {
@@ -5340,98 +5340,6 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Active filters',
-        value: 2
-      },
-      {
-        name: 'Power grids',
-        value: 1
-      },
-      {
-        name: 'fast Fourier transforms',
-        value: 1
-      },
-      {
-        name: 'shunt active power filter',
-        value: 1
-      },
-      {
-        name: 'model-parameter-adaptive capability',
-        value: 1
-      },
-      {
-        name: 'control performance',
-        value: 1
-      },
-      {
-        name: 'accurate mathematical model',
-        value: 1
-      },
-      {
-        name: 'alternative tracking control scheme',
-        value: 1
-      },
-      {
-        name: 'SAPF',
-        value: 1
-      },
-      {
-        name: 'steady-state current error',
-        value: 2
-      },
-      {
-        name: 'modified PBC scheme',
-        value: 1
-      },
-      {
-        name: 'error proportional-integral regulator',
-        value: 1
-      },
-      {
-        name: 'dc model',
-        value: 1
-      },
-      {
-        name: 'ac model',
-        value: 1
-      },
-      {
-        name: 'modified multifrequency passivity-based control',
-        value: 1
-      },
-      {
-        name: 'conventional PBC-based SAPF',
-        value: 1
-      },
-      {
-        name: 'voltage 380 V',
-        value: 1
-      },
-      {
-        name: 'current 75 A',
-        value: 1
-      },
-      {
-        name: 'DC model',
-        value: 1
-      },
-      {
-        name: 'fast Fourier transform (FFT)',
-        value: 1
-      },
-      {
-        name: 'multifrequency',
-        value: 1
-      },
-      {
-        name: 'passivity-based control (PBC)',
-        value: 1
-      },
-      {
-        name: 'shunt active power filter (SAPF)',
-        value: 1
-      },
-      {
         name: 'Fault tolerance',
         value: 1
       },
@@ -5557,6 +5465,98 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'DC distribution systems',
+        value: 1
+      },
+      {
+        name: 'Active filters',
+        value: 2
+      },
+      {
+        name: 'Power grids',
+        value: 1
+      },
+      {
+        name: 'fast Fourier transforms',
+        value: 1
+      },
+      {
+        name: 'shunt active power filter',
+        value: 1
+      },
+      {
+        name: 'model-parameter-adaptive capability',
+        value: 1
+      },
+      {
+        name: 'control performance',
+        value: 1
+      },
+      {
+        name: 'accurate mathematical model',
+        value: 1
+      },
+      {
+        name: 'alternative tracking control scheme',
+        value: 1
+      },
+      {
+        name: 'SAPF',
+        value: 1
+      },
+      {
+        name: 'steady-state current error',
+        value: 2
+      },
+      {
+        name: 'modified PBC scheme',
+        value: 1
+      },
+      {
+        name: 'error proportional-integral regulator',
+        value: 1
+      },
+      {
+        name: 'dc model',
+        value: 1
+      },
+      {
+        name: 'ac model',
+        value: 1
+      },
+      {
+        name: 'modified multifrequency passivity-based control',
+        value: 1
+      },
+      {
+        name: 'conventional PBC-based SAPF',
+        value: 1
+      },
+      {
+        name: 'voltage 380 V',
+        value: 1
+      },
+      {
+        name: 'current 75 A',
+        value: 1
+      },
+      {
+        name: 'DC model',
+        value: 1
+      },
+      {
+        name: 'fast Fourier transform (FFT)',
+        value: 1
+      },
+      {
+        name: 'multifrequency',
+        value: 1
+      },
+      {
+        name: 'passivity-based control (PBC)',
+        value: 1
+      },
+      {
+        name: 'shunt active power filter (SAPF)',
         value: 1
       },
       {
@@ -7161,26 +7161,6 @@ const authorDetailRankingMockData = {
         value: 1
       },
       {
-        name: 'Hafnium',
-        value: 1
-      },
-      {
-        name: 'Estimation error',
-        value: 1
-      },
-      {
-        name: 'Position estimation error compensation',
-        value: 1
-      },
-      {
-        name: 'sensorless',
-        value: 1
-      },
-      {
-        name: 'SPMSM',
-        value: 1
-      },
-      {
         name: 'Magnetics',
         value: 1
       },
@@ -7246,6 +7226,26 @@ const authorDetailRankingMockData = {
       },
       {
         name: 'voltage source converters (VSCs)',
+        value: 1
+      },
+      {
+        name: 'Hafnium',
+        value: 1
+      },
+      {
+        name: 'Estimation error',
+        value: 1
+      },
+      {
+        name: 'Position estimation error compensation',
+        value: 1
+      },
+      {
+        name: 'sensorless',
+        value: 1
+      },
+      {
+        name: 'SPMSM',
         value: 1
       },
       {
@@ -7359,62 +7359,42 @@ const authorDetailRankingMockData = {
     ],
     mostInfluentialPapers: [
       {
+        publicationYear: 2013,
+        title:
+          'Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters',
+        publicationName: 'TPEL',
+        link: 'https://ieeexplore.ieee.org/document/6324450'
+      },
+      {
+        publicationYear: 2013,
+        title:
+          'Design Optimization of Transformerless Grid-Connected PV Inverters Including Reliability',
+        publicationName: 'TPEL',
+        link: 'https://ieeexplore.ieee.org/document/6202700'
+      },
+      {
+        publicationYear: 2013,
+        title:
+          'Hybrid AC–DC Microgrids With Energy Storages and Progressive Energy Flow Tuning',
+        publicationName: 'TPEL',
+        link: 'https://ieeexplore.ieee.org/document/6249790'
+      },
+      {
         publicationYear: 2017,
         title:
-          'Loss distribution analysis of three-level active neutral-point-clamped (3L-ANPC) converter with different PWM strategies,Model Predictive Control of An Embedded Enhanced-Boost Z-Source Inverter,Extended stable boundary of LCL-filtered grid-connected inverter based on an improved grid-voltage feedforward control,Analytical model for LLC resonant converter with variable duty-cycle control,Common-Ground-Type Transformerless Inverters for Single-Phase Solar Photovoltaic Systems,Active Power Sharing and Frequency Restoration in an Autonomous Networked Microgrid,Digital realization of capacitor-voltage feedback active damping for LCL-filtered grid converters,Average Current-Mode Control of PWM A-Source Converter,Improving the voltage quality of an inverter via by-passing the harmonic current components,On the energy optimized control of standard and high-efficiency induction motors in CT and HVAC applications,Current control method for distributed generation power generation plants under grid fault conditions,Robust active damping control of LCL filtered grid connected converter based active disturbance rejection control,A Carrier Synchronization Method for Global Synchronous Pulsewidth Modulation Application Using Phase-Locked Loop,A novel 3D thermal impedance model for high power modules considering multi-layer thermal coupling and different heating/cooling conditions,Hybrid AC–DC Microgrids With Energy Storages and Progressive Energy Flow Tuning,An Overview of Modular Multilevel Converters in HVDC Transmission Systems With STATCOM Operation During Pole-to-Pole DC Short Circuits,Impedance-based analysis of DC link control in voltage source rectifiers,Novel solutions for protection of matrix converter to three phase induction machine,A Decentralized Adaptive Control Method for Frequency Regulation and Power Sharing in Autonomous Microgrids,Interaction admittance based modeling of multi-paralleled grid-connected inverter with LCL-filter,Stepwise Design Methodology and Heterogeneous Integration Routine of Air-Cooled SiC Inverter for Electric Vehicle,Lifetime Estimation of MMC for Offshore Wind Power HVDC Application,Power Cycling Test Methods for Reliability Assessment of Power Device Modules in Respect to Temperature Stress,Reduced Cost of Reactive Power in Doubly Fed Induction Generator Wind Turbine System With Optimized Grid Filter,Realization of quadrature signal generator using accurate magnitude integrator,Passivity-Based Stability Analysis and Damping Injection for Multiparalleled VSCs with LCL Filters,Load sharing using droop control for parallel operation of matrix converters as distributed generator interfaces in isolated mode,A DC-Link Modulation Scheme With Phase-Shifted Current Control for Harmonic Cancellations in Multidrive Applications,Synchronization in single-phase grid-connected photovoltaic systems under grid faults,Modelling and control design of a dual Buck-Boost AC/DC converter used in the DC Nano-grid,FS-MPC Algorithm for Optimized Operation of a Hybrid Active Neutral Point Clamped Converter,High-Frequency-Injection-Assisted “Active-Flux”-Based Sensorless Vector Control of Reluctance Synchronous Motors, With Experiments From Zero Speed,Wear-Out Failure Analysis of Solar Optiverter Operating with 60- and 72-Cell Si Crystalline PV Modules,DC-Voltage Fluctuation Elimination Through a DC-Capacitor Current Control for DFIG Converters Under Unbalanced Grid Voltage Conditions,A Single-Phase Transformerless Inverter With Charge Pump Circuit Concept for Grid-Tied PV Applications,Distributed Generation Using Indirect Matrix Converter in Reverse Power Mode,Analytical and Experimental Investigation on A Dynamic Thermo-Sensitive Electrical Parameter With Maximum $dI_{C}/dt$ During Turn-off for High Power Trench Gate/Field-Stop IGBT Modules,A transformerless single-phase symmetrical Z-source HERIC inverter with reduced leakage currents for PV systems,Control of a Modular-Concatenated-Cell (MCC) Multilevel Converter Topology Exploiting Logic-Equations Method,Reliability Assessment of PV Inverters with Battery Systems Considering PV Self-Consumption and Battery Sizing,Power loss benchmark of nine-switch converters in three-phase online-UPS application,Dual-Converter-Fed Open-End Transformer Topology With Parallel Converters and Integrated Magnetics,Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters,Multilevel-Clamped Multilevel Converters (MLC<formula formulatype="inline"><tex Notation="TeX">$^2$</tex></formula>),Measurement of phase dependent impedance for 3-phase diode rectifier,Evaluation of multi predictive controllers for a two-level three-phase stand-alone voltage source converter,Evaluation of core loss in magnetic materials employed in utility grid AC filters,Decentralized adaptive overcurrent protection for medium voltage maritime power systems,Isolated/non-isolated quad-inverter configuration for multilevel symmetrical/asymmetrical dual six-phase star-winding converter,On the Inertia of Future More-Electronics Power Systems,Simple and Effective Online Position Error Compensation Method for Sensorless SPMSM Drives,Steady-state analysis of dead-time effect on bidirectional buck converters,Characterization of Input Current Interharmonics in Adjustable Speed Drives,LLCL-filter based single-phase grid-tied aalborg inverter,The tandem inverter: combining the advantages of voltage-source and current-source inverters,EKF-Based Predictive Stabilization of Shipboard DC Microgrids With Uncertain Time-Varying Load,Grid-Current-Feedback Control for LCL-Filtered Grid Converters With Enhanced Stability,A series-LC-filtered active damper for ac power electronics based power systems,A new robust and simple three phase resonant converter,Exploitation of digital filters to advance the single-phase T/4 delay PLL system,Modular-Concatenated-Cell (MCC) Multilevel Converter: A Novel Circuit Topology and Innovative Logic-Equations-Based Control Technique,High Step-Up Y-Source Inverter With Reduced DC-Link Voltage Spikes,A High Efficient DAB Converter under Heavy Load Conditions Using Inner Phase Shift Control,A centralized control architecture for harmonic voltage suppression in islanded microgrids,Capacitance estimation for dc-link capacitors in a back-to-back converter based on Artificial Neural Network algorithm,A Dual Mode 5-Level Inverter with Wide Input Voltage Range,An Integrated Inductor for Parallel Interleaved Three-Phase Voltage Source Converters,Low voltage ride through peformance of a STATCOM based on modular multilevel cascade converters for offshore wind application,Voltage-type Г-source inverters,The feasibility study on thermal loading control of wind power converters with a flexible switching frequency,Design Optimization of Transformerless Grid-Connected PV Inverters Including Reliability,A comparative benchmark of digital delay compensation techniques based on a graphical approach,A comprehensive cloud-based real-time simulation framework for oblivious power routing in clusters of DC microgrids,Complex-Vector PLL for Enhanced Synchronization with Weak Power Grids,Wide Frequency Band Active Damping Strategy for DFIG System High Frequency Resonance,Passivity-based LCL Filter Design of Grid-Connected VSCs with Converter Side Current Feedback,Challenges to grid synchronization of single-phase grid-connected inverters in Zero-Voltage Ride-Through Operation,Secondary voltage control for harmonics suppression in islanded microgrids,A Modified Multifrequency Passivity-Based Control for Shunt Active Power Filter With Model-Parameter-Adaptive Capability,Low-Frequency Oscillation Suppression in Series Resonant Dual-Active-Bridge Converters under Fault Tolerant Operation,Reactive power control methods for improved reliability of wind power inverters under wind speed variations,Frequency-Domain Modeling and Simulation of DC Power Electronic Systems Using Harmonic State Space Method,Wake effects on lifetime distribution in DFIG-based wind farms,A Trans-Inverse Coupled-Inductor Semi-SEPIC DC/DC Converter With Full Control Range,Reliability Improvement of Power Converters by Means of Condition Monitoring of IGBT Modules,Extensions to Two-Port Network Modeling Method and Analysis of Multiple-VSC-Based Systems,Thermal Stress Analysis of Medium-Voltage Converters for Smart Transformers,Novel Differential Current Control Strategy Based on a Modified Three-Level SVPWM for Two Parallel-Connected Inverters,Design and Experiment of an Indirect Wave Power Generation Device using Magnetic Lead Screw,New medium voltage PWM inverter topologies for adjustable speed AC motor drive systems,Shipboard Microgrids: A Novel Approach to Load Frequency Control,Active thermal control for reliability improvement of MOS-gated power devices,Combining Passivity-Based Control with Active Damping to Improve Stability of LCL Filtered Grid-Connected Voltage Source Inverter,A New Control Technique for Improved Active-Neutral-Point-Clamped (I-ANPC) Multilevel Converters Using Logic-Equations Approach,Autonomous Operation of a Hybrid AC/DC Microgrid With Multiple Interlinking Converters,The overview of damping methods for three-phase grid-tied inverter with LLCL-filter,Improving Output Performance of a Z-Source Sparse Matrix Converter Under Unbalanced Input-Voltage Conditions,An analysis method for harmonic resonance and stability of multi-paralleled LCL-filtered inverters,Impact of Cooling System Capacity on Lifetime of Power Module in Adjustable Speed Drives,Modelling and improvement of thermal cycling in power electronics for motor drive applications,Study on Application of New Approach of Fault Current Limiters in Fault Ride through Capability Improvement of DFIG Based Wind Turbine',
-        publicationName:
-          'IECON,PES,SPEC,ISIE,TSG,TPWRS,TSTE,PEAC,IPEMC,TEC,TIE,PESGM,PEDES,EPE,IAS,COMPEL,IPEC,APPEEC,TIA,TPEL,IFEEC,JESTPE,ICIEA,APEC,PEDG,ECCE,ICDCM',
-        link:
-          'https://ieeexplore.ieee.org/document/6967824,https://ieeexplore.ieee.org/document/8781102,https://ieeexplore.ieee.org/document/7846059,https://ieeexplore.ieee.org/document/8590673,https://ieeexplore.ieee.org/document/7855103,https://ieeexplore.ieee.org/document/7865997,https://ieeexplore.ieee.org/document/8557479,https://ieeexplore.ieee.org/document/7037935,https://ieeexplore.ieee.org/document/7163603,https://ieeexplore.ieee.org/document/8459976,https://ieeexplore.ieee.org/document/7944699,https://ieeexplore.ieee.org/document/8069010,https://ieeexplore.ieee.org/document/8695143,https://ieeexplore.ieee.org/document/6202700,https://ieeexplore.ieee.org/document/6342510,https://ieeexplore.ieee.org/document/629045,https://ieeexplore.ieee.org/document/7513417,https://ieeexplore.ieee.org/document/6035794,https://ieeexplore.ieee.org/document/7491243,https://ieeexplore.ieee.org/document/8585768,https://ieeexplore.ieee.org/document/7854882,https://ieeexplore.ieee.org/document/7779952,https://ieeexplore.ieee.org/document/6342275,https://ieeexplore.ieee.org/document/6911055,https://ieeexplore.ieee.org/document/6254045,https://ieeexplore.ieee.org/document/7104397,https://ieeexplore.ieee.org/document/8424079,https://ieeexplore.ieee.org/document/8913130,https://ieeexplore.ieee.org/document/8912556,https://ieeexplore.ieee.org/document/8894554,https://ieeexplore.ieee.org/document/7437488,https://ieeexplore.ieee.org/document/7742985,https://ieeexplore.ieee.org/document/7604096,https://ieeexplore.ieee.org/document/7945241,https://ieeexplore.ieee.org/document/8558251,https://ieeexplore.ieee.org/document/7512885,https://ieeexplore.ieee.org/document/8927287,https://ieeexplore.ieee.org/document/8444091,https://ieeexplore.ieee.org/document/653955,https://ieeexplore.ieee.org/document/8811613,https://ieeexplore.ieee.org/document/7797509,https://ieeexplore.ieee.org/document/7445169,https://ieeexplore.ieee.org/document/8096828,https://ieeexplore.ieee.org/document/643132,https://ieeexplore.ieee.org/document/8459954,https://ieeexplore.ieee.org/document/647709,https://ieeexplore.ieee.org/document/8913306,https://ieeexplore.ieee.org/document/8506338,https://ieeexplore.ieee.org/document/8634934,https://ieeexplore.ieee.org/document/6360830,https://ieeexplore.ieee.org/document/7744940,https://ieeexplore.ieee.org/document/7223086,https://ieeexplore.ieee.org/document/7992444,https://ieeexplore.ieee.org/document/7855259,https://ieeexplore.ieee.org/document/8341126,https://ieeexplore.ieee.org/document/8707705,https://ieeexplore.ieee.org/document/7104501,https://ieeexplore.ieee.org/document/8716298,https://ieeexplore.ieee.org/document/6039871,https://ieeexplore.ieee.org/document/6324450,https://ieeexplore.ieee.org/document/7855378,https://ieeexplore.ieee.org/document/6249790,https://ieeexplore.ieee.org/document/7846173,https://ieeexplore.ieee.org/document/6119800,https://ieeexplore.ieee.org/document/7468298,https://ieeexplore.ieee.org/document/8592925,https://ieeexplore.ieee.org/document/6953534,https://ieeexplore.ieee.org/document/8590740,https://ieeexplore.ieee.org/document/8507988,https://ieeexplore.ieee.org/document/7310037,https://ieeexplore.ieee.org/document/8740943,https://ieeexplore.ieee.org/document/629074,https://ieeexplore.ieee.org/document/6388650,https://ieeexplore.ieee.org/document/6242420,https://ieeexplore.ieee.org/document/6342715,https://ieeexplore.ieee.org/document/7309728,https://ieeexplore.ieee.org/document/8012353,https://ieeexplore.ieee.org/document/7512637,https://ieeexplore.ieee.org/document/7222468,https://ieeexplore.ieee.org/document/8341035,https://ieeexplore.ieee.org/document/8769624,https://ieeexplore.ieee.org/document/7846206,https://ieeexplore.ieee.org/document/7795216,https://ieeexplore.ieee.org/document/8096557,https://ieeexplore.ieee.org/document/6328285,https://ieeexplore.ieee.org/document/6054061,https://ieeexplore.ieee.org/document/6119490,https://ieeexplore.ieee.org/document/8001055,https://ieeexplore.ieee.org/document/7762929,https://ieeexplore.ieee.org/document/8333633,https://ieeexplore.ieee.org/document/7512718,https://ieeexplore.ieee.org/document/7995094,https://ieeexplore.ieee.org/document/6338285,https://ieeexplore.ieee.org/document/8217391,https://ieeexplore.ieee.org/document/7793253,https://ieeexplore.ieee.org/document/8592866,https://ieeexplore.ieee.org/document/7846157,https://ieeexplore.ieee.org/document/8558367,https://ieeexplore.ieee.org/document/7244161,https://ieeexplore.ieee.org/document/7922584,https://ieeexplore.ieee.org/document/8930305'
+          'Grid-Current-Feedback Control for LCL-Filtered Grid Converters With Enhanced Stability',
+        publicationName: 'TPEL',
+        link: 'https://ieeexplore.ieee.org/document/7491243'
       },
       {
         publicationYear: 2012,
         title:
-          'The feasibility study on thermal loading control of wind power converters with a flexible switching frequency,Grid-Current-Feedback Control for LCL-Filtered Grid Converters With Enhanced Stability,Distributed Generation Using Indirect Matrix Converter in Reverse Power Mode,A series-LC-filtered active damper for ac power electronics based power systems,High Step-Up Y-Source Inverter With Reduced DC-Link Voltage Spikes,Lifetime Estimation of MMC for Offshore Wind Power HVDC Application,Hybrid AC–DC Microgrids With Energy Storages and Progressive Energy Flow Tuning,Power loss benchmark of nine-switch converters in three-phase online-UPS application,Digital realization of capacitor-voltage feedback active damping for LCL-filtered grid converters,Realization of quadrature signal generator using accurate magnitude integrator,The overview of damping methods for three-phase grid-tied inverter with LLCL-filter,An analysis method for harmonic resonance and stability of multi-paralleled LCL-filtered inverters,Load sharing using droop control for parallel operation of matrix converters as distributed generator interfaces in isolated mode,Passivity-Based Stability Analysis and Damping Injection for Multiparalleled VSCs with LCL Filters,Characterization of Input Current Interharmonics in Adjustable Speed Drives,Voltage-type Г-source inverters,A comparative benchmark of digital delay compensation techniques based on a graphical approach',
-        publicationName: 'APEC,PEDG,TPEL,ECCE,EPE,JESTPE,ICIEA',
-        link:
-          'https://ieeexplore.ieee.org/document/6249790,https://ieeexplore.ieee.org/document/6953534,https://ieeexplore.ieee.org/document/7855378,https://ieeexplore.ieee.org/document/8444091,https://ieeexplore.ieee.org/document/6360830,https://ieeexplore.ieee.org/document/7223086,https://ieeexplore.ieee.org/document/7310037,https://ieeexplore.ieee.org/document/7491243,https://ieeexplore.ieee.org/document/6342715,https://ieeexplore.ieee.org/document/7244161,https://ieeexplore.ieee.org/document/7309728,https://ieeexplore.ieee.org/document/6242420,https://ieeexplore.ieee.org/document/6911055,https://ieeexplore.ieee.org/document/7104397,https://ieeexplore.ieee.org/document/7795216,https://ieeexplore.ieee.org/document/8096557,https://ieeexplore.ieee.org/document/7865997'
-      },
-      {
-        publicationYear: 2019,
-        title:
-          'Thermal Stress Analysis of Medium-Voltage Converters for Smart Transformers,Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters,FS-MPC Algorithm for Optimized Operation of a Hybrid Active Neutral Point Clamped Converter,Reactive power control methods for improved reliability of wind power inverters under wind speed variations',
-        publicationName: 'TPEL,ECCE',
-        link:
-          'https://ieeexplore.ieee.org/document/6342510,https://ieeexplore.ieee.org/document/8913306,https://ieeexplore.ieee.org/document/6324450,https://ieeexplore.ieee.org/document/7742985'
-      },
-      {
-        publicationYear: 2013,
-        title:
-          'Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters',
-        publicationName: 'TPEL',
-        link: 'https://ieeexplore.ieee.org/document/6324450'
-      },
-      {
-        publicationYear: 2013,
-        title:
-          'Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters',
-        publicationName: 'TPEL',
-        link: 'https://ieeexplore.ieee.org/document/6324450'
+          'High-Frequency-Injection-Assisted “Active-Flux”-Based Sensorless Vector Control of Reluctance Synchronous Motors, With Experiments From Zero Speed',
+        publicationName: 'TIA',
+        link: 'https://ieeexplore.ieee.org/document/6338285'
       }
     ],
     mostRecentPapers: [
-      {
-        publicationYear: 1997,
-        title:
-          'A Modified Multifrequency Passivity-Based Control for Shunt Active Power Filter With Model-Parameter-Adaptive Capability,Synchronization in single-phase grid-connected photovoltaic systems under grid faults,Load sharing using droop control for parallel operation of matrix converters as distributed generator interfaces in isolated mode,Passivity-Based Stability Analysis and Damping Injection for Multiparalleled VSCs with LCL Filters,Realization of quadrature signal generator using accurate magnitude integrator,A DC-Link Modulation Scheme With Phase-Shifted Current Control for Harmonic Cancellations in Multidrive Applications,Power Cycling Test Methods for Reliability Assessment of Power Device Modules in Respect to Temperature Stress,Interaction admittance based modeling of multi-paralleled grid-connected inverter with LCL-filter,Stepwise Design Methodology and Heterogeneous Integration Routine of Air-Cooled SiC Inverter for Electric Vehicle,Novel solutions for protection of matrix converter to three phase induction machine,A Decentralized Adaptive Control Method for Frequency Regulation and Power Sharing in Autonomous Microgrids,An Overview of Modular Multilevel Converters in HVDC Transmission Systems With STATCOM Operation During Pole-to-Pole DC Short Circuits,Hybrid AC–DC Microgrids With Energy Storages and Progressive Energy Flow Tuning,Impedance-based analysis of DC link control in voltage source rectifiers,A novel 3D thermal impedance model for high power modules considering multi-layer thermal coupling and different heating/cooling conditions,Robust active damping control of LCL filtered grid connected converter based active disturbance rejection control,A Carrier Synchronization Method for Global Synchronous Pulsewidth Modulation Application Using Phase-Locked Loop,On the energy optimized control of standard and high-efficiency induction motors in CT and HVAC applications,Current control method for distributed generation power generation plants under grid fault conditions,Average Current-Mode Control of PWM A-Source Converter,Improving the voltage quality of an inverter via by-passing the harmonic current components,Lifetime Estimation of MMC for Offshore Wind Power HVDC Application,Common-Ground-Type Transformerless Inverters for Single-Phase Solar Photovoltaic Systems,Active Power Sharing and Frequency Restoration in an Autonomous Networked Microgrid,Extended stable boundary of LCL-filtered grid-connected inverter based on an improved grid-voltage feedforward control,Analytical model for LLC resonant converter with variable duty-cycle control,Model Predictive Control of An Embedded Enhanced-Boost Z-Source Inverter,Digital realization of capacitor-voltage feedback active damping for LCL-filtered grid converters,Reduced Cost of Reactive Power in Doubly Fed Induction Generator Wind Turbine System With Optimized Grid Filter,Characterization of Input Current Interharmonics in Adjustable Speed Drives,Steady-state analysis of dead-time effect on bidirectional buck converters,Simple and Effective Online Position Error Compensation Method for Sensorless SPMSM Drives,On the Inertia of Future More-Electronics Power Systems,Isolated/non-isolated quad-inverter configuration for multilevel symmetrical/asymmetrical dual six-phase star-winding converter,Evaluation of multi predictive controllers for a two-level three-phase stand-alone voltage source converter,Decentralized adaptive overcurrent protection for medium voltage maritime power systems,Multilevel-Clamped Multilevel Converters (MLC<formula formulatype="inline"><tex Notation="TeX">$^2$</tex></formula>),Analysis of the Passive Damping Losses in LCL-Filter-Based Grid Converters,Dual-Converter-Fed Open-End Transformer Topology With Parallel Converters and Integrated Magnetics,Measurement of phase dependent impedance for 3-phase diode rectifier,Evaluation of core loss in magnetic materials employed in utility grid AC filters,Reliability Assessment of PV Inverters with Battery Systems Considering PV Self-Consumption and Battery Sizing,Power loss benchmark of nine-switch converters in three-phase online-UPS application,A transformerless single-phase symmetrical Z-source HERIC inverter with reduced leakage currents for PV systems,Control of a Modular-Concatenated-Cell (MCC) Multilevel Converter Topology Exploiting Logic-Equations Method,Distributed Generation Using Indirect Matrix Converter in Reverse Power Mode,Analytical and Experimental Investigation on A Dynamic Thermo-Sensitive Electrical Parameter With Maximum $dI_{C}/dt$ During Turn-off for High Power Trench Gate/Field-Stop IGBT Modules,DC-Voltage Fluctuation Elimination Through a DC-Capacitor Current Control for DFIG Converters Under Unbalanced Grid Voltage Conditions,A Single-Phase Transformerless Inverter With Charge Pump Circuit Concept for Grid-Tied PV Applications,Wear-Out Failure Analysis of Solar Optiverter Operating with 60- and 72-Cell Si Crystalline PV Modules,High-Frequency-Injection-Assisted “Active-Flux”-Based Sensorless Vector Control of Reluctance Synchronous Motors, With Experiments From Zero Speed,Modelling and control design of a dual Buck-Boost AC/DC converter used in the DC Nano-grid,FS-MPC Algorithm for Optimized Operation of a Hybrid Active Neutral Point Clamped Converter,Challenges to grid synchronization of single-phase grid-connected inverters in Zero-Voltage Ride-Through Operation,Wide Frequency Band Active Damping Strategy for DFIG System High Frequency Resonance,Complex-Vector PLL for Enhanced Synchronization with Weak Power Grids,Passivity-based LCL Filter Design of Grid-Connected VSCs with Converter Side Current Feedback,Design Optimization of Transformerless Grid-Connected PV Inverters Including Reliability,The feasibility study on thermal loading control of wind power converters with a flexible switching frequency,Voltage-type Г-source inverters,A comparative benchmark of digital delay compensation techniques based on a graphical approach,A comprehensive cloud-based real-time simulation framework for oblivious power routing in clusters of DC microgrids,Low voltage ride through peformance of a STATCOM based on modular multilevel cascade converters for offshore wind application,A centralized control architecture for harmonic voltage suppression in islanded microgrids,A High Efficient DAB Converter under Heavy Load Conditions Using Inner Phase Shift Control,High Step-Up Y-Source Inverter With Reduced DC-Link Voltage Spikes,Exploitation of digital filters to advance the single-phase T/4 delay PLL system,A new robust and simple three phase resonant converter,A series-LC-filtered active damper for ac power electronics based power systems,Modular-Concatenated-Cell (MCC) Multilevel Converter: A Novel Circuit Topology and Innovative Logic-Equations-Based Control Technique,Grid-Current-Feedback Control for LCL-Filtered Grid Converters With Enhanced Stability,Capacitance estimation for dc-link capacitors in a back-to-back converter based on Artificial Neural Network algorithm,A Dual Mode 5-Level Inverter with Wide Input Voltage Range,EKF-Based Predictive Stabilization of Shipboard DC Microgrids With Uncertain Time-Varying Load,An Integrated Inductor for Parallel Interleaved Three-Phase Voltage Source Converters,The tandem inverter: combining the advantages of voltage-source and current-source inverters,LLCL-filter based single-phase grid-tied aalborg inverter,Loss distribution analysis of three-level active neutral-point-clamped (3L-ANPC) converter with different PWM strategies,Study on Application of New Approach of Fault Current Limiters in Fault Ride through Capability Improvement of DFIG Based Wind Turbine,Impact of Cooling System Capacity on Lifetime of Power Module in Adjustable Speed Drives,Improving Output Performance of a Z-Source Sparse Matrix Converter Under Unbalanced Input-Voltage Conditions,Modelling and improvement of thermal cycling in power electronics for motor drive applications,Autonomous Operation of a Hybrid AC/DC Microgrid With Multiple Interlinking Converters,The overview of damping methods for three-phase grid-tied inverter with LLCL-filter,An analysis method for harmonic resonance and stability of multi-paralleled LCL-filtered inverters,Combining Passivity-Based Control with Active Damping to Improve Stability of LCL Filtered Grid-Connected Voltage Source Inverter,A New Control Technique for Improved Active-Neutral-Point-Clamped (I-ANPC) Multilevel Converters Using Logic-Equations Approach,Shipboard Microgrids: A Novel Approach to Load Frequency Control,New medium voltage PWM inverter topologies for adjustable speed AC motor drive systems,Active thermal control for reliability improvement of MOS-gated power devices,Design and Experiment of an Indirect Wave Power Generation Device using Magnetic Lead Screw,Thermal Stress Analysis of Medium-Voltage Converters for Smart Transformers,Reliability Improvement of Power Converters by Means of Condition Monitoring of IGBT Modules,Extensions to Two-Port Network Modeling Method and Analysis of Multiple-VSC-Based Systems,Novel Differential Current Control Strategy Based on a Modified Three-Level SVPWM for Two Parallel-Connected Inverters,A Trans-Inverse Coupled-Inductor Semi-SEPIC DC/DC Converter With Full Control Range,Frequency-Domain Modeling and Simulation of DC Power Electronic Systems Using Harmonic State Space Method,Reactive power control methods for improved reliability of wind power inverters under wind speed variations,Low-Frequency Oscillation Suppression in Series Resonant Dual-Active-Bridge Converters under Fault Tolerant Operation,Wake effects on lifetime distribution in DFIG-based wind farms,Secondary voltage control for harmonics suppression in islanded microgrids',
-        publicationName:
-          'SPEC,ECCE,IECON,ICDCM,TPWRS,TSTE,APEC,PEDG,ICIEA,TIA,PEAC,TPEL,IPEMC,JESTPE,IPEC,APPEEC,EPE,IFEEC,IAS,TEC,PESGM,TIE,PEDES,TSG,COMPEL,PES,ISIE',
-        link:
-          'https://ieeexplore.ieee.org/document/7445169,https://ieeexplore.ieee.org/document/8096828,https://ieeexplore.ieee.org/document/643132,https://ieeexplore.ieee.org/document/8927287,https://ieeexplore.ieee.org/document/8444091,https://ieeexplore.ieee.org/document/653955,https://ieeexplore.ieee.org/document/8811613,https://ieeexplore.ieee.org/document/7797509,https://ieeexplore.ieee.org/document/8459954,https://ieeexplore.ieee.org/document/6360830,https://ieeexplore.ieee.org/document/7744940,https://ieeexplore.ieee.org/document/7223086,https://ieeexplore.ieee.org/document/647709,https://ieeexplore.ieee.org/document/8913306,https://ieeexplore.ieee.org/document/8506338,https://ieeexplore.ieee.org/document/8424079,https://ieeexplore.ieee.org/document/8634934,https://ieeexplore.ieee.org/document/8913130,https://ieeexplore.ieee.org/document/8912556,https://ieeexplore.ieee.org/document/7779952,https://ieeexplore.ieee.org/document/6342275,https://ieeexplore.ieee.org/document/6911055,https://ieeexplore.ieee.org/document/6254045,https://ieeexplore.ieee.org/document/7104397,https://ieeexplore.ieee.org/document/8558251,https://ieeexplore.ieee.org/document/7945241,https://ieeexplore.ieee.org/document/7512885,https://ieeexplore.ieee.org/document/8894554,https://ieeexplore.ieee.org/document/7437488,https://ieeexplore.ieee.org/document/7742985,https://ieeexplore.ieee.org/document/7604096,https://ieeexplore.ieee.org/document/8069010,https://ieeexplore.ieee.org/document/8695143,https://ieeexplore.ieee.org/document/6202700,https://ieeexplore.ieee.org/document/6035794,https://ieeexplore.ieee.org/document/7491243,https://ieeexplore.ieee.org/document/8585768,https://ieeexplore.ieee.org/document/7854882,https://ieeexplore.ieee.org/document/629045,https://ieeexplore.ieee.org/document/6342510,https://ieeexplore.ieee.org/document/7513417,https://ieeexplore.ieee.org/document/7846059,https://ieeexplore.ieee.org/document/8590673,https://ieeexplore.ieee.org/document/7855103,https://ieeexplore.ieee.org/document/8557479,https://ieeexplore.ieee.org/document/7163603,https://ieeexplore.ieee.org/document/8781102,https://ieeexplore.ieee.org/document/8459976,https://ieeexplore.ieee.org/document/7944699,https://ieeexplore.ieee.org/document/7865997,https://ieeexplore.ieee.org/document/7037935,https://ieeexplore.ieee.org/document/7512718,https://ieeexplore.ieee.org/document/6338285,https://ieeexplore.ieee.org/document/8217391,https://ieeexplore.ieee.org/document/6119490,https://ieeexplore.ieee.org/document/8001055,https://ieeexplore.ieee.org/document/7762929,https://ieeexplore.ieee.org/document/7793253,https://ieeexplore.ieee.org/document/8930305,https://ieeexplore.ieee.org/document/7846157,https://ieeexplore.ieee.org/document/8558367,https://ieeexplore.ieee.org/document/6342715,https://ieeexplore.ieee.org/document/7244161,https://ieeexplore.ieee.org/document/8012353,https://ieeexplore.ieee.org/document/7922584,https://ieeexplore.ieee.org/document/8740943,https://ieeexplore.ieee.org/document/629074,https://ieeexplore.ieee.org/document/6388650,https://ieeexplore.ieee.org/document/6242420,https://ieeexplore.ieee.org/document/7795216,https://ieeexplore.ieee.org/document/8096557,https://ieeexplore.ieee.org/document/6328285,https://ieeexplore.ieee.org/document/6054061,https://ieeexplore.ieee.org/document/7309728,https://ieeexplore.ieee.org/document/8341035,https://ieeexplore.ieee.org/document/7512637,https://ieeexplore.ieee.org/document/7846206,https://ieeexplore.ieee.org/document/8333633,https://ieeexplore.ieee.org/document/6249790,https://ieeexplore.ieee.org/document/6119800,https://ieeexplore.ieee.org/document/7846173,https://ieeexplore.ieee.org/document/7468298,https://ieeexplore.ieee.org/document/6039871,https://ieeexplore.ieee.org/document/6324450,https://ieeexplore.ieee.org/document/8592925,https://ieeexplore.ieee.org/document/7995094,https://ieeexplore.ieee.org/document/8507988,https://ieeexplore.ieee.org/document/8592866,https://ieeexplore.ieee.org/document/8590740,https://ieeexplore.ieee.org/document/7855378,https://ieeexplore.ieee.org/document/7222468,https://ieeexplore.ieee.org/document/8769624,https://ieeexplore.ieee.org/document/7310037,https://ieeexplore.ieee.org/document/7855259,https://ieeexplore.ieee.org/document/6953534,https://ieeexplore.ieee.org/document/6967824,https://ieeexplore.ieee.org/document/8341126,https://ieeexplore.ieee.org/document/7992444,https://ieeexplore.ieee.org/document/8707705,https://ieeexplore.ieee.org/document/7104501,https://ieeexplore.ieee.org/document/8716298'
-      },
-      {
-        publicationYear: 2020,
-        title:
-          'Stepwise Design Methodology and Heterogeneous Integration Routine of Air-Cooled SiC Inverter for Electric Vehicle',
-        publicationName: 'TPEL',
-        link: 'https://ieeexplore.ieee.org/document/8811613'
-      },
       {
         publicationYear: 2020,
         title:
@@ -7425,10 +7405,9 @@ const authorDetailRankingMockData = {
       {
         publicationYear: 2020,
         title:
-          'A New Control Technique for Improved Active-Neutral-Point-Clamped (I-ANPC) Multilevel Converters Using Logic-Equations Approach,Control of a Modular-Concatenated-Cell (MCC) Multilevel Converter Topology Exploiting Logic-Equations Method,Modular-Concatenated-Cell (MCC) Multilevel Converter: A Novel Circuit Topology and Innovative Logic-Equations-Based Control Technique',
-        publicationName: 'IECON,ECCE,TIA',
-        link:
-          'https://ieeexplore.ieee.org/document/8558367,https://ieeexplore.ieee.org/document/8894554,https://ieeexplore.ieee.org/document/8592866'
+          'A New Control Technique for Improved Active-Neutral-Point-Clamped (I-ANPC) Multilevel Converters Using Logic-Equations Approach',
+        publicationName: 'TIA',
+        link: 'https://ieeexplore.ieee.org/document/8894554'
       },
       {
         publicationYear: 2020,
@@ -7436,6 +7415,19 @@ const authorDetailRankingMockData = {
           'Stepwise Design Methodology and Heterogeneous Integration Routine of Air-Cooled SiC Inverter for Electric Vehicle',
         publicationName: 'TPEL',
         link: 'https://ieeexplore.ieee.org/document/8811613'
+      },
+      {
+        publicationYear: 2019,
+        title:
+          'A Carrier Synchronization Method for Global Synchronous Pulsewidth Modulation Application Using Phase-Locked Loop',
+        publicationName: 'TPEL',
+        link: 'https://ieeexplore.ieee.org/document/8634934'
+      },
+      {
+        publicationYear: 2019,
+        title: 'On the Inertia of Future More-Electronics Power Systems',
+        publicationName: 'JESTPE',
+        link: 'https://ieeexplore.ieee.org/document/8506338'
       }
     ]
   }

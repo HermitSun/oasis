@@ -9,6 +9,7 @@
 // advanced
 @ranking-advanced-header-font-size: @sub-middle-font;
 @ranking-advanced-body-font-size: @small-font;
+@ranking-advanced-body-title-font-size: @sub-middle-font;
 
 // advanced-ranking page
 .advanced-ranking-page {
@@ -19,6 +20,7 @@
     margin-bottom: 15px;
     padding: 10px 0;
     display: flex;
+    align-items: center;
     text-align: center;
     background: @background-blue-normal;
     border-radius: 20px;
@@ -58,13 +60,67 @@
     margin: 10px 10px;
   }
   .detail {
-    display: flex;
-    .info{
-      .title{
-
+    @media @min-mobile-width {
+      display: flex;
+    }
+    padding: 5px 10px 20px;
+    .info {
+      @media @min-mobile-width {
+        flex: 1;
+      }
+      text-align: left;
+      .title {
+        color: @background-blue;
+        font-weight: 500;
+        font-size: @ranking-advanced-body-title-font-size;
+        margin-bottom: 10px;
+      }
+      .content {
+        color: @font-gray;
+        padding-right: 10px;
       }
     }
   }
+}
+.ranking-advanced-detail__paper {
+  .sub-title {
+    margin-bottom: 5px;
+    .flex-left-left-row;
+    .publication {
+      width: 20%;
+      color: @font-gray-middle;
+      font-size: @sub-small-font;
+      background: @background-blue-light;
+      border-radius: 20px;
+      text-align: center;
+      padding: 3px 0;
+      margin-right: 10px;
+    }
+    .name {
+      width: 80%;
+      font-size: @ranking-advanced-body-font-size;
+    }
+    a {
+      text-decoration: none;
+      color: @font-gray;
+    }
+    a:link {
+      color: @font-gray-dark;
+    }
+
+    a:visited {
+      color: @background-blue;
+    }
+
+    a:hover {
+      color: @bright-yellow;
+    }
+
+    a:active {
+      color: @background-blue;
+    }
+  }
+
 }
 
 // basic-ranking

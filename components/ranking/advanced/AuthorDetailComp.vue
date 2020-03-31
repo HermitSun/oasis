@@ -13,26 +13,38 @@
       <div class="detail">
         <div class="info">
           <div class="title">
-            keywords
+            📃 Keywords
           </div>
           <div class="content">
-            {{ rankingDetail.keywords }}
+            <!--{{ rankingDetail.keywords }}-->
           </div>
         </div>
         <div class="info">
           <div class="title">
-            mostInfluentialPapers
+            📜 Most Influential Papers
           </div>
           <div class="content">
-            {{ rankingDetail.mostInfluentialPapers }}
+            <div
+              v-for="(paper, index) in rankingDetail.mostInfluentialPapers"
+              :key="index"
+              style="margin-bottom: 10px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
           </div>
         </div>
         <div class="info">
           <div class="title">
-            mostRecentPapers
+            📝 Most Recent Papers
           </div>
           <div class="content">
-            {{ rankingDetail.mostRecentPapers }}
+            <div
+              v-for="(paper, index) in rankingDetail.mostRecentPapers"
+              :key="index"
+              style="margin-bottom: 10px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
           </div>
         </div>
       </div>
@@ -44,8 +56,12 @@
 import Vue from 'vue';
 import { getAuthorDetailRankingById } from '~/api';
 import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 export default Vue.extend({
   name: 'AuthorDetailComp',
+  components: {
+    PaperInfoComp
+  },
   props: {
     rank: {
       type: Object,

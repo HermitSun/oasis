@@ -256,9 +256,9 @@ export default Vue.extend({
     .homepage-content__rankings {
       @media @min-pc-width {
         .flex-space-between;
-        flex-wrap: wrap;
+        /*flex-wrap: wrap;*/
         .rank {
-          width: 30%;
+          width: 20%;
           margin: 0 10px;
         }
       }
