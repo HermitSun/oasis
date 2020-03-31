@@ -1,12 +1,12 @@
 <template>
   <div>
     <SearchBar />
-    <div style="padding: 20px">
-      <div class="affiliation-basic">
-        <PortraitProfileComp :profile="affiliationProfile" />
+    <div class="portrait">
+      <div class="profile-module">
+        <PortraitProfileComp :profile="profile" />
         <div>研究方向词云</div>
       </div>
-      <div class="affiliation-basic">
+      <div class="profile-module">
         <div>Citation Trend</div>
         <div>Publication Trends</div>
       </div>
@@ -22,7 +22,7 @@
             </div>
             <div class="body">
               <div
-                v-for="(rank, index) in affiliationAuthorRanking"
+                v-for="(rank, index) in authorDetailRanking"
                 :key="index"
                 style="margin-bottom: 5px"
               >
@@ -34,11 +34,11 @@
         <div class="affiliation-main__paper portrait-module">
           <Subtitle title="📝 All Paper" />
           <div
-            v-for="paper in affiliationPapers"
+            v-for="paper in papers"
             :key="paper.id"
             style="margin-bottom: 20px"
           >
-            <!--TODO 这里也要做一下分页-->
+            <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
             <PaperInfoComp :paper="paper" />
           </div>
         </div>
@@ -55,8 +55,8 @@ import Vue from 'vue';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
+  getAffiliationPapers,
   getAffiliationPortrait,
-  getAffiliatonPapers,
   getAuthorDetailRanking
 } from '~/api';
 import Bar from '~/utils/charts/bar';
@@ -64,7 +64,66 @@ import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
+import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
+import { Message } from '~/node_modules/element-ui';
+import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
+import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
+import { ResearcherInterestResponse } from '~/interfaces/responses/interest/ResearcherInterestResponse';
+import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 
+async function requestPortrait(affiliation: string) {
+  const res: { portrait: AffiliationPortraitResponse } = {
+    portrait: {} as AffiliationPortraitResponse
+  };
+  try {
+    const portraitResponse = await getAffiliationPortrait(affiliation);
+    res.portrait = portraitResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestPapers(args: AffiliationPapersPayload) {
+  const res: { papers: SearchResponse[]; size: number } = {
+    papers: [],
+    size: 0
+  };
+  try {
+    const papersResponse = await getAffiliationPapers(args);
+    res.papers = papersResponse.data.papers;
+    res.size = papersResponse.data.size;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestInterests(affiliation: string) {
+  const res: { interests: ResearcherInterestResponse[] } = { interests: [] };
+  try {
+    const interestsResponse = await getAffiliationInterest(affiliation);
+    res.interests = interestsResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestAuthorDetailRanking(affiliation: string) {
+  const res: { authorDetailRanking: AuthorAdvancedRankingResponse[] } = {
+    authorDetailRanking: []
+  };
+  try {
+    const authorDetailRankingResponse = await getAuthorDetailRanking(
+      affiliation
+    );
+    res.authorDetailRanking = authorDetailRankingResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
 export default Vue.extend({
   name: 'Affiliation',
   components: {
@@ -77,35 +136,44 @@ export default Vue.extend({
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
     // TODO const affiliation = query.affiliation;
-    const affiliationPortraitRes = await getAffiliationPortrait(affiliation);
-    const affiliationPapersRes = await getAffiliatonPapers({
+    const portraitRes = await requestPortrait(affiliation);
+    const profile = {
+      name: affiliation,
+      statistics: [
+        {
+          prop: '📝 Papers',
+          number: portraitRes.portrait.count
+        },
+        {
+          prop: '📃 Citations',
+          number: portraitRes.portrait.citation
+        },
+        {
+          prop: '💻 Authors',
+          number: portraitRes.portrait.authorNum
+        }
+      ]
+    };
+    const citationTrend = portraitRes.portrait.citationTrend;
+    const publicationTrend = portraitRes.portrait.publicationTrends;
+
+    const papersReq = requestPapers({
       affiliation,
       page: 1,
       sorKey: 'recent'
     });
-    const affiliationInterestRes = await getAffiliationInterest(affiliation);
-    const affiliationProfile = {
-      name: affiliation,
-      statistics: [
-        { prop: '📝 Papers', number: affiliationPortraitRes.data.count },
-        { prop: '📃 Citations', number: affiliationPortraitRes.data.citation },
-        { prop: '💻 Authors', number: affiliationPortraitRes.data.authorNum }
-      ]
-    };
-    const affiliationAuthorRankingRes = await getAuthorDetailRanking(
-      affiliation
-    );
+    const interestsReq = requestInterests(affiliation);
+    const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
+
     return {
-      affiliationProfile,
-      affiliationCitationTrend: affiliationPortraitRes.data.citationTrend,
-      affiliationPublicationTrend:
-        affiliationPortraitRes.data.publicationTrends,
-      affiliationPapers: affiliationPapersRes.data.papers,
-      affiliationPaperSize: affiliationPapersRes.data.size,
-      affiliationInterest: affiliationInterestRes.data,
-      affiliationAuthorRanking: affiliationAuthorRankingRes.data,
+      ...query,
       affiliation,
-      ...query
+      profile,
+      citationTrend,
+      publicationTrend,
+      ...(await papersReq),
+      ...(await interestsReq),
+      ...(await affiliationAuthorRankingReq)
     };
   },
   mounted(): void {
@@ -117,23 +185,15 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
-
-.affiliation-basic {
-  margin: 10px 0;
-  @media @min-pad-width {
-    .flex-space-between;
-  }
-}
-
 .affiliation-main {
   @media @min-pad-width {
     .flex-left-left-row;
     .affiliation-main__authors {
-      width: 45vw;
+      width: 50vw;
     }
 
     .affiliation-main__paper {
-      width: 55vw;
+      width: 50vw;
     }
   }
 }

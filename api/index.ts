@@ -206,7 +206,7 @@ export async function getAffiliationPortrait(
 }
 
 // 17. 获取某机构发表的所有论文
-export async function getAffiliatonPapers(
+export async function getAffiliationPapers(
   args: AffiliationPapersPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/paper/affiliation', {
