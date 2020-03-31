@@ -52,7 +52,7 @@ app.get('/rank/advanced/affiliation', (req, res) => {
   res.json(affiliationAdvancedMockData);
 });
 
-app.get('/rank/advanced/affiliation', (req, res) => {
+app.get('/rank/detail/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationDetailRankingMockData);
 });

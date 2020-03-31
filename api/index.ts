@@ -189,7 +189,7 @@ export async function getAffiliationAdvancedRanking(
 export async function getAffiliationDetailRankingById(
   affiliationId: string
 ): Promise<BasicResponse<AffiliationDetailRankingResponse>> {
-  const { data } = await axios.get('/rank/advanced/affiliation', {
+  const { data } = await axios.get('/rank/detail/affiliation', {
     params: { affiliationId }
   });
   return data;

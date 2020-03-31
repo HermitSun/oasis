@@ -1,20 +1,85 @@
 <template>
   <div class="ranking-advanced-detail">
-    <span class="value">{{ rank.authorName }}</span>
-    <span class="value">{{ rank.count }}</span>
-    <span class="value">{{ rank.citation }}</span>
-    <span class="value">{{ rank.publicationTrend }}</span>
+    <div class="basic">
+      <span class="value" @click="requestShowDetail">{{
+        rank.authorName
+      }}</span>
+      <span class="value">{{ rank.count }}</span>
+      <span class="value">{{ rank.citation }}</span>
+      <span class="value">{{ rank.publicationTrend }}</span>
+    </div>
+    <div v-if="showDetail">
+      <div class="divider"></div>
+      <div class="detail">
+        <div class="info">
+          <div class="title">
+            keywords
+          </div>
+          <div class="content">
+            {{ rankingDetail.keywords }}
+          </div>
+        </div>
+        <div class="info">
+          <div class="title">
+            mostInfluentialPapers
+          </div>
+          <div class="content">
+            {{ rankingDetail.mostInfluentialPapers }}
+          </div>
+        </div>
+        <div class="info">
+          <div class="title">
+            mostRecentPapers
+          </div>
+          <div class="content">
+            {{ rankingDetail.mostRecentPapers }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { getAuthorDetailRankingById } from '~/api';
+import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 export default Vue.extend({
   name: 'AuthorDetailComp',
   props: {
     rank: {
       type: Object,
       default: () => ({})
+    }
+  },
+  data() {
+    return {
+      showDetail: false,
+      rankingDetail: {} as AuthorDetailRankingResponse,
+      cachedRankingDetail: {} as AuthorDetailRankingResponse
+    };
+  },
+  methods: {
+    requestShowDetail() {
+      this.showDetail = !this.showDetail;
+      console.log(this.rankingDetail);
+      console.log(this.cachedRankingDetail);
+      if (Object.keys(this.cachedRankingDetail).length === 0) {
+        this.requestRankingDetail();
+      } else {
+        this.rankingDetail = this.cachedRankingDetail;
+      }
+    },
+    async requestRankingDetail() {
+      try {
+        const rankingDetailRes = await getAuthorDetailRankingById(
+          this.rank.authorId
+        );
+        this.rankingDetail = rankingDetailRes.data;
+        this.cachedRankingDetail = this.rankingDetail;
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
     }
   }
 });
