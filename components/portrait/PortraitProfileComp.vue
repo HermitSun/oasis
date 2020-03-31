@@ -5,7 +5,7 @@
     </div>
     <div class="info">
       <div v-for="(info, index) in profile.statistics" :key="index">
-        <div class="flex-space-between">
+        <div v-if="info.number !== ''" class="flex-space-between">
           <span class="prop">
             {{ info.prop }}
           </span>

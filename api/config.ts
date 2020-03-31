@@ -6,7 +6,6 @@ const globalConfig = {
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top/api'
       : 'http://localhost:3000/test',
-
   // : 'http://47.101.33.219:8081',
 
   timeout: 60 * 1000

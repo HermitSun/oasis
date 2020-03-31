@@ -212,7 +212,7 @@ export async function getAuthorPortraitById(
 export async function getAuthorPapersById(
   args: AuthorPapersPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/paper/affiliation', {
+  const { data } = await axios.get('/paper/author', {
     params: args
   });
   return data;
@@ -278,7 +278,7 @@ export async function getKeywordPapers(
   return data;
 }
 
-// 22. 获取某研究方向画像
+// 22. 获取某会议画像
 export async function getConferencePortrait(
   conference: string
 ): Promise<BasicResponse<PortraitResponse>> {
