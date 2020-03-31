@@ -57,7 +57,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Message } from 'element-ui';
-import axios from 'axios';
 import {
   getActivePaperAbstract,
   getAffiliationBasicRanking,
@@ -72,8 +71,8 @@ import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
-import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
+import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
 import Subtitle from '~/components/public/Subtitle.vue';
 import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
@@ -93,6 +92,7 @@ async function requestActivePaperAbstract() {
   }
   return res;
 }
+
 async function requestAffiliationBasicRanking() {
   const res: { affiliationRanking: BasicRankingResponse[] } = {
     affiliationRanking: []
@@ -108,6 +108,7 @@ async function requestAffiliationBasicRanking() {
   }
   return res;
 }
+
 async function requestAuthorBasicRanking() {
   const res: { authorRanking: AuthorBasicRankingResponse[] } = {
     authorRanking: []
@@ -123,6 +124,7 @@ async function requestAuthorBasicRanking() {
   }
   return res;
 }
+
 async function requestConferenceBasicRanking() {
   const res: { conferenceRanking: BasicRankingResponse[] } = {
     conferenceRanking: []
@@ -138,6 +140,7 @@ async function requestConferenceBasicRanking() {
   }
   return res;
 }
+
 async function requestJournalBasicRanking() {
   const res: { journalRanking: BasicRankingResponse[] } = {
     journalRanking: []
@@ -153,6 +156,7 @@ async function requestJournalBasicRanking() {
   }
   return res;
 }
+
 async function requestKeywordBasicRanking() {
   const res: { keywordRanking: BasicRankingResponse[] } = {
     keywordRanking: []
@@ -167,6 +171,7 @@ async function requestKeywordBasicRanking() {
   }
   return res;
 }
+
 export default Vue.extend({
   name: 'HomePage',
   components: {
@@ -181,20 +186,20 @@ export default Vue.extend({
   },
   // 渲染初始数据
   async asyncData() {
-    const abstract = await requestActivePaperAbstract();
-    const affiliationRanking = await requestAffiliationBasicRanking();
-    const authorRanking = await requestAuthorBasicRanking();
-    const conferenceRanking = await requestConferenceBasicRanking();
-    const journalRanking = await requestJournalBasicRanking();
-    const keywordRanking = await requestKeywordBasicRanking();
-
+    const abstractReq = requestActivePaperAbstract();
+    const affiliationRankingReq = requestAffiliationBasicRanking();
+    const authorRankingReq = requestAuthorBasicRanking();
+    const conferenceRankingReq = requestConferenceBasicRanking();
+    const journalRankingReq = requestJournalBasicRanking();
+    const keywordRankingReq = requestKeywordBasicRanking();
+    // 并发执行请求，降低阻塞时间
     return {
-      ...abstract,
-      ...affiliationRanking,
-      ...authorRanking,
-      ...conferenceRanking,
-      ...journalRanking,
-      ...keywordRanking
+      ...(await abstractReq),
+      ...(await affiliationRankingReq),
+      ...(await authorRankingReq),
+      ...(await conferenceRankingReq),
+      ...(await journalRankingReq),
+      ...(await keywordRankingReq)
     };
   },
   data() {
@@ -202,12 +207,6 @@ export default Vue.extend({
       keyword: '',
       showAdvancedSearch: false
     } as HomePageComp;
-  },
-  mounted() {
-    console.log(this.abstractResponse);
-    axios.get('/echo/123').then((res) => {
-      console.log(res);
-    });
   },
   methods: {
     async sendBasicSearch() {
@@ -256,9 +255,9 @@ export default Vue.extend({
     .homepage-content__rankings {
       @media @min-pc-width {
         .flex-space-between;
-        flex-wrap: wrap;
+        /*flex-wrap: wrap;*/
         .rank {
-          width: 30%;
+          width: 20%;
           margin: 0 10px;
         }
       }

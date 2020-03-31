@@ -6,6 +6,10 @@ import searchFilterMockData from './mock/search/searchFilterMockData';
 import affiliationPortraitMockData from './mock/portrait/affiliation/affiliationPortraitMockData';
 import affiliationPapersMockData from './mock/portrait/affiliation/affiliationPapersMockData';
 import affiliationInterestMockData from './mock/portrait/affiliation/affiliationInterestMockData';
+import authorAdvancedRankingMockData from './mock/ranking/author/authorAdvancedRankingMockData';
+import affiliationDetailRankingMockData from './mock/ranking/affiliation/affiliationDetailRankingMockData';
+import affiliationAdvancedMockData from './mock/ranking/affiliation/affiliationAdvancedRankingMockData';
+import authorDetailRankingMockData from './mock/ranking/author/authorDetailRankingMockData';
 
 // 路由
 import authors from './routes/authors';
@@ -31,6 +35,26 @@ app.get('/search/basic/es', (_, res) => {
 app.get('/search/basic/filter', (req, res) => {
   console.log(req.params);
   res.json(searchFilterMockData);
+});
+
+app.get('/rank/advanced/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorAdvancedRankingMockData);
+});
+
+app.get('/rank/detail/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorDetailRankingMockData);
+});
+
+app.get('/rank/advanced/affiliation', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationAdvancedMockData);
+});
+
+app.get('/rank/detail/affiliation', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationDetailRankingMockData);
 });
 
 app.get('/portrait/affiliation', (req, res) => {
