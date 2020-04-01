@@ -105,6 +105,12 @@
   .info {
     color: @font-gray;
     font-size: @portrait-paper-info-font-size;
+    .publicationName {
+      cursor: pointer;
+      &:hover {
+        color: @bright-yellow;
+      }
+    }
   }
 
   .abstract {
@@ -131,6 +137,10 @@
       .keyword {
         border: @border-gray 1px solid;
         padding: 1px;
+        cursor: pointer;
+        &:hover {
+          color: @bright-yellow;
+        }
       }
     }
   }
