@@ -101,16 +101,7 @@ export default Vue.extend({
     PortraitProfileComp,
     SearchBar
   },
-  data() {
-    return {
-      profile: {},
-      citationTrend: [] as number[],
-      publicationTrend: [] as number[],
-      papers: [] as SearchResponse[],
-      interest: [] as InterestResponse[]
-    };
-  },
-  async mounted() {
+  async asyncData({ query }) {
     const authorId = '37278889300';
     const sortKey = 'recent';
     const page = 1;
@@ -118,7 +109,7 @@ export default Vue.extend({
     // TODO const sortKey = query.sortKey
     // TODO const page = query.page
     const portraitRes = await requestPortrait(authorId);
-    this.profile = {
+    const profile = {
       name: portraitRes.portrait.name,
       statistics: [
         {
@@ -135,54 +126,21 @@ export default Vue.extend({
         }
       ]
     };
-    this.citationTrend = portraitRes.portrait.citationTrend;
-    this.publicationTrend = portraitRes.portrait.publicationTrends;
+    const citationTrend = portraitRes.portrait.citationTrend;
+    const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const q = await requestPapers({ authorId, page, sortKey });
-    this.papers = q.papers;
-    const q2 = await requestInterests(authorId);
-    this.interest = q2.interests;
+    const papersReq = requestPapers({ authorId, page, sortKey });
+    const interestsReq = requestInterests(authorId);
+
+    return {
+      ...query,
+      profile,
+      citationTrend,
+      publicationTrend,
+      ...(await papersReq),
+      ...(await interestsReq)
+    };
   }
-  // async asyncData({ query }) {
-  //   const authorId = '37278889300';
-  //   const sortKey = 'recent';
-  //   const page = 1;
-  //   // TODO const authorId = query.authorId;
-  //   // TODO const sortKey = query.sortKey
-  //   // TODO const page = query.page
-  //   const portraitRes = await requestPortrait(authorId);
-  //   const profile = {
-  //     name: portraitRes.portrait.name,
-  //     statistics: [
-  //       {
-  //         prop: '💻 Affiliation',
-  //         number: portraitRes.portrait.affiliation
-  //       },
-  //       {
-  //         prop: '📝 Papers',
-  //         number: portraitRes.portrait.count
-  //       },
-  //       {
-  //         prop: '📃 Citations',
-  //         number: portraitRes.portrait.citation
-  //       }
-  //     ]
-  //   };
-  //   const citationTrend = portraitRes.portrait.citationTrend;
-  //   const publicationTrend = portraitRes.portrait.publicationTrends;
-  //
-  //   const papersReq = requestPapers({ authorId, page, sortKey });
-  //   const interestsReq = requestInterests(authorId);
-  //
-  //   return {
-  //     ...query,
-  //     profile,
-  //     citationTrend,
-  //     publicationTrend,
-  //     ...(await papersReq),
-  //     ...(await interestsReq)
-  //   };
-  // }
 });
 </script>
 <style scoped lang="less">
