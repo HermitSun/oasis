@@ -298,7 +298,7 @@ export async function getConferenceInterest(
   return data;
 }
 
-// 24. 获取某研究方向画像
+// 24. 获取某期刊画像
 export async function getJournalPortrait(
   journal: string
 ): Promise<BasicResponse<PortraitResponse>> {
