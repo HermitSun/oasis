@@ -24,30 +24,37 @@ export interface ForceGraphData {
   links: ForceGraphLink[];
 }
 
-type D3CallbackFn<T, R = string | number> = ValueFn<Element, T, R>;
+type D3CallbackFn<
+  T,
+  R = string | number,
+  E extends Element = Element
+> = ValueFn<E, T, R>;
 type D3SelectionElement<T> = T extends Selection<
   infer _,
+  infer T1,
   infer T2,
-  infer T3,
-  infer T4
+  infer T3
 >
-  ? Selection<Element, T2, T3, T4>
+  ? Selection<Element, T1, T2, T3>
   : T;
 type TooltipFn<T> = (data: T) => string;
 
 interface ForceGraphOptions {
   width: number;
   height: number;
-  linkColor?: string;
-  linkOpacity?: number;
+  linkColor?: string | D3CallbackFn<ForceGraphLink>;
+  linkOpacity?: number | D3CallbackFn<ForceGraphLink>;
   linkWidth?: number | D3CallbackFn<ForceGraphLink>;
-  nodeBorderColor?: string;
-  nodeBorderWidth?: number;
+  nodeBorderColor?: string | D3CallbackFn<ForceGraphNode>;
+  nodeBorderWidth?: number | D3CallbackFn<ForceGraphNode>;
   nodeRadius?: number | D3CallbackFn<ForceGraphNode>;
   nodeColor?: string | D3CallbackFn<ForceGraphNode>;
   tooltip?: D3CallbackFn<ForceGraphNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
 }
+type ForceGraphOptionsWithDefault = Required<
+  Omit<ForceGraphOptions, 'tooltip'>
+>;
 
 export function createForceGraph(
   data: ForceGraphData,
@@ -59,7 +66,7 @@ export function createForceGraph(
     scale(d.group ? d.group : Math.random() * 10);
 
   // 配置项（包括默认值）
-  const config = {
+  const config: ForceGraphOptionsWithDefault = {
     linkColor: '#999',
     linkOpacity: 0.6,
     linkWidth: (d: ForceGraphLink) =>
@@ -102,7 +109,6 @@ export function createForceGraph(
   };
 
   // tooltip
-  // 暂时没想好怎么配置tooltip的内容，先放着
   const tooltip = d3
     .select('body')
     .append('div')
@@ -111,6 +117,7 @@ export function createForceGraph(
 
   // 力导向图的配置
   // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
+  // 在运行时检查类型是目前的ts做不到的，这里的类型只有运行时才能确定，所以必须采用断言
   // 辣鸡D3
   const simulation = force
     .forceSimulation(data.nodes)
@@ -127,8 +134,8 @@ export function createForceGraph(
 
   const link = svg
     .append('g')
-    .attr('stroke', config.linkColor)
-    .attr('stroke-opacity', config.linkOpacity)
+    .attr('stroke', config.linkColor as string)
+    .attr('stroke-opacity', config.linkOpacity as number)
     .selectAll('line')
     .data(data.links)
     .join('line')
@@ -136,8 +143,8 @@ export function createForceGraph(
 
   const node = svg
     .append('g')
-    .attr('stroke', config.nodeBorderColor)
-    .attr('stroke-width', config.nodeBorderWidth)
+    .attr('stroke', config.nodeBorderColor as string)
+    .attr('stroke-width', config.nodeBorderWidth as number)
     .selectAll('circle')
     .data(data.nodes)
     .join('circle')
