@@ -1,7 +1,9 @@
 <template>
   <div class="ranking-basic">
     <div class="title">
-      Top Affiliation
+      <span class="main" @click="$router.push('/ranking/affiliation')"
+        >Top Affiliation</span
+      >
       <span class="sortKey">
         {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
         <svg

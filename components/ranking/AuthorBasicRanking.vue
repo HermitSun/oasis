@@ -1,7 +1,9 @@
 <template>
   <div class="ranking-basic">
     <div class="title">
-      Top Authors
+      <span class="main" @click="$router.push('/ranking/author')"
+        >Top Author</span
+      >
       <span class="sortKey">
         {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
         <svg
