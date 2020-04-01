@@ -29,7 +29,9 @@
     >
       <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
-        <span class="name">{{ rank.name }}</span>
+        <span class="name" @click="jumpToPortrait(rank.name)">{{
+          rank.name
+        }}</span>
       </div>
       <div class="count">
         {{ rank.count }}
@@ -72,6 +74,12 @@ export default Vue.extend({
     },
     requestRankingIcon(rank: number): string {
       return getRankingIcon(rank);
+    },
+    jumpToPortrait(affiliation: string) {
+      this.$router.push({
+        path: '/portrait/affiliation',
+        query: { affiliation }
+      });
     },
     changeSortKey() {
       this.sortKey =

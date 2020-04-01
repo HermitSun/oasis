@@ -1,7 +1,7 @@
 <template>
   <div class="ranking-advanced-detail">
-    <div class="basic">
-      <span class="value" @click="requestShowDetail">{{
+    <div class="basic" @click="requestShowDetail">
+      <span class="name" @click="jumpToPortrait">{{
         rank.affiliationName
       }}</span>
       <span class="value">{{ rank.count }}</span>
@@ -61,6 +61,14 @@ export default Vue.extend({
       } else {
         this.rankingDetail = this.cachedRankingDetail;
       }
+    },
+    jumpToPortrait() {
+      this.$router.push({
+        path: '/portrait/affiliation',
+        query: {
+          affiliation: this.rank.affiliationId
+        }
+      });
     },
     async requestRankingDetail() {
       try {

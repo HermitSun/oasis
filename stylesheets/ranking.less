@@ -50,6 +50,13 @@
     display: flex;
     align-items: center;
     width: 100%;
+    .name {
+      flex: 1;
+      cursor: pointer;
+      &:hover {
+        color: @bright-yellow;
+      }
+    }
     .value {
       flex: 1;
     }
@@ -101,7 +108,7 @@
       width: 80%;
       font-size: @ranking-advanced-body-font-size;
       .overflow-hidden-height(4);
-    //  TODO 调整样式 画像页的排名字体不宜过大且几个模块不能并排展示
+      //  TODO 调整样式 画像页的排名字体不宜过大且几个模块不能并排展示
     }
     a {
       text-decoration: none;
@@ -123,7 +130,6 @@
       color: @background-blue;
     }
   }
-
 }
 
 // basic-ranking
@@ -135,9 +141,9 @@
     color: @font-gray-dark;
     font-weight: 500;
     margin: 12px 0 12px 20px;
-    .main{
+    .main {
       cursor: pointer;
-      &:hover{
+      &:hover {
         color: @bright-yellow;
       }
     }
@@ -168,6 +174,10 @@
         display: inline-block;
         word-wrap: break-word;
         width: 100%;
+        cursor: pointer;
+        &:hover {
+          color: @bright-yellow;
+        }
       }
     }
     .count {

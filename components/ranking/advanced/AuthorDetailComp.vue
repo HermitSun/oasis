@@ -1,9 +1,7 @@
 <template>
   <div class="ranking-advanced-detail">
-    <div class="basic">
-      <span class="value" @click="requestShowDetail">{{
-        rank.authorName
-      }}</span>
+    <div class="basic" @click="requestShowDetail">
+      <span class="name" @click="jumpToPortrait">{{ rank.authorName }}</span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">{{ rank.publicationTrend }}</span>
@@ -85,6 +83,14 @@ export default Vue.extend({
       } else {
         this.rankingDetail = this.cachedRankingDetail;
       }
+    },
+    jumpToPortrait() {
+      this.$router.push({
+        path: '/portrait/author',
+        query: {
+          authorId: this.rank.authorId
+        }
+      });
     },
     async requestRankingDetail() {
       try {
