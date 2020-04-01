@@ -39,6 +39,7 @@ type D3SelectionElement<T> = T extends Selection<
   : T;
 type TooltipFn<T> = (data: T) => string;
 
+// 传入的选项类型
 interface ForceGraphOptions {
   width: number;
   height: number;
@@ -52,8 +53,18 @@ interface ForceGraphOptions {
   tooltip?: D3CallbackFn<ForceGraphNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
 }
-type ForceGraphOptionsWithDefault = Required<
+type ForceGraphOptionsWithDefaultWrapper = Required<
   Omit<ForceGraphOptions, 'tooltip'>
+>;
+type Primitive = number | string | boolean | null | undefined | symbol | bigint;
+// 经过处理的带默认值的选项类型
+type ForceGraphOptionsWithDefault = Required<
+  {
+    [K in keyof ForceGraphOptionsWithDefaultWrapper]: Extract<
+      ForceGraphOptionsWithDefaultWrapper[K],
+      Primitive
+    >;
+  }
 >;
 
 export function createForceGraph(
@@ -66,7 +77,7 @@ export function createForceGraph(
     scale(d.group ? d.group : Math.random() * 10);
 
   // 配置项（包括默认值）
-  const config: ForceGraphOptionsWithDefault = {
+  const config = {
     linkColor: '#999',
     linkOpacity: 0.6,
     linkWidth: (d: ForceGraphLink) =>
@@ -77,7 +88,7 @@ export function createForceGraph(
     nodeColor: groupByColor,
     draggable: false,
     ...options
-  };
+  } as ForceGraphOptionsWithDefault;
 
   // 拖拽逻辑
   const drag = (simulation: Simulation<ForceGraphNode, ForceGraphLink>) => {
@@ -134,22 +145,22 @@ export function createForceGraph(
 
   const link = svg
     .append('g')
-    .attr('stroke', config.linkColor as string)
-    .attr('stroke-opacity', config.linkOpacity as number)
+    .attr('stroke', config.linkColor)
+    .attr('stroke-opacity', config.linkOpacity)
     .selectAll('line')
     .data(data.links)
     .join('line')
-    .attr('stroke-width', config.linkWidth as number);
+    .attr('stroke-width', config.linkWidth);
 
   const node = svg
     .append('g')
-    .attr('stroke', config.nodeBorderColor as string)
-    .attr('stroke-width', config.nodeBorderWidth as number)
+    .attr('stroke', config.nodeBorderColor)
+    .attr('stroke-width', config.nodeBorderWidth)
     .selectAll('circle')
     .data(data.nodes)
     .join('circle')
-    .attr('r', config.nodeRadius as number)
-    .attr('fill', config.nodeColor as string);
+    .attr('r', config.nodeRadius)
+    .attr('fill', config.nodeColor);
 
   // 配置tooltip内容
   if (options.tooltip) {
