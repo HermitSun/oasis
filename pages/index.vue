@@ -43,11 +43,31 @@
       <div class="homepage-content__ranking">
         <Subtitle title="🏆 OASIS RANKINGS" />
         <div class="homepage-content__rankings">
-          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-          <JournalBasicRanking :ranking="journalRanking" class="rank" />
-          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
-          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+          <AuthorBasicRanking
+            :ranking="authorRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <JournalBasicRanking
+            :ranking="journalRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <ConferenceBasicRanking
+            :ranking="conferenceRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <AffiliationBasicRanking
+            :ranking="affiliationRanking"
+            class="rank"
+            style="width: 45%"
+          />
+          <KeywordBasicRanking
+            :ranking="keywordRanking"
+            class="rank"
+            style="width: 45%"
+          />
         </div>
       </div>
     </div>
@@ -255,9 +275,8 @@ export default Vue.extend({
     .homepage-content__rankings {
       @media @min-pc-width {
         .flex-space-between;
-        /*flex-wrap: wrap;*/
+        flex-wrap: wrap;
         .rank {
-          width: 20%;
           margin: 0 10px;
         }
       }
