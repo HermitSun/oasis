@@ -1,33 +1,54 @@
 <template>
   <div>
     <SearchBar />
-    <div style="padding: 20px">
-      <div class="affiliation-basic">
-        <PortraitProfileComp :profile="affiliationProfile" />
-        <div>研究方向词云</div>
-      </div>
-      <div class="affiliation-basic">
-        <div>Citation Trend</div>
-        <div>Publication Trends</div>
+    <div class="portrait">
+      <div class="profile-module">
+        <PortraitProfileComp :profile="profile" />
+        <div class="module">
+          <Subtitle title="🌥 Keywords WordCloud" />
+          <!--<div>{{ interests }}</div>-->
+        </div>
+        <div class="module">
+          <Subtitle title="📉 Citation Trend" />
+          <div>{{ citationTrend }}</div>
+        </div>
+        <div class="module">
+          <Subtitle title="📈 Publication Trends" />
+          <div>{{ publicationTrend }}</div>
+        </div>
       </div>
       <div class="affiliation-main">
         <div class="affiliation-main__authors portrait-module">
           <Subtitle title="🏆 Top Authors" />
+          <div class="ranking-advanced">
+            <div class="header">
+              <span class="prop">Author</span>
+              <span class="prop">Count</span>
+              <span class="prop">Citation</span>
+              <span class="prop">Publication Trend</span>
+            </div>
+            <div class="body">
+              <div
+                v-for="(rank, index) in authorDetailRanking"
+                :key="index"
+                style="margin-bottom: 5px"
+              >
+                <AuthorDetailComp :rank="rank" />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="affiliation-main__paper portrait-module">
-          <Subtitle title="📝 All Paper" />
+          <PapersSubtitle title="📝 All Papers" />
           <div
-            v-for="paper in affiliationPapers"
+            v-for="paper in papers"
             :key="paper.id"
             style="margin-bottom: 20px"
           >
-            <!--TODO 这里也要做一下分页-->
+            <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
             <PaperInfoComp :paper="paper" />
           </div>
         </div>
-      </div>
-      <div id="bar">
-        bar chart test
       </div>
     </div>
   </div>
@@ -38,55 +59,128 @@ import Vue from 'vue';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
+  getAffiliationPapers,
   getAffiliationPortrait,
-  getAffiliatonPapers
+  getAuthorDetailRanking
 } from '~/api';
-import Bar from '~/utils/charts/bar';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
+import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
+import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
+import { Message } from '~/node_modules/element-ui';
+import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
+import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
+import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
+import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
+
+async function requestPortrait(affiliation: string) {
+  const res: { portrait: PortraitResponse } = {
+    portrait: {} as PortraitResponse
+  };
+  try {
+    const portraitResponse = await getAffiliationPortrait(affiliation);
+    res.portrait = portraitResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestPapers(args: AffiliationPapersPayload) {
+  const res: { papers: SearchResponse[]; size: number } = {
+    papers: [],
+    size: 0
+  };
+  try {
+    const papersResponse = await getAffiliationPapers(args);
+    res.papers = papersResponse.data.papers;
+    res.size = papersResponse.data.size;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestInterests(affiliation: string) {
+  const res: { interests: InterestResponse[] } = { interests: [] };
+  try {
+    const interestsResponse = await getAffiliationInterest(affiliation);
+    res.interests = interestsResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestAuthorDetailRanking(affiliation: string) {
+  const res: { authorDetailRanking: AuthorAdvancedRankingResponse[] } = {
+    authorDetailRanking: []
+  };
+  try {
+    const authorDetailRankingResponse = await getAuthorDetailRanking(
+      affiliation
+    );
+    res.authorDetailRanking = authorDetailRankingResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
 
 export default Vue.extend({
   name: 'Affiliation',
   components: {
     Subtitle,
+    PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    AuthorDetailComp
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';
+    const sortKey = 'recent';
+    const page = 1;
     // TODO const affiliation = query.affiliation;
-    const affiliationPortraitRes = await getAffiliationPortrait(affiliation);
-    const affiliationPapersRes = await getAffiliatonPapers({
-      affiliation,
-      page: 1,
-      sorKey: 'recent'
-    });
-    const affiliationInterestRes = await getAffiliationInterest(affiliation);
-    const affiliationProfile = {
+    // TODO const sortKey = query.sortKey
+    // TODO const page = query.page
+    const portraitRes = await requestPortrait(affiliation);
+    const profile = {
       name: affiliation,
       statistics: [
-        { prop: '📝 Papers', number: affiliationPortraitRes.data.count },
-        { prop: '📃 Citations', number: affiliationPortraitRes.data.citation },
-        { prop: '💻 Authors', number: affiliationPortraitRes.data.authorNum }
+        {
+          prop: '📝 Papers',
+          number: portraitRes.portrait.count
+        },
+        {
+          prop: '📃 Citations',
+          number: portraitRes.portrait.citation
+        },
+        {
+          prop: '💻 Authors',
+          number: portraitRes.portrait.authorNum
+        }
       ]
     };
+    const citationTrend = portraitRes.portrait.citationTrend;
+    const publicationTrend = portraitRes.portrait.publicationTrends;
+
+    const papersReq = requestPapers({ affiliation, page, sortKey });
+    const interestsReq = requestInterests(affiliation);
+    const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
+
     return {
-      affiliationProfile,
-      affiliationCitationTrend: affiliationPortraitRes.data.citationTrend,
-      affiliationPublicationTrend:
-        affiliationPortraitRes.data.publicationTrends,
-      affiliationPapers: affiliationPapersRes.data.papers,
-      affiliationPaperSize: affiliationPapersRes.data.size,
-      affiliationInterest: affiliationInterestRes.data,
+      ...query,
       affiliation,
-      ...query
+      profile,
+      citationTrend,
+      publicationTrend,
+      ...(await papersReq),
+      ...(await interestsReq),
+      ...(await affiliationAuthorRankingReq)
     };
-  },
-  mounted(): void {
-    const bar = new Bar('#bar');
-    bar.addColor();
   }
 });
 </script>
@@ -94,22 +188,15 @@ export default Vue.extend({
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
 
-.affiliation-basic {
-  margin: 10px 0;
-  @media @min-pad-width {
-    .flex-space-between;
-  }
-}
-
 .affiliation-main {
   @media @min-pad-width {
     .flex-left-left-row;
     .affiliation-main__authors {
-      width: 45vw;
+      width: 50vw;
     }
 
     .affiliation-main__paper {
-      width: 55vw;
+      width: 50vw;
     }
   }
 }

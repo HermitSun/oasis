@@ -18,7 +18,7 @@ import {
 import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
-import { ResearcherInterestResponse } from '@/interfaces/responses/interest/ResearcherInterestResponse';
+import { InterestResponse } from '@/interfaces/responses/interest/InterestResponse';
 import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
@@ -27,7 +27,7 @@ import { ConferenceInfoResponse } from '~/interfaces/responses/manage/Conference
 import { JournalInfoResponse } from '~/interfaces/responses/manage/JournalInfoResponse';
 import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResponse';
 import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
-import { AffiliationPortraitResponse } from '~/interfaces/responses/portrait/AffiliationResponse';
+import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 import {
   AuthorAdvancedRankingResponse,
@@ -37,6 +37,9 @@ import {
   AffiliationAdvancedRankingResponse,
   AffiliationDetailRankingResponse
 } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
+import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
+import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
+import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -111,7 +114,7 @@ export async function getKeywordBasicRanking(
 // 4. 查看学者研究方向
 export async function getResearcherInterest(
   args: ResearcherInterestPayload
-): Promise<BasicResponse<ResearcherInterestResponse[]>> {
+): Promise<BasicResponse<InterestResponse[]>> {
   const { data } = await axios.get('/researcher/interest', {
     params: args
   });
@@ -195,10 +198,30 @@ export async function getAffiliationDetailRankingById(
   return data;
 }
 
+// 13.  根据作者id获取作者画像
+export async function getAuthorPortraitById(
+  authorId: string
+): Promise<BasicResponse<AuthorPortraitResponse>> {
+  const { data } = await axios.get('/portrait/author', {
+    params: { authorId }
+  });
+  return data;
+}
+
+// 14. 根据作者id获取该作者发表的所有论文
+export async function getAuthorPapersById(
+  args: AuthorPapersPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/paper/author', {
+    params: args
+  });
+  return data;
+}
+
 // 16. 获取某机构画像
 export async function getAffiliationPortrait(
   affiliation: string
-): Promise<BasicResponse<AffiliationPortraitResponse>> {
+): Promise<BasicResponse<PortraitResponse>> {
   const { data } = await axios.get('/portrait/affiliation', {
     params: { affiliation }
   });
@@ -206,7 +229,7 @@ export async function getAffiliationPortrait(
 }
 
 // 17. 获取某机构发表的所有论文
-export async function getAffiliatonPapers(
+export async function getAffiliationPapers(
   args: AffiliationPapersPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/paper/affiliation', {
@@ -218,7 +241,7 @@ export async function getAffiliatonPapers(
 // 18. 查看某机构研究方向
 export async function getAffiliationInterest(
   affiliation: string
-): Promise<BasicResponse<ResearcherInterestResponse[]>> {
+): Promise<BasicResponse<InterestResponse[]>> {
   const { data } = await axios.get('/affiliation/interest', {
     params: { affiliation }
   });
@@ -226,6 +249,74 @@ export async function getAffiliationInterest(
 }
 
 // 19. 查看某机构下的作者排名详情
+export async function getAuthorDetailRanking(
+  affiliation: string
+): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
+  const { data } = await axios.get('/rank/affiliation/author', {
+    params: { affiliation }
+  });
+  return data;
+}
+
+// 20. 获取某研究方向画像
+export async function getKeywordPortrait(
+  keyword: string
+): Promise<BasicResponse<PortraitResponse>> {
+  const { data } = await axios.get('/portrait/keyword', {
+    params: { keyword }
+  });
+  return data;
+}
+
+// 21. 获取某研究方向发表的所有论文
+export async function getKeywordPapers(
+  args: KeywordPapersPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/paper/keyword', {
+    params: args
+  });
+  return data;
+}
+
+// 22. 获取某会议画像
+export async function getConferencePortrait(
+  conference: string
+): Promise<BasicResponse<PortraitResponse>> {
+  const { data } = await axios.get('/portrait/conference', {
+    params: { conference }
+  });
+  return data;
+}
+
+//  23. 获取某会议研究方向
+export async function getConferenceInterest(
+  conference: string
+): Promise<BasicResponse<InterestResponse[]>> {
+  const { data } = await axios.get('/conference/interest', {
+    params: { conference }
+  });
+  return data;
+}
+
+// 24. 获取某期刊画像
+export async function getJournalPortrait(
+  journal: string
+): Promise<BasicResponse<PortraitResponse>> {
+  const { data } = await axios.get('/portrait/journal', {
+    params: { journal }
+  });
+  return data;
+}
+
+//  25. 获取某期刊研究方向
+export async function getJournalInterest(
+  journal: string
+): Promise<BasicResponse<InterestResponse[]>> {
+  const { data } = await axios.get('/journal/interest', {
+    params: { journal }
+  });
+  return data;
+}
 
 // 以下为管理员端
 const mockConfig = {

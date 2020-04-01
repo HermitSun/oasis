@@ -1,7 +1,7 @@
-import { AffiliationPortraitResponse } from 'interfaces/responses/portrait/AffiliationResponse';
+import { PortraitResponse } from 'interfaces/responses/portrait/PortraitResponse';
 import { BasicResponse } from 'interfaces/responses/BasicResponse';
 
-const affiliationPortraitMockData: BasicResponse<AffiliationPortraitResponse> = {
+const affiliationPortraitMockData: BasicResponse<PortraitResponse> = {
   code: 200,
   msg: 'Success',
   data: {

@@ -10,6 +10,11 @@ import authorAdvancedRankingMockData from './mock/ranking/author/authorAdvancedR
 import affiliationDetailRankingMockData from './mock/ranking/affiliation/affiliationDetailRankingMockData';
 import affiliationAdvancedMockData from './mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 import authorDetailRankingMockData from './mock/ranking/author/authorDetailRankingMockData';
+import authorPortraitMockData from './mock/portrait/author/authorPortraitMockData';
+import keywordPortraitMockData from './mock/portrait/keyword/keywordPortraitMockData';
+import conferencePortraitMockData from './mock/portrait/conference/conferencePortraitMockData';
+import journalPortraitMockData from './mock/portrait/journal/journalPortraitMockData';
+import journalInterestMockData from './mock/portrait/journal/journalInterestMockData';
 
 // 路由
 import authors from './routes/authors';
@@ -52,24 +57,82 @@ app.get('/rank/advanced/affiliation', (req, res) => {
   res.json(affiliationAdvancedMockData);
 });
 
+// 12
 app.get('/rank/detail/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationDetailRankingMockData);
 });
 
+// 13
+app.get('/portrait/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorPortraitMockData);
+});
+
+// 14
+app.get('/paper/author', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationPapersMockData);
+});
+
+// 16
 app.get('/portrait/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationPortraitMockData);
 });
 
+// 17
 app.get('/paper/affiliation', (req, res) => {
   console.log(req.params);
   res.json(affiliationPapersMockData);
 });
 
+// 18
 app.get('/affiliation/interest', (req, res) => {
   console.log(req.params);
   res.json(affiliationInterestMockData);
+});
+
+// 19
+app.get('/rank/affiliation/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorAdvancedRankingMockData);
+});
+
+// 20
+app.get('/portrait/keyword', (req, res) => {
+  console.log(req.params);
+  res.json(keywordPortraitMockData);
+});
+
+// 21
+app.get('/paper/keyword', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationPapersMockData);
+});
+
+// 22
+app.get('/portrait/conference', (req, res) => {
+  console.log(req.params);
+  res.json(conferencePortraitMockData);
+});
+
+// 23
+app.get('/conference/interest', (req, res) => {
+  console.log(req.params);
+  res.json(journalInterestMockData);
+});
+
+// 24
+app.get('/portrait/journal', (req, res) => {
+  console.log(req.params);
+  res.json(journalPortraitMockData);
+});
+
+// 25
+app.get('/journal/interest', (req, res) => {
+  console.log(req.params);
+  res.json(journalInterestMockData);
 });
 
 // 管理员部分

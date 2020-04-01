@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { getResearcherInterest } from '~/api';
-import { ResearcherInterestResponse } from '~/interfaces/responses/interest/ResearcherInterestResponse';
+import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 
 export default Vue.extend({
   name: 'ResearcherInterest',
@@ -34,7 +34,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      researcherInterestResponse: [] as ResearcherInterestResponse[],
+      researcherInterestResponse: [] as InterestResponse[],
       wordcloudColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef']
     };
   },

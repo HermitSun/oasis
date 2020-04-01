@@ -3,13 +3,9 @@
     <div class="name">
       {{ profile.name }}
     </div>
-    <div>
-      <div
-        v-for="(info, index) in profile.statistics"
-        :key="index"
-        class="info"
-      >
-        <div class="flex-space-between">
+    <div class="info">
+      <div v-for="(info, index) in profile.statistics" :key="index">
+        <div v-if="info.number !== ''" class="flex-space-between">
           <span class="prop">
             {{ info.prop }}
           </span>

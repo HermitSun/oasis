@@ -4,7 +4,7 @@
  * @date 2020.03.28
  */
 
-export interface AffiliationPortraitResponse {
+export interface PortraitResponse {
   count: number; // 总论文数
   citation: number; // 总被引次数
   authorNum: number; // 作者数
