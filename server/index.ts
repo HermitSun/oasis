@@ -10,17 +10,17 @@ import authorAdvancedRankingMockData from './mock/ranking/author/authorAdvancedR
 import affiliationDetailRankingMockData from './mock/ranking/affiliation/affiliationDetailRankingMockData';
 import affiliationAdvancedMockData from './mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 import authorDetailRankingMockData from './mock/ranking/author/authorDetailRankingMockData';
+import authorPortraitMockData from './mock/portrait/author/authorPortraitMockData';
+import keywordPortraitMockData from './mock/portrait/keyword/keywordPortraitMockData';
+import conferencePortraitMockData from './mock/portrait/conference/conferencePortraitMockData';
+import journalPortraitMockData from './mock/portrait/journal/journalPortraitMockData';
+import journalInterestMockData from './mock/portrait/journal/journalInterestMockData';
 
 // 路由
 import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
-import authorPortraitMockData from '~/server/mock/portrait/author/authorPortraitMockData';
-import keywordPortraitMockData from '~/server/mock/portrait/keyword/keywordPortraitMockData';
-import conferencePortraitMockData from '~/server/mock/portrait/conference/conferencePortraitMockData';
-import journalPortraitMockData from '~/server/mock/portrait/journal/journalPortraitMockData';
-import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
 
 const app = express();
 
