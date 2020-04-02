@@ -55,6 +55,7 @@ if (typeof window !== 'undefined' && !window.d3) {
 }
 let D3Pie: d3pie.ID3PieClass;
 
+// do NOT support SSR
 export function createPieChart(
   dom: string | HTMLElement,
   data: PieChartDatum[],
@@ -64,7 +65,7 @@ export function createPieChart(
   if (!D3Pie) {
     D3Pie = require('d3pie');
   }
-  // random color if not exist
+  // random color if not specified
   data.forEach((d, i) => {
     d.color = d.color ? d.color : schemeCategory10[i % 10];
   });
