@@ -12,16 +12,16 @@ import {
   ValueFn
 } from 'd3';
 
-export interface ForceGraphNode extends SimulationNodeDatum {
+export interface ForceChartNode extends SimulationNodeDatum {
   id: string;
   [key: string]: any;
 }
-export interface ForceGraphLink extends SimulationLinkDatum<ForceGraphNode> {
+export interface ForceChartLink extends SimulationLinkDatum<ForceChartNode> {
   [key: string]: any;
 }
-export interface ForceGraphData {
-  nodes: ForceGraphNode[];
-  links: ForceGraphLink[];
+export interface ForceChartData {
+  nodes: ForceChartNode[];
+  links: ForceChartLink[];
 }
 
 type D3CallbackFn<
@@ -40,47 +40,47 @@ type D3SelectionElement<T> = T extends Selection<
 type TooltipFn<T> = (data: T) => string;
 
 // 传入的选项类型
-interface ForceGraphOptions {
+interface ForceChartOptions {
   width: number;
   height: number;
-  linkColor?: string | D3CallbackFn<ForceGraphLink>;
-  linkOpacity?: number | D3CallbackFn<ForceGraphLink>;
-  linkWidth?: number | D3CallbackFn<ForceGraphLink>;
-  nodeBorderColor?: string | D3CallbackFn<ForceGraphNode>;
-  nodeBorderWidth?: number | D3CallbackFn<ForceGraphNode>;
-  nodeRadius?: number | D3CallbackFn<ForceGraphNode>;
-  nodeColor?: string | D3CallbackFn<ForceGraphNode>;
-  tooltip?: D3CallbackFn<ForceGraphNode, string>; // 目前直接返回HTML模板的实现不安全
+  linkColor?: string | D3CallbackFn<ForceChartLink>;
+  linkOpacity?: number | D3CallbackFn<ForceChartLink>;
+  linkWidth?: number | D3CallbackFn<ForceChartLink>;
+  nodeBorderColor?: string | D3CallbackFn<ForceChartNode>;
+  nodeBorderWidth?: number | D3CallbackFn<ForceChartNode>;
+  nodeRadius?: number | D3CallbackFn<ForceChartNode>;
+  nodeColor?: string | D3CallbackFn<ForceChartNode>;
+  tooltip?: D3CallbackFn<ForceChartNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
 }
-type ForceGraphOptionsWithDefaultWrapper = Required<
-  Omit<ForceGraphOptions, 'tooltip'>
+type ForceChartOptionsWithDefaultWrapper = Required<
+  Omit<ForceChartOptions, 'tooltip'>
 >;
 type Primitive = number | string | boolean | null | undefined | symbol | bigint;
 // 经过处理的带默认值的选项类型
-type ForceGraphOptionsWithDefault = Required<
+type ForceChartOptionsWithDefault = Required<
   {
-    [K in keyof ForceGraphOptionsWithDefaultWrapper]: Extract<
-      ForceGraphOptionsWithDefaultWrapper[K],
+    [K in keyof ForceChartOptionsWithDefaultWrapper]: Extract<
+      ForceChartOptionsWithDefaultWrapper[K],
       Primitive
     >;
   }
 >;
 
-export function createForceGraph(
-  data: ForceGraphData,
-  options: ForceGraphOptions
+export function createForceChart(
+  data: ForceChartData,
+  options: ForceChartOptions
 ) {
   // 默认颜色
   const scale = scaleOrdinal(schemeCategory10);
-  const groupByColor = (d: ForceGraphNode) =>
+  const groupByColor = (d: ForceChartNode) =>
     scale(d.group ? d.group : Math.random() * 10);
 
   // 配置项（包括默认值）
   const config = {
     linkColor: '#999',
     linkOpacity: 0.6,
-    linkWidth: (d: ForceGraphLink) =>
+    linkWidth: (d: ForceChartLink) =>
       d.value ? Math.sqrt(d.value) : Math.random(),
     nodeBorderColor: '#fff',
     nodeBorderWidth: 1.5,
@@ -88,11 +88,11 @@ export function createForceGraph(
     nodeColor: groupByColor,
     draggable: false,
     ...options
-  } as ForceGraphOptionsWithDefault;
+  } as ForceChartOptionsWithDefault;
 
   // 拖拽逻辑
-  const drag = (simulation: Simulation<ForceGraphNode, ForceGraphLink>) => {
-    function dragStarted(d: ForceGraphNode) {
+  const drag = (simulation: Simulation<ForceChartNode, ForceChartLink>) => {
+    function dragStarted(d: ForceChartNode) {
       if (!d3.event.active) {
         simulation.alphaTarget(0.3).restart();
       }
@@ -100,12 +100,12 @@ export function createForceGraph(
       d.fy = d.y;
     }
 
-    function dragged(d: ForceGraphNode) {
+    function dragged(d: ForceChartNode) {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
     }
 
-    function dragEnded(d: ForceGraphNode) {
+    function dragEnded(d: ForceChartNode) {
       if (!d3.event.active) {
         simulation.alphaTarget(0);
       }
@@ -113,7 +113,7 @@ export function createForceGraph(
       d.fy = null;
     }
 
-    return d3Drag<Element, ForceGraphNode>()
+    return d3Drag<Element, ForceChartNode>()
       .on('start', dragStarted)
       .on('drag', dragged)
       .on('end', dragEnded);
@@ -167,7 +167,7 @@ export function createForceGraph(
     node
       .on('mouseover', (d) => {
         // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
-        const tooltipHTML = (options.tooltip as TooltipFn<ForceGraphNode>)(d);
+        const tooltipHTML = (options.tooltip as TooltipFn<ForceChartNode>)(d);
         // 渐变效果
         tooltip
           .transition()
@@ -194,10 +194,10 @@ export function createForceGraph(
   // 引导
   simulation.on('tick', () => {
     link
-      .attr('x1', (d) => (d.source as ForceGraphNode).x as number)
-      .attr('y1', (d) => (d.source as ForceGraphNode).y as number)
-      .attr('x2', (d) => (d.target as ForceGraphNode).x as number)
-      .attr('y2', (d) => (d.target as ForceGraphNode).y as number);
+      .attr('x1', (d) => (d.source as ForceChartNode).x as number)
+      .attr('y1', (d) => (d.source as ForceChartNode).y as number)
+      .attr('x2', (d) => (d.target as ForceChartNode).x as number)
+      .attr('y2', (d) => (d.target as ForceChartNode).y as number);
 
     node.attr('cx', (d) => d.x as number).attr('cy', (d) => d.y as number);
   });
