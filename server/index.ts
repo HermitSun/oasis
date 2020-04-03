@@ -42,6 +42,11 @@ app.get('/search/basic/filter', (req, res) => {
   res.json(searchFilterMockData);
 });
 
+app.get('/researcher/interest', (req, res) => {
+  console.log(req.params);
+  res.json(journalInterestMockData);
+});
+
 app.get('/rank/advanced/author', (req, res) => {
   console.log(req.params);
   res.json(authorAdvancedRankingMockData);
