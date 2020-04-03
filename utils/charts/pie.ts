@@ -1,5 +1,6 @@
 /// <reference types="d3pie" />
 import * as d3 from 'd3-selection';
+import 'd3-transition';
 import { arc, curveBasis, line } from 'd3-shape';
 import {
   easeLinear,
