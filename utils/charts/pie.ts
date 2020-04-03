@@ -57,7 +57,7 @@ let D3Pie: d3pie.ID3PieClass;
 
 // do NOT support SSR
 export function createPieChart(
-  dom: string | HTMLElement,
+  selectorOrDOM: string | HTMLElement,
   data: PieChartDatum[],
   config: PieChartConfig
 ) {
@@ -70,7 +70,7 @@ export function createPieChart(
     d.color = d.color ? d.color : schemeCategory10[i % 10];
   });
 
-  return new D3Pie(dom, {
+  return new D3Pie(selectorOrDOM, {
     header: {
       title: {
         text: config.title,
