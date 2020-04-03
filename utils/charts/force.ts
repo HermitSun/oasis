@@ -12,6 +12,7 @@ import {
   ValueFn
 } from 'd3';
 
+// 数据类型定义
 export interface ForceChartNode extends SimulationNodeDatum {
   id: string;
   [key: string]: any;
@@ -24,6 +25,7 @@ export interface ForceChartData {
   links: ForceChartLink[];
 }
 
+// 用于辅助的经过改造的D3类型定义
 type D3CallbackFn<
   T,
   R = string | number,
@@ -68,6 +70,7 @@ type ForceChartOptionsWithDefault = Required<
 >;
 
 export function createForceChart(
+  selectorOrDOM: string | HTMLElement,
   data: ForceChartData,
   options: ForceChartOptions
 ) {
@@ -140,7 +143,8 @@ export function createForceChart(
     .force('center', force.forceCenter(options.width / 2, options.height / 2));
 
   const svg = d3
-    .create('svg')
+    .select(selectorOrDOM as HTMLElement)
+    .append('svg')
     .attr('viewBox', `0,0,${options.width},${options.height}`);
 
   const link = svg
@@ -201,6 +205,4 @@ export function createForceChart(
 
     node.attr('cx', (d) => d.x as number).attr('cy', (d) => d.y as number);
   });
-
-  return svg.node() as SVGSVGElement;
 }
