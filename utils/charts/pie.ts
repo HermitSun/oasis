@@ -24,6 +24,13 @@ interface PieChartConfig {
   title: string;
   width: number;
   height: number;
+  sortOrder?:
+    | 'none'
+    | 'random'
+    | 'value-asc'
+    | 'value-desc'
+    | 'label-asc'
+    | 'label-desc';
 }
 
 const minimizedD3 = {
@@ -84,7 +91,7 @@ export function createPieChart(
       pieOuterRadius: '88%'
     },
     data: {
-      sortOrder: 'value-asc',
+      sortOrder: config.sortOrder ? config.sortOrder : 'value-asc',
       content: data
     },
     labels: {
