@@ -1,4 +1,3 @@
-import globalAxios from 'axios';
 import axios from './config';
 import {
   AdvancedSearchPayload,
@@ -9,7 +8,6 @@ import {
   SearchFullResponse,
   SearchReference
 } from '@/interfaces/responses/search/SearchResponse';
-// import { get } from '@/plugins/request';
 import { BasicRankingResponse } from '@/interfaces/responses/ranking/basic/BasicRankingResponse';
 import {
   RankingAdvancedPayload,
