@@ -40,8 +40,12 @@
           >
             修改名称
           </el-button>
-          <!--TODO: 跳转到会议主页-->
-          <el-button size="mini" type="primary" @click="$router.push('/')">
+          <!--跳转到会议主页-->
+          <el-button
+            size="mini"
+            type="primary"
+            @click="linkToConference(conferencesData.row.name)"
+          >
             查看详情
           </el-button>
         </template>
@@ -77,7 +81,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
-import { getConferenceInfo, updateJournalInfo } from '~/api';
+import { getConferenceInfo, updateConferenceInfo } from '~/api';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { ConferenceInfo } from '~/interfaces/responses/manage/ConferenceInfoResponse';
 
@@ -119,7 +123,7 @@ export default Vue.extend({
           cancelButtonText: '取消',
           type: 'warning'
         });
-        const updateRes = await updateJournalInfo(
+        const updateRes = await updateConferenceInfo(
           this.waitToUpdateName,
           this.updateDestName
         );
@@ -150,6 +154,8 @@ export default Vue.extend({
             ? conferencesRes.data
             : { conferences: [], size: 0 };
         this.conferences = conferencesData.conferences;
+        // 设置页数
+        this.resultCount = conferencesData.size;
         // 重置页码
         this.page = 1;
         this.isLoading = false;
@@ -170,6 +176,16 @@ export default Vue.extend({
           : { conferences: [], size: this.resultCount };
       this.conferences = conferencesData.conferences;
       this.isLoading = false;
+    },
+    // 跳转到会议画像
+    linkToConference(name: string) {
+      const url = this.$router.resolve({
+        path: '/portrait/conference',
+        query: {
+          conference: name
+        }
+      });
+      window.open(url.href, '_blank');
     },
     // 清理工作
     clearUpdate() {
