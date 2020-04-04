@@ -34,10 +34,16 @@
             </template>
           </el-input>
         </template>
-        <!--TODO: 跳转到机构主页-->
-        <el-button size="mini" type="primary" @click="$router.push('/')">
-          查看详情
-        </el-button>
+        <!--跳转到机构画像-->
+        <template #default="affiliationsData">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="linkToAffiliationPortrait(affiliationsData.row.name)"
+          >
+            查看详情
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!--合并操作-->
@@ -185,6 +191,8 @@ export default Vue.extend({
           ? affiliationsRes.data
           : { affiliations: [], size: 0 };
         this.affiliations = affiliationsData.affiliations;
+        // 设置页数
+        this.resultCount = affiliationsData.size;
         // 重置页码
         this.page = 1;
         this.isLoading = false;
@@ -206,6 +214,18 @@ export default Vue.extend({
         : { affiliations: [], size: this.resultCount };
       this.affiliations = affiliationsData.affiliations;
       this.isLoading = false;
+    },
+    // 跳转到机构画像页
+    linkToAffiliationPortrait(name: string) {
+      const url = this.$router.resolve({
+        path: '/portrait/affiliation',
+        query: {
+          affiliation: name,
+          sortKey: 'recent',
+          page: '1'
+        }
+      });
+      window.open(url.href, '_blank');
     },
     // 清理工作
     clearDialog() {
