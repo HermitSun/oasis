@@ -92,8 +92,12 @@
           >
             修改
           </el-button>
-          <!--TODO: 跳转到论文主页-->
-          <el-button size="mini" type="primary" @click="$router.push('/')">
+          <!--跳转到IEEE上的论文页-->
+          <el-button
+            size="mini"
+            type="primary"
+            @click="linkToPaper(papersData.row.link)"
+          >
             查看详情
           </el-button>
         </template>
@@ -215,6 +219,9 @@ export default Vue.extend({
         : { papers: [], size: this.resultCount };
       this.papers = papersData.papers;
       this.isLoading = false;
+    },
+    linkToPaper(link: string) {
+      window.open(link, '_blank');
     }
   }
 });
