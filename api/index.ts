@@ -319,14 +319,14 @@ export async function getJournalInterest(
 }
 
 // 以下为管理员端
-const mockConfig = {
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? 'https://wensun.top'
-      : 'http://101.37.175.237:8081/',
-  timeout: 60 * 1000
-};
-const mockAxios = globalAxios.create(mockConfig);
+// const mockConfig = {
+//   baseURL:
+//     process.env.NODE_ENV === 'production'
+//       ? 'https://wensun.top'
+//       : 'http://101.37.175.237:8081/',
+//   timeout: 60 * 1000
+// };
+// const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
@@ -411,7 +411,6 @@ export async function mergeAuthorInfo(
   src: string[],
   dest: string
 ): Promise<BasicResponse> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.put('/authors/merge', { src, dest });
+  const { data } = await axios.put('/info/author', { src, dest });
   return data;
 }

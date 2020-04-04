@@ -36,10 +36,16 @@
             </template>
           </el-input>
         </template>
-        <!--TODO: 跳转到作者主页-->
-        <el-button size="mini" type="primary" @click="$router.push('/')">
-          查看详情
-        </el-button>
+        <template #default="authorsData">
+          <!--跳转到作者主页-->
+          <el-button
+            size="mini"
+            type="primary"
+            @click="linkToAuthor(authorsData.row.authorId)"
+          >
+            查看详情
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!--合并操作-->
@@ -188,6 +194,8 @@ export default Vue.extend({
             ? authorsRes.data
             : { authors: [], size: 0 };
         this.authors = authorsData.authors;
+        // 设置页数
+        this.resultCount = authorsData.size;
         // 重置页码和搜索内容
         this.page = 1;
         this.isLoading = false;
@@ -206,6 +214,18 @@ export default Vue.extend({
           : { authors: [], size: this.resultCount };
       this.authors = authorsData.authors;
       this.isLoading = false;
+    },
+    // 跳转到作者画像
+    linkToAuthor(id: string) {
+      const url = this.$router.resolve({
+        path: '/portrait/author',
+        query: {
+          authorId: id,
+          sortKey: 'recent',
+          page: '1'
+        }
+      });
+      window.open(url.href, '_blank');
     },
     // 清理工作
     clearDialog() {
