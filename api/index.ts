@@ -323,7 +323,7 @@ const mockConfig = {
   baseURL:
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top'
-      : 'http://localhost:3000/test',
+      : 'http://101.37.175.237:8081/',
   timeout: 60 * 1000
 };
 const mockAxios = globalAxios.create(mockConfig);
@@ -394,8 +394,7 @@ export async function updateJournalInfo(
 export async function updatePaperInfo(
   args: UpdatePaperInfoPayload
 ): Promise<BasicResponse> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.put('/papers/update', args);
+  const { data } = await axios.put('/info/paper', args);
   return data;
 }
 

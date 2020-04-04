@@ -39,10 +39,6 @@
       </template>
     </el-upload>
     <!--示例-->
-    <link
-      href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap"
-      rel="stylesheet"
-    />
     <!--示例JSON-->
     <div
       style="text-align: left; min-width: 350px; max-width: 40%; float: left; margin-left: 10%"
@@ -179,6 +175,17 @@ export default Vue.extend({
         this.isUploading = false;
       }
     }
+  },
+  head() {
+    return {
+      link: [
+        {
+          rel: 'stylesheet',
+          href:
+            'https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap'
+        }
+      ]
+    };
   }
 });
 </script>

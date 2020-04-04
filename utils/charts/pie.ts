@@ -1,5 +1,6 @@
 /// <reference types="d3pie" />
 import * as d3 from 'd3-selection';
+import 'd3-transition';
 import { arc, curveBasis, line } from 'd3-shape';
 import {
   easeLinear,
@@ -26,6 +27,13 @@ interface PieChartConfig {
   title?: string;
   width: number;
   height: number;
+  sortOrder?:
+    | 'none'
+    | 'random'
+    | 'value-asc'
+    | 'value-desc'
+    | 'label-asc'
+    | 'label-desc';
 }
 
 const minimizedD3 = {
@@ -87,7 +95,7 @@ export function createPieChart(
       pieInnerRadius: '50%'
     },
     data: {
-      sortOrder: 'value-asc',
+      sortOrder: config.sortOrder ? config.sortOrder : 'value-asc',
       content: data
     },
     labels: {
