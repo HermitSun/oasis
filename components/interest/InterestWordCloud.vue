@@ -1,18 +1,21 @@
 <template>
-  <div class="wordCloud">
-    <p v-if="interests.length === 0">
-      Sorry,no keyword at present.
-    </p>
-    <wordcloud
-      v-if="interests.length !== 0"
-      :data="interests"
-      name-key="name"
-      value-key="value"
-      :color="wordcloudColors"
-      :show-tooltip="false"
-      :word-click="wordClickHandler"
-    />
-  </div>
+  <!--词云不支持SSR，只在client渲染-->
+  <client-only>
+    <div class="wordCloud">
+      <p v-if="interests.length === 0">
+        Sorry,no keyword at present.
+      </p>
+      <wordcloud
+        v-if="interests.length !== 0"
+        :data="interests"
+        name-key="name"
+        value-key="value"
+        :color="wordcloudColors"
+        :show-tooltip="false"
+        :word-click="wordClickHandler"
+      />
+    </div>
+  </client-only>
 </template>
 
 <script lang="ts">
