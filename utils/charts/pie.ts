@@ -14,7 +14,6 @@ import {
   easeCubicInOut
 } from 'd3-ease';
 import { interpolate } from 'd3-interpolate';
-import 'd3-transition';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 
 interface PieChartDatum {
