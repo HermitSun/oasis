@@ -128,6 +128,12 @@
   .info {
     color: @font-gray;
     font-size: @search-item-author-font-size;
+    .publicationName {
+      cursor: pointer;
+      &:hover {
+        color: @bright-yellow;
+      }
+    }
   }
 
   .abstract {
@@ -159,6 +165,10 @@
         border: @background-blue 1px solid;
         padding: 2px;
         font-size: @search-item-keyword-font-size;
+        cursor: pointer;
+        &:hover {
+          color: @bright-yellow;
+        }
       }
     }
   }

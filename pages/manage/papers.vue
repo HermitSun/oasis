@@ -72,7 +72,7 @@
           <el-input
             v-model="paperTitle"
             size="mini"
-            placeholder="检索论文"
+            placeholder="检索论文，例如：DevOps"
             @keyup.enter.native="doSearch(paperTitle)"
           >
             <template #suffix>
@@ -88,7 +88,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="openUpdateDialog(papersData.row)"
+            @click="openUpdateDialog(papersData.$index, papersData.row)"
           >
             修改
           </el-button>
@@ -102,6 +102,7 @@
     <!--修改论文信息的对话框-->
     <PapersUpdateDialog
       v-if="showUpdateDialog"
+      :index="paperWaitToUpdateIndex"
       :paper="paperWaitToUpdate"
       @close="closeUpdateDialog"
       @cancel="showUpdateDialog = false"
@@ -154,6 +155,7 @@ export default Vue.extend({
       page: 1, // 当前页码
       paperTitle: '', // 根据输入的论文名称进行搜索
       showUpdateDialog: false, // 是否显示修改的对话框
+      paperWaitToUpdateIndex: -1, // 待修改的paper的ID
       paperWaitToUpdate: {} as PaperInfo, // 待修改的paper
       isLoading: false
     };
@@ -164,15 +166,17 @@ export default Vue.extend({
       return type === 'conferences' ? '会议' : '期刊';
     },
     // 打开对话框
-    openUpdateDialog(paper: PaperInfo) {
+    openUpdateDialog(index: number, paper: PaperInfo) {
+      this.paperWaitToUpdateIndex = index;
       // 创建一个副本，避免子组件修改此处的数据
       this.paperWaitToUpdate = { ...paper };
       this.showUpdateDialog = true;
     },
-    closeUpdateDialog() {
+    closeUpdateDialog(updatedIndex: number, updatedPaper: PaperInfo) {
       this.showUpdateDialog = false;
-      // 重新请求当前页的数据
-      this.showNextPage(this.page);
+      // 避免重新请求，在前端进行修改
+      // Vue不能检测数组下标变动，需要使用$set
+      this.$set(this.papers, updatedIndex, updatedPaper);
     },
     // 进行搜索
     async doSearch(title: string) {

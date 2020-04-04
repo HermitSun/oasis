@@ -43,11 +43,31 @@
       <div class="homepage-content__ranking">
         <Subtitle title="🏆 OASIS RANKINGS" />
         <div class="homepage-content__rankings">
-          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-          <JournalBasicRanking :ranking="journalRanking" class="rank" />
-          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
-          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+          <AuthorBasicRanking
+            :ranking="authorRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <JournalBasicRanking
+            :ranking="journalRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <ConferenceBasicRanking
+            :ranking="conferenceRanking"
+            class="rank"
+            style="width: 30%"
+          />
+          <AffiliationBasicRanking
+            :ranking="affiliationRanking"
+            class="rank"
+            style="width: 45%"
+          />
+          <KeywordBasicRanking
+            :ranking="keywordRanking"
+            class="rank"
+            style="width: 45%"
+          />
         </div>
       </div>
     </div>
@@ -71,8 +91,8 @@ import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
-import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
+import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
 import Subtitle from '~/components/public/Subtitle.vue';
 import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
@@ -257,7 +277,6 @@ export default Vue.extend({
         .flex-space-between;
         flex-wrap: wrap;
         .rank {
-          width: 30%;
           margin: 0 10px;
         }
       }

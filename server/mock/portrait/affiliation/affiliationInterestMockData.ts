@@ -1,7 +1,7 @@
 import { BasicResponse } from '~/interfaces/responses/BasicResponse';
-import { ResearcherInterestResponse } from '~/interfaces/responses/interest/ResearcherInterestResponse';
+import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 
-const affiliationInterestMockData: BasicResponse<ResearcherInterestResponse[]> = {
+const affiliationInterestMockData: BasicResponse<InterestResponse[]> = {
   code: 200,
   msg: 'Success',
   data: [

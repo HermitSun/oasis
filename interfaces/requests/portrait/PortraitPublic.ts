@@ -8,5 +8,5 @@ type sortKey = 'recent' | 'early' | 'citation';
 
 export interface PageAndSortKey {
   page: number;
-  sorKey: sortKey;
+  sortKey: sortKey;
 }

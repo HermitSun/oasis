@@ -13,7 +13,13 @@
         {{ author }}
       </span>
       <span class="info">
-        {{ paper.publicationName }}
+        <span
+          class="publicationName"
+          @click="
+            jumpToContentPortrait(paper.contentType, paper.publicationName)
+          "
+          >{{ paper.publicationName }}</span
+        >
         <span style="margin-left: 1px">{{ paper.publicationYear }}</span>
       </span>
     </div>
@@ -41,6 +47,7 @@
             :key="index"
             class="keyword"
             style="margin-right: 5px"
+            @click="jumpToKeywordPortrait(keyword)"
           >
             {{ keyword }}
           </span>
@@ -64,6 +71,31 @@ export default Vue.extend({
     paper: {
       type: Object,
       default: () => ({})
+    }
+  },
+  methods: {
+    jumpToKeywordPortrait(keyword: string) {
+      this.$router.push({
+        path: '/portrait/keyword',
+        query: { keyword }
+      });
+    },
+    jumpToContentPortrait(contentType: string, content: string) {
+      if (contentType === 'conferences') {
+        this.$router.push({
+          path: '/portrait/conference',
+          query: {
+            conference: content
+          }
+        });
+      } else if (contentType === 'periodicals') {
+        this.$router.push({
+          path: '/portrait/journal',
+          query: {
+            journal: content
+          }
+        });
+      }
     }
   }
 });

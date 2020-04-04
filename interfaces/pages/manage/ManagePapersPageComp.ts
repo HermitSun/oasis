@@ -11,9 +11,11 @@ export interface PaperInfo extends SearchResponse {
 }
 
 // 覆盖父接口的类型，针对界面显示做了调整
-export interface PaperFrom extends Omit<PaperInfo, 'authors' | 'keywords'> {
+export interface PaperFrom
+  extends Omit<PaperInfo, 'authors' | 'keywords' | 'publicationYear'> {
   authors: string;
   keywords: string;
+  publicationYear: string;
 }
 
 interface AsyncManagePapersData {}

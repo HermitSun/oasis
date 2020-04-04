@@ -1,30 +1,83 @@
-@import "default.less";
-@portrait-profile-min-width: 450px;
+@import 'default.less';
+@portrait-profile-width-pc: 40vw;
+@portrait-profile-width-mobile: 95vw;
+@portrait-profile-name-font-size: @largest-font;
 @portrait-paper-title-font-size: @small-font;
 @portrait-paper-info-font-size: @sub-small-font;
 
-.portrait-module{
-  padding: 5px 10px;
+.portrait {
+}
+.profile-module {
+  padding: 15px 10px;
+  @media @min-pad-width {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .module {
+    @media @min-pad-width {
+      flex: 1;
+      .chart{
+        width: 45vw;
+        height: 500px;
+      }
+    }
+    @media @max-pad-width {
+      .chart{
+        width: 95vw;
+        height: 400px;
+      }
+    }
+    .content{
+      padding: 0 10px;
+      .flex-center-row;
+    }
+  }
+}
+.portrait-module {
+  padding: 15px 10px;
 }
 
-.portrait-profile{
-  background-image: linear-gradient( 135deg, @background-blue-light 10%, @background-blue 100%);
-  border-radius: 20px;
-  padding: 30px;
-  min-width: @portrait-profile-min-width;
-  .name{
-    color: @background-blue;
-    font-size: @largest-font;
-    font-style: italic;
-    margin: 20px 0 40px;
+.portrait-profile {
+  @media @min-mobile-width {
+    width: @portrait-profile-width-pc;
   }
-  .info{
+  @media @max-mobile-width {
+    width: @portrait-profile-width-mobile;
+  }
+  .name {
+    //background-image: linear-gradient(
+    //  135deg,
+    //  @bright-yellow 10%,
+    //  #3684ab 100%
+    //);
+    overflow-wrap: break-word;
+    background: @background-blue;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 4px 4px 5px rgba(138, 136, 136, 0.6);
+    font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
+
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: @portrait-profile-name-font-size;
+    margin: 5px 10px 30px;
+  }
+  .info {
+    background-image: linear-gradient(
+      135deg,
+      @background-blue-light 10%,
+      @background-blue 100%
+    );
+    border-radius: 20px;
+    padding: 25px;
+
     line-height: 40px;
-    .prop{
+    .prop {
       font-size: @middle-font;
       color: @font-gray-dark;
     }
-    .number{
+    .number {
       font-size: @large-font;
       color: whitesmoke;
       font-weight: lighter;
@@ -71,6 +124,12 @@
   .info {
     color: @font-gray;
     font-size: @portrait-paper-info-font-size;
+    .publicationName {
+      cursor: pointer;
+      &:hover {
+        color: @bright-yellow;
+      }
+    }
   }
 
   .abstract {
@@ -87,7 +146,6 @@
     background: @background-blue-light;
   }
 
-
   .keyword-wrapper {
     .flex-left-left-row;
     word-wrap: break-word;
@@ -98,7 +156,10 @@
       .keyword {
         border: @border-gray 1px solid;
         padding: 1px;
-
+        cursor: pointer;
+        &:hover {
+          color: @bright-yellow;
+        }
       }
     }
   }
@@ -116,6 +177,4 @@
       min-width: 100px;
     }
   }
-
-
 }

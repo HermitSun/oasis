@@ -1,7 +1,9 @@
 <template>
   <div class="ranking-basic">
     <div class="title">
-      Top Authors
+      <span class="main" @click="$router.push('/ranking/author')"
+        >Top Author</span
+      >
       <span class="sortKey">
         {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
         <svg
@@ -28,33 +30,40 @@
     >
       <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
+        <span class="name" @click="jumpToPortrait(rank.authorId)">{{
+          rank.name
+        }}</span>
         <!--只在客户端渲染词云-->
-        <client-only>
-          <!--服务端渲染的占位符-->
-          <span slot="placeholder" class="name">
-            {{ rank.name }}
-          </span>
-          <!--真正的词云-->
-          <el-popover
-            trigger="click"
-            @show="showInterest = true"
-            @hide="showInterest = false"
-            @click.native="showSpecifiedInterest"
-          >
-            <!--双等号可以不用强制类型转换-->
-            <!--加锁以避免额外的渲染-->
-            <!--此处判断authorId是为了应对低网速情况，低网速环境下可能会返回null-->
-            <ResearcherInterest
-              v-if="
-                rank.authorId && showInterest && index == whichInterestToShow
-              "
-              :author-id="rank.authorId"
-            />
-            <span slot="reference" class="name" :interest-index="index">
-              {{ rank.name }}
-            </span>
-          </el-popover>
-        </client-only>
+        <!--<client-only>-->
+        <!--服务端渲染的占位符-->
+        <!--<span-->
+        <!--slot="placeholder"-->
+        <!--class="name"-->
+        <!--@click="jumpToPortrait(rank.authorId)"-->
+        <!--&gt;-->
+        <!--{{ rank.name }}-->
+        <!--</span>-->
+        <!--真正的词云-->
+        <!--<el-popover-->
+        <!--trigger="click"-->
+        <!--@show="showInterest = true"-->
+        <!--@hide="showInterest = false"-->
+        <!--@click.native="showSpecifiedInterest"-->
+        <!--&gt;-->
+        <!--&lt;!&ndash;双等号可以不用强制类型转换&ndash;&gt;-->
+        <!--&lt;!&ndash;加锁以避免额外的渲染&ndash;&gt;-->
+        <!--&lt;!&ndash;此处判断authorId是为了应对低网速情况，低网速环境下可能会返回null&ndash;&gt;-->
+        <!--<ResearcherInterest-->
+        <!--v-if="-->
+        <!--rank.authorId && showInterest && index == whichInterestToShow-->
+        <!--"-->
+        <!--:author-id="rank.authorId"-->
+        <!--/>-->
+        <!--<span slot="reference" class="name" :interest-index="index">-->
+        <!--{{ rank.name }}-->
+        <!--</span>-->
+        <!--</el-popover>-->
+        <!--</client-only>-->
       </div>
       <div class="count">
         {{ rank.count }}
@@ -68,13 +77,11 @@ import Vue from 'vue';
 import { Popover } from 'element-ui';
 import { getRankingIcon } from './ranking';
 import { getAuthorBasicRanking } from '~/api';
-import ResearcherInterest from '~/components/interest/ResearcherInterest.vue';
 import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
 
 export default Vue.extend({
   name: 'AuthorBasicRanking',
   components: {
-    ResearcherInterest,
     [Popover.name]: Popover
   },
   props: {
@@ -105,6 +112,12 @@ export default Vue.extend({
     },
     requestRankingIcon(rank: number): string {
       return getRankingIcon(rank);
+    },
+    jumpToPortrait(authorId: string) {
+      this.$router.push({
+        path: '/portrait/author',
+        query: { authorId }
+      });
     },
     changeSortKey() {
       this.sortKey =

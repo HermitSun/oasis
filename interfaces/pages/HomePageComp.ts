@@ -5,8 +5,8 @@
  * @date 2020.03.15
  */
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
-import { BasicRankingResponse } from '~/interfaces/responses/ranking/BasicRankingResponse';
-import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/AuthorBasicRankingResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
+import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 
 export interface HomePageComp {
   keyword: string;
