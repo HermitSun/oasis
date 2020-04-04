@@ -3,33 +3,34 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
         <div class="module">
-          <Subtitle title="🌥 Keywords WordCloud" />
-          <!--<div>{{ interests }}</div>-->
+          <PortraitProfileComp :profile="profile" />
         </div>
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
-        </div>
-        <div class="module">
-          <Subtitle title="学者关系图" />
+          <div id="publication-bar" class="content"></div>
         </div>
       </div>
-      <div class="portrait-module">
-        <PapersSubtitle title="📝 All Papers" />
-        <div
-          v-for="paper in papers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-          <PaperInfoComp :paper="paper" />
+      <div class="profile-module">
+        <div class="module" style="margin-right: 10px">
+          <Subtitle title="🌥 Keywords WordCloud" />
+          <div id="pie" class="chart content"></div>
         </div>
+        <div class="module">
+          <Subtitle title="🎓 Scholar Network" />
+          <div id="force" class="chart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="portrait-module">
+      <PapersSubtitle title="📝 All Papers" />
+      <div v-for="paper in papers" :key="paper.id" style="margin-bottom: 20px">
+        <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
+        <PaperInfoComp :paper="paper" />
       </div>
     </div>
   </div>
@@ -52,6 +53,10 @@ import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorRe
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
+import { createPieChart } from '~/utils/charts/pie';
+import { createForceChart } from '~/utils/charts/force';
+import getSizeById from '~/utils/charts/getSizeById';
+import { createBarChart } from '~/utils/charts/bar';
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -131,15 +136,66 @@ export default Vue.extend({
 
     const papersReq = requestPapers({ authorId, page, sortKey });
     const interestsReq = requestInterests(authorId);
-
     return {
       ...query,
+      authorId,
       profile,
       citationTrend,
       publicationTrend,
       ...(await papersReq),
       ...(await interestsReq)
     };
+  },
+  data() {
+    return {} as any;
+  },
+  async mounted() {
+    await requestInterests(this.authorId).then((interestsReq) =>
+      createPieChart(
+        '#pie',
+        interestsReq.interests
+          .map((i) => {
+            return {
+              label: i.name,
+              value: i.value
+            };
+          })
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 20),
+        {
+          width: getSizeById('pie').width,
+          height: getSizeById('pie').height
+        }
+      )
+    );
+
+    const data = await import('../../pages/charts/data.json');
+    createForceChart('#force', data, {
+      width: 600,
+      height: 600,
+      // nodeColor: '#666',
+      nodeRadius: (_) => Math.random() * 10,
+      tooltip: (d) => `<p>id: ${d.id}</p>`,
+      draggable: true
+    });
+    createBarChart('#citation-bar', this.citationTrend, {
+      width: 150,
+      height: 100,
+      barColor: 'black',
+      tooltipThreshold: 15,
+      hover: {
+        mouseOverColor: (_) => 'rgb(100, 0, 0)'
+      }
+    });
+    createBarChart('#publication-bar', this.publicationTrend, {
+      width: 150,
+      height: 100,
+      barColor: 'black',
+      tooltipThreshold: 15,
+      hover: {
+        mouseOverColor: (_) => 'rgb(100, 0, 0)'
+      }
+    });
   }
 });
 </script>
