@@ -1,26 +1,33 @@
 <template>
-  <div class="wordCloud">
-    <p v-if="interests.length === 0">
-      Sorry,no keyword at present.
-    </p>
-    <wordcloud
-      v-if="interests.length !== 0"
-      :data="interests"
-      name-key="name"
-      value-key="value"
-      :color="wordcloudColors"
-      :show-tooltip="false"
-      :word-click="wordClickHandler"
-    />
-  </div>
+  <!--词云不支持SSR，只在client渲染-->
+  <client-only>
+    <div class="wordCloud">
+      <p v-if="interests.length === 0">
+        Sorry,no keyword at present.
+      </p>
+      <wordcloud
+        v-if="interests.length !== 0"
+        :data="interests"
+        name-key="name"
+        value-key="value"
+        :color="wordcloudColors"
+        :show-tooltip="false"
+        :word-click="wordClickHandler"
+      />
+    </div>
+  </client-only>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+
 export default Vue.extend({
   name: 'InterestWordCloud',
+  // 此处的实现确实不是很必要，但是为了控制台不报错，加了个没什么用的判断
   components: {
-    wordcloud: () => import('vue-wordcloud')
+    wordcloud: process.client
+      ? () => import('vue-wordcloud')
+      : () => import('~/components/AsyncCompLoading')
   },
   props: {
     interests: {
