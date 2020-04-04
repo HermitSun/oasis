@@ -117,13 +117,12 @@ export default Vue.extend({
         callback(new Error('请输入论文作者'));
       } else {
         const authors = value.split(',');
-        // 分割前后没有变化，说明格式不符合
-        if (authors[0] === value) {
+        // 不止一个作者，并且分割前后没有变化，说明格式不符合
+        if (value.includes(',') && authors[0] === value) {
           callback(new Error("论文作者之间请用英文逗号','分隔"));
         }
         // 分割前后数组长度发生变化
         // 这个校验逻辑是依赖于状态的，所以放到data里，这样可以利用this来制造context
-        console.log(authors.length, value.split(',').length);
         if (authors.length !== this.paper.authors.length) {
           callback(new Error('不能修改论文作者数量'));
         }
@@ -144,16 +143,16 @@ export default Vue.extend({
       if (value === '') {
         callback(new Error('请输入关键词'));
       } else {
-        const authors = value.split(',');
+        const keywords = value.split(',');
         // 分割前后没有变化，说明格式不符合
-        if (authors[0] === value) {
+        if (value.includes(',') && keywords[0] === value) {
           callback(new Error("论文关键词之间请用英文逗号','分隔"));
         }
         // 不为空串，且不为全是空格的串
-        const notEmptyAuthors = authors.filter(
-          (author) => author !== '' && !/^[ ]+$/.test(author)
+        const notEmptyKeywords = keywords.filter(
+          (keyword) => keyword !== '' && !/^[ ]+$/.test(keyword)
         );
-        if (authors.length !== notEmptyAuthors.length) {
+        if (keywords.length !== notEmptyKeywords.length) {
           callback(new Error('不能有为空的关键词'));
         }
         callback();
