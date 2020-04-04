@@ -383,8 +383,7 @@ export async function updateJournalInfo(
   src: string,
   dest: string
 ): Promise<BasicResponse> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.put('/journals/update', { src, dest });
+  const { data } = await axios.put('/info/journal', { src, dest });
   return data;
 }
 

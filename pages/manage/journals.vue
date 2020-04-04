@@ -40,8 +40,12 @@
           >
             修改名称
           </el-button>
-          <!--TODO: 跳转到期刊主页-->
-          <el-button size="mini" type="primary" @click="$router.push('/')">
+          <!--跳转到期刊主页-->
+          <el-button
+            size="mini"
+            type="primary"
+            @click="linkToJournal(journalsData.row.name)"
+          >
             查看详情
           </el-button>
         </template>
@@ -149,6 +153,8 @@ export default Vue.extend({
             ? journalsRes.data
             : { journals: [], size: 0 };
         this.journals = journalsData.journals;
+        // 设置页数
+        this.resultCount = journalsData.size;
         // 重置页码
         this.page = 1;
         this.isLoading = false;
@@ -167,6 +173,16 @@ export default Vue.extend({
           : { journals: [], size: this.resultCount };
       this.journals = journalsData.journals;
       this.isLoading = false;
+    },
+    // 跳转到期刊画像
+    linkToJournal(name: string) {
+      const url = this.$router.resolve({
+        path: '/portrait/conference',
+        query: {
+          conference: name
+        }
+      });
+      window.open(url.href, '_blank');
     },
     // 清理工作
     clearUpdate() {
