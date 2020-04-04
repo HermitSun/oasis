@@ -343,8 +343,7 @@ export async function mergeAffiliationInfo(
   src: string[],
   dest: string
 ): Promise<BasicResponse> {
-  // TODO: 切换成真实的URL
-  const { data } = await mockAxios.put('/affiliations/merge', { src, dest });
+  const { data } = await axios.put('/info/affiliation', { src, dest });
   return data;
 }
 
