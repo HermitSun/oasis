@@ -104,6 +104,7 @@ export default Vue.extend({
     [Option.name]: Option
   },
   props: {
+    index: { type: Number, default: 0 },
     paper: { type: Object, default: () => ({}) }
   },
   data() {
@@ -227,7 +228,6 @@ export default Vue.extend({
           keywords: this.paperForm.keywords.split(','),
           publicationYear: Number(this.paperForm.publicationYear)
         };
-        console.log(updateData);
         const updateRes = await updatePaperInfo(updateData);
         if (updateRes.code === 200) {
           this.$message.success('修改成功');
@@ -245,7 +245,13 @@ export default Vue.extend({
     },
     // 清理工作
     closeDialog() {
-      this.$emit('close');
+      // 将修改过的数据返回给父组件，避免再次请求
+      this.$emit('close', this.index, {
+        ...this.paperForm,
+        authors: this.paperForm.authors.split(','),
+        keywords: this.paperForm.keywords.split(','),
+        publicationYear: Number(this.paperForm.publicationYear)
+      });
     },
     closeDialogWithoutChange() {
       this.$emit('cancel');
