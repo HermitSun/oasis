@@ -13,6 +13,7 @@ import {
   easeCubicInOut
 } from 'd3-ease';
 import { interpolate } from 'd3-interpolate';
+import 'd3-transition';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 
 interface PieChartDatum {
@@ -20,8 +21,9 @@ interface PieChartDatum {
   value: number;
   color?: string;
 }
+
 interface PieChartConfig {
-  title: string;
+  title?: string;
   width: number;
   height: number;
 }
@@ -81,7 +83,8 @@ export function createPieChart(
     size: {
       canvasHeight: config.height,
       canvasWidth: config.width,
-      pieOuterRadius: '88%'
+      pieOuterRadius: '88%',
+      pieInnerRadius: '50%'
     },
     data: {
       sortOrder: 'value-asc',

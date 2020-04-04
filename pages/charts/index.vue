@@ -15,6 +15,7 @@ import Vue from 'vue';
 import { createForceChart } from '~/utils/charts/force';
 import { createPieChart } from '~/utils/charts/pie';
 import { createBarChart } from '~/utils/charts/bar';
+import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
 
 export default Vue.extend({
   name: 'Index',
@@ -30,39 +31,20 @@ export default Vue.extend({
     });
     createPieChart(
       '#pie',
-      [
-        {
-          label: 'voltage source converters',
-          value: 3
-          // color: '#7e6538'
-        },
-        {
-          label: 'EEB-ZSI',
-          value: 1
-          // color: '#7c7e38'
-        },
-        {
-          label: 'conduction loss',
-          value: 1
-          // color: '#587e38'
-        },
-        {
-          label: 'modular structure',
-          value: 1
-          // color: '#387e45'
-        },
-        {
-          label: 'SCR',
-          value: 1
-          // color: '#387e6a'
-        },
-        {
-          label: 'impedance-based stability analysis methods',
-          value: 1
-          // color: '#386a7e'
-        }
-      ],
-      { title: '主要研究方向', height: 400, width: 590 }
+      journalInterestMockData.data
+        .map((i) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 20),
+      {
+        title: '主要研究方向',
+        height: 600,
+        width: 800
+      }
     );
     createBarChart('#bar', [2, 6, 4, 20, 9, 10, 11, 18, 23, 25], {
       width: 150,

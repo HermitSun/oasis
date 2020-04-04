@@ -6,7 +6,7 @@
         <PortraitProfileComp :profile="profile" />
         <div class="module">
           <Subtitle title="🌥 Keywords WordCloud" />
-          <!--<div>{{ interests }}</div>-->
+          <InterestWordCloud :interests="interests" />
         </div>
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
@@ -74,6 +74,7 @@ import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affilia
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
+import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -137,7 +138,8 @@ export default Vue.extend({
     PaperInfoComp,
     PortraitProfileComp,
     SearchBar,
-    AuthorDetailComp
+    AuthorDetailComp,
+    InterestWordCloud
   },
   async asyncData({ query }) {
     const affiliation = 'Tsinghua University';

@@ -1,22 +1,35 @@
 @import 'default.less';
-@portrait-profile-min-width: 450px;
+@portrait-profile-width-pc: 40vw;
+@portrait-profile-width-mobile: 95vw;
 @portrait-profile-name-font-size: @largest-font;
 @portrait-paper-title-font-size: @small-font;
 @portrait-paper-info-font-size: @sub-small-font;
 
 .portrait {
-  padding: 20px;
 }
 .profile-module {
-  padding: 5px 10px;
+  padding: 15px 10px;
   @media @min-pad-width {
     display: flex;
     flex-wrap: wrap;
   }
   .module {
-    margin: 0 10px;
     @media @min-pad-width {
       flex: 1;
+      .chart{
+        width: 45vw;
+        height: 500px;
+      }
+    }
+    @media @max-pad-width {
+      .chart{
+        width: 95vw;
+        height: 400px;
+      }
+    }
+    .content{
+      padding: 0 10px;
+      .flex-center-row;
     }
   }
 }
@@ -25,13 +38,19 @@
 }
 
 .portrait-profile {
-  min-width: @portrait-profile-min-width;
+  @media @min-mobile-width {
+    width: @portrait-profile-width-pc;
+  }
+  @media @max-mobile-width {
+    width: @portrait-profile-width-mobile;
+  }
   .name {
     //background-image: linear-gradient(
     //  135deg,
     //  @bright-yellow 10%,
     //  #3684ab 100%
     //);
+    overflow-wrap: break-word;
     background: @background-blue;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
