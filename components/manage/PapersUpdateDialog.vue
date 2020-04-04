@@ -39,6 +39,7 @@
         <el-date-picker
           v-model="paperForm.publicationYear"
           type="year"
+          value-format="yyyy"
           placeholder="请选择出版年份"
           style="width: 100%"
         />
@@ -91,45 +92,6 @@ import {
 } from '~/interfaces/ElFormValidationRules';
 import { updatePaperInfo } from '~/api';
 
-// 校验作者姓名
-const authorNameValidator: ElFormValidationFunction = (_, value, callback) => {
-  if (value === '') {
-    callback(new Error('请输入论文作者'));
-  } else {
-    const authors = value.split(',');
-    // 分割前后没有变化，说明格式不符合
-    if (authors[0] === value) {
-      callback(new Error("论文作者之间请用英文逗号','分隔"));
-    }
-    const notEmptyAuthors = authors.filter((author) => author !== '');
-    if (authors.length !== notEmptyAuthors.length) {
-      callback(new Error('不能有姓名为空的作者'));
-    }
-    callback();
-  }
-};
-
-// 校验关键词
-const keywordsValidator: ElFormValidationFunction = (_, value, callback) => {
-  if (value === '') {
-    callback(new Error('请输入关键词'));
-  } else {
-    const authors = value.split(',');
-    // 分割前后没有变化，说明格式不符合
-    if (authors[0] === value) {
-      callback(new Error("论文关键词之间请用英文逗号','分隔"));
-    }
-    // 不为空串，且不为全是空格的串
-    const notEmptyAuthors = authors.filter(
-      (author) => author !== '' && !/^[ ]+$/.test(author)
-    );
-    if (authors.length !== notEmptyAuthors.length) {
-      callback(new Error('不能有为空的关键词'));
-    }
-    callback();
-  }
-};
-
 export default Vue.extend({
   name: 'PapersUpdateDialog',
   components: {
@@ -145,12 +107,65 @@ export default Vue.extend({
     paper: { type: Object, default: () => ({}) }
   },
   data() {
+    // 校验作者姓名
+    const authorNameValidator: ElFormValidationFunction = (
+      _,
+      value,
+      callback
+    ) => {
+      if (value === '') {
+        callback(new Error('请输入论文作者'));
+      } else {
+        const authors = value.split(',');
+        // 不止一个作者，并且分割前后没有变化，说明格式不符合
+        if (value.includes(',') && authors[0] === value) {
+          callback(new Error("论文作者之间请用英文逗号','分隔"));
+        }
+        // 分割前后数组长度发生变化
+        // 这个校验逻辑是依赖于状态的，所以放到data里，这样可以利用this来制造context
+        if (authors.length !== this.paper.authors.length) {
+          callback(new Error('不能修改论文作者数量'));
+        }
+        const notEmptyAuthors = authors.filter((author) => author !== '');
+        if (authors.length !== notEmptyAuthors.length) {
+          callback(new Error('不能有姓名为空的作者'));
+        }
+        callback();
+      }
+    };
+
+    // 校验关键词
+    const keywordsValidator: ElFormValidationFunction = (
+      _,
+      value,
+      callback
+    ) => {
+      if (value === '') {
+        callback(new Error('请输入关键词'));
+      } else {
+        const keywords = value.split(',');
+        // 分割前后没有变化，说明格式不符合
+        if (value.includes(',') && keywords[0] === value) {
+          callback(new Error("论文关键词之间请用英文逗号','分隔"));
+        }
+        // 不为空串，且不为全是空格的串
+        const notEmptyKeywords = keywords.filter(
+          (keyword) => keyword !== '' && !/^[ ]+$/.test(keyword)
+        );
+        if (keywords.length !== notEmptyKeywords.length) {
+          callback(new Error('不能有为空的关键词'));
+        }
+        callback();
+      }
+    };
+
     return {
       // 把数组转换成字符串进行绑定
       paperForm: {
         ...this.paper,
         authors: this.paper.authors.toString(),
-        keywords: this.paper.keywords.toString()
+        keywords: this.paper.keywords.toString(),
+        publicationYear: this.paper.publicationYear.toString()
       } as PaperFrom,
       paperRules: {
         title: { required: true, message: '请输入论文标题', trigger: 'blur' },
@@ -209,8 +224,10 @@ export default Vue.extend({
         const updateData = {
           ...this.paperForm,
           authors: this.paperForm.authors.split(','),
-          keywords: this.paperForm.keywords.split(',')
+          keywords: this.paperForm.keywords.split(','),
+          publicationYear: Number(this.paperForm.publicationYear)
         };
+        console.log(updateData);
         const updateRes = await updatePaperInfo(updateData);
         if (updateRes.code === 200) {
           this.$message.success('修改成功');
