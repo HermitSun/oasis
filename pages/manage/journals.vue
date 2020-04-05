@@ -108,6 +108,14 @@ export default Vue.extend({
       isLoading: false // 是否正在加载
     };
   },
+  created() {
+    // 类似于断点续传，注入page和name，提高URL可读性
+    if (this.$route.query.page && this.$route.query.name) {
+      this.journalName = this.$route.query.name as string;
+      this.page = Number(this.$route.query.page);
+      this.doSearch(this.journalName, Number(this.$route.query.page), false);
+    }
+  },
   methods: {
     // 打开对话框
     openUpdateDialog(srcName: string) {
@@ -144,10 +152,10 @@ export default Vue.extend({
       }
     },
     // 进行搜索
-    async doSearch(name: string) {
+    async doSearch(name: string, page: number = 1, resetPage: boolean = true) {
       if (name) {
         this.isLoading = true;
-        const journalsRes = await getJournalInfo(1, name);
+        const journalsRes = await this.getJournalInfo(page, name);
         const journalsData =
           journalsRes && journalsRes.data
             ? journalsRes.data
@@ -156,7 +164,10 @@ export default Vue.extend({
         // 设置页数
         this.resultCount = journalsData.size;
         // 重置页码
-        this.page = 1;
+        // 但搜索不一定要重置页码
+        if (resetPage) {
+          this.page = 1;
+        }
         this.isLoading = false;
       } else {
         this.$message.warning('请输入搜索内容');
@@ -166,7 +177,7 @@ export default Vue.extend({
     async showNextPage(page: number) {
       this.isLoading = true;
       // 重新请求数据
-      const journalsRes = await getJournalInfo(page, this.journalName);
+      const journalsRes = await this.getJournalInfo(page, this.journalName);
       const journalsData =
         journalsRes && journalsRes.data
           ? journalsRes.data
@@ -183,6 +194,17 @@ export default Vue.extend({
         }
       });
       window.open(url.href, '_blank');
+    },
+    // 类似于decorator，附加一个路由跳转的功能
+    getJournalInfo(page: number, name: string) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          name: this.journalName,
+          page: page.toString()
+        }
+      });
+      return getJournalInfo(page, name);
     },
     // 清理工作
     clearUpdate() {
