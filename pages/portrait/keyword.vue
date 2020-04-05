@@ -15,14 +15,24 @@
       </div>
       <div class="portrait-module">
         <PapersSubtitle title="📝 All Papers" />
-        <div
-          v-for="paper in papers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-          <PaperInfoComp :paper="paper" />
+        <div id="papers">
+          <div
+            v-for="paper in papers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <PaperInfoComp :paper="paper" />
+          </div>
         </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="page"
+          :total="size"
+          hide-on-single-page
+          small
+          style="text-align: center; margin-bottom: 10px"
+          @current-change="showNextPage"
+        />
       </div>
     </div>
   </div>
@@ -30,6 +40,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
+
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getKeywordPapers, getKeywordPortrait } from '~/api';
 import { Message } from '~/node_modules/element-ui';
@@ -42,6 +54,9 @@ import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/utils/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
+import { isMobile } from '~/utils/breakpoint';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
     portrait: {} as PortraitResponse
@@ -77,14 +92,13 @@ export default Vue.extend({
     PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
     const keyword = query.keyword as string;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const sortKey = query.sortKey
-    // TODO const page = query.page
     const portraitRes = await requestPortrait(keyword);
     const profile = {
       name: keyword,
@@ -118,7 +132,15 @@ export default Vue.extend({
     };
   },
   data() {
-    return {} as any;
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
+  },
+  computed: {
+    pagerSize(): number {
+      return isMobile() ? 5 : 7;
+    }
   },
   mounted(): void {
     createBarChart(
@@ -131,6 +153,27 @@ export default Vue.extend({
       this.publicationTrend,
       portraitBarConfig(document.getElementById('portrait') as any)
     );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+
+      const loadingInstance = Loading.service({
+        target: document.getElementById('papers') as any,
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)'
+      });
+      await requestPapers({
+        keyword: this.keyword,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>

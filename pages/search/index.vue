@@ -82,7 +82,6 @@
               :current-page="page"
               :total="totalRecords"
               :pager-count="pagerSize"
-              background
               style="text-align: center; margin-bottom: 10px"
               @current-change="showNextPage"
             />
