@@ -5,16 +5,18 @@
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
-          <Subtitle title="🌥 Keywords" />
-          <!--<div>{{ interests }}</div>-->
-        </div>
-        <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
+          <div id="publication-bar" class="content"></div>
+        </div>
+      </div>
+      <div class="profile-module">
+        <div class="module">
+          <Subtitle title="🌥 Keywords" />
+          <div id="pie" class="chart content"></div>
         </div>
       </div>
     </div>
@@ -30,6 +32,10 @@ import { InterestResponse } from '~/interfaces/responses/interest/InterestRespon
 import Subtitle from '~/components/public/Subtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
+import { createBarChart } from '~/utils/charts/bar';
+import { createPieChart } from '~/utils/charts/pie';
+import getSizeById from '~/utils/charts/getSizeById';
+import portraitBarConfig from '~/components/portrait/barConfig';
 
 async function requestPortrait(journal: string) {
   const res: { portrait: PortraitResponse } = {
@@ -97,6 +103,39 @@ export default Vue.extend({
   },
   data() {
     return {} as any;
+  },
+  mounted(): void {
+    createPieChart(
+      '#pie',
+      this.interests
+        .map((i: { name: string; value: number }) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort(
+          (
+            a: { name: string; value: number },
+            b: { name: string; value: number }
+          ) => b.value - a.value
+        )
+        .slice(0, 20),
+      {
+        width: getSizeById('pie').width,
+        height: getSizeById('pie').height
+      }
+    );
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
   }
 });
 </script>
