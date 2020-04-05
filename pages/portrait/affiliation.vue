@@ -27,7 +27,7 @@
               <span class="prop">Citation</span>
               <span class="prop">Publication Trend</span>
             </div>
-            <div class="body">
+            <div id="authors" class="body" style="overflow: scroll">
               <div
                 v-for="(rank, index) in authorDetailRanking"
                 :key="index"
@@ -40,13 +40,15 @@
         </div>
         <div class="affiliation-main__paper portrait-module">
           <PapersSubtitle title="📝 All Papers" />
-          <div
-            v-for="paper in papers"
-            :key="paper.id"
-            style="margin-bottom: 20px"
-          >
-            <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-            <PaperInfoComp :paper="paper" />
+          <div id="papers">
+            <div
+              v-for="paper in papers"
+              :key="paper.id"
+              style="margin-bottom: 20px"
+            >
+              <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
+              <PaperInfoComp :paper="paper" />
+            </div>
           </div>
         </div>
       </div>
@@ -183,6 +185,13 @@ export default Vue.extend({
       ...(await interestsReq),
       ...(await affiliationAuthorRankingReq)
     };
+  },
+  mounted(): void {
+    if (window.innerWidth > 768) {
+      const elementAuthors = document.getElementById('authors') as any;
+      const elementPapers = document.getElementById('papers') as any;
+      elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
+    }
   }
 });
 </script>
