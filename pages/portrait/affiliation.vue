@@ -190,6 +190,9 @@ export default Vue.extend({
       ...(await affiliationAuthorRankingReq)
     };
   },
+  data() {
+    return {} as any;
+  },
   mounted(): void {
     // 本人垃圾前端
     if (getClientWidth() > 768) {

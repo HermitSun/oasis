@@ -94,6 +94,9 @@ export default Vue.extend({
       publicationTrend,
       ...(await interestsReq)
     };
+  },
+  data() {
+    return {} as any;
   }
 });
 </script>

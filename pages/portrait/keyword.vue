@@ -117,6 +117,9 @@ export default Vue.extend({
       publicationTrend,
       ...(await papersReq)
     };
+  },
+  data() {
+    return {} as any;
   }
 });
 </script>
