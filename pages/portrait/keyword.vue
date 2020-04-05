@@ -81,10 +81,9 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const keyword = 'software';
+    const keyword = query.keyword;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const authorId = query.authorId;
     // TODO const sortKey = query.sortKey
     // TODO const page = query.page
     const portraitRes = await requestPortrait(keyword);

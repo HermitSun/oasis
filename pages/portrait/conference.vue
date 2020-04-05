@@ -62,8 +62,7 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const conference = 'ACCESS';
-    // TODO const conference = query.conference;
+    const conference = query.conference;
     const portraitRes = await requestPortrait(conference);
     const profile = {
       name: conference,

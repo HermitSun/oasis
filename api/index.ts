@@ -149,8 +149,7 @@ export async function getReferenceById(
 export async function getBasicSearchFilterCondition(
   args: SearchFilterPayload
 ): Promise<BasicResponse<SearchFilterResponse>> {
-  // TODO 替换为后端真实url
-  const { data } = await axios.get('/search/basic/filter', {
+  const { data } = await axios.get('/search/basic/mongo/filter', {
     params: args
   });
   return data;

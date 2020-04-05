@@ -107,13 +107,13 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const authorId = '37278889300';
+    const authorId = query.authorId;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const authorId = query.authorId;
     // TODO const sortKey = query.sortKey
     // TODO const page = query.page
     const portraitRes = await requestPortrait(authorId);
+    console.log(portraitRes);
     const profile = {
       name: portraitRes.portrait.name,
       statistics: [

@@ -77,6 +77,7 @@ import { InterestResponse } from '~/interfaces/responses/interest/InterestRespon
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
+import { getClientWidth } from '~/utils/breakpoint';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -144,10 +145,9 @@ export default Vue.extend({
     InterestWordCloud
   },
   async asyncData({ query }) {
-    const affiliation = 'Tsinghua University';
+    const affiliation = query.affiliation;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const affiliation = query.affiliation;
     // TODO const sortKey = query.sortKey
     // TODO const page = query.page
     const portraitRes = await requestPortrait(affiliation);
@@ -187,7 +187,8 @@ export default Vue.extend({
     };
   },
   mounted(): void {
-    if (window.innerWidth > 768) {
+    // 本人垃圾前端
+    if (getClientWidth() > 768) {
       const elementAuthors = document.getElementById('authors') as any;
       const elementPapers = document.getElementById('papers') as any;
       elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';

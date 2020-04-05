@@ -37,7 +37,7 @@ app.get('/search/basic/es', (_, res) => {
   res.json(basicSearchMockData);
 });
 
-app.get('/search/basic/filter', (req, res) => {
+app.get('/search/basic/mongo/filter', (req, res) => {
   console.log(req.params);
   res.json(searchFilterMockData);
 });

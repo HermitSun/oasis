@@ -62,8 +62,7 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const journal = 'ASE';
-    // TODO const journal = query.journal;
+    const journal = query.journal;
     const portraitRes = await requestPortrait(journal);
     const profile = {
       name: journal,
