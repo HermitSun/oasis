@@ -46,7 +46,7 @@ export function createBarChart(
     fontColorInsideBar: 'white',
     fontColorOutsideBar: 'black',
     hover: {
-      mouseOverColor:'#b5d4e3'
+      mouseOverColor: '#b5d4e3'
     },
     ...options
   } as BarChartConfigWithDefault;

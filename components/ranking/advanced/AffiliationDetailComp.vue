@@ -16,8 +16,7 @@
             📉 Publication Trend
           </div>
           <div class="content">
-            <div id="publication-bar"></div>
-            <!--{{ rankingDetail.publicationTrend }}-->
+            <div id="bar"></div>
           </div>
         </div>
         <div class="info">
@@ -25,7 +24,7 @@
             📃 Keywords
           </div>
           <div class="content">
-            <!--{{ rankingDetail.keywords }}-->
+            <InterestWordCloud :interests="rankingDetail.keywords" />
           </div>
         </div>
       </div>
@@ -37,8 +36,13 @@
 import Vue from 'vue';
 import { AffiliationDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '~/api';
+import { createBarChart } from '~/utils/charts/bar';
+import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
 export default Vue.extend({
   name: 'AffiliationDetailComp',
+  components: {
+    InterestWordCloud
+  },
   props: {
     rank: {
       type: Object,
@@ -48,20 +52,17 @@ export default Vue.extend({
   data() {
     return {
       showDetail: false,
-      rankingDetail: {} as AffiliationDetailRankingResponse,
-      cachedRankingDetail: {} as AffiliationDetailRankingResponse
+      rankingDetail: {} as AffiliationDetailRankingResponse
+      // cachedRankingDetail: {} as AffiliationDetailRankingResponse
     };
   },
   methods: {
     requestShowDetail() {
       this.showDetail = !this.showDetail;
-      console.log(this.rankingDetail);
-      console.log(this.cachedRankingDetail);
-      if (Object.keys(this.cachedRankingDetail).length === 0) {
-        this.requestRankingDetail();
-      } else {
-        this.rankingDetail = this.cachedRankingDetail;
-      }
+      this.requestRankingDetail();
+      // } else {
+      //   this.rankingDetail = this.cachedRankingDetail;
+      // }
     },
     jumpToPortrait() {
       this.$router.push({
@@ -77,7 +78,13 @@ export default Vue.extend({
           this.rank.affiliationId
         );
         this.rankingDetail = rankingDetailRes.data;
-        this.cachedRankingDetail = this.rankingDetail;
+        createBarChart('#bar', this.rankingDetail.publicationTrend, {
+          width: 500,
+          height: 400,
+          barMargin: 20,
+          tooltipThreshold: 15
+        });
+        // this.cachedRankingDetail = this.rankingDetail;
       } catch (e) {
         this.$message.error(e.toString());
       }
