@@ -138,6 +138,7 @@ import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { BasicSearchPayload } from '~/interfaces/requests/search/SearchPayload';
+import { ElPaginationTotal } from '~/interfaces/ElPaginationTotal';
 
 export default Vue.extend({
   name: 'ManagePapers',
@@ -156,7 +157,7 @@ export default Vue.extend({
   data() {
     return {
       papers: [] as PaperInfo[],
-      resultCount: 0,
+      resultCount: null as ElPaginationTotal,
       page: 1, // 当前页码
       paperTitle: '', // 根据输入的论文名称进行搜索
       showUpdateDialog: false, // 是否显示修改的对话框
@@ -165,7 +166,7 @@ export default Vue.extend({
       isLoading: false
     };
   },
-  created() {
+  mounted() {
     // 类似于断点续传，注入page和name，提高URL可读性
     if (this.$route.query.page && this.$route.query.name) {
       this.paperTitle = this.$route.query.name as string;
