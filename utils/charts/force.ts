@@ -48,6 +48,7 @@ interface ForceChartOptions {
   linkColor?: string | D3CallbackFn<ForceChartLink>;
   linkOpacity?: number | D3CallbackFn<ForceChartLink>;
   linkWidth?: number | D3CallbackFn<ForceChartLink>;
+  linkLength?: number | D3CallbackFn<ForceChartLink>;
   nodeBorderColor?: string | D3CallbackFn<ForceChartNode>;
   nodeBorderWidth?: number | D3CallbackFn<ForceChartNode>;
   nodeRadius?: number | D3CallbackFn<ForceChartNode>;
@@ -85,8 +86,9 @@ export function createForceChart(
     linkOpacity: 0.6,
     linkWidth: (d: ForceChartLink) =>
       d.value ? Math.sqrt(d.value) : Math.random(),
+    linkLength: (d: ForceChartLink) => (d.value ? d.value : Math.random()),
     nodeBorderColor: '#fff',
-    nodeBorderWidth: 1.5,
+    nodeBorderWidth: 0.5,
     nodeRadius: 5,
     nodeColor: groupByColor,
     draggable: false,
@@ -137,9 +139,20 @@ export function createForceChart(
     .forceSimulation(data.nodes)
     .force(
       'link',
-      force.forceLink(data.links).id((d: any) => d.id)
+      force
+        .forceLink(data.links)
+        .id((d) => (d as ForceChartNode).id)
+        // 设置力导向图的线段长度
+        // @see [[https://github.com/xswei/d3-force/blob/master/README.md#link_distance]]
+        .distance(config.linkLength)
     )
-    .force('charge', force.forceManyBody())
+    .force(
+      'charge',
+      force
+        .forceManyBody()
+        .distanceMin(10)
+        .distanceMax(300)
+    )
     .force('center', force.forceCenter(options.width / 2, options.height / 2));
 
   const svg = d3
