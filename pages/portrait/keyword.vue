@@ -81,7 +81,7 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const keyword = query.keyword;
+    const keyword = query.keyword as string;
     const sortKey = 'recent';
     const page = 1;
     // TODO const sortKey = query.sortKey

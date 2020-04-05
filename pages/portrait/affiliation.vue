@@ -145,7 +145,7 @@ export default Vue.extend({
     InterestWordCloud
   },
   async asyncData({ query }) {
-    const affiliation = query.affiliation;
+    const affiliation = query.affiliation as string;
     const sortKey = 'recent';
     const page = 1;
     // TODO const sortKey = query.sortKey

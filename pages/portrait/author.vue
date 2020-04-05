@@ -22,7 +22,7 @@
         </div>
         <div class="module">
           <Subtitle title="🎓 Scholar Network" />
-          <div id="force" class="chart"></div>
+          <div id="force" style="height: 400px"></div>
         </div>
       </div>
     </div>
@@ -44,6 +44,7 @@ import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import {
+  getAcademicRelationByAuthorId,
   getAuthorPapersById,
   getAuthorPortraitById,
   getResearcherInterest
@@ -54,9 +55,10 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/utils/charts/pie';
-import { createForceChart } from '~/utils/charts/force';
+import { createForceChart, ForceChartData } from '~/utils/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
+import { AuthorLink, AuthorNode } from '~/pages/charts/index.vue';
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -97,6 +99,24 @@ async function requestInterests(authorId: string) {
   return res;
 }
 
+async function requestAcademicRelation(authorId: string) {
+  const res: { data: ForceChartData } = {
+    data: {
+      nodes: [],
+      links: []
+    }
+  };
+  try {
+    const academicRelationResponse = await getAcademicRelationByAuthorId(
+      authorId
+    );
+    res.data = academicRelationResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
 export default Vue.extend({
   name: 'Author',
   components: {
@@ -107,7 +127,7 @@ export default Vue.extend({
     SearchBar
   },
   async asyncData({ query }) {
-    const authorId = query.authorId;
+    const authorId = query.authorId as string;
     const sortKey = 'recent';
     const page = 1;
     // TODO const sortKey = query.sortKey
@@ -168,16 +188,38 @@ export default Vue.extend({
         }
       )
     );
-
-    const data = await import('../../pages/charts/data.json');
-    createForceChart('#force', data, {
-      width: 600,
-      height: 600,
-      // nodeColor: '#666',
-      nodeRadius: (_) => Math.random() * 10,
-      tooltip: (d) => `<p>id: ${d.id}</p>`,
-      draggable: true
-    });
+    // TODO 替换为真实数据
+    await requestAcademicRelation('37296968900').then((academicReq) =>
+      createForceChart('#force', academicReq.data, {
+        width: 500,
+        height: 500,
+        // nodeColor: '#666',
+        linkWidth: (_) => 1,
+        linkLength: (d) => {
+          const link = d as AuthorLink;
+          // 限制最大长度
+          return link.value * 30 > 200 ? 200 : link.value * 30;
+        },
+        nodeRadius: (d) => {
+          const node = d as AuthorNode;
+          // 大小 = 被引数 / 论文数
+          // ÷5是为了显示
+          const radius = node.citation / node.count / 5;
+          return radius < 2 ? 2 : radius;
+        },
+        tooltip: (d) => {
+          const node = d as AuthorNode;
+          return `
+          <div style="background-color: rgba(153, 153, 153, 0.8); border-radius: 5px">
+            <p>name: ${node.name}</p>
+            <p>citation: ${node.citation}</p>
+            <p>count: ${node.count}</p>
+          </div>
+        `;
+        },
+        draggable: true
+      })
+    );
     createBarChart('#citation-bar', this.citationTrend, {
       width: 150,
       height: 100,

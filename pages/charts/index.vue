@@ -21,13 +21,13 @@ import { createPieChart } from '~/utils/charts/pie';
 import { createBarChart } from '~/utils/charts/bar';
 import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
 
-interface AuthorNode extends ForceChartNode {
+export interface AuthorNode extends ForceChartNode {
   name: string;
   count: number;
   citation: number;
 }
 
-interface AuthorLink extends ForceChartLink {
+export interface AuthorLink extends ForceChartLink {
   value: number;
 }
 

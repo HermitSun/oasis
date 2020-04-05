@@ -158,7 +158,7 @@ export function createForceChart(
   const svg = d3
     .select(selectorOrDOM as HTMLElement)
     .append('svg')
-    .attr('viewBox', `0,0,${options.width},${options.height}`);
+    .attr('viewBox', `30,100,${options.width},${options.height}`);
 
   const link = svg
     .append('g')
