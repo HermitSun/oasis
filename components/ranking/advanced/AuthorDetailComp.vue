@@ -4,7 +4,9 @@
       <span class="name" @click="jumpToPortrait">{{ rank.authorName }}</span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
-      <span class="value">{{ rank.publicationTrend }}</span>
+      <span class="value">
+        <div :id="rank.authorName.split(' ')[0]"></div>
+      </span>
     </div>
     <div v-if="showDetail">
       <div class="divider"></div>
@@ -14,7 +16,7 @@
             📃 Keywords
           </div>
           <div class="content">
-            <!--{{ rankingDetail.keywords }}-->
+            <InterestWordCloud :interests="rankingDetail.keywords" />
           </div>
         </div>
         <div class="info">
@@ -55,10 +57,14 @@ import Vue from 'vue';
 import { getAuthorDetailRankingById } from '~/api';
 import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
+import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
+import { createBarChart } from '~/utils/charts/bar';
+
 export default Vue.extend({
   name: 'AuthorDetailComp',
   components: {
-    PaperInfoComp
+    PaperInfoComp,
+    InterestWordCloud
   },
   props: {
     rank: {
@@ -73,11 +79,17 @@ export default Vue.extend({
       cachedRankingDetail: {} as AuthorDetailRankingResponse
     };
   },
+  mounted() {
+    const selector = '#' + this.rank.authorName.split(' ')[0];
+    createBarChart(selector, this.rank.publicationTrend, {
+      width: 150,
+      height: 80,
+      tooltipThreshold: 15
+    });
+  },
   methods: {
     requestShowDetail() {
       this.showDetail = !this.showDetail;
-      console.log(this.rankingDetail);
-      console.log(this.cachedRankingDetail);
       if (Object.keys(this.cachedRankingDetail).length === 0) {
         this.requestRankingDetail();
       } else {
@@ -99,6 +111,7 @@ export default Vue.extend({
         );
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
+        console.log(this.rankingDetail.keywords);
       } catch (e) {
         this.$message.error(e.toString());
       }
