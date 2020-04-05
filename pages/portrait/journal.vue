@@ -5,7 +5,7 @@
       <div class="profile-module">
         <PortraitProfileComp :profile="profile" />
         <div class="module">
-          <Subtitle title="🌥 Keywords WordCloud" />
+          <Subtitle title="🌥 Keywords" />
           <!--<div>{{ interests }}</div>-->
         </div>
         <div class="module">

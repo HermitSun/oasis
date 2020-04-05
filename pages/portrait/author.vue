@@ -4,7 +4,7 @@
     <div class="portrait">
       <div class="profile-module">
         <div class="module">
-          <PortraitProfileComp :profile="profile" />
+          <PortraitProfileComp id="portrait" :profile="profile" />
         </div>
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
@@ -17,7 +17,7 @@
       </div>
       <div class="profile-module">
         <div class="module" style="margin-right: 10px">
-          <Subtitle title="🌥 Keywords WordCloud" />
+          <Subtitle title="🌥 Keywords" />
           <div id="pie" class="chart content"></div>
         </div>
         <div class="module">
@@ -59,6 +59,7 @@ import { createForceChart, ForceChartData } from '~/utils/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
 import { AuthorLink, AuthorNode } from '~/pages/charts/index.vue';
+import portraitBarConfig from '~/components/portrait/barConfig';
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -190,8 +191,8 @@ export default Vue.extend({
         )
         .slice(0, 20),
       {
-        width: getSizeById('pie').width,
-        height: getSizeById('pie').height
+        width: getSizeById('pie').width - 20,
+        height: getSizeById('pie').height - 20
       }
     );
     createForceChart('#force', this.academicRelation, {
@@ -224,16 +225,16 @@ export default Vue.extend({
       draggable: true
     });
 
-    createBarChart('#citation-bar', this.citationTrend, {
-      width: 300,
-      height: 300,
-      tooltipThreshold: 15
-    });
-    createBarChart('#publication-bar', this.publicationTrend, {
-      width: 300,
-      height: 300,
-      tooltipThreshold: 15
-    });
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
   }
 });
 </script>

@@ -3,18 +3,20 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
-        <div class="module">
-          <Subtitle title="🌥 Keywords WordCloud" />
-          <InterestWordCloud :interests="interests" />
-        </div>
+        <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
+          <div id="publication-bar" class="content"></div>
+        </div>
+      </div>
+      <div class="profile-module">
+        <div class="module">
+          <Subtitle title="🌥 Keywords" />
+          <div id="pie" class="chart content"></div>
         </div>
       </div>
       <div class="affiliation-main">
@@ -76,8 +78,11 @@ import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affilia
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
 import { getClientWidth } from '~/utils/breakpoint';
+import { createPieChart } from '~/utils/charts/pie';
+import getSizeById from '~/utils/charts/getSizeById';
+import { createBarChart } from '~/utils/charts/bar';
+import portraitBarConfig from '~/components/portrait/barConfig';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -141,8 +146,7 @@ export default Vue.extend({
     PaperInfoComp,
     PortraitProfileComp,
     SearchBar,
-    AuthorDetailComp,
-    InterestWordCloud
+    AuthorDetailComp
   },
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
@@ -193,6 +197,37 @@ export default Vue.extend({
       const elementPapers = document.getElementById('papers') as any;
       elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
     }
+    createPieChart(
+      '#pie',
+      this.interests
+        .map((i: { name: string; value: number }) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort(
+          (
+            a: { name: string; value: number },
+            b: { name: string; value: number }
+          ) => b.value - a.value
+        )
+        .slice(0, 20),
+      {
+        width: getSizeById('pie').width,
+        height: getSizeById('pie').height
+      }
+    );
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
   }
 });
 </script>
