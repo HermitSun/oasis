@@ -40,7 +40,6 @@ export default Vue.extend({
       wordcloudColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef']
     };
   },
-
   methods: {
     wordClickHandler(name: string) {
       this.$router.push({
