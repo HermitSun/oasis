@@ -16,7 +16,7 @@
             📉 Publication Trend
           </div>
           <div class="content">
-            <div id="bar"></div>
+            <div :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"></div>
           </div>
         </div>
         <div class="info">
@@ -24,7 +24,10 @@
             📃 Keywords
           </div>
           <div class="content">
-            <InterestWordCloud :interests="rankingDetail.keywords" />
+            <InterestWordCloud
+              v-if="showWordCloud"
+              :interests="rankingDetail.keywords"
+            />
           </div>
         </div>
       </div>
@@ -52,6 +55,7 @@ export default Vue.extend({
   data() {
     return {
       showDetail: false,
+      showWordCloud: false,
       rankingDetail: {} as AffiliationDetailRankingResponse
       // cachedRankingDetail: {} as AffiliationDetailRankingResponse
     };
@@ -78,7 +82,10 @@ export default Vue.extend({
           this.rank.affiliationId
         );
         this.rankingDetail = rankingDetailRes.data;
-        createBarChart('#bar', this.rankingDetail.publicationTrend, {
+        this.showWordCloud = true;
+        const selector =
+          '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
+        createBarChart(selector, this.rankingDetail.publicationTrend, {
           width: 500,
           height: 400,
           barMargin: 20,

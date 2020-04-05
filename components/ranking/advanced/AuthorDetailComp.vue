@@ -5,7 +5,7 @@
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">
-        <div :id="rank.authorName.split(' ')[0]"></div>
+        <div :id="rank.authorName.replace(/[^a-zA-Z]/g, '')"></div>
       </span>
     </div>
     <div v-if="showDetail">
@@ -16,7 +16,10 @@
             📃 Keywords
           </div>
           <div class="content">
-            <InterestWordCloud :interests="rankingDetail.keywords" />
+            <InterestWordCloud
+              v-if="showWordCloud"
+              :interests="rankingDetail.keywords"
+            />
           </div>
         </div>
         <div class="info">
@@ -75,12 +78,13 @@ export default Vue.extend({
   data() {
     return {
       showDetail: false,
+      showWordCloud: false,
       rankingDetail: {} as AuthorDetailRankingResponse,
       cachedRankingDetail: {} as AuthorDetailRankingResponse
     };
   },
   mounted() {
-    const selector = '#' + this.rank.authorName.split(' ')[0];
+    const selector = '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '');
     createBarChart(selector, this.rank.publicationTrend, {
       width: 150,
       height: 80,
@@ -111,7 +115,7 @@ export default Vue.extend({
         );
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
-        console.log(this.rankingDetail.keywords);
+        this.showWordCloud = true;
       } catch (e) {
         this.$message.error(e.toString());
       }
