@@ -53,11 +53,11 @@
           </span>
         </div>
       </span>
-      <!--引用信息-->
-      <span class="detail-hint">
-        show more
-        <!--TODO 修改为引用情况-->
-      </span>
+      <!--&lt;!&ndash;引用信息&ndash;&gt;-->
+      <!--<span class="detail-hint">-->
+      <!--show more-->
+      <!--&lt;!&ndash;TODO 修改为引用情况&ndash;&gt;-->
+      <!--</span>-->
     </div>
   </div>
 </template>
