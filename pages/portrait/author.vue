@@ -27,17 +27,36 @@
       </div>
     </div>
     <div class="portrait-module">
-      <PapersSubtitle title="📝 All Papers" />
-      <div v-for="paper in papers" :key="paper.id" style="margin-bottom: 20px">
-        <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-        <PaperInfoComp :paper="paper" />
+      <PapersSubtitle
+        title="📝 All Papers"
+        :sort-key="sortKey"
+        @changeSortKey="changeSortKey"
+      />
+      <div id="papers">
+        <div
+          v-for="paper in papers"
+          :key="paper.id"
+          style="margin-bottom: 20px"
+        >
+          <PaperInfoComp :paper="paper" />
+        </div>
       </div>
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="size"
+        hide-on-single-page
+        small
+        style="text-align: center; margin-bottom: 10px"
+        @current-change="showNextPage"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
 import SearchBar from '~/components/search/SearchBar.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
@@ -60,6 +79,8 @@ import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
 import { AuthorLink, AuthorNode } from '~/pages/charts/index.vue';
 import portraitBarConfig from '~/components/portrait/barConfig';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -125,7 +146,8 @@ export default Vue.extend({
     PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
     const authorId = query.authorId as string;
@@ -235,6 +257,38 @@ export default Vue.extend({
       this.publicationTrend,
       portraitBarConfig(document.getElementById('portrait') as any)
     );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        authorId: this.authorId,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        authorId: this.authorId,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>
