@@ -193,7 +193,10 @@ export default Vue.extend({
     };
   },
   data() {
-    return {} as any;
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
   },
   mounted() {
     createPieChart(

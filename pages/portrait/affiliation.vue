@@ -41,7 +41,11 @@
           </div>
         </div>
         <div class="affiliation-main__paper portrait-module">
-          <PapersSubtitle title="📝 All Papers" />
+          <PapersSubtitle
+            title="📝 All Papers"
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
           <div id="papers">
             <div
               v-for="paper in papers"
@@ -52,6 +56,15 @@
               <PaperInfoComp :paper="paper" />
             </div>
           </div>
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="size"
+            hide-on-single-page
+            small
+            style="text-align: center; margin-bottom: 10px"
+            @current-change="showNextPage"
+          />
         </div>
       </div>
     </div>
@@ -60,6 +73,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
@@ -83,6 +97,8 @@ import { createPieChart } from '~/utils/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -146,14 +162,13 @@ export default Vue.extend({
     PaperInfoComp,
     PortraitProfileComp,
     SearchBar,
-    AuthorDetailComp
+    AuthorDetailComp,
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const sortKey = query.sortKey
-    // TODO const page = query.page
     const portraitRes = await requestPortrait(affiliation);
     const profile = {
       name: affiliation,
@@ -191,7 +206,10 @@ export default Vue.extend({
     };
   },
   data() {
-    return {} as any;
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
   },
   mounted(): void {
     // 本人垃圾前端
@@ -231,6 +249,38 @@ export default Vue.extend({
       this.publicationTrend,
       portraitBarConfig(document.getElementById('portrait') as any)
     );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        affiliation: this.affiliation,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        affiliation: this.affiliation,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>
