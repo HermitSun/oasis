@@ -71,17 +71,34 @@
     );
     border-radius: 20px;
     padding: 25px;
-
     line-height: 40px;
-    .prop {
-      font-size: @middle-font;
-      color: @font-gray-dark;
+    .wrapper{
+      @media @min-mobile-width{
+        .flex-left-left-row;
+        .prop{
+          width: 30%;
+        }
+        .number{
+          width: 70%;
+          text-align: right;
+
+        }
+
+      }
+      @media @max-mobile-width{
+        .flex-left-left-column;
+      }
+      .prop {
+        font-size: @middle-font;
+        color: @font-gray-dark;
+      }
+      .number {
+        font-size: @large-font;
+        color: whitesmoke;
+        font-weight: lighter;
+      }
     }
-    .number {
-      font-size: @large-font;
-      color: whitesmoke;
-      font-weight: lighter;
-    }
+
   }
 }
 .portrait-paper {
