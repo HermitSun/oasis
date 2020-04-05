@@ -113,6 +113,7 @@ import { getAuthorInfo, mergeAuthorInfo } from '~/api';
 import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AuthorInfo } from '~/interfaces/responses/manage/AuthorInfoResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import { ElPaginationTotal } from '~/interfaces/ElPaginationTotal';
 
 export default Vue.extend({
   name: 'ManageAuthors',
@@ -130,7 +131,7 @@ export default Vue.extend({
   data() {
     return {
       authors: [] as AuthorInfo[],
-      resultCount: 0,
+      resultCount: null as ElPaginationTotal,
       page: 1, // 当前页码
       // 待合并的学者
       // 此处需要特别注意的是，需要能够跨页记录
@@ -142,7 +143,7 @@ export default Vue.extend({
       isLoading: false
     };
   },
-  created() {
+  mounted() {
     // 类似于断点续传，注入page和name，提高URL可读性
     if (this.$route.query.page && this.$route.query.name) {
       this.authorName = this.$route.query.name as string;
