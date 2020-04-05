@@ -6,6 +6,8 @@ const globalConfig = {
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top/api'
       : 'http://35.234.47.23:8081',
+  // : 'http://35.221.128.241:8081',
+
   // : 'http://localhost:3000/test',
   // : 'http://47.101.33.219:8081',
 

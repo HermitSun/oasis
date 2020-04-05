@@ -5,7 +5,9 @@
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">
-        <div :id="rank.authorName.replace(/[^a-zA-Z]/g, '')"></div>
+        <div
+          :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + rank.authorId"
+        ></div>
       </span>
     </div>
     <div v-if="showDetail">
@@ -84,7 +86,8 @@ export default Vue.extend({
     };
   },
   mounted() {
-    const selector = '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '');
+    const selector =
+      '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
     createBarChart(selector, this.rank.publicationTrend, {
       width: 150,
       height: 80,
