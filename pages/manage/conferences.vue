@@ -108,6 +108,15 @@ export default Vue.extend({
       isLoading: false
     };
   },
+  created() {
+    // 类似于断点续传，注入page和name，提高URL可读性
+    if (this.$route.query.page && this.$route.query.name) {
+      this.conferenceName = this.$route.query.name as string;
+      this.page = Number(this.$route.query.page);
+      this.doSearch(this.conferenceName, Number(this.$route.query.page), false);
+      console.log(this.page);
+    }
+  },
   methods: {
     // 打开对话框
     openUpdateDialog(srcName: string) {
@@ -144,10 +153,10 @@ export default Vue.extend({
       }
     },
     // 进行搜索
-    async doSearch(name: string) {
+    async doSearch(name: string, page: number = 1, resetPage: boolean = true) {
       if (name) {
         this.isLoading = true;
-        const conferencesRes = await getConferenceInfo(1, name);
+        const conferencesRes = await this.getConferenceInfo(page, name);
         // 增加默认值，相当于静默失败，避免500
         const conferencesData =
           conferencesRes && conferencesRes.data
@@ -157,7 +166,10 @@ export default Vue.extend({
         // 设置页数
         this.resultCount = conferencesData.size;
         // 重置页码
-        this.page = 1;
+        // 但搜索不一定要重置页码
+        if (resetPage) {
+          this.page = 1;
+        }
         this.isLoading = false;
       } else {
         this.$message.warning('请输入搜索内容');
@@ -167,7 +179,10 @@ export default Vue.extend({
     async showNextPage(page: number) {
       this.isLoading = true;
       // 重新请求数据
-      const conferencesRes = await getConferenceInfo(page, this.conferenceName);
+      const conferencesRes = await this.getConferenceInfo(
+        page,
+        this.conferenceName
+      );
       // 增加默认值，相当于静默失败，避免500
       // 总页数不变
       const conferencesData =
@@ -186,6 +201,17 @@ export default Vue.extend({
         }
       });
       window.open(url.href, '_blank');
+    },
+    // 类似于decorator，附加一个路由跳转的功能
+    getConferenceInfo(page: number, name: string) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          name: this.conferenceName,
+          page: page.toString()
+        }
+      });
+      return getConferenceInfo(page, name);
     },
     // 清理工作
     clearUpdate() {

@@ -137,6 +137,7 @@ import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
 import { basicSearch } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import { BasicSearchPayload } from '~/interfaces/requests/search/SearchPayload';
 
 export default Vue.extend({
   name: 'ManagePapers',
@@ -164,6 +165,14 @@ export default Vue.extend({
       isLoading: false
     };
   },
+  created() {
+    // 类似于断点续传，注入page和name，提高URL可读性
+    if (this.$route.query.page && this.$route.query.name) {
+      this.paperTitle = this.$route.query.name as string;
+      this.page = Number(this.$route.query.page);
+      this.doSearch(this.paperTitle, Number(this.$route.query.page), false);
+    }
+  },
   methods: {
     // 对论文类型进行更语义化的转换
     getPaperContentType(type: contentType) {
@@ -183,12 +192,12 @@ export default Vue.extend({
       this.$set(this.papers, updatedIndex, updatedPaper);
     },
     // 进行搜索
-    async doSearch(title: string) {
+    async doSearch(title: string, page: number = 1, resetPage: boolean = true) {
       if (title) {
         this.isLoading = true;
-        const papersRes = await basicSearch({
+        const papersRes = await this.basicSearch({
           keyword: title,
-          page: 1,
+          page,
           sortKey: 'related'
         });
         // 增加默认值，相当于静默失败，避免500
@@ -198,7 +207,10 @@ export default Vue.extend({
         this.papers = papersData.papers;
         this.resultCount = papersData.size;
         // 重置页码
-        this.page = 1;
+        // 但搜索不一定要重置页码
+        if (resetPage) {
+          this.page = 1;
+        }
         this.isLoading = false;
       } else {
         this.$message.warning('请输入搜索内容');
@@ -208,7 +220,7 @@ export default Vue.extend({
     async showNextPage(page: number) {
       this.isLoading = true;
       // 重新请求数据
-      const papersRes = await basicSearch({
+      const papersRes = await this.basicSearch({
         keyword: this.paperTitle,
         page,
         sortKey: 'related'
@@ -222,6 +234,17 @@ export default Vue.extend({
     },
     linkToPaper(link: string) {
       window.open(link, '_blank');
+    },
+    // 类似于decorator，附加一个路由跳转的功能
+    basicSearch(payload: BasicSearchPayload) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          name: this.paperTitle,
+          page: payload.page.toString()
+        }
+      });
+      return basicSearch(payload);
     }
   }
 });
