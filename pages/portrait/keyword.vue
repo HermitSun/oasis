@@ -3,17 +3,14 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
+        <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
-        </div>
-        <div class="module">
-          <Subtitle title="学者关系图" />
+          <div id="publication-bar" class="content"></div>
         </div>
       </div>
       <div class="portrait-module">
@@ -43,6 +40,8 @@ import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
+import { createBarChart } from '~/utils/charts/bar';
+import portraitBarConfig from '~/components/portrait/barConfig';
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
     portrait: {} as PortraitResponse
@@ -120,6 +119,18 @@ export default Vue.extend({
   },
   data() {
     return {} as any;
+  },
+  mounted(): void {
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(document.getElementById('portrait') as any)
+    );
   }
 });
 </script>

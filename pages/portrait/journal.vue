@@ -3,7 +3,7 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
+        <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
           <Subtitle title="🌥 Keywords" />
           <!--<div>{{ interests }}</div>-->
