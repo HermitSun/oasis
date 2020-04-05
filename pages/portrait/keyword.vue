@@ -14,7 +14,11 @@
         </div>
       </div>
       <div class="portrait-module">
-        <PapersSubtitle title="📝 All Papers" />
+        <PapersSubtitle
+          title="📝 All Papers"
+          :sort-key="sortKey"
+          @changeSortKey="changeSortKey"
+        />
         <div id="papers">
           <div
             v-for="paper in papers"
@@ -56,6 +60,7 @@ import { createBarChart } from '~/utils/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { isMobile } from '~/utils/breakpoint';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -157,14 +162,25 @@ export default Vue.extend({
   methods: {
     async showNextPage() {
       this.page = this.page + 1;
-
-      const loadingInstance = Loading.service({
-        target: document.getElementById('papers') as any,
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)'
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        keyword: this.keyword,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
       });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
       await requestPapers({
         keyword: this.keyword,
         page: this.page,
