@@ -55,7 +55,9 @@ export function createBarChart(
     .select(selectorOrDOM as string)
     .append('svg')
     .attr('width', config.width)
-    .attr('height', config.height);
+    .attr('height', config.height)
+    .attr('viewBox', `0,0,${config.width},${config.height}`)
+    .attr('preserveAspectRatio','xMinYMin');
 
   svg
     .selectAll('rect')

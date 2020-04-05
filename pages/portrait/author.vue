@@ -100,8 +100,8 @@ async function requestInterests(authorId: string) {
 }
 
 async function requestAcademicRelation(authorId: string) {
-  const res: { data: ForceChartData } = {
-    data: {
+  const res: { academicRelation: ForceChartData } = {
+    academicRelation: {
       nodes: [],
       links: []
     }
@@ -110,7 +110,7 @@ async function requestAcademicRelation(authorId: string) {
     const academicRelationResponse = await getAcademicRelationByAuthorId(
       authorId
     );
-    res.data = academicRelationResponse.data;
+    res.academicRelation = academicRelationResponse.data;
   } catch (e) {
     Message.error(e.toString());
   }
@@ -156,6 +156,8 @@ export default Vue.extend({
 
     const papersReq = requestPapers({ authorId, page, sortKey });
     const interestsReq = requestInterests(authorId);
+    // TODO 替换为真实数据
+    const academiaRelationReq = requestAcademicRelation('37296968900');
     return {
       ...query,
       authorId,
@@ -163,80 +165,74 @@ export default Vue.extend({
       citationTrend,
       publicationTrend,
       ...(await papersReq),
-      ...(await interestsReq)
+      ...(await interestsReq),
+      ...(await academiaRelationReq)
     };
   },
   data() {
     return {} as any;
   },
-  async mounted() {
-    await requestInterests(this.authorId).then((interestsReq) =>
-      createPieChart(
-        '#pie',
-        interestsReq.interests
-          .map((i) => {
-            return {
-              label: i.name,
-              value: i.value
-            };
-          })
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 20),
-        {
-          width: getSizeById('pie').width,
-          height: getSizeById('pie').height
-        }
-      )
+  mounted() {
+    createPieChart(
+      '#pie',
+      this.interests
+        .map((i: { name: string; value: number }) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort(
+          (
+            a: { name: string; value: number },
+            b: { name: string; value: number }
+          ) => b.value - a.value
+        )
+        .slice(0, 20),
+      {
+        width: getSizeById('pie').width,
+        height: getSizeById('pie').height
+      }
     );
-    // TODO 替换为真实数据
-    await requestAcademicRelation('37296968900').then((academicReq) =>
-      createForceChart('#force', academicReq.data, {
-        width: 500,
-        height: 500,
-        // nodeColor: '#666',
-        linkWidth: (_) => 1,
-        linkLength: (d) => {
-          const link = d as AuthorLink;
-          // 限制最大长度
-          return link.value * 30 > 200 ? 200 : link.value * 30;
-        },
-        nodeRadius: (d) => {
-          const node = d as AuthorNode;
-          // 大小 = 被引数 / 论文数
-          // ÷5是为了显示
-          const radius = node.citation / node.count / 5;
-          return radius < 2 ? 2 : radius;
-        },
-        tooltip: (d) => {
-          const node = d as AuthorNode;
-          return `
+    createForceChart('#force', this.academicRelation, {
+      width: 500,
+      height: 500,
+      // nodeColor: '#666',
+      linkWidth: (_) => 1,
+      linkLength: (d) => {
+        const link = d as AuthorLink;
+        // 限制最大长度
+        return link.value * 30 > 200 ? 200 : link.value * 30;
+      },
+      nodeRadius: (d) => {
+        const node = d as AuthorNode;
+        // 大小 = 被引数 / 论文数
+        // ÷5是为了显示
+        const radius = node.citation / node.count / 5;
+        return radius < 2 ? 2 : radius;
+      },
+      tooltip: (d) => {
+        const node = d as AuthorNode;
+        return `
           <div style="background-color: rgba(153, 153, 153, 0.8); border-radius: 5px">
             <p>name: ${node.name}</p>
             <p>citation: ${node.citation}</p>
             <p>count: ${node.count}</p>
           </div>
         `;
-        },
-        draggable: true
-      })
-    );
+      },
+      draggable: true
+    });
+
     createBarChart('#citation-bar', this.citationTrend, {
-      width: 150,
-      height: 100,
-      barColor: 'black',
-      tooltipThreshold: 15,
-      hover: {
-        mouseOverColor: (_) => 'rgb(100, 0, 0)'
-      }
+      width: 300,
+      height: 300,
+      tooltipThreshold: 15
     });
     createBarChart('#publication-bar', this.publicationTrend, {
-      width: 150,
-      height: 100,
-      barColor: 'black',
-      tooltipThreshold: 15,
-      hover: {
-        mouseOverColor: (_) => 'rgb(100, 0, 0)'
-      }
+      width: 300,
+      height: 300,
+      tooltipThreshold: 15
     });
   }
 });
