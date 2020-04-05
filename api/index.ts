@@ -53,7 +53,7 @@ export async function basicSearch(
 export async function advancedSearch(
   args: AdvancedSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/advanced/mongo', {
+  const { data } = await axios.get('/search/advanced/es', {
     params: args
   });
   return data;
