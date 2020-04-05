@@ -139,7 +139,9 @@ export default Vue.extend({
             keyword: this.keyword, // 研究关键字
             startYear: this.startYear, // 开始日期
             endYear: this.endYear, // 结束日期
-            page: defaultPage
+            page: defaultPage,
+            // 需要增加sortKey
+            sortKey: 'related'
           }
         });
       }

@@ -1,4 +1,3 @@
-import globalAxios from 'axios';
 import axios from './config';
 import {
   AdvancedSearchPayload,
@@ -9,7 +8,6 @@ import {
   SearchFullResponse,
   SearchReference
 } from '@/interfaces/responses/search/SearchResponse';
-// import { get } from '@/plugins/request';
 import { BasicRankingResponse } from '@/interfaces/responses/ranking/basic/BasicRankingResponse';
 import {
   RankingAdvancedPayload,
@@ -55,7 +53,7 @@ export async function basicSearch(
 export async function advancedSearch(
   args: AdvancedSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/advanced/mongo', {
+  const { data } = await axios.get('/search/advanced/es', {
     params: args
   });
   return data;
