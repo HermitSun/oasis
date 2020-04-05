@@ -16,6 +16,7 @@
             📉 Publication Trend
           </div>
           <div class="content">
+            <div id="publication-bar"></div>
             <!--{{ rankingDetail.publicationTrend }}-->
           </div>
         </div>

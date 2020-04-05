@@ -8,18 +8,6 @@
 
 import * as d3 from 'd3-selection';
 
-export default class Bar {
-  private chart: any;
-
-  constructor(selector: string) {
-    this.chart = d3.select(selector);
-  }
-
-  addColor() {
-    this.chart.style('color', 'red');
-  }
-}
-
 type D3CallbackFn<T> = (data: T, index?: number) => string | number;
 type BarChartDatum = number;
 interface BarChartConfig {
@@ -48,7 +36,8 @@ export function createBarChart(
 ) {
   // 默认值
   const config = {
-    barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
+    // barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
+    barColor: '#275b75',
     barMargin: 1,
     pixelUnit: 4,
     tooltipThreshold: 10,
@@ -56,6 +45,9 @@ export function createBarChart(
     fontSize: '11px',
     fontColorInsideBar: 'white',
     fontColorOutsideBar: 'black',
+    hover: {
+      mouseOverColor:'#b5d4e3'
+    },
     ...options
   } as BarChartConfigWithDefault;
 
