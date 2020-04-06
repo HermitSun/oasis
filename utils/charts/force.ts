@@ -69,12 +69,20 @@ type ForceChartOptionsWithDefault = Required<
     >;
   }
 >;
+interface ForceChartUtils {
+  clear(): void; // 对图表的DOM元素进行清理
+}
+// 给tooltip挂载一个清理方法
+export interface ForceChartTooltipElement
+  extends HTMLDivElement,
+    ForceChartUtils {}
 
+// 使用结束后，记得手动清理DOM元素
 export function createForceChart(
   selectorOrDOM: string | HTMLElement,
   data: ForceChartData,
   options: ForceChartOptions
-) {
+): ForceChartUtils {
   // 默认颜色
   const scale = scaleOrdinal(schemeCategory10);
   const groupByColor = (d: ForceChartNode) =>
@@ -129,7 +137,14 @@ export function createForceChart(
     .select('body')
     .append('div')
     .attr('class', 'tooltip')
+    .attr('id', 'force-chart-tooltip')
     .style('opacity', 0);
+  // 给tooltip挂载一个清理方法
+  const tooltipElement = tooltip.node() as ForceChartTooltipElement;
+  const tooltipClearFn = () => {
+    tooltip.remove();
+  };
+  tooltipElement.clear = tooltipClearFn;
 
   // 力导向图的配置
   // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
@@ -218,4 +233,13 @@ export function createForceChart(
 
     node.attr('cx', (d) => d.x as number).attr('cy', (d) => d.y as number);
   });
+
+  // 所有清理方法的汇总
+  // 主要是避免分散在上面难以维护
+  const allClearFn = () => {
+    tooltipClearFn();
+  };
+  return {
+    clear: allClearFn
+  };
 }
