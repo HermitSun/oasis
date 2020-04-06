@@ -26,6 +26,7 @@
 import Vue from 'vue';
 import { Select, Option } from '~/node_modules/element-ui';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import sortKeyOptions from '~/components/search/sortKeyOptions';
 export default Vue.extend({
   name: 'PapersSubtitle',
   components: {
@@ -45,24 +46,7 @@ export default Vue.extend({
   data() {
     return {
       newSortKey: this.sortKey as sortKey,
-      options: [
-        {
-          value: 'recent',
-          label: 'recent'
-        },
-        {
-          value: 'early',
-          label: 'early'
-        },
-        {
-          value: 'citation',
-          label: 'citation'
-        },
-        {
-          value: 'related',
-          label: 'related'
-        }
-      ]
+      options: sortKeyOptions
     };
   },
   methods: {

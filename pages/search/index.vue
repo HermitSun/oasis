@@ -57,6 +57,19 @@
               <!--</span>-->
               <span style="float: right" class="searchPage-content__sub-hint">
                 Sort By
+                <el-select
+                  v-model="sortKey"
+                  size="mini"
+                  style="margin-bottom: 5px"
+                  @change="changeSortKey"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
               </span>
             </div>
           </template>
@@ -129,7 +142,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination } from 'element-ui';
+import { Pagination, Select, Option } from 'element-ui';
 import { basicSearch, advancedSearch } from '~/api';
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
@@ -140,6 +153,7 @@ import {
 } from '~/interfaces/pages/search/SearchPageComp';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
+import sortKeyOptions from '~/components/search/sortKeyOptions';
 
 const defaultSortKey = 'related';
 
@@ -148,7 +162,9 @@ export default Vue.extend({
   components: {
     SearchBar,
     SearchResComp,
-    [Pagination.name]: Pagination
+    [Pagination.name]: Pagination,
+    [Select.name]: Select,
+    [Option.name]: Option
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -177,7 +193,8 @@ export default Vue.extend({
   data() {
     return {
       showAdvancedSearch: false,
-      isLoading: false // 是否正在加载
+      isLoading: false, // 是否正在加载
+      options: sortKeyOptions
     } as SearchPageComp;
   },
   computed: {
@@ -331,6 +348,38 @@ export default Vue.extend({
           sortKey: defaultSortKey as sortKey
         }
       });
+    },
+
+    // 切换sortKey
+    changeSortKey(sortKey: sortKey) {
+      if (this.mode === 'basic') {
+        this.$router.push({
+          path: '/search',
+          query: {
+            mode: 'basic',
+            keyword: this.keyword,
+            startYear: String(this.startYear), // 开始日期
+            endYear: String(this.endYear), // 结束日期
+            page: '1',
+            sortKey
+          }
+        });
+      } else if (this.mode === 'advanced') {
+        this.$router.push({
+          path: '/search',
+          query: {
+            mode: 'advanced',
+            author: this.author,
+            affiliation: this.affiliation, // 机构
+            publicationName: this.publicationName, // 会议|期刊
+            keyword: this.keyword, // 研究关键字
+            startYear: String(this.startYear), // 开始日期
+            endYear: String(this.endYear), // 结束日期
+            page: '1',
+            sortKey
+          }
+        });
+      }
     }
   }
 });

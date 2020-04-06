@@ -20,6 +20,7 @@ interface SearchLocalData {
   searchContent: string;
   showAdvancedSearch: boolean;
   isLoading: boolean; // 是否正在加载
+  options: []; // sortKey Options
 }
 
 export type SearchPageComp = AsyncSearchData &
