@@ -346,8 +346,6 @@ export default Vue.extend({
         this.requestBasicSearch({
           keyword: this.searchContent,
           page: this.page,
-          startYear: Number(this.startYear),
-          endYear: Number(this.endYear),
           sortKey: this.sortKey
         });
       } else if (this.mode === 'advanced') {
