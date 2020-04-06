@@ -318,7 +318,7 @@ export default Vue.extend({
         this.sortKey = query.sortKey;
         // 然后进行搜索
         this.doSearch();
-        await requestBasicSearchFilterCondition(this.keyword).then(
+        await requestBasicSearchFilterCondition(this.keyword as string).then(
           (res) => (this.filters = res.filters)
         );
       }
@@ -357,9 +357,7 @@ export default Vue.extend({
         });
       }
     },
-    doTimeChangedSearch() {
-      this.showNextPage(1);
-    },
+
     // 基础搜索
     async requestBasicSearch(args: BasicSearchPayload) {
       this.isLoading = true;
