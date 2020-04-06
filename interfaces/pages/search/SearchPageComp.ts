@@ -6,9 +6,11 @@
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AdvancedSearchPayload } from '~/interfaces/requests/search/SearchPayload';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
 
 interface AsyncSearchData {
   searchResponse: SearchResponse[];
+  filters: SearchFilterResponse;
   resultCount: number;
 }
 
@@ -21,6 +23,7 @@ interface SearchLocalData {
   showAdvancedSearch: boolean;
   isLoading: boolean; // 是否正在加载
   options: []; // sortKey Options
+  isError: boolean; // time range
 }
 
 interface SearchFilterCheckedOptions {

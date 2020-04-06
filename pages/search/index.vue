@@ -23,7 +23,16 @@
       <!--搜索结果+过滤条件-->
       <div class="flex-left-left-row">
         <!--搜索结果-->
-        <div class="searchPage-content__result" style="text-align: left">
+        <div
+          class="searchPage-content__result"
+          style="text-align: left"
+          :style="
+            mode === 'advanced' || searchResponse.length === 0
+              ? { width: '100%' }
+              : { width: '75%' }
+          "
+        >
+          <!--TODO 优化样式-->
           <template>
             <div class="flex-space-between">
               <span
@@ -31,30 +40,6 @@
                 class="searchPage-content__sub-hint"
                 >Papers</span
               >
-              <!--<span class="searchPage-time-range">-->
-              <!--Time Range:-->
-              <!--<input-->
-              <!--v-model="startYear"-->
-              <!--style="width: 53px;margin: 0 5px"-->
-              <!--size="4"-->
-              <!--/>-<input-->
-              <!--v-model="endYear"-->
-              <!--style="width: 53px;margin-left: 5px"-->
-              <!--size="4"-->
-              <!--/>-->
-              <!--<button-->
-              <!--class="basic-search__button"-->
-              <!--style="width:50px;margin-left:10px"-->
-              <!--@click="doTimeChangedSearch"-->
-              <!--&gt;-->
-              <!--<img-->
-              <!--src="~/assets/icon/icon-search.png"-->
-              <!--width="20"-->
-              <!--style="margin-bottom:10px"-->
-              <!--alt="search"-->
-              <!--/>-->
-              <!--</button>-->
-              <!--</span>-->
               <span style="float: right" class="searchPage-content__sub-hint">
                 Sort By
                 <el-select
@@ -106,12 +91,31 @@
           </client-only>
         </div>
         <!--过滤条件-->
-        <div v-if="mode === 'basic'" class="searchPage-content__filter">
+        <div
+          v-if="mode === 'basic' && searchResponse.length !== 0"
+          class="searchPage-content__filter"
+        >
           <span class="searchPage-content__sub-hint">Filter By</span>
           <div class="filter" style="margin-top: 15px">
             <div class="filter-wrapper">
               <div class="hint">
                 Time Range
+              </div>
+              <div class="searchPage-time-range">
+                <input
+                  v-model="startYear"
+                  style="width: 53px;margin: 0 5px"
+                  size="4"
+                  @change="sendSearchFilter"
+                />-<input
+                  v-model="endYear"
+                  style="width: 53px;margin-left: 5px"
+                  size="4"
+                  @change="sendSearchFilter"
+                />
+                <div style="margin-top: 3px;height: 17px; color: #2c5f77">
+                  {{ getYearError(startYear, endYear) }}
+                </div>
               </div>
             </div>
             <div v-if="filters.authors.length !== 0" class="filter-wrapper">
@@ -211,7 +215,11 @@ import {
   SearchDataFromProp,
   SearchPageComp
 } from '~/interfaces/pages/search/SearchPageComp';
-import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import {
+  AdvancedSearchPayload,
+  BasicSearchPayload,
+  sortKey
+} from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
 import sortKeyOptions from '~/components/search/sortKeyOptions';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
@@ -278,6 +286,7 @@ export default Vue.extend({
     return {
       showAdvancedSearch: false,
       isLoading: false, // 是否正在加载
+      isError: false,
       options: sortKeyOptions,
       checkedAuthors: [] as string[],
       checkedAffiliations: [] as string[],
@@ -296,7 +305,7 @@ export default Vue.extend({
   // 在SSR时路由是非响应的，需要手动watch
   watch: {
     $route: {
-      handler({ query }) {
+      async handler({ query }) {
         // 手动更新路由
         this.mode = query.mode;
         this.author = query.author;
@@ -309,6 +318,9 @@ export default Vue.extend({
         this.sortKey = query.sortKey;
         // 然后进行搜索
         this.doSearch();
+        await requestBasicSearchFilterCondition(this.keyword).then(
+          (res) => (this.filters = res.filters)
+        );
       }
     }
   },
@@ -317,7 +329,13 @@ export default Vue.extend({
     doSearch() {
       if (this.mode === 'basic') {
         this.searchContent = String(this.keyword);
-        this.requestBasicSearch();
+        this.requestBasicSearch({
+          keyword: this.searchContent,
+          page: this.page,
+          startYear: Number(this.startYear),
+          endYear: Number(this.endYear),
+          sortKey: this.sortKey
+        });
       } else if (this.mode === 'advanced') {
         this.searchContent =
           this.author +
@@ -327,23 +345,26 @@ export default Vue.extend({
           this.publicationName +
           ' ' +
           this.keyword;
-        this.requestAdvancedSearch();
+        this.requestAdvancedSearch({
+          keyword: this.keyword,
+          page: this.page,
+          author: this.author,
+          affiliation: this.affiliation,
+          publicationName: this.publicationName,
+          startYear: Number(this.startYear),
+          endYear: Number(this.endYear),
+          sortKey: this.sortKey
+        });
       }
     },
     doTimeChangedSearch() {
       this.showNextPage(1);
     },
     // 基础搜索
-    async requestBasicSearch() {
+    async requestBasicSearch(args: BasicSearchPayload) {
       this.isLoading = true;
       try {
-        const basicSearchRes = await basicSearch({
-          keyword: this.searchContent,
-          page: this.page,
-          startYear: Number(this.startYear),
-          endYear: Number(this.endYear),
-          sortKey: this.sortKey
-        });
+        const basicSearchRes = await basicSearch(args);
         // 增加默认值，相当于静默失败，避免500
         // size不变
         const searchData =
@@ -361,20 +382,10 @@ export default Vue.extend({
       }
     },
     // 高级搜索
-    async requestAdvancedSearch() {
+    async requestAdvancedSearch(args: AdvancedSearchPayload) {
       this.isLoading = true;
       try {
-        const advancedSearchData = {
-          keyword: this.keyword,
-          page: this.page,
-          author: this.author,
-          affiliation: this.affiliation,
-          publicationName: this.publicationName,
-          startYear: Number(this.startYear),
-          endYear: Number(this.endYear),
-          sortKey: this.sortKey
-        };
-        const advancedSearchRes = await advancedSearch(advancedSearchData);
+        const advancedSearchRes = await advancedSearch(args);
         // 增加默认值，相当于静默失败，避免500
         // size不变
         const searchData =
@@ -470,11 +481,48 @@ export default Vue.extend({
       }
     },
 
-    sendSearchFilter() {
-      console.log(this.checkedAuthors);
-      console.log(this.checkedConferences);
-      console.log(this.checkedJournals);
-      console.log(this.checkedAffiliations);
+    async sendSearchFilter() {
+      const author = this.checkedAuthors.join(' ');
+      const affiliation = this.checkedAffiliations.join(' ');
+      const publicationName =
+        this.checkedJournals.join(' ') + this.checkedConferences.join(' ');
+      const keyword = this.keyword;
+      const page = 1;
+      const startYear = this.startYear;
+      const endYear = this.endYear;
+      const sortKey = this.sortKey;
+
+      if (!this.isError) {
+        this.showNextPage(1); // 刷新路由
+        await this.requestAdvancedSearch({
+          author,
+          affiliation,
+          publicationName,
+          keyword,
+          page,
+          startYear,
+          endYear,
+          sortKey
+        });
+      }
+    },
+    getYearError(startYear: string, endYear: string) {
+      let isYearError = false;
+      const reg = new RegExp('^[0-9]*$');
+      if (!reg.test(startYear) || !reg.test(endYear)) {
+        isYearError = true;
+      } else if (
+        Number(startYear) > Number(endYear) ||
+        Number(startYear) < 0 ||
+        Number(endYear) < 0
+      ) {
+        isYearError = true;
+      }
+      if (isYearError) {
+        this.isError = true;
+        return 'Invalid time range';
+      }
+      return '';
     }
   }
 });
