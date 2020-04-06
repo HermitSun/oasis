@@ -75,12 +75,12 @@
             <input
               id="startYear"
               v-model="startYear"
-              style="width: 53px;margin-right: 5px"
+              style="width: 67px;margin-right: 5px"
               maxlength="4"
             />-<input
               id="endYear"
               v-model="endYear"
-              style="width: 53px;margin-left: 5px"
+              style="width: 67px;margin-left: 5px"
               maxlength="4"
             />
             <div class="error">

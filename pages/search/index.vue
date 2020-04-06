@@ -29,7 +29,7 @@
           :style="
             mode === 'advanced' || searchResponse.length === 0
               ? { width: '100%' }
-              : { width: '75%' }
+              : {}
           "
         >
           <!--TODO 优化样式-->
@@ -105,16 +105,16 @@
               <div class="searchPage-time-range">
                 <input
                   v-model="startYear"
-                  style="width: 53px;margin: 0 5px"
+                  style="margin: 0 5px"
                   size="4"
                   @change="sendSearchFilter"
-                />-<input
+                />～<input
                   v-model="endYear"
-                  style="width: 53px;margin-left: 5px"
+                  style="margin-left: 5px"
                   size="4"
                   @change="sendSearchFilter"
                 />
-                <div style="margin-top: 3px;height: 17px; color: #2c5f77">
+                <div class="error">
                   {{ getYearError(startYear, endYear) }}
                 </div>
               </div>
@@ -309,6 +309,9 @@ export default Vue.extend({
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
       return process.client && isMobile() ? 5 : 7;
+    },
+    isMobile() {
+      return isMobile();
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
