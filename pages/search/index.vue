@@ -105,16 +105,16 @@
               <div class="searchPage-time-range">
                 <input
                   v-model="startYear"
-                  style="width: 53px;margin: 0 5px"
+                  style="margin: 0 5px"
                   size="4"
                   @change="sendSearchFilter"
-                />-<input
+                />～<input
                   v-model="endYear"
-                  style="width: 53px;margin-left: 5px"
+                  style="margin-left: 5px"
                   size="4"
                   @change="sendSearchFilter"
                 />
-                <div style="margin-top: 3px;height: 17px; color: #2c5f77">
+                <div class="error">
                   {{ getYearError(startYear, endYear) }}
                 </div>
               </div>
