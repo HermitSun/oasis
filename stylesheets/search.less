@@ -9,10 +9,11 @@
 @search-button-font-color: white;
 @search-button-font-size: 10px;
 
-@search-item-title-font-size: 20px;
-@search-item-author-font-size: 15px;
-@search-item-keyword-font-size: 10px;
-@search-item-reference-font-size: 12px;
+@search-item-title-font-size: @middle-font;
+@search-item-author-font-size: @sub-middle-font;
+@search-item-keyword-font-size: @small-font;
+@search-item-reference-font-size: @sub-small-font;
+@search-item-abstract-font-size: @small-font;
 @search-item-abstract-max-height: 200px;
 
 @search-advanced-input-font-size: @small-font;
@@ -72,6 +73,7 @@
           white-space: pre-line;
           word-wrap: break-word;
           margin-bottom: 2px;
+          font-weight: 400;
         }
       }
     }
@@ -123,10 +125,11 @@
   text-align: left;
   padding: 10px 5px;
 
+
   .title {
     font-weight: 500;
     margin-bottom: 5px;
-
+    letter-spacing: 1px;
     a {
       font-size: @search-item-title-font-size;
       text-decoration: transparent;
@@ -168,6 +171,7 @@
   .abstract {
     color: @font-gray;
     margin: 10px 0;
+    font-size: @search-item-abstract-font-size;
     max-height: @search-item-abstract-max-height;
     .overflow-hidden-height(3);
   }
@@ -180,7 +184,8 @@
   }
 
   .hint {
-    font-weight: 500;
+    font-weight: 400;
+    font-size: @search-item-keyword-font-size;
   }
 
   .keyword-wrapper {
@@ -191,8 +196,8 @@
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
       .keyword {
-        border: @background-blue 1px solid;
-        padding: 2px;
+        border: @background-blue-light 1px solid;
+        padding: 1px;
         font-size: @search-item-keyword-font-size;
         cursor: pointer;
         &:hover {
@@ -203,6 +208,7 @@
   }
 
   .detail-hint {
+    .hint;
     text-align: right;
     float: right;
     @media @max-pad-width {
@@ -247,7 +253,7 @@
       border: @background-blue 1px solid;
       background: @background-blue;
       color: whitesmoke;
-      padding: 2px;
+      padding: 1px;
       font-size: @search-item-keyword-font-size;
       margin-right: 5px;
 

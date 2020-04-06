@@ -195,8 +195,7 @@ export default Vue.extend({
 
     const papersReq = requestPapers({ authorId, page, sortKey });
     const interestsReq = requestInterests(authorId);
-    // TODO 替换为真实数据
-    const academiaRelationReq = requestAcademicRelation('37296968900');
+    const academiaRelationReq = requestAcademicRelation(authorId);
     return {
       ...query,
       authorId,
