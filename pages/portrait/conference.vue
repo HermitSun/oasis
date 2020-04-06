@@ -25,10 +25,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getConferenceInterest, getConferencePortrait } from '~/api';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import { Message } from '~/node_modules/element-ui';
 import Subtitle from '~/components/public/Subtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
