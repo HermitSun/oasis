@@ -108,31 +108,78 @@
         <!--过滤条件-->
         <div v-if="mode === 'basic'" class="searchPage-content__filter">
           <span class="searchPage-content__sub-hint">Filter By</span>
-          <div class="filter">
+          <div class="filter" style="margin-top: 15px">
             <div class="filter-wrapper">
               <div class="hint">
                 Time Range
               </div>
-              <div class="divider"></div>
             </div>
             <div v-if="filters.authors.length !== 0" class="filter-wrapper">
+              <div class="divider"></div>
               <div class="hint">
                 Authors
               </div>
-              <div class="divider"></div>
+              <div class="options">
+                <el-checkbox-group
+                  v-model="checkedAuthors"
+                  @change="sendSearchFilter"
+                >
+                  <el-checkbox
+                    v-for="(author, index) in filters.authors"
+                    :key="index"
+                    :label="author.name"
+                  >
+                    <span class="option"
+                      >{{ author.name }}({{ author.count }})</span
+                    >
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
             </div>
             <div
               v-if="filters.affiliations.length !== 0"
               class="filter-wrapper"
             >
+              <div class="divider"></div>
               <div class="hint">
                 Affiliations
               </div>
-              <div class="divider"></div>
+              <div class="options">
+                <el-checkbox-group
+                  v-model="checkedAffiliations"
+                  @change="sendSearchFilter"
+                >
+                  <el-checkbox
+                    v-for="(affiliation, index) in filters.affiliations"
+                    :key="index"
+                    :label="affiliation.name"
+                  >
+                    <span class="option"
+                      >{{ affiliation.name }}({{ affiliation.count }})
+                    </span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
             </div>
             <div v-if="filters.journals.length !== 0" class="filter-wrapper">
+              <div class="divider"></div>
               <div class="hint">
                 Journals
+              </div>
+              <div class="options">
+                <el-checkbox-group
+                  v-model="checkedJournals"
+                  @change="sendSearchFilter"
+                >
+                  <el-checkbox
+                    v-for="(journal, index) in filters.journals"
+                    :key="index"
+                    :label="journal.name"
+                  />
+                  <span class="option"
+                    >{{ journal.name }}({{ journal.count }})</span
+                  >
+                </el-checkbox-group>
               </div>
             </div>
           </div>
@@ -144,7 +191,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Select, Option, Message } from 'element-ui';
+import {
+  Pagination,
+  Select,
+  Option,
+  Message,
+  CheckboxGroup,
+  Checkbox
+} from 'element-ui';
 import {
   basicSearch,
   advancedSearch,
@@ -183,7 +237,9 @@ export default Vue.extend({
     SearchResComp,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
-    [Option.name]: Option
+    [Option.name]: Option,
+    [CheckboxGroup.name]: CheckboxGroup,
+    [Checkbox.name]: Checkbox
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -222,7 +278,11 @@ export default Vue.extend({
     return {
       showAdvancedSearch: false,
       isLoading: false, // 是否正在加载
-      options: sortKeyOptions
+      options: sortKeyOptions,
+      checkedAuthors: [] as string[],
+      checkedAffiliations: [] as string[],
+      checkedConferences: [] as string[],
+      checkedJournals: [] as string[]
     } as SearchPageComp;
   },
   computed: {
@@ -408,6 +468,13 @@ export default Vue.extend({
           }
         });
       }
+    },
+
+    sendSearchFilter() {
+      console.log(this.checkedAuthors);
+      console.log(this.checkedConferences);
+      console.log(this.checkedJournals);
+      console.log(this.checkedAffiliations);
     }
   }
 });

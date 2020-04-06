@@ -23,6 +23,14 @@ interface SearchLocalData {
   options: []; // sortKey Options
 }
 
+interface SearchFilterCheckedOptions {
+  checkedAuthors: string[];
+  checkedAffiliations: string[];
+  checkedConferences: string[];
+  checkedJournals: string[];
+}
+
 export type SearchPageComp = AsyncSearchData &
   SearchDataFromProp &
-  SearchLocalData;
+  SearchLocalData &
+  SearchFilterCheckedOptions;

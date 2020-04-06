@@ -49,6 +49,7 @@
     .filter-wrapper {
       width: 100%;
       .hint {
+        margin: 10px 0;
         color: @background-blue;
         font-size: @sub-middle-font;
       }
@@ -56,6 +57,15 @@
         background-color: @background-blue-light;
         height: 1.5px;
         margin: 10px 0;
+      }
+      .options {
+        /deep/ .option{
+          display: inline-grid;
+          white-space: pre-line;
+          word-wrap: break-word;
+          margin-bottom: 2px;
+        }
+
       }
     }
   }
