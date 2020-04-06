@@ -15,7 +15,7 @@ export interface BarChartConfig {
   height: number;
   barColor?: string | D3CallbackFn<BarChartDatum>;
   barMargin?: number; // 两个bar之间的距离
-  pixelUnit?: number | D3CallbackFn<BarChartDatum, number>; // 每一单位的数值对应的像素
+  barHeight?: string | number | D3CallbackFn<BarChartDatum, number>; // 每一个的高度
   tooltipThreshold?: number; // 提示内容出现在bar内部和外部的阈值，低于这个值的会出现在bar外部
   fontFamily?: string; // 应该不会有人每一个条都要换字体吧？？
   fontSize?: string | D3CallbackFn<BarChartDatum>;
@@ -39,7 +39,7 @@ export function createBarChart(
     // barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
     barColor: '#275b75',
     barMargin: 1,
-    pixelUnit: 4,
+    barHeight: (d) => d * 4,
     tooltipThreshold: 10,
     fontFamily: 'sans-serif',
     fontSize: '11px',
@@ -66,21 +66,21 @@ export function createBarChart(
     .append('rect')
     .attr('x', (_, i) => i * (config.width / data.length))
     .attr('y', (d) => {
-      console.log(config.pixelUnit);
-      const pixelUnit =
-        typeof config.pixelUnit === 'number'
-          ? config.pixelUnit
-          : config.pixelUnit(d);
-
-      return config.height - pixelUnit * d;
+      const height =
+        typeof config.barHeight === 'number'
+          ? config.barHeight
+          : typeof config.barHeight === 'string'
+          ? parseInt(config.barHeight)
+          : config.barHeight(d);
+      return config.height - height;
     })
     .attr('width', config.width / data.length - config.barMargin)
     .attr('height', (d) => {
-      const pixelUnit =
-        typeof config.pixelUnit === 'number'
-          ? config.pixelUnit
-          : config.pixelUnit(d);
-      return d * pixelUnit;
+      return typeof config.barHeight === 'number'
+        ? config.barHeight
+        : typeof config.barHeight === 'string'
+        ? parseInt(config.barHeight)
+        : config.barHeight(d);
     })
     .attr('fill', (d) =>
       typeof config.barColor === 'string' ? config.barColor : config.barColor(d)
@@ -119,11 +119,13 @@ export function createBarChart(
     )
     .attr('y', (d) => {
       const bias = d > config.tooltipThreshold ? 14 : -2;
-      const pixelUnit =
-        typeof config.pixelUnit === 'number'
-          ? config.pixelUnit
-          : config.pixelUnit(d);
-      return config.height - d * pixelUnit + bias;
+      const height =
+        typeof config.barHeight === 'number'
+          ? config.barHeight
+          : typeof config.barHeight === 'string'
+          ? parseInt(config.barHeight)
+          : config.barHeight(d);
+      return config.height - height + bias;
     })
     .attr('font-family', config.fontFamily)
     .attr('font-size', (d) =>
