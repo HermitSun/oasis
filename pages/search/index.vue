@@ -29,7 +29,7 @@
           :style="
             mode === 'advanced' || searchResponse.length === 0
               ? { width: '100%' }
-              : { width: '75%' }
+              : {}
           "
         >
           <!--TODO 优化样式-->
@@ -306,6 +306,9 @@ export default Vue.extend({
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
       return process.client && isMobile() ? 5 : 7;
+    },
+    isMobile() {
+      return isMobile();
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染

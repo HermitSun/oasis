@@ -37,7 +37,7 @@
 @search-input-width__pc: 50vw;
 
 @search-input-height__mobile: @searchPage-logo-height__mobile+10px;
-@search-input-height__pc:@searchPage-logo-height__pc;
+@search-input-height__pc: @searchPage-logo-height__pc;
 
 // ----------flex垂直水平居中-----------
 .flex-center-column {
@@ -70,19 +70,18 @@
   flex-direction: row;
 }
 // 垂直靠左
-.flex-left-left-column{
+.flex-left-left-column {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
 }
-.flex-left-left-row{
+.flex-left-left-row {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: row;
 }
-
 
 // ----------flex垂直水平靠左-----------
 .flex-space-between {
@@ -98,16 +97,16 @@
 }
 
 // ----------超出部分用...省略, 传递行数------------
-.overflow-hidden-height(@line){
+.overflow-hidden-height(@line) {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: @line;
   overflow: hidden;
 }
 
-.overflow-hidden-width(@width:''){
+.overflow-hidden-width(@width:'') {
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
   max-width: @width;
 }
@@ -143,7 +142,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgba(9, 10, 11, 0.36);
+  background: rgba(9, 10, 11, 0.56);
   z-index: 10;
 }
 
@@ -165,9 +164,10 @@
 }
 .mask-box-header {
   .flex-space-between;
+  align-items: center;
   color: floralwhite;
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: @middle-font;
 }
 
 button {

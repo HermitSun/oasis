@@ -15,7 +15,7 @@
 @search-item-reference-font-size: 12px;
 @search-item-abstract-max-height: 200px;
 
-@search-advanced-input-font-size: 10px;
+@search-advanced-input-font-size: @small-font;
 
 // 搜索页Header
 .searchPage-header {
@@ -37,8 +37,16 @@
 .searchPage-content__result {
   //width: 75%;
   padding: 10px;
+
+  .pc-width__mobile(75%);
 }
 .searchPage-content__filter {
+  // TODO 添加移动端布局
+  @media @max-mobile-width {
+    display: none;
+  }
+
+  // PC
   width: 25%;
   padding: 10px;
   .filter {
@@ -329,10 +337,10 @@
 
 // 高级搜索页
 .advanced-search__mask-box-size {
-  min-height: 200px;
-  min-width: 300px;
-  //height: 40vh;
-  //width: 40vw;
+  .mobile-height(450px);
+  .mobile-width(300px);
+  .pc-height__mobile(350px);
+  .pc-width__mobile(600px);
 }
 
 .advanced-search__mask-box-divider {
@@ -348,7 +356,6 @@
     /*左对齐*/
     display: inline-block;
     float: left;
-    width: 230px;
     text-align: left;
     font-size: @sub-middle-font;
   }
@@ -356,7 +363,7 @@
   input {
     outline: 0;
     border: 0;
-    height: 20px;
+    height: 25px;
     padding-left: 4px;
     border-radius: 10px;
     background: rgba(245, 245, 245, 0.56);
@@ -366,9 +373,18 @@
   }
 
   .item {
-    //margin-bottom: 10px;
+    @media @min-mobile-width{
+      .flex-space-between;
+    }
+    @media @max-mobile-width{
+      .flex-left-left-column;
+    }
+
     .input {
-      display: inline-block;
+      text-align: left;
+      @media @max-mobile-width{
+        margin-top: 5px;
+      }
 
       .error {
         margin-top: 3px;
@@ -376,6 +392,7 @@
         color: @background-blue;
         font-size: @search-advanced-input-font-size;
       }
+
     }
   }
 }
