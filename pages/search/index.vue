@@ -91,6 +91,7 @@
           </client-only>
         </div>
         <!--过滤条件-->
+        <!--可以考虑抽取一个组件，利于后续优化-->
         <div
           v-if="mode === 'basic' && searchResponse.length !== 0"
           class="searchPage-content__filter"
@@ -266,19 +267,21 @@ export default Vue.extend({
       endYear: Number(query.endYear)
     };
     // 这里非常不优雅，但是没有办法
-    const searchRes = await basicSearch(searchPayload);
+    const searchReq = basicSearch(searchPayload);
+    // 二次筛选
+    // 高级搜索时不提供二次筛选
+    const filtersReq =
+      query.mode === 'basic'
+        ? requestBasicSearchFilterCondition(query.keyword as string)
+        : Promise.resolve({ filters: {} });
+    // 增加并发性，大致能快50-100ms
+    // 目前的实现严重依赖后端性能
     // 增加默认值，相当于静默失败，避免500
+    const searchRes = await searchReq;
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
+    const filters = (await filtersReq).filters;
 
-    // 二次筛选
-    const filters: SearchFilterResponse =
-      query.mode === 'basic'
-        ? (await requestBasicSearchFilterCondition(query.keyword as string))
-            .filters
-        : ({} as SearchFilterResponse);
-
-    console.log(filters);
     return {
       searchResponse: searchData.papers,
       resultCount: searchData.size,

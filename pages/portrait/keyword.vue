@@ -44,11 +44,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading } from 'element-ui';
-
+import { Pagination, Loading, Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getKeywordPapers, getKeywordPortrait } from '~/api';
-import { Message } from '~/node_modules/element-ui';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import Subtitle from '~/components/public/Subtitle.vue';

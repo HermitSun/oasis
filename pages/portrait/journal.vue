@@ -25,9 +25,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getJournalInterest, getJournalPortrait } from '~/api';
-import { Message } from '~/node_modules/element-ui';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import Subtitle from '~/components/public/Subtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';

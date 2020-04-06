@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading } from 'element-ui';
+import { Pagination, Loading, Message } from 'element-ui';
 import SearchBar from '~/components/search/SearchBar.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
@@ -68,7 +68,6 @@ import {
   getAuthorPortraitById,
   getResearcherInterest
 } from '~/api';
-import { Message } from '~/node_modules/element-ui';
 import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
