@@ -258,6 +258,7 @@ export default Vue.extend({
         flex-wrap: wrap;
         .rank {
           margin: 0 10px;
+          min-width: 220px;
         }
       }
     }
