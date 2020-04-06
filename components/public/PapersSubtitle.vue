@@ -24,9 +24,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Select, Option } from '~/node_modules/element-ui';
+import { Select, Option } from 'element-ui';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import sortKeyOptions from '~/components/search/sortKeyOptions';
+
 export default Vue.extend({
   name: 'PapersSubtitle',
   components: {

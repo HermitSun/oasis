@@ -72,7 +72,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading } from 'element-ui';
+import { Pagination, Loading, Message } from 'element-ui';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
@@ -85,7 +85,6 @@ import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
-import { Message } from '~/node_modules/element-ui';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
