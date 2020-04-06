@@ -35,7 +35,7 @@
   padding: 0 10px;
 }
 .searchPage-content__result {
-  width: 75%;
+  //width: 75%;
   padding: 10px;
 }
 .searchPage-content__filter {
@@ -49,6 +49,7 @@
     .filter-wrapper {
       width: 100%;
       .hint {
+        margin: 10px 0;
         color: @background-blue;
         font-size: @sub-middle-font;
       }
@@ -56,6 +57,14 @@
         background-color: @background-blue-light;
         height: 1.5px;
         margin: 10px 0;
+      }
+      .options {
+        /deep/ .option {
+          display: inline-grid;
+          white-space: pre-line;
+          word-wrap: break-word;
+          margin-bottom: 2px;
+        }
       }
     }
   }
@@ -65,6 +74,7 @@
 .searchPage-content__sub-hint {
   font-size: @small-font;
   color: @font-gray;
+  margin-bottom: 5px;
 }
 
 .searchPage-content__hint-text {

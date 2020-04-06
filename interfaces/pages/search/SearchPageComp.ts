@@ -6,9 +6,11 @@
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AdvancedSearchPayload } from '~/interfaces/requests/search/SearchPayload';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
 
 interface AsyncSearchData {
   searchResponse: SearchResponse[];
+  filters: SearchFilterResponse;
   resultCount: number;
 }
 
@@ -20,8 +22,18 @@ interface SearchLocalData {
   searchContent: string;
   showAdvancedSearch: boolean;
   isLoading: boolean; // 是否正在加载
+  options: []; // sortKey Options
+  isError: boolean; // time range
+}
+
+interface SearchFilterCheckedOptions {
+  checkedAuthors: string[];
+  checkedAffiliations: string[];
+  checkedConferences: string[];
+  checkedJournals: string[];
 }
 
 export type SearchPageComp = AsyncSearchData &
   SearchDataFromProp &
-  SearchLocalData;
+  SearchLocalData &
+  SearchFilterCheckedOptions;

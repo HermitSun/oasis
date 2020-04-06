@@ -38,6 +38,7 @@ import {
 import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
+import { ForceChartData } from '~/utils/charts/force';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -149,8 +150,7 @@ export async function getReferenceById(
 export async function getBasicSearchFilterCondition(
   args: SearchFilterPayload
 ): Promise<BasicResponse<SearchFilterResponse>> {
-  // TODO 替换为后端真实url
-  const { data } = await axios.get('/search/basic/filter', {
+  const { data } = await axios.get('/search/basic/mongo/filter', {
     params: args
   });
   return data;
@@ -212,6 +212,16 @@ export async function getAuthorPapersById(
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/paper/author', {
     params: args
+  });
+  return data;
+}
+
+// 15. 根据作者id获取该作者的学者关系
+export async function getAcademicRelationByAuthorId(
+  id: string
+): Promise<BasicResponse<ForceChartData>> {
+  const { data } = await axios.get('/picture/academic', {
+    params: { id }
   });
   return data;
 }

@@ -3,29 +3,40 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
+        <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
-        </div>
-        <div class="module">
-          <Subtitle title="学者关系图" />
+          <div id="publication-bar" class="content"></div>
         </div>
       </div>
       <div class="portrait-module">
-        <PapersSubtitle title="📝 All Papers" />
-        <div
-          v-for="paper in papers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-          <PaperInfoComp :paper="paper" />
+        <PapersSubtitle
+          title="📝 All Papers"
+          :sort-key="sortKey"
+          @changeSortKey="changeSortKey"
+        />
+        <div id="papers">
+          <div
+            v-for="paper in papers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <PaperInfoComp :paper="paper" />
+          </div>
         </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="page"
+          :total="size"
+          hide-on-single-page
+          small
+          style="text-align: center; margin-bottom: 10px"
+          @current-change="showNextPage"
+        />
       </div>
     </div>
   </div>
@@ -33,6 +44,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
+
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getKeywordPapers, getKeywordPortrait } from '~/api';
 import { Message } from '~/node_modules/element-ui';
@@ -43,6 +56,12 @@ import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
+import { createBarChart } from '~/utils/charts/bar';
+import portraitBarConfig from '~/components/portrait/barConfig';
+import { isMobile } from '~/utils/breakpoint';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
+
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
     portrait: {} as PortraitResponse
@@ -78,15 +97,13 @@ export default Vue.extend({
     PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
-    const keyword = 'software';
+    const keyword = query.keyword as string;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const authorId = query.authorId;
-    // TODO const sortKey = query.sortKey
-    // TODO const page = query.page
     const portraitRes = await requestPortrait(keyword);
     const profile = {
       name: keyword,
@@ -118,6 +135,67 @@ export default Vue.extend({
       publicationTrend,
       ...(await papersReq)
     };
+  },
+  data() {
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
+  },
+  computed: {
+    pagerSize(): number {
+      return isMobile() ? 5 : 7;
+    }
+  },
+  mounted(): void {
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.citationTrend)
+      )
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.publicationTrend)
+      )
+    );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        keyword: this.keyword,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        keyword: this.keyword,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>

@@ -43,31 +43,11 @@
       <div class="homepage-content__ranking">
         <Subtitle title="🏆 OASIS RANKINGS" />
         <div class="homepage-content__rankings">
-          <AuthorBasicRanking
-            :ranking="authorRanking"
-            class="rank"
-            style="width: 30%"
-          />
-          <JournalBasicRanking
-            :ranking="journalRanking"
-            class="rank"
-            style="width: 30%"
-          />
-          <ConferenceBasicRanking
-            :ranking="conferenceRanking"
-            class="rank"
-            style="width: 30%"
-          />
-          <AffiliationBasicRanking
-            :ranking="affiliationRanking"
-            class="rank"
-            style="width: 45%"
-          />
-          <KeywordBasicRanking
-            :ranking="keywordRanking"
-            class="rank"
-            style="width: 45%"
-          />
+          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+          <JournalBasicRanking :ranking="journalRanking" class="rank" />
+          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
+          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
+          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
         </div>
       </div>
     </div>

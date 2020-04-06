@@ -4,7 +4,7 @@
     <div class="portrait">
       <div class="profile-module">
         <div class="module">
-          <PortraitProfileComp :profile="profile" />
+          <PortraitProfileComp id="portrait" :profile="profile" />
         </div>
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
@@ -17,33 +17,53 @@
       </div>
       <div class="profile-module">
         <div class="module" style="margin-right: 10px">
-          <Subtitle title="🌥 Keywords WordCloud" />
+          <Subtitle title="🌥 Keywords" />
           <div id="pie" class="chart content"></div>
         </div>
         <div class="module">
           <Subtitle title="🎓 Scholar Network" />
-          <div id="force" class="chart"></div>
+          <div id="force" style="height: 400px"></div>
         </div>
       </div>
     </div>
     <div class="portrait-module">
-      <PapersSubtitle title="📝 All Papers" />
-      <div v-for="paper in papers" :key="paper.id" style="margin-bottom: 20px">
-        <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-        <PaperInfoComp :paper="paper" />
+      <PapersSubtitle
+        title="📝 All Papers"
+        :sort-key="sortKey"
+        @changeSortKey="changeSortKey"
+      />
+      <div id="papers">
+        <div
+          v-for="paper in papers"
+          :key="paper.id"
+          style="margin-bottom: 20px"
+        >
+          <PaperInfoComp :paper="paper" />
+        </div>
       </div>
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="size"
+        hide-on-single-page
+        small
+        style="text-align: center; margin-bottom: 10px"
+        @current-change="showNextPage"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
 import SearchBar from '~/components/search/SearchBar.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import {
+  getAcademicRelationByAuthorId,
   getAuthorPapersById,
   getAuthorPortraitById,
   getResearcherInterest
@@ -54,9 +74,13 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/utils/charts/pie';
-import { createForceChart } from '~/utils/charts/force';
+import { createForceChart, ForceChartData } from '~/utils/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
+import { AuthorLink, AuthorNode } from '~/pages/charts/index.vue';
+import portraitBarConfig from '~/components/portrait/barConfig';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -97,6 +121,24 @@ async function requestInterests(authorId: string) {
   return res;
 }
 
+async function requestAcademicRelation(authorId: string) {
+  const res: { academicRelation: ForceChartData } = {
+    academicRelation: {
+      nodes: [],
+      links: []
+    }
+  };
+  try {
+    const academicRelationResponse = await getAcademicRelationByAuthorId(
+      authorId
+    );
+    res.academicRelation = academicRelationResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
 export default Vue.extend({
   name: 'Author',
   components: {
@@ -104,16 +146,17 @@ export default Vue.extend({
     PapersSubtitle,
     PaperInfoComp,
     PortraitProfileComp,
-    SearchBar
+    SearchBar,
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
-    const authorId = '37278889300';
+    const authorId = query.authorId as string;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const authorId = query.authorId;
     // TODO const sortKey = query.sortKey
     // TODO const page = query.page
     const portraitRes = await requestPortrait(authorId);
+    console.log(portraitRes);
     const profile = {
       name: portraitRes.portrait.name,
       statistics: [
@@ -136,6 +179,8 @@ export default Vue.extend({
 
     const papersReq = requestPapers({ authorId, page, sortKey });
     const interestsReq = requestInterests(authorId);
+    // TODO 替换为真实数据
+    const academiaRelationReq = requestAcademicRelation('37296968900');
     return {
       ...query,
       authorId,
@@ -143,59 +188,116 @@ export default Vue.extend({
       citationTrend,
       publicationTrend,
       ...(await papersReq),
-      ...(await interestsReq)
+      ...(await interestsReq),
+      ...(await academiaRelationReq)
     };
   },
   data() {
-    return {} as any;
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
   },
-  async mounted() {
-    await requestInterests(this.authorId).then((interestsReq) =>
-      createPieChart(
-        '#pie',
-        interestsReq.interests
-          .map((i) => {
-            return {
-              label: i.name,
-              value: i.value
-            };
-          })
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 20),
-        {
-          width: getSizeById('pie').width,
-          height: getSizeById('pie').height
-        }
-      )
+  mounted() {
+    createPieChart(
+      '#pie',
+      this.interests
+        .map((i: { name: string; value: number }) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort(
+          (
+            a: { name: string; value: number },
+            b: { name: string; value: number }
+          ) => b.value - a.value
+        )
+        .slice(0, 20),
+      {
+        width: getSizeById('pie').width - 20,
+        height: getSizeById('pie').height - 20
+      }
     );
-
-    const data = await import('../../pages/charts/data.json');
-    createForceChart('#force', data, {
-      width: 600,
-      height: 600,
+    createForceChart('#force', this.academicRelation, {
+      width: 500,
+      height: 500,
       // nodeColor: '#666',
-      nodeRadius: (_) => Math.random() * 10,
-      tooltip: (d) => `<p>id: ${d.id}</p>`,
+      linkWidth: (_) => 1,
+      linkLength: (d) => {
+        const link = d as AuthorLink;
+        // 限制最大长度
+        return link.value * 30 > 200 ? 200 : link.value * 30;
+      },
+      nodeRadius: (d) => {
+        const node = d as AuthorNode;
+        // 大小 = 被引数 / 论文数
+        // ÷5是为了显示
+        const radius = node.citation / node.count / 5;
+        return radius < 2 ? 2 : radius;
+      },
+      tooltip: (d) => {
+        const node = d as AuthorNode;
+        return `
+          <div style="background-color: rgba(153, 153, 153, 0.8); border-radius: 5px">
+            <p>name: ${node.name}</p>
+            <p>citation: ${node.citation}</p>
+            <p>count: ${node.count}</p>
+          </div>
+        `;
+      },
       draggable: true
     });
-    createBarChart('#citation-bar', this.citationTrend, {
-      width: 150,
-      height: 100,
-      barColor: 'black',
-      tooltipThreshold: 15,
-      hover: {
-        mouseOverColor: (_) => 'rgb(100, 0, 0)'
-      }
-    });
-    createBarChart('#publication-bar', this.publicationTrend, {
-      width: 150,
-      height: 100,
-      barColor: 'black',
-      tooltipThreshold: 15,
-      hover: {
-        mouseOverColor: (_) => 'rgb(100, 0, 0)'
-      }
-    });
+
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.citationTrend)
+      )
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.publicationTrend)
+      )
+    );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        authorId: this.authorId,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        authorId: this.authorId,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>

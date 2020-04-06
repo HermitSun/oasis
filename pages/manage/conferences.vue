@@ -84,6 +84,7 @@ import { Dialog, Input, Pagination, Table, TableColumn } from 'element-ui';
 import { getConferenceInfo, updateConferenceInfo } from '~/api';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { ConferenceInfo } from '~/interfaces/responses/manage/ConferenceInfoResponse';
+import { ElPaginationTotal } from '~/interfaces/ElPaginationTotal';
 
 export default Vue.extend({
   name: 'ManageConferences',
@@ -99,7 +100,7 @@ export default Vue.extend({
   data() {
     return {
       conferences: [] as ConferenceInfo[],
-      resultCount: 0,
+      resultCount: null as ElPaginationTotal,
       page: 1, // 当前页码
       conferenceName: '', // 根据输入的期刊名称进行搜索
       showUpdateDialog: false, // 显示修改的对话框
@@ -108,7 +109,7 @@ export default Vue.extend({
       isLoading: false
     };
   },
-  created() {
+  mounted() {
     // 类似于断点续传，注入page和name，提高URL可读性
     if (this.$route.query.page && this.$route.query.name) {
       this.conferenceName = this.$route.query.name as string;

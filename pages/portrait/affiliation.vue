@@ -3,18 +3,20 @@
     <SearchBar />
     <div class="portrait">
       <div class="profile-module">
-        <PortraitProfileComp :profile="profile" />
-        <div class="module">
-          <Subtitle title="🌥 Keywords WordCloud" />
-          <InterestWordCloud :interests="interests" />
-        </div>
+        <PortraitProfileComp id="portrait" :profile="profile" />
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div>{{ citationTrend }}</div>
+          <div id="citation-bar" class="content"></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div>{{ publicationTrend }}</div>
+          <div id="publication-bar" class="content"></div>
+        </div>
+      </div>
+      <div class="profile-module">
+        <div class="module">
+          <Subtitle title="🌥 Keywords" />
+          <div id="pie" class="chart content"></div>
         </div>
       </div>
       <div class="affiliation-main">
@@ -27,7 +29,7 @@
               <span class="prop">Citation</span>
               <span class="prop">Publication Trend</span>
             </div>
-            <div class="body">
+            <div id="authors" class="body" style="overflow: scroll">
               <div
                 v-for="(rank, index) in authorDetailRanking"
                 :key="index"
@@ -39,15 +41,29 @@
           </div>
         </div>
         <div class="affiliation-main__paper portrait-module">
-          <PapersSubtitle title="📝 All Papers" />
-          <div
-            v-for="paper in papers"
-            :key="paper.id"
-            style="margin-bottom: 20px"
-          >
-            <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
-            <PaperInfoComp :paper="paper" />
+          <PapersSubtitle
+            title="📝 All Papers"
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
+          <div id="papers">
+            <div
+              v-for="paper in papers"
+              :key="paper.id"
+              style="margin-bottom: 20px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
           </div>
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="size"
+            hide-on-single-page
+            small
+            style="text-align: center; margin-bottom: 10px"
+            @current-change="showNextPage"
+          />
         </div>
       </div>
     </div>
@@ -56,6 +72,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Pagination, Loading } from 'element-ui';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
@@ -74,7 +91,13 @@ import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affilia
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
+import { getClientWidth } from '~/utils/breakpoint';
+import { createPieChart } from '~/utils/charts/pie';
+import getSizeById from '~/utils/charts/getSizeById';
+import { createBarChart } from '~/utils/charts/bar';
+import portraitBarConfig from '~/components/portrait/barConfig';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -139,15 +162,12 @@ export default Vue.extend({
     PortraitProfileComp,
     SearchBar,
     AuthorDetailComp,
-    InterestWordCloud
+    [Pagination.name]: Pagination
   },
   async asyncData({ query }) {
-    const affiliation = 'Tsinghua University';
+    const affiliation = query.affiliation as string;
     const sortKey = 'recent';
     const page = 1;
-    // TODO const affiliation = query.affiliation;
-    // TODO const sortKey = query.sortKey
-    // TODO const page = query.page
     const portraitRes = await requestPortrait(affiliation);
     const profile = {
       name: affiliation,
@@ -183,6 +203,89 @@ export default Vue.extend({
       ...(await interestsReq),
       ...(await affiliationAuthorRankingReq)
     };
+  },
+  data() {
+    return {
+      page: 1,
+      sortKey: 'recent' as sortKey
+    } as any;
+  },
+  mounted(): void {
+    // 本人垃圾前端
+    if (getClientWidth() > 768) {
+      const elementAuthors = document.getElementById('authors') as any;
+      const elementPapers = document.getElementById('papers') as any;
+      elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
+    }
+    createPieChart(
+      '#pie',
+      this.interests
+        .map((i: { name: string; value: number }) => {
+          return {
+            label: i.name,
+            value: i.value
+          };
+        })
+        .sort(
+          (
+            a: { name: string; value: number },
+            b: { name: string; value: number }
+          ) => b.value - a.value
+        )
+        .slice(0, 20),
+      {
+        width: getSizeById('pie').width,
+        height: getSizeById('pie').height
+      }
+    );
+    createBarChart(
+      '#citation-bar',
+      this.citationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.citationTrend)
+      )
+    );
+    createBarChart(
+      '#publication-bar',
+      this.publicationTrend,
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.publicationTrend)
+      )
+    );
+  },
+  methods: {
+    async showNextPage() {
+      this.page = this.page + 1;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        affiliation: this.affiliation,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    },
+    async changeSortKey(newSortKey: sortKey) {
+      console.log('newSortKey' + newSortKey);
+      this.page = 1;
+      this.sortKey = newSortKey;
+      const loadingInstance = Loading.service(
+        loadingConfig(document.getElementById('papers') as any)
+      );
+      await requestPapers({
+        affiliation: this.affiliation,
+        page: this.page,
+        sortKey: this.sortKey
+      }).then((res) => {
+        this.papers = res.papers;
+        loadingInstance.close();
+      });
+    }
   }
 });
 </script>

@@ -8,26 +8,14 @@
 
 import * as d3 from 'd3-selection';
 
-export default class Bar {
-  private chart: any;
-
-  constructor(selector: string) {
-    this.chart = d3.select(selector);
-  }
-
-  addColor() {
-    this.chart.style('color', 'red');
-  }
-}
-
-type D3CallbackFn<T> = (data: T, index?: number) => string | number;
+type D3CallbackFn<T, R = string | number> = (data: T, index?: number) => R;
 type BarChartDatum = number;
-interface BarChartConfig {
+export interface BarChartConfig {
   width: number;
   height: number;
   barColor?: string | D3CallbackFn<BarChartDatum>;
   barMargin?: number; // 两个bar之间的距离
-  pixelUnit?: number; // 每一单位的数值对应的像素
+  barHeight?: string | number | D3CallbackFn<BarChartDatum, number>; // 每一个的高度
   tooltipThreshold?: number; // 提示内容出现在bar内部和外部的阈值，低于这个值的会出现在bar外部
   fontFamily?: string; // 应该不会有人每一个条都要换字体吧？？
   fontSize?: string | D3CallbackFn<BarChartDatum>;
@@ -48,14 +36,18 @@ export function createBarChart(
 ) {
   // 默认值
   const config = {
-    barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
+    // barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
+    barColor: '#275b75',
     barMargin: 1,
-    pixelUnit: 4,
+    barHeight: (d) => d * 4,
     tooltipThreshold: 10,
     fontFamily: 'sans-serif',
     fontSize: '11px',
     fontColorInsideBar: 'white',
     fontColorOutsideBar: 'black',
+    hover: {
+      mouseOverColor: '#b5d4e3'
+    },
     ...options
   } as BarChartConfigWithDefault;
 
@@ -63,7 +55,9 @@ export function createBarChart(
     .select(selectorOrDOM as string)
     .append('svg')
     .attr('width', config.width)
-    .attr('height', config.height);
+    .attr('height', config.height)
+    .attr('viewBox', `0,0,${config.width},${config.height}`)
+    .attr('preserveAspectRatio', 'xMinYMin');
 
   svg
     .selectAll('rect')
@@ -71,9 +65,23 @@ export function createBarChart(
     .enter()
     .append('rect')
     .attr('x', (_, i) => i * (config.width / data.length))
-    .attr('y', (d) => config.height - config.pixelUnit * d)
+    .attr('y', (d) => {
+      const height =
+        typeof config.barHeight === 'number'
+          ? config.barHeight
+          : typeof config.barHeight === 'string'
+          ? parseInt(config.barHeight)
+          : config.barHeight(d);
+      return config.height - height;
+    })
     .attr('width', config.width / data.length - config.barMargin)
-    .attr('height', (d) => d * config.pixelUnit)
+    .attr('height', (d) => {
+      return typeof config.barHeight === 'number'
+        ? config.barHeight
+        : typeof config.barHeight === 'string'
+        ? parseInt(config.barHeight)
+        : config.barHeight(d);
+    })
     .attr('fill', (d) =>
       typeof config.barColor === 'string' ? config.barColor : config.barColor(d)
     );
@@ -111,7 +119,13 @@ export function createBarChart(
     )
     .attr('y', (d) => {
       const bias = d > config.tooltipThreshold ? 14 : -2;
-      return config.height - d * config.pixelUnit + bias;
+      const height =
+        typeof config.barHeight === 'number'
+          ? config.barHeight
+          : typeof config.barHeight === 'string'
+          ? parseInt(config.barHeight)
+          : config.barHeight(d);
+      return config.height - height + bias;
     })
     .attr('font-family', config.fontFamily)
     .attr('font-size', (d) =>
