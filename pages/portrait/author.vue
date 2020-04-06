@@ -253,12 +253,18 @@ export default Vue.extend({
     createBarChart(
       '#citation-bar',
       this.citationTrend,
-      portraitBarConfig(document.getElementById('portrait') as any)
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.citationTrend)
+      )
     );
     createBarChart(
       '#publication-bar',
       this.publicationTrend,
-      portraitBarConfig(document.getElementById('portrait') as any)
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.publicationTrend)
+      )
     );
   },
   methods: {

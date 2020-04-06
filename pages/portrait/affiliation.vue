@@ -52,7 +52,6 @@
               :key="paper.id"
               style="margin-bottom: 20px"
             >
-              <!--TODO 这里也要做一下分页 且尽量保持paper和ranking两边高度一致 论文条数属性为size-->
               <PaperInfoComp :paper="paper" />
             </div>
           </div>
@@ -242,12 +241,18 @@ export default Vue.extend({
     createBarChart(
       '#citation-bar',
       this.citationTrend,
-      portraitBarConfig(document.getElementById('portrait') as any)
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.citationTrend)
+      )
     );
     createBarChart(
       '#publication-bar',
       this.publicationTrend,
-      portraitBarConfig(document.getElementById('portrait') as any)
+      portraitBarConfig(
+        document.getElementById('portrait') as any,
+        Math.max(...this.publicationTrend)
+      )
     );
   },
   methods: {
