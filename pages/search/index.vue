@@ -177,12 +177,13 @@
                 >
                   <el-checkbox
                     v-for="(journal, index) in filters.journals"
-                    :key="index"
+                    :key="'journal-checkbox' + index"
                     :label="journal.name"
-                  />
-                  <span class="option"
-                    >{{ journal.name }}({{ journal.count }})</span
                   >
+                    <span class="option"
+                      >{{ journal.name }}({{ journal.count }})</span
+                    >
+                  </el-checkbox>
                 </el-checkbox-group>
               </div>
             </div>
@@ -226,7 +227,13 @@ import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilter
 
 async function requestBasicSearchFilterCondition(keyword: string) {
   const res: { filters: SearchFilterResponse } = {
-    filters: {} as SearchFilterResponse
+    // 设置默认值
+    filters: {
+      authors: [],
+      affiliations: [],
+      conferences: [],
+      journals: []
+    }
   };
   try {
     const filterResponse = await getBasicSearchFilterCondition({ keyword });
@@ -327,6 +334,7 @@ export default Vue.extend({
   methods: {
     // 统一的搜索方法
     doSearch() {
+      console.log(this.mode);
       if (this.mode === 'basic') {
         this.searchContent = String(this.keyword);
         this.requestBasicSearch({
@@ -528,4 +536,9 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+/*每个选项一行*/
+.el-checkbox {
+  width: 100%;
+}
 </style>
