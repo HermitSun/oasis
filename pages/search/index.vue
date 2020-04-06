@@ -60,7 +60,6 @@
                 <el-select
                   v-model="sortKey"
                   size="mini"
-                  style="margin-bottom: 5px"
                   @change="changeSortKey"
                 >
                   <el-option
@@ -107,7 +106,7 @@
           </client-only>
         </div>
         <!--过滤条件-->
-        <div class="searchPage-content__filter">
+        <div v-if="mode === 'basic'" class="searchPage-content__filter">
           <span class="searchPage-content__sub-hint">Filter By</span>
           <div class="filter">
             <div class="filter-wrapper">
@@ -116,19 +115,22 @@
               </div>
               <div class="divider"></div>
             </div>
-            <div class="filter-wrapper">
+            <div v-if="filters.authors.length !== 0" class="filter-wrapper">
               <div class="hint">
                 Authors
               </div>
               <div class="divider"></div>
             </div>
-            <div class="filter-wrapper">
+            <div
+              v-if="filters.affiliations.length !== 0"
+              class="filter-wrapper"
+            >
               <div class="hint">
                 Affiliations
               </div>
               <div class="divider"></div>
             </div>
-            <div class="filter-wrapper">
+            <div v-if="filters.journals.length !== 0" class="filter-wrapper">
               <div class="hint">
                 Journals
               </div>
@@ -142,8 +144,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Select, Option } from 'element-ui';
-import { basicSearch, advancedSearch } from '~/api';
+import { Pagination, Select, Option, Message } from 'element-ui';
+import {
+  basicSearch,
+  advancedSearch,
+  getBasicSearchFilterCondition
+} from '~/api';
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
@@ -154,9 +160,22 @@ import {
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
 import sortKeyOptions from '~/components/search/sortKeyOptions';
+import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
+
+async function requestBasicSearchFilterCondition(keyword: string) {
+  const res: { filters: SearchFilterResponse } = {
+    filters: {} as SearchFilterResponse
+  };
+  try {
+    const filterResponse = await getBasicSearchFilterCondition({ keyword });
+    res.filters = filterResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
 
 const defaultSortKey = 'related';
-
 export default Vue.extend({
   name: 'IndexVue',
   components: {
@@ -181,13 +200,22 @@ export default Vue.extend({
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
 
+    // 二次筛选
+    const filters: SearchFilterResponse =
+      query.mode === 'basic'
+        ? (await requestBasicSearchFilterCondition(query.keyword as string))
+            .filters
+        : ({} as SearchFilterResponse);
+
+    console.log(filters);
     return {
       searchResponse: searchData.papers,
       resultCount: searchData.size,
       ...query,
       page: Number(query.page),
       // 保留这个属性是为了在高级搜索时显示更精细的搜索内容
-      searchContent: query.keyword
+      searchContent: query.keyword,
+      filters
     };
   },
   data() {
