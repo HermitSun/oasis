@@ -74,13 +74,28 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/utils/charts/pie';
-import { createForceChart, ForceChartData } from '~/utils/charts/force';
+import {
+  createForceChart,
+  ForceChartData,
+  ForceChartLink,
+  ForceChartNode
+} from '~/utils/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
-import { AuthorLink, AuthorNode } from '~/pages/charts/index.vue';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import ForceChartClear from '~/components/mixins/ForceChartClear';
+
+interface AuthorNode extends ForceChartNode {
+  name: string;
+  count: number;
+  citation: number;
+}
+
+interface AuthorLink extends ForceChartLink {
+  value: number;
+}
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -149,6 +164,8 @@ export default Vue.extend({
     SearchBar,
     [Pagination.name]: Pagination
   },
+  // 注入一个清理图表的方法
+  mixins: [ForceChartClear],
   async asyncData({ query }) {
     const authorId = query.authorId as string;
     const sortKey = 'recent';

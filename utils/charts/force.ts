@@ -11,11 +11,12 @@ import {
   Simulation,
   ValueFn
 } from 'd3';
+import { getElementLocation } from '~/utils/location';
 
 // 数据类型定义
 export interface ForceChartNode extends SimulationNodeDatum {
   id: string;
-  [key: string]: any;
+  group?: number | string;
 }
 export interface ForceChartLink extends SimulationLinkDatum<ForceChartNode> {
   [key: string]: any;
@@ -69,16 +70,24 @@ type ForceChartOptionsWithDefault = Required<
     >;
   }
 >;
+interface ForceChartUtils {
+  clear(): void; // 对图表的DOM元素进行清理
+}
+// 给tooltip挂载一个清理方法
+export interface ForceChartTooltipElement
+  extends HTMLDivElement,
+    ForceChartUtils {}
 
+// 使用结束后，记得手动清理DOM元素
 export function createForceChart(
   selectorOrDOM: string | HTMLElement,
   data: ForceChartData,
   options: ForceChartOptions
-) {
+): ForceChartUtils {
   // 默认颜色
   const scale = scaleOrdinal(schemeCategory10);
   const groupByColor = (d: ForceChartNode) =>
-    scale(d.group ? d.group : Math.random() * 10);
+    scale((d.group ? d.group : Math.random() * 10).toString());
 
   // 配置项（包括默认值）
   const config = {
@@ -123,13 +132,6 @@ export function createForceChart(
       .on('drag', dragged)
       .on('end', dragEnded);
   };
-
-  // tooltip
-  const tooltip = d3
-    .select('body')
-    .append('div')
-    .attr('class', 'tooltip')
-    .style('opacity', 0);
 
   // 力导向图的配置
   // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
@@ -179,6 +181,20 @@ export function createForceChart(
     .attr('r', config.nodeRadius)
     .attr('fill', config.nodeColor);
 
+  // tooltip
+  const tooltip = d3
+    .select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .attr('id', 'force-chart-tooltip')
+    .style('opacity', 0);
+  // 给tooltip挂载一个清理方法
+  const tooltipElement = tooltip.node() as ForceChartTooltipElement;
+  const tooltipClearFn = () => {
+    tooltip.remove();
+  };
+  tooltipElement.clear = tooltipClearFn;
+
   // 配置tooltip内容
   if (options.tooltip) {
     node
@@ -190,11 +206,13 @@ export function createForceChart(
           .transition()
           .duration(500)
           .style('opacity', 0.9);
+        const location = getElementLocation(svg.node() as SVGSVGElement);
         tooltip
           .html(tooltipHTML)
           .style('position', 'absolute')
-          .style('left', d.x + 'px')
-          .style('top', d.y + 'px')
+          // 此处似乎有误差
+          .style('left', location.x + (d.x as number) + 'px')
+          .style('top', location.y + (d.y as number) + 'px')
           .style('cursor', 'default')
           .style('user-select', 'none');
       })
@@ -218,4 +236,13 @@ export function createForceChart(
 
     node.attr('cx', (d) => d.x as number).attr('cy', (d) => d.y as number);
   });
+
+  // 所有清理方法的汇总
+  // 主要是避免分散在上面难以维护
+  const allClearFn = () => {
+    tooltipClearFn();
+  };
+  return {
+    clear: allClearFn
+  };
 }
