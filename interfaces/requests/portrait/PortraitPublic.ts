@@ -4,7 +4,7 @@
  * @date 2020.03.28
  */
 
-type sortKey = 'recent' | 'early' | 'citation';
+export type sortKey = 'recent' | 'early' | 'citation';
 
 export interface PageAndSortKey {
   page: number;
