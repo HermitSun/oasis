@@ -5,6 +5,7 @@
         Advanced Search
         <span>
           <img
+            style="cursor: pointer"
             src="~/assets/icon/icon-close.png"
             alt="close"
             @click="closeAdvancedSearch"

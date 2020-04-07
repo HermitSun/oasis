@@ -26,6 +26,7 @@
           <div class="content">
             <InterestWordCloud
               v-if="showWordCloud"
+              id="wordCloud"
               :interests="rankingDetail.keywords"
             />
           </div>
@@ -64,9 +65,6 @@ export default Vue.extend({
     requestShowDetail() {
       this.showDetail = !this.showDetail;
       this.requestRankingDetail();
-      // } else {
-      //   this.rankingDetail = this.cachedRankingDetail;
-      // }
     },
     jumpToPortrait() {
       this.$router.push({
@@ -82,7 +80,6 @@ export default Vue.extend({
           this.rank.affiliationId
         );
         this.rankingDetail = rankingDetailRes.data;
-        this.showWordCloud = true;
         const selector =
           '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
         createBarChart(selector, this.rankingDetail.publicationTrend, {
@@ -91,7 +88,17 @@ export default Vue.extend({
           barMargin: 20,
           tooltipThreshold: 15
         });
-        // this.cachedRankingDetail = this.rankingDetail;
+
+        // TODO 控制word-cloud高度
+        // const elementWordCloud = document.getElementById('wordCloud') as any;
+        // const elementPublicationTrend = document.getElementById(
+        //   this.rank.affiliationName.replace(/[^a-zA-Z]/g, '')
+        // ) as HTMLElement;
+        // elementWordCloud.style.height =
+        //   elementPublicationTrend.offsetHeight - 60 + 'px';
+        // console.log(elementPublicationTrend.offsetHeight);
+        // console.log(elementWordCloud.offsetHeight);
+        this.showWordCloud = true;
       } catch (e) {
         this.$message.error(e.toString());
       }
