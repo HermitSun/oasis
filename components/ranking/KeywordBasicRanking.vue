@@ -3,6 +3,11 @@
     <div class="title">
       Top Keyword
     </div>
+    <!--无数据时的提示-->
+    <div v-if="ranking.length === 0" :style="noDataPromptStyle">
+      暂无数据...
+    </div>
+    <!--排名内容-->
     <div v-for="(rank, index) in ranking" :key="index" class="info">
       <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
@@ -20,8 +25,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { getRankingIcon } from '~/components/ranking/ranking';
+import NoDataPrompt from '~/components/mixins/NoDataPrompt';
+
 export default Vue.extend({
   name: 'KeywordBasicRanking',
+  mixins: [NoDataPrompt],
   props: {
     ranking: {
       type: Array,

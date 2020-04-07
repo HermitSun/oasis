@@ -11,8 +11,6 @@ export type sortKey = 'recent' | 'early' | 'citation' | 'related';
 export interface BasicSearchPayload {
   keyword: string;
   page: number;
-  startYear?: number; // 开始日期
-  endYear?: number; // 结束日期
   sortKey: sortKey;
 }
 

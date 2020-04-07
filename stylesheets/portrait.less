@@ -75,7 +75,7 @@
 
     font-style: italic;
     font-weight: bold;
-    letter-spacing: 2px;
+
     font-size: @portrait-profile-name-font-size;
     margin: 5px 10px 30px;
   }
@@ -90,29 +90,27 @@
     line-height: 40px;
     .wrapper {
       .flex-left-left-row;
-      @media @min-mobile-width {
-        .prop {
-          width: 30%;
-        }
-        .number {
-          width: 70%;
-          text-align: right;
-        }
-      }
-      @media @max-mobile-width {
-      }
       .prop {
-        font-size: @middle-font;
-        color: @font-gray-dark;
+        width: 30%;
       }
       .number {
-        font-size: @large-font;
-        color: whitesmoke;
-        font-weight: lighter;
+        width: 70%;
+        text-align: right;
       }
+    }
+
+    .prop {
+      font-size: @middle-font;
+      color: @font-gray-dark;
+    }
+    .number {
+      font-size: @large-font;
+      color: whitesmoke;
+      font-weight: lighter;
     }
   }
 }
+
 .portrait-paper {
   text-align: left;
   padding: 10px 10px;

@@ -20,6 +20,14 @@
         </svg>
       </span>
     </div>
+    <!--无数据时的提示-->
+    <div
+      v-if="conferenceBasicRankingResponse.length === 0"
+      :style="noDataPromptStyle"
+    >
+      暂无数据...
+    </div>
+    <!--排名内容-->
     <div
       v-for="(rank, index) in conferenceBasicRankingResponse"
       :key="index"
@@ -43,8 +51,11 @@ import Vue from 'vue';
 import { getRankingIcon } from '~/components/ranking/ranking';
 import { getConferenceBasicRanking } from '~/api';
 import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
+import NoDataPrompt from '~/components/mixins/NoDataPrompt';
+
 export default Vue.extend({
   name: 'ConferenceBasicRanking',
+  mixins: [NoDataPrompt],
   props: {
     ranking: {
       type: Array,
