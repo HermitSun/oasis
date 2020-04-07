@@ -22,6 +22,7 @@ interface SearchLocalData {
   searchContent: string;
   showAdvancedSearch: boolean;
   isLoading: boolean; // 是否正在加载
+  isFetchingFilter: boolean; // 是否正在获取filter
   options: []; // sortKey Options
   isError: boolean; // time range
 }
