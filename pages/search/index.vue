@@ -120,7 +120,7 @@
               </div>
             </div>
             <!--具体的筛选内容-->
-            <div v-loading="isFetchingFilter" style="min-height: 400px">
+            <div id="filter-content" style="min-height: 400px; width: 100%">
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
@@ -231,6 +231,7 @@ import {
   FilterTag,
   SearchFilterResponse
 } from '~/interfaces/responses/search/SearchFilterResponse';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestBasicSearchFilterCondition(keyword: string) {
   const res: { filters: SearchFilterResponse } = {
@@ -299,7 +300,6 @@ export default Vue.extend({
         conferences: [] as FilterTag[],
         journals: [] as FilterTag[]
       },
-      isFetchingFilter: false,
       checkedAuthors: [] as string[],
       checkedAffiliations: [] as string[],
       checkedConferences: [] as string[],
@@ -493,12 +493,12 @@ export default Vue.extend({
       const query = this.$route.query;
       // 高级搜索时不提供二次筛选
       if (query.mode === 'basic') {
-        this.isFetchingFilter = true;
+        const loading = this.$loading(loadingConfig('#filter-content'));
         const filtersRes = await requestBasicSearchFilterCondition(
           query.keyword as string
         );
         this.filters = filtersRes.filters;
-        this.isFetchingFilter = false;
+        loading.close();
       }
     },
     async sendSearchFilter() {
