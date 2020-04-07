@@ -24,7 +24,6 @@ module.exports = {
     'no-debugger': 'off',
     // 以下是个人爱好
     'semi': ['error', 'always'], // 分号结尾
-    'space-before-function-paren': ['error', 'never'], // 声明的括号前不要空格
     'vue/html-self-closing': ['error', { // template中的自闭合标签
       'html': {
         'void': 'always',
@@ -39,6 +38,7 @@ module.exports = {
     'vue/html-closing-bracket-newline': 'off',
     'vue/html-indent': 'off',
     'indent': 'off',
+    'space-before-function-paren': 'off',
     'func-call-spacing': 'off',
     'arrow-parens': 'off'
   }
