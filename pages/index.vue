@@ -86,9 +86,13 @@ async function requestActivePaperAbstract() {
   };
   try {
     const activePaperAbstractRes = await getActivePaperAbstract();
-    res.abstractResponse = activePaperAbstractRes.data;
+    if (activePaperAbstractRes.code === 200) {
+      res.abstractResponse = activePaperAbstractRes.data;
+    } else {
+      Message.error(activePaperAbstractRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -102,9 +106,13 @@ async function requestAffiliationBasicRanking() {
       sortKey: 'acceptanceCount',
       year: new Date().getFullYear() - 1 // TODO 去掉 - 1
     });
-    res.affiliationRanking = affiliationBasicRankingRes.data;
+    if (affiliationBasicRankingRes.code === 200) {
+      res.affiliationRanking = affiliationBasicRankingRes.data;
+    } else {
+      Message.error(affiliationBasicRankingRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -118,9 +126,13 @@ async function requestAuthorBasicRanking() {
       sortKey: 'acceptanceCount',
       year: new Date().getFullYear() - 1 // TODO 去掉 - 1
     });
-    res.authorRanking = authorBasicRankingRes.data;
+    if (authorBasicRankingRes.code === 200) {
+      res.authorRanking = authorBasicRankingRes.data;
+    } else {
+      Message.error(authorBasicRankingRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -134,9 +146,13 @@ async function requestConferenceBasicRanking() {
       sortKey: 'acceptanceCount',
       year: new Date().getFullYear() - 1 // TODO 去掉 - 1
     });
-    res.conferenceRanking = conferenceBasicRankingRes.data;
+    if (conferenceBasicRankingRes.code === 200) {
+      res.conferenceRanking = conferenceBasicRankingRes.data;
+    } else {
+      Message.error(conferenceBasicRankingRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -150,9 +166,13 @@ async function requestJournalBasicRanking() {
       sortKey: 'acceptanceCount',
       year: new Date().getFullYear() - 1 // TODO 去掉 - 1
     });
-    res.journalRanking = journalBasicRankingRes.data;
+    if (journalBasicRankingRes.code === 200) {
+      res.journalRanking = journalBasicRankingRes.data;
+    } else {
+      Message.error(journalBasicRankingRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -165,9 +185,13 @@ async function requestKeywordBasicRanking() {
     const keywordBasicRankingRes = await getKeywordBasicRanking(
       Number(new Date().getFullYear() - 1)
     ); // TODO 去掉 - 1);
-    res.keywordRanking = keywordBasicRankingRes.data;
+    if (keywordBasicRankingRes.code === 200) {
+      res.keywordRanking = keywordBasicRankingRes.data;
+    } else {
+      Message.error(keywordBasicRankingRes.msg);
+    }
   } catch (e) {
-    Message.error(e.toString());
+    Message.error('网络异常');
   }
   return res;
 }
@@ -218,8 +242,9 @@ export default Vue.extend({
             mode: 'basic',
             keyword: this.keyword,
             page: defaultPage,
-            startYear: '2001',
-            endYear: '2020',
+            // 默认数据，主要是为了显示，其实并没有什么实际作用
+            startYear: '1979',
+            endYear: new Date().getFullYear().toString(),
             sortKey: 'related'
           }
         });
@@ -258,7 +283,7 @@ export default Vue.extend({
         flex-wrap: wrap;
         .rank {
           margin: 0 10px;
-          min-width: 220px;
+          min-width: 240px;
         }
       }
     }
