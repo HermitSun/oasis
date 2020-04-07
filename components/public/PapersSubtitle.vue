@@ -37,11 +37,11 @@ export default Vue.extend({
   props: {
     title: {
       type: String,
-      default: () => ({})
+      default: ''
     },
     sortKey: {
       type: String,
-      default: () => ({})
+      default: ''
     }
   },
   data() {

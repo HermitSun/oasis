@@ -8,17 +8,29 @@
         </div>
         <div class="module">
           <Subtitle title="📉 Citation Trend" />
-          <div id="citation-bar" class="content"></div>
+          <div
+            id="citation-bar"
+            class="content"
+            style="min-height: 150px"
+          ></div>
         </div>
         <div class="module">
           <Subtitle title="📈 Publication Trends" />
-          <div id="publication-bar" class="content"></div>
+          <div
+            id="publication-bar"
+            class="content"
+            style="min-height: 150px"
+          ></div>
         </div>
       </div>
       <div class="profile-module">
         <div class="module" style="margin-right: 10px">
           <Subtitle title="🌥 Keywords" />
-          <div id="pie" class="chart content"></div>
+          <div
+            id="pie"
+            v-loading="isInterestLoading"
+            class="chart content"
+          ></div>
         </div>
         <div class="module">
           <Subtitle title="🎓 Scholar Network" />
@@ -82,9 +94,10 @@ import {
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/utils/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
-import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import ForceChartClear from '~/components/mixins/ForceChartClear';
+import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -165,14 +178,21 @@ export default Vue.extend({
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear],
-  async asyncData({ query }) {
+  async asyncData({ query, redirect }) {
+    // 提高健壮性
+    if (!query.authorId) {
+      redirect('/404');
+    }
     const authorId = query.authorId as string;
-    const sortKey = 'recent';
-    const page = 1;
-    // TODO const sortKey = query.sortKey
-    // TODO const page = query.page
-    const portraitRes = await requestPortrait(authorId);
-    console.log(portraitRes);
+    // 增加默认值
+    const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
+    const page = query.page ? Number(query.page) : 1;
+
+    const portraitReq = requestPortrait(authorId);
+    const papersReq = requestPapers({ authorId, page, sortKey });
+    const portraitRes = await portraitReq;
+    const papersRes = await papersReq;
+
     const profile = {
       name: portraitRes.portrait.name,
       statistics: [
@@ -193,100 +213,127 @@ export default Vue.extend({
     const citationTrend = portraitRes.portrait.citationTrend;
     const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const papersReq = requestPapers({ authorId, page, sortKey });
-    const interestsReq = requestInterests(authorId);
-    const academiaRelationReq = requestAcademicRelation(authorId);
     return {
-      ...query,
       authorId,
+      sortKey,
+      page,
       profile,
       citationTrend,
       publicationTrend,
-      ...(await papersReq),
-      ...(await interestsReq),
-      ...(await academiaRelationReq)
+      ...papersRes
     };
   },
   data() {
     return {
-      page: 1,
-      sortKey: 'recent' as sortKey
-    } as any;
+      // 研究兴趣
+      interests: [] as InterestResponse[],
+      isInterestLoading: false,
+      // 学术关系
+      academicRelation: {} as ForceChartData,
+      isAcademicRelationLoading: false
+    } as PortraitAuthorPageComp;
   },
   mounted() {
-    createPieChart(
-      '#pie',
-      this.interests
-        .map((i: { name: string; value: number }) => {
-          return {
-            label: i.name,
-            value: i.value
-          };
-        })
-        .sort(
-          (
-            a: { name: string; value: number },
-            b: { name: string; value: number }
-          ) => b.value - a.value
+    // 柱状图的开销较小，但是仍然不打算让他阻塞渲染
+    setTimeout(() => {
+      createBarChart(
+        '#citation-bar',
+        this.citationTrend,
+        portraitBarConfig(
+          document.getElementById('portrait') as any,
+          Math.max(...this.citationTrend)
         )
-        .slice(0, 20),
-      {
-        width: getSizeById('pie').width - 20,
-        height: getSizeById('pie').height - 20
-      }
-    );
-    createForceChart('#force', this.academicRelation, {
-      width: 500,
-      height: 500,
-      // nodeColor: '#666',
-      linkWidth: (_) => 1,
-      linkLength: (d) => {
-        const link = d as AuthorLink;
-        // 限制最大长度
-        return link.value * 30 > 200 ? 200 : link.value * 30;
-      },
-      nodeRadius: (d) => {
-        const node = d as AuthorNode;
-        // 大小 = 被引数 / 论文数
-        // ÷5是为了显示
-        const radius = node.citation / node.count / 5;
-        return radius < 2 ? 2 : radius;
-      },
-      tooltip: (d) => {
-        const node = d as AuthorNode;
-        return `
+      );
+      createBarChart(
+        '#publication-bar',
+        this.publicationTrend,
+        portraitBarConfig(
+          document.getElementById('portrait') as any,
+          Math.max(...this.publicationTrend)
+        )
+      );
+    }, 0);
+    // 暂时使用这种方式避免渲染时的阻塞
+    // 可能需要重构为组件
+    setTimeout(() => {
+      this.createInterestChart(this.authorId);
+    }, 0);
+    setTimeout(() => {
+      this.createAcademicRelationChart(this.authorId);
+    }, 0);
+  },
+  methods: {
+    // 创建研究兴趣图
+    async createInterestChart(authorId: string) {
+      // 开始加载
+      this.isInterestLoading = true;
+      // 取数据
+      const interestsRes = await requestInterests(authorId);
+      this.interests = interestsRes.interests;
+      // 渲染图表
+      createPieChart(
+        '#pie',
+        this.interests
+          .map((i: { name: string; value: number }) => {
+            return {
+              label: i.name,
+              value: i.value
+            };
+          })
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 20),
+        {
+          width: getSizeById('pie').width - 20,
+          height: getSizeById('pie').height - 20
+        }
+      );
+      // 加载完毕
+      this.isInterestLoading = false;
+    },
+    // 创建学术关系图
+    async createAcademicRelationChart(authorId: string) {
+      // 开始加载
+      this.isInterestLoading = true;
+      // 取数据
+      const academiaRelationReq = await requestAcademicRelation(authorId);
+      this.academicRelation = academiaRelationReq.academicRelation;
+      // 渲染图表
+      createForceChart('#force', this.academicRelation, {
+        width: 500,
+        height: 500,
+        // nodeColor: '#666',
+        linkWidth: (_) => 1,
+        linkLength: (d) => {
+          const link = d as AuthorLink;
+          // 限制最大长度
+          return link.value * 30 > 200 ? 200 : link.value * 30;
+        },
+        nodeRadius: (d) => {
+          const node = d as AuthorNode;
+          // 大小 = 被引数 / 论文数
+          // ÷5是为了显示
+          const radius = node.citation / node.count / 5;
+          return radius < 2 ? 2 : radius;
+        },
+        tooltip: (d) => {
+          const node = d as AuthorNode;
+          return `
           <div style="background-color: rgba(153, 153, 153, 0.8); border-radius: 5px">
             <p>name: ${node.name}</p>
             <p>citation: ${node.citation}</p>
             <p>count: ${node.count}</p>
           </div>
         `;
-      },
-      draggable: true
-    });
-
-    createBarChart(
-      '#citation-bar',
-      this.citationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.citationTrend)
-      )
-    );
-    createBarChart(
-      '#publication-bar',
-      this.publicationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.publicationTrend)
-      )
-    );
-  },
-  methods: {
+        },
+        draggable: true
+      });
+      // 加载完毕
+      this.isInterestLoading = false;
+    },
     async showNextPage() {
       this.page = this.page + 1;
       const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
+        loadingConfig(document.getElementById('papers') as HTMLElement)
       );
       await requestPapers({
         authorId: this.authorId,
@@ -302,7 +349,7 @@ export default Vue.extend({
       this.page = 1;
       this.sortKey = newSortKey;
       const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
+        loadingConfig(document.getElementById('papers') as HTMLElement)
       );
       await requestPapers({
         authorId: this.authorId,

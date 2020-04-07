@@ -126,7 +126,7 @@ export default Vue.extend({
     jumpToPortrait(authorId: string) {
       this.$router.push({
         path: '/portrait/author',
-        query: { authorId }
+        query: { authorId, sortKey: 'recent', page: '1' }
       });
     },
     changeSortKey() {
