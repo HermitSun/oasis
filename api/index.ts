@@ -44,7 +44,7 @@ import { ForceChartData } from '~/utils/charts/force';
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/es', {
+  const { data } = await axios.get('/search/basic/es/highlight', {
     params: args
   });
   return data;

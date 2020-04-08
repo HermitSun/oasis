@@ -4,13 +4,16 @@
       <a :href="paper.link" class="title" target="_blank">{{ paper.title }}</a>
     </div>
     <div>
+      <!--跳转到学者画像-->
+      <!--TODO: 点击跳转后页面应当刷新-->
       <span
         v-for="(author, index) in paper.authors"
         :key="index"
         class="author"
         style="margin-right: 5px"
+        @click="linkToAuthor(author)"
       >
-        {{ author }}
+        {{ author.name }}
       </span>
       <span class="info">
         <span
@@ -24,7 +27,6 @@
       </span>
     </div>
     <div class="abstract">
-      {{ paper._abstract }}
       {{ paper._abstract }}
     </div>
     <div class="divider"></div>
@@ -64,9 +66,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 export default Vue.extend({
   name: 'PaperInfoComp',
+  mixins: [LinkToAuthor],
   props: {
     paper: {
       type: Object,

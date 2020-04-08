@@ -6,10 +6,15 @@
  */
 export type contentType = 'conferences' | 'periodicals'; // 会议或期刊
 
+export interface AuthorInfo {
+  name: string;
+  id: string;
+}
+
 export interface SearchResponse {
   id: string;
   title: string;
-  authors: string[];
+  authors: AuthorInfo[];
   _abstract: string; // 因为后端abstract是关键字，所以使用_abstract替代
   publicationYear: number;
   metrics: {
