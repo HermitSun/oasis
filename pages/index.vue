@@ -261,6 +261,7 @@ export default Vue.extend({
   .flex-center-column;
   background: @background-blue;
   height: @homepage-header-height;
+  min-height: 350px;
 }
 
 .homepage-header .homepage-header__logo {
