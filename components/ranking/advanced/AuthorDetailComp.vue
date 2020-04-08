@@ -19,10 +19,7 @@
             />
           </span>
         </span>
-        <span
-          class="name"
-          style="display: flex;align-items: center;justify-content: center"
-          @click="jumpToPortrait"
+        <span class="name" @click="jumpToPortrait"
           >{{ rank.authorName }}
           <img src="../../../assets/icon/icon-share.svg" class="icon" />
         </span>
