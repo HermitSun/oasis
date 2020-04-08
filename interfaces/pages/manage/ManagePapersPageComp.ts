@@ -13,7 +13,8 @@ export interface PaperInfo extends Omit<SearchResponse, 'authors'> {
 
 // 覆盖父接口的类型，针对界面显示做了调整
 export interface PaperFrom
-  extends Omit<PaperInfo, 'keywords' | 'publicationYear'> {
+  extends Omit<PaperInfo, 'authors' | 'keywords' | 'publicationYear'> {
+  authors: string;
   keywords: string;
   publicationYear: string;
 }

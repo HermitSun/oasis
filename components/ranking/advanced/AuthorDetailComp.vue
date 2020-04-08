@@ -7,21 +7,27 @@
           <span class="icon">
             <img
               v-if="!showDetail"
-              src="../../../assets/icon/icon-arrow-right.svg"
+              src="~/assets/icon/icon-arrow-right.svg"
               width="30"
+              alt="icon-arrow-right"
               @click="requestShowDetail"
             />
             <img
               v-if="showDetail"
-              src="../../../assets/icon/icon-arrow-top.svg"
+              src="~/assets/icon/icon-arrow-top.svg"
               width="30"
+              alt="icon-arrow-top"
               @click="requestShowDetail"
             />
           </span>
         </span>
         <span class="name" @click="jumpToPortrait"
           >{{ rank.authorName }}
-          <img src="../../../assets/icon/icon-share.svg" class="icon" />
+          <img
+            src="~/assets/icon/icon-share.svg"
+            class="icon"
+            alt="icon-share.svg"
+          />
         </span>
       </span>
       <span class="value">{{ rank.count }}</span>
@@ -52,8 +58,8 @@
           </div>
           <div class="content">
             <div
-              v-for="(paper, index) in rankingDetail.mostInfluentialPapers"
-              :key="index"
+              v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
+              :key="i"
               style="margin-bottom: 10px"
             >
               <PaperInfoComp :paper="paper" />
@@ -66,8 +72,8 @@
           </div>
           <div class="content">
             <div
-              v-for="(paper, index) in rankingDetail.mostRecentPapers"
-              :key="index"
+              v-for="(paper, i) in rankingDetail.mostRecentPapers"
+              :key="i"
               style="margin-bottom: 10px"
             >
               <PaperInfoComp :paper="paper" />
