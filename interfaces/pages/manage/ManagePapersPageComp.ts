@@ -6,7 +6,8 @@
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 
-export interface PaperInfo extends SearchResponse {
+export interface PaperInfo extends Omit<SearchResponse, 'authors'> {
+  authors: string[];
   readonly metrics: SearchResponse['metrics'];
 }
 

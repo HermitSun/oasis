@@ -24,7 +24,7 @@
                   v-for="(author, index) of paperProps.row.authors"
                   :key="index"
                 >
-                  <span v-html="author.name"></span>
+                  <span>{{ author.name }}</span>
                 </li>
               </ul>
             </el-form-item>
@@ -33,7 +33,7 @@
               <template #label>
                 <b>摘要</b>
               </template>
-              <span v-html="paperProps.row._abstract"></span>
+              <span>{{ paperProps.row._abstract }}</span>
             </el-form-item>
             <!--关键词-->
             <el-form-item>
@@ -53,14 +53,10 @@
         </template>
       </el-table-column>
       <!--简略信息-->
-      <el-table-column prop="title" label="标题" width="250">
-        <template #default="paperProps">
-          <span v-html="paperProps.row.title"></span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="title" label="标题" width="250" />
       <el-table-column label="作者" width="160">
         <template #default="paperProps">
-          <span v-html="paperProps.row.authors[0].name + '等'"></span>
+          <span>{{ paperProps.row.authors[0] }}等</span>
         </template>
       </el-table-column>
       <el-table-column prop="publicationYear" label="出版年份" />
@@ -190,7 +186,7 @@ export default Vue.extend({
       // 创建一个副本，避免子组件修改此处的数据
       this.paperWaitToUpdate = {
         ...paper,
-        authors: paper.authors.map((author) => author.name)
+        authors: paper.authors
       };
       this.showUpdateDialog = true;
     },
@@ -213,7 +209,12 @@ export default Vue.extend({
         const papersData = papersRes.data
           ? papersRes.data
           : { papers: [], size: 0 };
-        this.papers = papersData.papers;
+        this.papers = papersData.papers.map((paper) => {
+          return {
+            ...paper,
+            authors: paper.authors.map((author) => author.name)
+          };
+        });
         this.resultCount = papersData.size;
         // 重置页码
         // 但搜索不一定要重置页码
@@ -237,8 +238,13 @@ export default Vue.extend({
       // 增加默认值，相当于静默失败，避免500
       const papersData = papersRes.data
         ? papersRes.data
-        : { papers: [], size: this.resultCount };
-      this.papers = papersData.papers;
+        : { papers: [], size: this.resultCount as number };
+      this.papers = papersData.papers.map((paper) => {
+        return {
+          ...paper,
+          authors: paper.authors.map((author) => author.name)
+        };
+      });
       this.isLoading = false;
     },
     linkToPaper(link: string) {
