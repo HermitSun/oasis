@@ -1,5 +1,5 @@
 <template>
-  <div :id="'detail' + index" class="ranking-advanced-detail">
+  <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
         <span class="index"
@@ -86,8 +86,6 @@ import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/adva
 import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
 import { createBarChart } from '~/utils/charts/bar';
-import loadingConfig from '~/components/portrait/loadingConfig';
-import { Loading } from '~/node_modules/element-ui';
 
 export default Vue.extend({
   name: 'AuthorDetailComp',
@@ -110,7 +108,8 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as AuthorDetailRankingResponse,
-      cachedRankingDetail: {} as AuthorDetailRankingResponse
+      cachedRankingDetail: {} as AuthorDetailRankingResponse,
+      isLoading: false
     };
   },
   mounted() {
@@ -140,19 +139,15 @@ export default Vue.extend({
       });
     },
     async requestRankingDetail() {
-      const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('detail' + this.index) as any)
-      );
-      console.log('detail' + this.index);
-      console.log(document.getElementById('detail' + this.index));
+      this.isLoading = true;
       try {
         const rankingDetailRes = await getAuthorDetailRankingById(
           this.rank.authorId
         );
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
-        loadingInstance.close();
         this.showWordCloud = true;
+        this.isLoading = false;
       } catch (e) {
         this.$message.error(e.toString());
       }

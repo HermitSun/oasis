@@ -1,5 +1,5 @@
 <template>
-  <div :id="'detail' + index" class="ranking-advanced-detail">
+  <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
         <span class="index"
@@ -66,8 +66,6 @@ import { AffiliationDetailRankingResponse } from '~/interfaces/responses/ranking
 import { getAffiliationDetailRankingById } from '~/api';
 import { createBarChart } from '~/utils/charts/bar';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
-import { Loading } from '~/node_modules/element-ui';
-import loadingConfig from '~/components/portrait/loadingConfig';
 
 export default Vue.extend({
   name: 'AffiliationDetailComp',
@@ -88,8 +86,8 @@ export default Vue.extend({
     return {
       showDetail: false,
       showWordCloud: false,
-      rankingDetail: {} as AffiliationDetailRankingResponse
-      // cachedRankingDetail: {} as AffiliationDetailRankingResponse
+      rankingDetail: {} as AffiliationDetailRankingResponse,
+      isLoading: false
     };
   },
   methods: {
@@ -106,11 +104,7 @@ export default Vue.extend({
       });
     },
     async requestRankingDetail() {
-      const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('detail' + this.index) as any)
-      );
-      console.log('detail' + this.index);
-      console.log(document.getElementById('detail' + this.index));
+      this.isLoading = true;
       try {
         const rankingDetailRes = await getAffiliationDetailRankingById(
           this.rank.affiliationId
@@ -135,7 +129,7 @@ export default Vue.extend({
         // console.log(elementPublicationTrend.offsetHeight);
         // console.log(elementWordCloud.offsetHeight);
         this.showWordCloud = true;
-        loadingInstance.close();
+        this.isLoading = false;
       } catch (e) {
         this.$message.error(e.toString());
       }
