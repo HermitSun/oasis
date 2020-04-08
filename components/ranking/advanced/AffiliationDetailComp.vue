@@ -87,13 +87,18 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as AffiliationDetailRankingResponse,
+      cachedRankingDetail: {} as AffiliationDetailRankingResponse,
       isLoading: false
     };
   },
   methods: {
     requestShowDetail() {
       this.showDetail = !this.showDetail;
-      this.requestRankingDetail();
+      if (Object.keys(this.cachedRankingDetail).length === 0) {
+        this.requestRankingDetail();
+      } else {
+        this.rankingDetail = this.cachedRankingDetail;
+      }
     },
     jumpToPortrait() {
       this.$router.push({
@@ -110,6 +115,8 @@ export default Vue.extend({
           this.rank.affiliationId
         );
         this.rankingDetail = rankingDetailRes.data;
+        this.cachedRankingDetail = this.rankingDetail;
+
         const selector =
           '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
         createBarChart(selector, this.rankingDetail.publicationTrend, {
@@ -118,7 +125,6 @@ export default Vue.extend({
           barMargin: 20,
           tooltipThreshold: 15
         });
-
         // TODO 控制word-cloud高度
         // const elementWordCloud = document.getElementById('wordCloud') as any;
         // const elementPublicationTrend = document.getElementById(
