@@ -1,7 +1,32 @@
 <template>
   <div class="ranking-advanced-detail">
-    <div class="basic" @click="requestShowDetail">
-      <span class="name" @click="jumpToPortrait">{{ rank.authorName }}</span>
+    <div class="basic">
+      <span class="name-wrapper">
+        <span class="index"
+          >{{ index }}
+          <span class="icon">
+            <img
+              v-if="!showDetail"
+              src="../../../assets/icon/icon-arrow-right.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+            <img
+              v-if="showDetail"
+              src="../../../assets/icon/icon-arrow-top.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+          </span>
+        </span>
+        <span
+          class="name"
+          style="display: flex;align-items: center;justify-content: center"
+          @click="jumpToPortrait"
+          >{{ rank.authorName }}
+          <img src="../../../assets/icon/icon-share.svg" class="icon" />
+        </span>
+      </span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">
@@ -75,6 +100,10 @@ export default Vue.extend({
     rank: {
       type: Object,
       default: () => ({})
+    },
+    index: {
+      type: Number,
+      default: 1
     }
   },
   data() {

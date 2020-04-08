@@ -16,7 +16,7 @@
             :key="index"
             style="margin-bottom: 5px"
           >
-            <AffiliationDetailComp :rank="rank" />
+            <AffiliationDetailComp :rank="rank" :index="index + 1" />
           </div>
         </div>
       </div>
