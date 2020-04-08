@@ -6,14 +6,14 @@
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 
-export interface PaperInfo extends SearchResponse {
+export interface PaperInfo extends Omit<SearchResponse, 'authors'> {
+  authors: string[];
   readonly metrics: SearchResponse['metrics'];
 }
 
 // 覆盖父接口的类型，针对界面显示做了调整
 export interface PaperFrom
-  extends Omit<PaperInfo, 'authors' | 'keywords' | 'publicationYear'> {
-  authors: string;
+  extends Omit<PaperInfo, 'keywords' | 'publicationYear'> {
   keywords: string;
   publicationYear: string;
 }
