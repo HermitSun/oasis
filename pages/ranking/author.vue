@@ -16,7 +16,7 @@
             :key="index"
             style="margin-bottom: 5px"
           >
-            <AuthorDetailComp :rank="rank" />
+            <AuthorDetailComp :rank="rank" :index="index + 1" />
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ import { ForceChartData } from '~/utils/charts/force';
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/es', {
+  const { data } = await axios.get('/search/basic/es/highlight', {
     params: args
   });
   return data;
@@ -392,6 +392,16 @@ export async function updateJournalInfo(
   dest: string
 ): Promise<BasicResponse> {
   const { data } = await axios.put('/info/journal', { src, dest });
+  return data;
+}
+
+// 获取论文信息 getPaperInfo
+export async function getPaperInfo(
+  args: BasicSearchPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/search/basic/es', {
+    params: args
+  });
   return data;
 }
 

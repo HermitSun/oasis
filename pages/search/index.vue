@@ -119,73 +119,76 @@
                 </div>
               </div>
             </div>
-            <div v-if="filters.authors.length !== 0" class="filter-wrapper">
-              <div class="divider"></div>
-              <div class="hint">
-                Authors
-              </div>
-              <div class="options">
-                <el-checkbox-group
-                  v-model="checkedAuthors"
-                  @change="sendSearchFilter"
-                >
-                  <el-checkbox
-                    v-for="(author, index) in filters.authors"
-                    :key="index"
-                    :label="author.name"
+            <!--具体的筛选内容-->
+            <div id="filter-content" style="min-height: 400px; width: 100%">
+              <div v-if="filters.authors.length !== 0" class="filter-wrapper">
+                <div class="divider"></div>
+                <div class="hint">
+                  Authors
+                </div>
+                <div class="options">
+                  <el-checkbox-group
+                    v-model="checkedAuthors"
+                    @change="sendSearchFilter"
                   >
-                    <span class="option"
-                      >{{ author.name }}({{ author.count }})</span
+                    <el-checkbox
+                      v-for="(author, index) in filters.authors"
+                      :key="index"
+                      :label="author.name"
                     >
-                  </el-checkbox>
-                </el-checkbox-group>
+                      <span class="option"
+                        >{{ author.name }}({{ author.count }})</span
+                      >
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
               </div>
-            </div>
-            <div
-              v-if="filters.affiliations.length !== 0"
-              class="filter-wrapper"
-            >
-              <div class="divider"></div>
-              <div class="hint">
-                Affiliations
-              </div>
-              <div class="options">
-                <el-checkbox-group
-                  v-model="checkedAffiliations"
-                  @change="sendSearchFilter"
-                >
-                  <el-checkbox
-                    v-for="(affiliation, index) in filters.affiliations"
-                    :key="index"
-                    :label="affiliation.name"
+              <div
+                v-if="filters.affiliations.length !== 0"
+                class="filter-wrapper"
+              >
+                <div class="divider"></div>
+                <div class="hint">
+                  Affiliations
+                </div>
+                <div class="options">
+                  <el-checkbox-group
+                    v-model="checkedAffiliations"
+                    @change="sendSearchFilter"
                   >
-                    <span class="option"
-                      >{{ affiliation.name }}({{ affiliation.count }})
-                    </span>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </div>
-            </div>
-            <div v-if="filters.journals.length !== 0" class="filter-wrapper">
-              <div class="divider"></div>
-              <div class="hint">
-                Journals
-              </div>
-              <div class="options">
-                <el-checkbox-group
-                  v-model="checkedJournals"
-                  @change="sendSearchFilter"
-                >
-                  <el-checkbox
-                    v-for="(journal, index) in filters.journals"
-                    :key="'journal-checkbox' + index"
-                    :label="journal.name"
-                  >
-                    <span class="option"
-                      >{{ journal.name }}({{ journal.count }})</span
+                    <el-checkbox
+                      v-for="(affiliation, index) in filters.affiliations"
+                      :key="index"
+                      :label="affiliation.name"
                     >
-                  </el-checkbox>
-                </el-checkbox-group>
+                      <span class="option"
+                        >{{ affiliation.name }}({{ affiliation.count }})
+                      </span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <div v-if="filters.journals.length !== 0" class="filter-wrapper">
+                <div class="divider"></div>
+                <div class="hint">
+                  Journals
+                </div>
+                <div class="options">
+                  <el-checkbox-group
+                    v-model="checkedJournals"
+                    @change="sendSearchFilter"
+                  >
+                    <el-checkbox
+                      v-for="(journal, index) in filters.journals"
+                      :key="'journal-checkbox' + index"
+                      :label="journal.name"
+                    >
+                      <span class="option"
+                        >{{ journal.name }}({{ journal.count }})</span
+                      >
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
               </div>
             </div>
           </div>
@@ -224,7 +227,11 @@ import {
 } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
 import sortKeyOptions from '~/components/search/sortKeyOptions';
-import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
+import {
+  FilterTag,
+  SearchFilterResponse
+} from '~/interfaces/responses/search/SearchFilterResponse';
+import loadingConfig from '~/components/portrait/loadingConfig';
 
 async function requestBasicSearchFilterCondition(keyword: string) {
   const res: { filters: SearchFilterResponse } = {
@@ -267,20 +274,10 @@ export default Vue.extend({
       endYear: Number(query.endYear)
     };
     // 这里非常不优雅，但是没有办法
-    const searchReq = basicSearch(searchPayload);
-    // 二次筛选
-    // 高级搜索时不提供二次筛选
-    const filtersReq =
-      query.mode === 'basic'
-        ? requestBasicSearchFilterCondition(query.keyword as string)
-        : Promise.resolve({ filters: {} });
-    // 增加并发性，大致能快50-100ms
-    // 目前的实现严重依赖后端性能
     // 增加默认值，相当于静默失败，避免500
-    const searchRes = await searchReq;
+    const searchRes = await basicSearch(searchPayload);
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
-    const filters = (await filtersReq).filters;
 
     return {
       searchResponse: searchData.papers,
@@ -288,8 +285,7 @@ export default Vue.extend({
       ...query,
       page: Number(query.page),
       // 保留这个属性是为了在高级搜索时显示更精细的搜索内容
-      searchContent: query.keyword,
-      filters
+      searchContent: query.keyword
     };
   },
   data() {
@@ -298,6 +294,12 @@ export default Vue.extend({
       isLoading: false, // 是否正在加载
       isError: false,
       options: sortKeyOptions,
+      filters: {
+        authors: [] as FilterTag[],
+        affiliations: [] as FilterTag[],
+        conferences: [] as FilterTag[],
+        journals: [] as FilterTag[]
+      },
       checkedAuthors: [] as string[],
       checkedAffiliations: [] as string[],
       checkedConferences: [] as string[],
@@ -309,9 +311,6 @@ export default Vue.extend({
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
       return process.client && isMobile() ? 5 : 7;
-    },
-    isMobile() {
-      return isMobile();
     }
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
@@ -336,6 +335,9 @@ export default Vue.extend({
         );
       }
     }
+  },
+  mounted() {
+    this.getSearchFilter();
   },
   methods: {
     // 统一的搜索方法
@@ -369,7 +371,6 @@ export default Vue.extend({
         });
       }
     },
-
     // 基础搜索
     async requestBasicSearch(args: BasicSearchPayload) {
       this.isLoading = true;
@@ -411,7 +412,6 @@ export default Vue.extend({
         this.isLoading = false;
       }
     },
-
     // 展示下一页的搜索结果
     showNextPage(page: number) {
       if (this.mode === 'basic') {
@@ -443,7 +443,6 @@ export default Vue.extend({
         });
       }
     },
-
     // 开始另一次搜索（关键字不同）回车时默认为普通搜索
     startAnotherBasicSearch(keyword: string) {
       this.$router.push({
@@ -458,7 +457,6 @@ export default Vue.extend({
         }
       });
     },
-
     // 切换sortKey
     changeSortKey(sortKey: sortKey) {
       if (this.mode === 'basic') {
@@ -490,7 +488,19 @@ export default Vue.extend({
         });
       }
     },
-
+    // 二次筛选
+    async getSearchFilter() {
+      const query = this.$route.query;
+      // 高级搜索时不提供二次筛选
+      if (query.mode === 'basic') {
+        const loading = this.$loading(loadingConfig('#filter-content'));
+        const filtersRes = await requestBasicSearchFilterCondition(
+          query.keyword as string
+        );
+        this.filters = filtersRes.filters;
+        loading.close();
+      }
+    },
     async sendSearchFilter() {
       const author = this.checkedAuthors.join(' ');
       const affiliation = this.checkedAffiliations.join(' ');

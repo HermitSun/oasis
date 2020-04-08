@@ -1,9 +1,33 @@
 <template>
-  <div class="ranking-advanced-detail">
-    <div class="basic" @click="requestShowDetail">
-      <span class="name" @click="jumpToPortrait">{{
-        rank.affiliationName
-      }}</span>
+  <div v-loading="isLoading" class="ranking-advanced-detail">
+    <div class="basic">
+      <span class="name-wrapper">
+        <span class="index"
+          >{{ index }}
+          <span class="icon">
+            <img
+              v-if="!showDetail"
+              src="../../../assets/icon/icon-arrow-right.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+            <img
+              v-if="showDetail"
+              src="../../../assets/icon/icon-arrow-top.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+          </span>
+        </span>
+        <span class="name" style="padding-left: 10px;" @click="jumpToPortrait"
+          >{{ rank.affiliationName }}
+          <img
+            src="../../../assets/icon/icon-share.svg"
+            width="20"
+            class="icon"
+          />
+        </span>
+      </span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">{{ rank.authorNum }}</span>
@@ -26,6 +50,7 @@
           <div class="content">
             <InterestWordCloud
               v-if="showWordCloud"
+              id="wordCloud"
               :interests="rankingDetail.keywords"
             />
           </div>
@@ -41,6 +66,7 @@ import { AffiliationDetailRankingResponse } from '~/interfaces/responses/ranking
 import { getAffiliationDetailRankingById } from '~/api';
 import { createBarChart } from '~/utils/charts/bar';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
+
 export default Vue.extend({
   name: 'AffiliationDetailComp',
   components: {
@@ -50,23 +76,24 @@ export default Vue.extend({
     rank: {
       type: Object,
       default: () => ({})
+    },
+    index: {
+      type: Number,
+      default: 1
     }
   },
   data() {
     return {
       showDetail: false,
       showWordCloud: false,
-      rankingDetail: {} as AffiliationDetailRankingResponse
-      // cachedRankingDetail: {} as AffiliationDetailRankingResponse
+      rankingDetail: {} as AffiliationDetailRankingResponse,
+      isLoading: false
     };
   },
   methods: {
     requestShowDetail() {
       this.showDetail = !this.showDetail;
       this.requestRankingDetail();
-      // } else {
-      //   this.rankingDetail = this.cachedRankingDetail;
-      // }
     },
     jumpToPortrait() {
       this.$router.push({
@@ -77,12 +104,12 @@ export default Vue.extend({
       });
     },
     async requestRankingDetail() {
+      this.isLoading = true;
       try {
         const rankingDetailRes = await getAffiliationDetailRankingById(
           this.rank.affiliationId
         );
         this.rankingDetail = rankingDetailRes.data;
-        this.showWordCloud = true;
         const selector =
           '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
         createBarChart(selector, this.rankingDetail.publicationTrend, {
@@ -91,7 +118,18 @@ export default Vue.extend({
           barMargin: 20,
           tooltipThreshold: 15
         });
-        // this.cachedRankingDetail = this.rankingDetail;
+
+        // TODO 控制word-cloud高度
+        // const elementWordCloud = document.getElementById('wordCloud') as any;
+        // const elementPublicationTrend = document.getElementById(
+        //   this.rank.affiliationName.replace(/[^a-zA-Z]/g, '')
+        // ) as HTMLElement;
+        // elementWordCloud.style.height =
+        //   elementPublicationTrend.offsetHeight - 60 + 'px';
+        // console.log(elementPublicationTrend.offsetHeight);
+        // console.log(elementWordCloud.offsetHeight);
+        this.showWordCloud = true;
+        this.isLoading = false;
       } catch (e) {
         this.$message.error(e.toString());
       }

@@ -37,7 +37,7 @@ export function createBarChart(
   // 默认值
   const config = {
     // barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
-    barColor: '#275b75',
+    barColor: '#2f6681',
     barMargin: 1,
     barHeight: (d) => d * 4,
     tooltipThreshold: 10,

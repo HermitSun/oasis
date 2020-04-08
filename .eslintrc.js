@@ -33,6 +33,9 @@ module.exports = {
       'svg': 'always',
       'math': 'always'
     }],
+    // 关于这一点，我很确定我在做什么
+    // 所以，请您不要检查v-html了
+    'vue/no-v-html': 'off',
     // 以下内容交给prettier处理
     'vue/max-attributes-per-line': 'off',
     'vue/html-closing-bracket-newline': 'off',

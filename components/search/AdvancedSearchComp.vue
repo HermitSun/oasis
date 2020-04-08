@@ -5,6 +5,7 @@
         Advanced Search
         <span>
           <img
+            style="cursor: pointer"
             src="~/assets/icon/icon-close.png"
             alt="close"
             @click="closeAdvancedSearch"
@@ -111,7 +112,7 @@ export default Vue.extend({
       affiliation: '', // 机构
       publicationName: '', // 会议|期刊
       keyword: '', // 研究关键字
-      startYear: '2001', // 开始日期
+      startYear: '1979', // 开始日期
       endYear: '2020', // 结束日期
       isError: false
     };

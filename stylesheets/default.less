@@ -1,6 +1,6 @@
 @import 'responsive.less';
 // ----------default-----------
-@background-blue: #2c5f77; // 背景蓝色
+@background-blue: #367695; // 背景蓝色
 @background-blue-light: rgba(44, 95, 119, 0.15);
 @background-blue-normal: #b5d4e3;
 @bright-yellow: #edc22c; // 字体亮黄色
@@ -117,6 +117,14 @@
   -moz-box-shadow: 0 0 10px @background-gray-dark;
   box-shadow: 0 0 10px @background-gray-dark;
 }
+.background-shadow {
+  box-shadow: -0.25rem -0.25rem 0.5rem rgba(255, 255, 255, 0.07),
+    0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
+    -0.75rem -0.75rem 1.75rem rgba(255, 255, 255, 0.07),
+    0.75rem 0.75rem 1.75rem rgba(0, 0, 0, 0.12),
+    inset 8rem 8rem 8rem rgba(0, 0, 0, 0.05),
+    inset -8rem -8rem 8rem rgba(255, 255, 255, 0.05);
+}
 
 // -----------小标题-------------
 .subtitle {
@@ -155,12 +163,7 @@
   box-sizing: border-box;
   padding: 0.5rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: -0.25rem -0.25rem 0.5rem rgba(255, 255, 255, 0.07),
-    0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
-    -0.75rem -0.75rem 1.75rem rgba(255, 255, 255, 0.07),
-    0.75rem 0.75rem 1.75rem rgba(0, 0, 0, 0.12),
-    inset 8rem 8rem 8rem rgba(0, 0, 0, 0.05),
-    inset -8rem -8rem 8rem rgba(255, 255, 255, 0.05);
+  .background-shadow;
 }
 .mask-box-header {
   .flex-space-between;

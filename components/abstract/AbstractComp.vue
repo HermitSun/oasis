@@ -15,7 +15,9 @@
         <div class="author">
           <span v-for="(author, index) in abstract.authors" :key="index">
             <span v-if="index !== 0">,</span>
-            {{ author }}
+            <span class="authorName" @click="linkToAuthor(author)">
+              {{ author.name }}
+            </span>
           </span>
         </div>
       </div>
@@ -28,9 +30,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 export default Vue.extend({
   name: 'AbstractComp',
+  mixins: [LinkToAuthor],
   props: {
     abstract: {
       type: Object,

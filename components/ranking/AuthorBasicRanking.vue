@@ -2,8 +2,23 @@
   <div class="ranking-basic">
     <div class="title">
       <span class="main" @click="$router.push('/ranking/author')"
-        >Top Author</span
-      >
+        >Top Author
+        <svg
+          id="icon-share"
+          t="1586349933837"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="4243"
+          width="15"
+          height="15"
+        >
+          <path
+            d="M534.656 534.656a32 32 0 1 1-45.312-45.312L850.752 128H672a32 32 0 1 1 0-64h192A96 96 0 0 1 960 160v192a32 32 0 1 1-64 0V173.248L534.656 534.656zM896 640a32 32 0 1 1 64 0v160a160 160 0 0 1-160 160h-576A160 160 0 0 1 64 800v-576A160 160 0 0 1 224 64H384a32 32 0 0 1 0 64H224A96 96 0 0 0 128 224v576A96 96 0 0 0 224 896h576a96 96 0 0 0 96-96V640z"
+            p-id="4244"
+          /></svg
+      ></span>
       <span class="sortKey">
         {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
         <svg

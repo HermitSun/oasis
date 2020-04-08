@@ -1,4 +1,4 @@
-function loadingConfig(ele: HTMLElement) {
+function loadingConfig(ele: HTMLElement | string) {
   return {
     target: ele,
     lock: true,

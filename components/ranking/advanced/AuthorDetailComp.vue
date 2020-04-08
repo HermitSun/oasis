@@ -1,7 +1,29 @@
 <template>
-  <div class="ranking-advanced-detail">
-    <div class="basic" @click="requestShowDetail">
-      <span class="name" @click="jumpToPortrait">{{ rank.authorName }}</span>
+  <div v-loading="isLoading" class="ranking-advanced-detail">
+    <div class="basic">
+      <span class="name-wrapper">
+        <span class="index"
+          >{{ index }}
+          <span class="icon">
+            <img
+              v-if="!showDetail"
+              src="../../../assets/icon/icon-arrow-right.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+            <img
+              v-if="showDetail"
+              src="../../../assets/icon/icon-arrow-top.svg"
+              width="30"
+              @click="requestShowDetail"
+            />
+          </span>
+        </span>
+        <span class="name" @click="jumpToPortrait"
+          >{{ rank.authorName }}
+          <img src="../../../assets/icon/icon-share.svg" class="icon" />
+        </span>
+      </span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">
@@ -75,6 +97,10 @@ export default Vue.extend({
     rank: {
       type: Object,
       default: () => ({})
+    },
+    index: {
+      type: Number,
+      default: 1
     }
   },
   data() {
@@ -82,7 +108,8 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as AuthorDetailRankingResponse,
-      cachedRankingDetail: {} as AuthorDetailRankingResponse
+      cachedRankingDetail: {} as AuthorDetailRankingResponse,
+      isLoading: false
     };
   },
   mounted() {
@@ -112,6 +139,7 @@ export default Vue.extend({
       });
     },
     async requestRankingDetail() {
+      this.isLoading = true;
       try {
         const rankingDetailRes = await getAuthorDetailRankingById(
           this.rank.authorId
@@ -119,6 +147,7 @@ export default Vue.extend({
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
         this.showWordCloud = true;
+        this.isLoading = false;
       } catch (e) {
         this.$message.error(e.toString());
       }

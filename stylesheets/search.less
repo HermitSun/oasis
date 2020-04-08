@@ -125,7 +125,6 @@
   text-align: left;
   padding: 10px 5px;
 
-
   .title {
     font-weight: 500;
     margin-bottom: 5px;
@@ -136,7 +135,7 @@
     }
 
     a:link {
-      color: @font-gray-dark;
+      color: @font-dark;
     }
 
     a:visited {
@@ -155,6 +154,11 @@
   .author {
     font-size: @search-item-author-font-size;
     color: @background-blue;
+    cursor: pointer;
+  }
+
+  .author:hover{
+    color: @bright-yellow;
   }
 
   .info {
@@ -184,13 +188,15 @@
   }
 
   .hint {
-    font-weight: 400;
+    font-weight: 500;
     font-size: @search-item-keyword-font-size;
+    color: @font-dark;
   }
 
   .keyword-wrapper {
     word-wrap: break-word;
     line-height: calc(@search-item-keyword-font-size + 15px);
+    color: @font-gray-dark;
     .flex-left-left-row;
 
     .keyword-inner-wrapper {
@@ -209,6 +215,7 @@
 
   .detail-hint {
     .hint;
+    color: @background-blue;
     text-align: right;
     float: right;
     @media @max-pad-width {
@@ -367,7 +374,7 @@
 }
 
 .advanced-search__mask-content {
-  padding: 20px 20px 10px;
+  padding: 20px 20px 0;
 
   label {
     /*左对齐*/

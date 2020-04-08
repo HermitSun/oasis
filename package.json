@@ -11,7 +11,8 @@
     "generate": "nuxt-ts generate",
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "test": "jest",
-    "release": "node ci/build.js"
+    "release": "node ci/build.js",
+    "theme": "node ci/generate-element-theme.js"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
@@ -42,6 +43,8 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-plugin-component": "^1.1.1",
+    "element-theme": "^2.0.1",
+    "element-theme-chalk": "^2.13.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-nuxt": ">=0.4.2",
