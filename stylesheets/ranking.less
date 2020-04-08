@@ -35,6 +35,8 @@
 
     .prop:first-child {
       margin-left: 10px;
+      flex-grow: 3;
+      flex-shrink: 0;
     }
   }
 
@@ -59,6 +61,8 @@
 
     .name-wrapper {
       flex: 1;
+      flex-grow: 3;
+      flex-shrink: 0;
       color: @background-blue;
       font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
       font-style: italic;
@@ -77,8 +81,10 @@
       }
 
       .name {
+        padding-left: 10px;
         cursor: pointer;
         text-shadow: 4px 4px 5px rgba(138, 136, 136, 0.6);
+        .flex-center-row;
         &:hover {
           color: @bright-yellow;
         }
