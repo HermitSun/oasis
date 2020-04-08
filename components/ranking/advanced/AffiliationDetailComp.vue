@@ -1,5 +1,5 @@
 <template>
-  <div class="ranking-advanced-detail">
+  <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
         <span class="index"
@@ -19,7 +19,7 @@
             />
           </span>
         </span>
-        <span class="name" @click="jumpToPortrait"
+        <span class="name" style="padding-left: 10px;" @click="jumpToPortrait"
           >{{ rank.affiliationName }}
           <img
             src="../../../assets/icon/icon-share.svg"
@@ -86,8 +86,8 @@ export default Vue.extend({
     return {
       showDetail: false,
       showWordCloud: false,
-      rankingDetail: {} as AffiliationDetailRankingResponse
-      // cachedRankingDetail: {} as AffiliationDetailRankingResponse
+      rankingDetail: {} as AffiliationDetailRankingResponse,
+      isLoading: false
     };
   },
   methods: {
@@ -104,6 +104,7 @@ export default Vue.extend({
       });
     },
     async requestRankingDetail() {
+      this.isLoading = true;
       try {
         const rankingDetailRes = await getAffiliationDetailRankingById(
           this.rank.affiliationId
@@ -128,6 +129,7 @@ export default Vue.extend({
         // console.log(elementPublicationTrend.offsetHeight);
         // console.log(elementWordCloud.offsetHeight);
         this.showWordCloud = true;
+        this.isLoading = false;
       } catch (e) {
         this.$message.error(e.toString());
       }
