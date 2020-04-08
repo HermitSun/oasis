@@ -10,10 +10,6 @@ const sortKeyOptions = [
   {
     value: 'citation',
     label: 'citation'
-  },
-  {
-    value: 'related',
-    label: 'related'
   }
 ];
 export default sortKeyOptions;
