@@ -81,7 +81,7 @@ const config: Configuration = {
           'component',
           {
             libraryName: 'element-ui',
-            styleLibraryName: 'theme-chalk'
+            styleLibraryName: '~assets/theme'
           }
         ]
       ],
