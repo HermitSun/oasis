@@ -395,6 +395,16 @@ export async function updateJournalInfo(
   return data;
 }
 
+// 获取论文信息 getPaperInfo
+export async function getPaperInfo(
+  args: BasicSearchPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/search/basic/es', {
+    params: args
+  });
+  return data;
+}
+
 // 32. 修改论文信息 updatePaperInfo
 export async function updatePaperInfo(
   args: UpdatePaperInfoPayload
