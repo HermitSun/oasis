@@ -1,7 +1,7 @@
 @import 'default.less';
 
 // basic
-@ranking-title-font-size: @middle-font;
+@ranking-title-font-size: @sub-middle-font;
 @ranking-sortKey-font-size: @small-font;
 @ranking-name-font-size: @small-font;
 @ranking-line-height: 25px;
@@ -176,6 +176,7 @@
         color: @font-gray-middle;
         display: inline-block;
         word-wrap: break-word;
+        .overflow-hidden-height(1);
         width: 100%;
         cursor: pointer;
         &:hover {
