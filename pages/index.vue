@@ -5,14 +5,27 @@
       <label>
         <input
           v-model="keyword"
-          class="basic-search__input"
+          class="homepage-header__input basic-search__input"
           type="text"
           style="margin-top: 25px;"
           @keyup.enter="sendBasicSearch"
         />
       </label>
       <div class="flex-center-row" style="margin-top: 15px">
-        <button class="basic-search__button" @click="sendBasicSearch">
+        <button
+          class="basic-search__button_small pc-hidden_mobile"
+          @click="sendBasicSearch"
+        >
+          <img
+            src="../assets/icon/icon-search.png"
+            style="height: 28px"
+            alt="icon-search"
+          />
+        </button>
+        <button
+          class="basic-search__button mobile-hidden"
+          @click="sendBasicSearch"
+        >
           OASIS Search
         </button>
         <div style="width: 15px"></div>
@@ -261,13 +274,14 @@ export default Vue.extend({
   .flex-center-column;
   background: @background-blue;
   height: @homepage-header-height;
-  min-height: 350px;
-}
-
-.homepage-header .homepage-header__logo {
-  width: 30vw;
-  @media @max-mobile-width {
-    width: 60vw;
+  min-height: 220px;
+  .mobile-height(100vh);
+  .homepage-header__logo {
+    .pc-width__mobile(30vw);
+    .mobile-width(70vw);
+  }
+  .homepage-header__input {
+    .mobile-width(90vw);
   }
 }
 
@@ -278,6 +292,7 @@ export default Vue.extend({
 
   .homepage-content__ranking {
     .gray-background;
+
     .homepage-content__rankings {
       @media @min-pc-width {
         .flex-space-between;
@@ -288,6 +303,7 @@ export default Vue.extend({
       }
     }
   }
+
   /*
   @media @min-pc-width {
     .flex-left-left-row;
