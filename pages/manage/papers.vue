@@ -24,7 +24,7 @@
                   v-for="(author, index) of paperProps.row.authors"
                   :key="index"
                 >
-                  {{ author }}
+                  <span v-html="author.name"></span>
                 </li>
               </ul>
             </el-form-item>
@@ -33,7 +33,7 @@
               <template #label>
                 <b>摘要</b>
               </template>
-              <span>{{ paperProps.row._abstract }}</span>
+              <span v-html="paperProps.row._abstract"></span>
             </el-form-item>
             <!--关键词-->
             <el-form-item>
@@ -53,10 +53,14 @@
         </template>
       </el-table-column>
       <!--简略信息-->
-      <el-table-column prop="title" label="标题" width="250" />
-      <el-table-column label="作者" width="180">
+      <el-table-column prop="title" label="标题" width="250">
         <template #default="paperProps">
-          <span>{{ paperProps.row.authors[0] }}等</span>
+          <span v-html="paperProps.row.title"></span>
+        </template>
+      </el-table-column>
+      <el-table-column label="作者" width="160">
+        <template #default="paperProps">
+          <span v-html="paperProps.row.authors[0].name + '等'"></span>
         </template>
       </el-table-column>
       <el-table-column prop="publicationYear" label="出版年份" />
@@ -134,11 +138,12 @@ import {
   TableColumn
 } from 'element-ui';
 import { PaperInfo } from '~/interfaces/pages/manage/ManagePapersPageComp';
-import { basicSearch } from '~/api';
+import { getPaperInfo } from '~/api';
 import { contentType } from '~/interfaces/responses/search/SearchResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { BasicSearchPayload } from '~/interfaces/requests/search/SearchPayload';
 import { ElPaginationTotal } from '~/interfaces/ElPaginationTotal';
+import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 
 export default Vue.extend({
   name: 'ManagePapers',
@@ -162,7 +167,7 @@ export default Vue.extend({
       paperTitle: '', // 根据输入的论文名称进行搜索
       showUpdateDialog: false, // 是否显示修改的对话框
       paperWaitToUpdateIndex: -1, // 待修改的paper的ID
-      paperWaitToUpdate: {} as PaperInfo, // 待修改的paper
+      paperWaitToUpdate: {} as UpdatePaperInfoPayload, // 待修改的paper
       isLoading: false
     };
   },
@@ -183,7 +188,10 @@ export default Vue.extend({
     openUpdateDialog(index: number, paper: PaperInfo) {
       this.paperWaitToUpdateIndex = index;
       // 创建一个副本，避免子组件修改此处的数据
-      this.paperWaitToUpdate = { ...paper };
+      this.paperWaitToUpdate = {
+        ...paper,
+        authors: paper.authors.map((author) => author.name)
+      };
       this.showUpdateDialog = true;
     },
     closeUpdateDialog(updatedIndex: number, updatedPaper: PaperInfo) {
@@ -196,7 +204,7 @@ export default Vue.extend({
     async doSearch(title: string, page: number = 1, resetPage: boolean = true) {
       if (title) {
         this.isLoading = true;
-        const papersRes = await this.basicSearch({
+        const papersRes = await this.getPaperInfo({
           keyword: title,
           page,
           sortKey: 'related'
@@ -221,7 +229,7 @@ export default Vue.extend({
     async showNextPage(page: number) {
       this.isLoading = true;
       // 重新请求数据
-      const papersRes = await this.basicSearch({
+      const papersRes = await this.getPaperInfo({
         keyword: this.paperTitle,
         page,
         sortKey: 'related'
@@ -237,7 +245,7 @@ export default Vue.extend({
       window.open(link, '_blank');
     },
     // 类似于decorator，附加一个路由跳转的功能
-    basicSearch(payload: BasicSearchPayload) {
+    getPaperInfo(payload: BasicSearchPayload) {
       this.$router.push({
         path: this.$route.path,
         query: {
@@ -245,7 +253,7 @@ export default Vue.extend({
           page: payload.page.toString()
         }
       });
-      return basicSearch(payload);
+      return getPaperInfo(payload);
     }
   }
 });

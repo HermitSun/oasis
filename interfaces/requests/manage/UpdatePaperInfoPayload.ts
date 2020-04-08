@@ -5,5 +5,7 @@
  */
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 
-// 暂时和搜索接口返回值相同
-export type UpdatePaperInfoPayload = SearchResponse;
+export interface UpdatePaperInfoPayload
+  extends Omit<SearchResponse, 'authors'> {
+  authors: string[];
+}
