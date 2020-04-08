@@ -34,7 +34,7 @@
         </div>
         <div class="module">
           <Subtitle title="🎓 Scholar Network" />
-          <div id="force" style="height: 400px"></div>
+          <div id="force" class="chart"></div>
         </div>
       </div>
     </div>
@@ -283,8 +283,8 @@ export default Vue.extend({
           .sort((a, b) => b.value - a.value)
           .slice(0, 20),
         {
-          width: getSizeById('pie').width - 20,
-          height: getSizeById('pie').height - 20
+          width: getSizeById('pie').width,
+          height: getSizeById('pie').height
         }
       );
       // 加载完毕
@@ -300,7 +300,7 @@ export default Vue.extend({
       // 渲染图表
       createForceChart('#force', this.academicRelation, {
         width: 500,
-        height: 500,
+        height: 400,
         // nodeColor: '#666',
         linkWidth: (_) => 1,
         linkLength: (d) => {
