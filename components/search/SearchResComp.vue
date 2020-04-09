@@ -186,10 +186,22 @@ export default Vue.extend({
 @import '../../stylesheets/index.less';
 </style>
 
-<style>
+<style lang="less">
 /* 只能通过这种比较原始的方式向v-html解析的内容增加样式 */
-.searchPage-item em {
-  font-weight: bold;
-  color: #dd4b39;
+.searchPage-item {
+  .title {
+    em,
+    font {
+      font-weight: bold;
+      color: #dd4b39;
+    }
+
+    &:hover {
+      em,
+      font {
+        color: #edc22c;
+      }
+    }
+  }
 }
 </style>
