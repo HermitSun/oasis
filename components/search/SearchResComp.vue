@@ -207,7 +207,6 @@ export default Vue.extend({
     }
 
     &:hover {
-      em,
       font {
         color: #edc22c;
       }
