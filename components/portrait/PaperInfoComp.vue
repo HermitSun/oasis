@@ -1,7 +1,13 @@
 <template>
   <div class="portrait-paper">
     <div class="title">
-      <a :href="paper.link" class="title" target="_blank">{{ paper.title }}</a>
+      <a
+        :href="paper.link"
+        class="title"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ paper.title }}</a
+      >
     </div>
     <div>
       <!--跳转到学者画像-->

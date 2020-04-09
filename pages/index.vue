@@ -2,15 +2,15 @@
   <div>
     <div class="homepage-header">
       <img src="~/assets/logo.png" class="homepage-header__logo" alt="oasis" />
-      <label>
-        <input
-          v-model="keyword"
-          class="homepage-header__input basic-search__input"
-          type="text"
-          style="margin-top: 25px;"
-          @keyup.enter="sendBasicSearch"
-        />
-      </label>
+      <!--搜索框，增加一个aria属性来提高accessibility-->
+      <input
+        v-model="keyword"
+        class="homepage-header__input basic-search__input"
+        type="text"
+        style="margin-top: 25px;"
+        aria-label="search"
+        @keyup.enter="sendBasicSearch"
+      />
       <div class="flex-center-row" style="margin-top: 15px">
         <button
           class="basic-search__button_small pc-hidden_mobile"

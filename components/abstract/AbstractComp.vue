@@ -8,7 +8,12 @@
     <div>
       <div>
         <span class="title">
-          <a :href="abstract.link" class="title" target="_blank">
+          <a
+            :href="abstract.link"
+            class="title"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {{ abstract.title }}
           </a>
         </span>

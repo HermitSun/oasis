@@ -4,7 +4,13 @@
       <span class="publication"
         >{{ paper.publicationYear }} {{ paper.publicationName }}</span
       >
-      <a :href="paper.link" class="name" target="_blank">{{ paper.title }}</a>
+      <a
+        :href="paper.link"
+        class="name"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ paper.title }}</a
+      >
     </div>
   </div>
 </template>

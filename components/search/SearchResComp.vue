@@ -1,7 +1,12 @@
 <template>
   <div class="searchPage-item">
     <div class="title">
-      <a :href="res.link" class="title" target="_blank">
+      <a
+        :href="res.link"
+        class="title"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <!--高亮-->
         <!--TODO:对后端返回内容的校验-->
         <div v-html="res.title"></div>
@@ -102,7 +107,12 @@
             <span style="font-size: 12px;margin-right: 3px">{{
               index + 1
             }}</span>
-            <a :href="ref.googleScholarLink" target="_blank">{{ ref.title }}</a>
+            <a
+              :href="ref.googleScholarLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ ref.title }}</a
+            >
           </div>
         </div>
       </div>
