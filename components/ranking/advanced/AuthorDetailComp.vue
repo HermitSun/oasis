@@ -38,7 +38,9 @@
         ></div>
       </span>
     </div>
-    <div v-if="showDetail">
+    <!--关闭时没必要完全销毁组件，隐藏即可-->
+    <!--避免重复渲染的开销-->
+    <div v-show="showDetail">
       <div class="divider"></div>
       <div class="detail">
         <div class="info">

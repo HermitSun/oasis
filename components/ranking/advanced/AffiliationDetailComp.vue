@@ -7,13 +7,15 @@
           <span class="icon">
             <img
               v-if="!showDetail"
-              src="../../../assets/icon/icon-arrow-right.svg"
+              src="~/assets/icon/icon-arrow-right.svg"
+              alt="icon-arrow-right"
               width="30"
               @click="requestShowDetail"
             />
             <img
               v-if="showDetail"
-              src="../../../assets/icon/icon-arrow-top.svg"
+              src="~/assets/icon/icon-arrow-top.svg"
+              alt="icon-arrow-top"
               width="30"
               @click="requestShowDetail"
             />
@@ -22,9 +24,10 @@
         <span class="name" style="padding-left: 10px;" @click="jumpToPortrait"
           >{{ rank.affiliationName }}
           <img
-            src="../../../assets/icon/icon-share.svg"
+            src="~/assets/icon/icon-share.svg"
             width="20"
             class="icon"
+            alt="icon-share"
           />
         </span>
       </span>
@@ -32,7 +35,9 @@
       <span class="value">{{ rank.citation }}</span>
       <span class="value">{{ rank.authorNum }}</span>
     </div>
-    <div v-if="showDetail">
+    <!--关闭时没必要完全销毁组件，隐藏即可-->
+    <!--避免重复渲染的开销-->
+    <div v-show="showDetail">
       <div class="divider"></div>
       <div class="detail">
         <div class="info">
