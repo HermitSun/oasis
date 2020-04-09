@@ -185,3 +185,11 @@ export default Vue.extend({
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
 </style>
+
+<style>
+/* 只能通过这种比较原始的方式向v-html解析的内容增加样式 */
+.searchPage-item em {
+  font-weight: bold;
+  color: #dd4b39;
+}
+</style>
