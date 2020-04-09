@@ -1,67 +1,69 @@
 <template>
   <div>
     <SearchBar />
-    <div class="portrait">
-      <div class="profile-module">
-        <div class="module">
-          <PortraitProfileComp id="portrait" :profile="profile" />
+    <div v-if="showPortrait" class="portrait-wrapper">
+      <div class="portrait">
+        <div class="profile-module">
+          <div class="module">
+            <PortraitProfileComp id="portrait" :profile="profile" />
+          </div>
+          <div class="module">
+            <Subtitle title="📉 Citation Trend" />
+            <div
+              id="citation-bar"
+              class="content"
+              style="min-height: 150px"
+            ></div>
+          </div>
+          <div class="module">
+            <Subtitle title="📈 Publication Trends" />
+            <div
+              id="publication-bar"
+              class="content"
+              style="min-height: 150px"
+            ></div>
+          </div>
         </div>
-        <div class="module">
-          <Subtitle title="📉 Citation Trend" />
-          <div
-            id="citation-bar"
-            class="content"
-            style="min-height: 150px"
-          ></div>
-        </div>
-        <div class="module">
-          <Subtitle title="📈 Publication Trends" />
-          <div
-            id="publication-bar"
-            class="content"
-            style="min-height: 150px"
-          ></div>
-        </div>
-      </div>
-      <div class="profile-module">
-        <div class="module" style="margin-right: 10px">
-          <Subtitle title="🌥 Keywords" />
-          <div
-            id="pie"
-            v-loading="isInterestLoading"
-            class="chart content"
-          ></div>
-        </div>
-        <div class="module">
-          <Subtitle title="🎓 Scholar Network" />
-          <div id="force" class="chart"></div>
-        </div>
-      </div>
-    </div>
-    <div class="portrait-module">
-      <PapersSubtitle
-        title="📝 All Papers"
-        :sort-key="sortKey"
-        @changeSortKey="changeSortKey"
-      />
-      <div id="papers">
-        <div
-          v-for="paper in papers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <PaperInfoComp :paper="paper" />
+        <div class="profile-module">
+          <div class="module" style="margin-right: 10px">
+            <Subtitle title="🌥 Keywords" />
+            <div
+              id="pie"
+              v-loading="isInterestLoading"
+              class="chart content"
+            ></div>
+          </div>
+          <div class="module">
+            <Subtitle title="🎓 Scholar Network" />
+            <div id="force" class="chart"></div>
+          </div>
         </div>
       </div>
-      <el-pagination
-        layout="prev, pager, next"
-        :current-page="page"
-        :total="size"
-        hide-on-single-page
-        small
-        style="text-align: center; margin-bottom: 10px"
-        @current-change="showNextPage"
-      />
+      <div v-if="showPortrait" class="portrait-module">
+        <PapersSubtitle
+          title="📝 All Papers"
+          :sort-key="sortKey"
+          @changeSortKey="changeSortKey"
+        />
+        <div id="papers">
+          <div
+            v-for="paper in papers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <PaperInfoComp :paper="paper" />
+          </div>
+        </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="page"
+          :total="size"
+          hide-on-single-page
+          small
+          style="text-align: center; margin-bottom: 10px"
+          @current-change="showNextPage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -166,6 +168,49 @@ async function requestAcademicRelation(authorId: string) {
   return res;
 }
 
+// 获取数据
+async function fetchData(query: AuthorPapersPayload) {
+  const authorId = query.authorId as string;
+  // 增加默认值
+  const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
+  const page = query.page ? Number(query.page) : 1;
+
+  const portraitReq = requestPortrait(authorId);
+  const papersReq = requestPapers({ authorId, page, sortKey });
+  const portraitRes = await portraitReq;
+  const papersRes = await papersReq;
+
+  const profile = {
+    name: portraitRes.portrait.name,
+    statistics: [
+      {
+        prop: '💻 Affiliation',
+        number: portraitRes.portrait.affiliation
+      },
+      {
+        prop: '📝 Papers',
+        number: portraitRes.portrait.count
+      },
+      {
+        prop: '📃 Citations',
+        number: portraitRes.portrait.citation
+      }
+    ]
+  };
+  const citationTrend = portraitRes.portrait.citationTrend;
+  const publicationTrend = portraitRes.portrait.publicationTrends;
+
+  return {
+    authorId,
+    sortKey,
+    page,
+    profile,
+    citationTrend,
+    publicationTrend,
+    ...papersRes
+  };
+}
+
 export default Vue.extend({
   name: 'Author',
   components: {
@@ -178,53 +223,16 @@ export default Vue.extend({
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear],
-  async asyncData({ query, redirect }) {
+  asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
       redirect('/404');
     }
-    const authorId = query.authorId as string;
-    // 增加默认值
-    const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
-    const page = query.page ? Number(query.page) : 1;
-
-    const portraitReq = requestPortrait(authorId);
-    const papersReq = requestPapers({ authorId, page, sortKey });
-    const portraitRes = await portraitReq;
-    const papersRes = await papersReq;
-
-    const profile = {
-      name: portraitRes.portrait.name,
-      statistics: [
-        {
-          prop: '💻 Affiliation',
-          number: portraitRes.portrait.affiliation
-        },
-        {
-          prop: '📝 Papers',
-          number: portraitRes.portrait.count
-        },
-        {
-          prop: '📃 Citations',
-          number: portraitRes.portrait.citation
-        }
-      ]
-    };
-    const citationTrend = portraitRes.portrait.citationTrend;
-    const publicationTrend = portraitRes.portrait.publicationTrends;
-
-    return {
-      authorId,
-      sortKey,
-      page,
-      profile,
-      citationTrend,
-      publicationTrend,
-      ...papersRes
-    };
+    return fetchData((query as unknown) as AuthorPapersPayload);
   },
   data() {
     return {
+      showPortrait: true,
       // 研究兴趣
       interests: [] as InterestResponse[],
       isInterestLoading: false,
@@ -233,36 +241,65 @@ export default Vue.extend({
       isAcademicRelationLoading: false
     } as PortraitAuthorPageComp;
   },
+  watch: {
+    $route: {
+      async handler({ query }) {
+        if (!query.authorId) {
+          this.$router.push('/404');
+        }
+        this.showPortrait = false;
+        const loading = this.$loading(loadingConfig('.portrait-wrapper'));
+        // 重新获取数据
+        const data = await fetchData(query as AuthorPapersPayload);
+        this.authorId = data.authorId;
+        this.page = data.page;
+        this.sortKey = data.sortKey;
+        this.profile = data.profile;
+        this.citationTrend = data.citationTrend; // 被引用趋势
+        this.publicationTrend = data.citationTrend; // 发论文趋势
+        this.papers = data.papers;
+        this.size = data.size;
+        // 加载完成后加载图表
+        this.showPortrait = true;
+        loading.close();
+        this.initCharts();
+      }
+    }
+  },
   mounted() {
-    // 柱状图的开销较小，但是仍然不打算让他阻塞渲染
-    setTimeout(() => {
-      createBarChart(
-        '#citation-bar',
-        this.citationTrend,
-        portraitBarConfig(
-          document.getElementById('portrait') as any,
-          Math.max(...this.citationTrend)
-        )
-      );
-      createBarChart(
-        '#publication-bar',
-        this.publicationTrend,
-        portraitBarConfig(
-          document.getElementById('portrait') as any,
-          Math.max(...this.publicationTrend)
-        )
-      );
-    }, 0);
-    // 暂时使用这种方式避免渲染时的阻塞
-    // 可能需要重构为组件
-    setTimeout(() => {
-      this.createInterestChart(this.authorId);
-    }, 0);
-    setTimeout(() => {
-      this.createAcademicRelationChart(this.authorId);
-    }, 0);
+    this.initCharts();
   },
   methods: {
+    // 初始化图表
+    initCharts() {
+      // 柱状图的开销较小，但是仍然不打算让他阻塞渲染
+      setTimeout(() => {
+        createBarChart(
+          '#citation-bar',
+          this.citationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as any,
+            Math.max(...this.citationTrend)
+          )
+        );
+        createBarChart(
+          '#publication-bar',
+          this.publicationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as any,
+            Math.max(...this.publicationTrend)
+          )
+        );
+      }, 0);
+      // 暂时使用这种方式避免渲染时的阻塞
+      // 可能需要重构为组件
+      setTimeout(() => {
+        this.createInterestChart(this.authorId);
+      }, 0);
+      setTimeout(() => {
+        this.createAcademicRelationChart(this.authorId);
+      }, 0);
+    },
     // 创建研究兴趣图
     async createInterestChart(authorId: string) {
       // 开始加载
@@ -363,6 +400,7 @@ export default Vue.extend({
   }
 });
 </script>
+
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
 </style>
