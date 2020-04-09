@@ -32,8 +32,8 @@ import { InterestResponse } from '~/interfaces/responses/interest/InterestRespon
 import Subtitle from '~/components/public/Subtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
-import { createBarChart } from '~/utils/charts/bar';
-import { createPieChart } from '~/utils/charts/pie';
+import { createBarChart } from '~/components/charts/bar';
+import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
 import portraitBarConfig from '~/components/portrait/barConfig';
 

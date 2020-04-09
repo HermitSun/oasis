@@ -54,7 +54,7 @@ import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import SearchBar from '~/components/search/SearchBar.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { isMobile } from '~/utils/breakpoint';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';

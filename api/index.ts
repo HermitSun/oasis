@@ -38,7 +38,7 @@ import {
 import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
-import { ForceChartData } from '~/utils/charts/force';
+import { ForceChartData } from '~/components/charts/force';
 
 // 1. 普通搜索
 export async function basicSearch(

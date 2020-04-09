@@ -155,12 +155,15 @@ export function createForceChart(
         .distanceMin(10)
         .distanceMax(300)
     )
-    .force('center', force.forceCenter(options.width / 2, options.height / 2));
+    .force(
+      'center',
+      force.forceCenter(options.width / 2, (options.height / 5) * 2)
+    );
 
   const svg = d3
     .select(selectorOrDOM as HTMLElement)
     .append('svg')
-    .attr('viewBox', `30,100,${options.width},${options.height}`);
+    .attr('viewBox', `0,0,${options.width},${options.height}`);
 
   const link = svg
     .append('g')

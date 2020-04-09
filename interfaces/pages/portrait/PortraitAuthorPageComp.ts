@@ -7,16 +7,16 @@
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import { ForceChartData } from '~/utils/charts/force';
+import { ForceChartData } from '~/components/charts/force';
+
+interface Statistic {
+  prop: string;
+  number: string | number;
+}
 
 interface PortraitProfile {
   name: string;
-  statistics: [
-    {
-      prop: string;
-      number: string | number;
-    }
-  ];
+  statistics: Statistic[];
 }
 
 interface AsyncPortraitAuthorData {
@@ -33,6 +33,7 @@ interface AsyncPortraitAuthorData {
 export type PortraitAuthorDataFromProp = {};
 
 interface PortraitAuthorLocalData {
+  showPortrait: boolean;
   // 研究兴趣
   interests: InterestResponse[];
   isInterestLoading: boolean;

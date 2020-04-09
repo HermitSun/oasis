@@ -273,13 +273,6 @@
   }
 }
 
-.search-button {
-  width: 140px;
-  height: 30px;
-  padding: 8px 15px;
-  font-size: @search-button-font-size;
-  font-weight: 500;
-}
 
 // 普通搜索输入框
 .basic-search__input {
@@ -309,6 +302,15 @@
   }
 }
 
+
+.search-button {
+  width: 140px;
+  height: 30px;
+  padding: 8px 15px;
+  font-size: @search-button-font-size;
+  font-weight: 500;
+}
+
 // 普通搜索按钮
 // active状态
 .basic-search__button-active {
@@ -333,7 +335,22 @@
     .basic-search__button-active;
   }
 }
+.basic-search__button_small{
+  width: 35px;
+  height: 30px;
+  border-radius: @search-button-border-radius;
+  border: 0;
+  background: linear-gradient(145deg, #2e6c8b, #275b75);
+  box-shadow: 2px 2px 0px #153140, -2px -2px 0px #4199c4;
+  color: @search-button-font-color;
+  &:active {
+    .basic-search__button-active;
+  }
 
+  &:hover {
+    .basic-search__button-active;
+  }
+}
 // 高级搜索按钮
 // active状态
 .advanced-search__button-active {

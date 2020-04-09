@@ -38,7 +38,9 @@
         ></div>
       </span>
     </div>
-    <div v-if="showDetail">
+    <!--关闭时没必要完全销毁组件，隐藏即可-->
+    <!--避免重复渲染的开销-->
+    <div v-show="showDetail">
       <div class="divider"></div>
       <div class="detail">
         <div class="info">
@@ -91,7 +93,7 @@ import { getAuthorDetailRankingById } from '~/api';
 import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 
 export default Vue.extend({
   name: 'AuthorDetailComp',

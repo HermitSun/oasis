@@ -94,7 +94,7 @@
         <!--可以考虑抽取一个组件，利于后续优化-->
         <div
           v-if="mode === 'basic' && searchResponse.length !== 0"
-          class="searchPage-content__filter"
+          class="searchPage-content__filter mobile-hidden"
         >
           <span class="searchPage-content__sub-hint">Filter By</span>
           <div class="filter" style="margin-top: 15px">

@@ -16,9 +16,9 @@ import {
   createForceChart,
   ForceChartLink,
   ForceChartNode
-} from '~/utils/charts/force';
-import { createPieChart } from '~/utils/charts/pie';
-import { createBarChart } from '~/utils/charts/bar';
+} from '~/components/charts/force';
+import { createPieChart } from '~/components/charts/pie';
+import { createBarChart } from '~/components/charts/bar';
 import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
 
 export interface AuthorNode extends ForceChartNode {

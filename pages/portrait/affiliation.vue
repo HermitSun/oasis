@@ -91,9 +91,9 @@ import { InterestResponse } from '~/interfaces/responses/interest/InterestRespon
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import { getClientWidth } from '~/utils/breakpoint';
-import { createPieChart } from '~/utils/charts/pie';
+import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';

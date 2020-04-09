@@ -2,13 +2,15 @@ import { getClientWidth } from '~/utils/breakpoint';
 
 function portraitBarConfig(portrait: HTMLElement, maxHeight: number) {
   const isMobile = getClientWidth() < 768;
-  console.log(maxHeight);
+  const chartWidth = isMobile ? getClientWidth() - 20 : 300;
+  const chartHeight = isMobile ? 200 : portrait.offsetHeight - 50;
   return {
-    width: isMobile ? getClientWidth() - 20 : 300,
-    height: isMobile ? 200 : portrait.offsetHeight - 50,
-    barHeight: (d: number) => (maxHeight === 0 ? 0 : (d / maxHeight) * 200),
+    width: chartWidth,
+    height: chartHeight,
+    barHeight: (d: number) =>
+      maxHeight === 0 ? 0 : (d / maxHeight) * (chartHeight - 20),
     barMargin: 10,
-    tooltipThreshold: 15
+    tooltipThreshold: maxHeight
   };
 }
 export default portraitBarConfig;
