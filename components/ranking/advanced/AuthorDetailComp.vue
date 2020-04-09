@@ -26,7 +26,7 @@
           <img
             src="~/assets/icon/icon-share.svg"
             class="icon"
-            alt="icon-share.svg"
+            alt="icon-share"
           />
         </span>
       </span>

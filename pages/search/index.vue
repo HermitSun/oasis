@@ -107,11 +107,13 @@
                   v-model="startYear"
                   style="margin: 0 5px"
                   size="4"
+                  aria-label="startYear"
                   @change="sendSearchFilter"
                 />～<input
                   v-model="endYear"
                   style="margin-left: 5px"
                   size="4"
+                  aria-label="endYear"
                   @change="sendSearchFilter"
                 />
                 <div class="error">
