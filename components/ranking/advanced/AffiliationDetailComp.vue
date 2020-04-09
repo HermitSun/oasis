@@ -64,7 +64,7 @@
 import Vue from 'vue';
 import { AffiliationDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '~/api';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
 
 export default Vue.extend({

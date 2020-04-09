@@ -91,7 +91,7 @@ import { getAuthorDetailRankingById } from '~/api';
 import { AuthorDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 
 export default Vue.extend({
   name: 'AuthorDetailComp',

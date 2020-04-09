@@ -84,15 +84,15 @@ import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorRe
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import { createPieChart } from '~/utils/charts/pie';
+import { createPieChart } from '~/components/charts/pie';
 import {
   createForceChart,
   ForceChartData,
   ForceChartLink,
   ForceChartNode
-} from '~/utils/charts/force';
+} from '~/components/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
-import { createBarChart } from '~/utils/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';

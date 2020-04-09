@@ -7,7 +7,7 @@
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import { ForceChartData } from '~/utils/charts/force';
+import { ForceChartData } from '~/components/charts/force';
 
 interface PortraitProfile {
   name: string;
