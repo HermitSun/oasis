@@ -228,7 +228,7 @@ import {
   sortKey
 } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
-import sortKeyOptions from '~/components/search/sortKeyOptions';
+import searchSortKeyOptions from '~/components/search/SearchSortKeyOptions';
 import {
   FilterTag,
   SearchFilterResponse
@@ -295,7 +295,7 @@ export default Vue.extend({
       showAdvancedSearch: false,
       isLoading: false, // 是否正在加载
       isError: false,
-      options: sortKeyOptions,
+      options: searchSortKeyOptions,
       filters: {
         authors: [] as FilterTag[],
         affiliations: [] as FilterTag[],
