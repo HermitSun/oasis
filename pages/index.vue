@@ -57,9 +57,9 @@
         <Subtitle title="🏆 OASIS RANKINGS" />
         <div class="homepage-content__rankings">
           <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
           <JournalBasicRanking :ranking="journalRanking" class="rank" />
           <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
           <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
         </div>
       </div>
