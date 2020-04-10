@@ -25,6 +25,7 @@ const config: Configuration = {
         content: process.env.npm_package_description || ''
       }
     ],
+    noscript: [{ innerHTML: 'Please enable JavaScript to view our site...' }],
     link: [
       {
         rel: 'icon',
