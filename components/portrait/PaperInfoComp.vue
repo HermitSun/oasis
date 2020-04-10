@@ -11,7 +11,6 @@
     </div>
     <div>
       <!--跳转到学者画像-->
-      <!--TODO: 点击跳转后页面应当刷新-->
       <span
         v-for="(author, index) in paper.authors"
         :key="index"

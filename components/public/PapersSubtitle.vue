@@ -26,7 +26,7 @@
 import Vue from 'vue';
 import { Select, Option } from 'element-ui';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
-import sortKeyOptions from '~/components/search/sortKeyOptions';
+import paperSortKeyOptions from '~/components/public/PaperSortKeyOptions';
 
 export default Vue.extend({
   name: 'PapersSubtitle',
@@ -47,7 +47,7 @@ export default Vue.extend({
   data() {
     return {
       newSortKey: this.sortKey as sortKey,
-      options: sortKeyOptions
+      options: paperSortKeyOptions
     };
   },
   methods: {

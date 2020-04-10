@@ -25,6 +25,7 @@ const config: Configuration = {
         content: process.env.npm_package_description || ''
       }
     ],
+    noscript: [{ innerHTML: 'Please enable JavaScript to view our site...' }],
     link: [
       {
         rel: 'icon',
@@ -41,7 +42,7 @@ const config: Configuration = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#edc22c', height: '3px', continuous: true },
   /*
    ** Global CSS
    */

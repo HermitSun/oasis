@@ -207,10 +207,17 @@ export default Vue.extend({
     }
 
     &:hover {
-      em,
       font {
         color: #edc22c;
       }
+    }
+  }
+
+  .abstract {
+    em,
+    font {
+      font-weight: bold;
+      color: #dd4b39;
     }
   }
 }
