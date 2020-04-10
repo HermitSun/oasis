@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 
 export default Vue.extend({
   name: 'InterestWordCloud',
@@ -48,11 +49,24 @@ export default Vue.extend({
           mode: 'basic',
           keyword: name,
           page: '1',
-          startYear: '2001',
-          endYear: '2020'
+          startYear: '1979', // 开始日期
+          endYear: '2020', // 结束日期
+          sortKey: 'related' as sortKey
         }
       });
     }
   }
 });
 </script>
+
+<style lang="less">
+.wordCloud {
+  .text {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+</style>

@@ -212,5 +212,13 @@ export default Vue.extend({
       }
     }
   }
+
+  .abstract {
+    em,
+    font {
+      font-weight: bold;
+      color: #dd4b39;
+    }
+  }
 }
 </style>
