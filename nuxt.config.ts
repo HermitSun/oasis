@@ -37,6 +37,7 @@ const config: Configuration = {
     middleware: ['authenticated']
     // base: '/oasis/'
   },
+  server: { port: 3000 },
   serverMiddleware: ['~/server/index.ts'],
   /*
    ** Customize the progress-bar color
@@ -66,7 +67,7 @@ const config: Configuration = {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/pwa'],
   typescript: {
     typeCheck: {
       eslint: true
