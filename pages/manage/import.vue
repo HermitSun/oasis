@@ -166,12 +166,14 @@ export default Vue.extend({
           );
           // clear
           this.papers = new FormData();
+          paperUploader.clearFiles();
         } else {
           this.$message.error('导入失败');
         }
       } catch (e) {
         this.$message(e.toString());
       } finally {
+        this.isUploadValid = false;
         this.isUploading = false;
       }
     }
@@ -179,6 +181,7 @@ export default Vue.extend({
   head() {
     return {
       link: [
+        // 导入源代码字体（看上去好看一点）
         {
           rel: 'stylesheet',
           href:
