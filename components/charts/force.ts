@@ -200,28 +200,35 @@ export function createForceChart(
 
   // 配置tooltip内容
   if (options.tooltip) {
+    // 显示tooltip
+    const showToolTip = (d: ForceChartNode) => {
+      // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
+      const tooltipHTML = (options.tooltip as TooltipFn<ForceChartNode>)(d);
+      // 渐变效果
+      tooltip
+        .transition()
+        .duration(500)
+        .style('opacity', 0.9);
+      const location = getElementLocation(svg.node() as SVGSVGElement);
+      tooltip
+        .html(tooltipHTML)
+        .style('position', 'absolute')
+        // 此处似乎有误差
+        .style('left', location.x + (d.x as number) + 'px')
+        .style('top', location.y + (d.y as number) + 'px')
+        .style('cursor', 'default')
+        .style('user-select', 'none');
+    };
+    // 隐藏tooltip
+    const hideTooltip = () => {
+      tooltip.style('opacity', 0);
+    };
+
     node
-      .on('mouseover', (d) => {
-        // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
-        const tooltipHTML = (options.tooltip as TooltipFn<ForceChartNode>)(d);
-        // 渐变效果
-        tooltip
-          .transition()
-          .duration(500)
-          .style('opacity', 0.9);
-        const location = getElementLocation(svg.node() as SVGSVGElement);
-        tooltip
-          .html(tooltipHTML)
-          .style('position', 'absolute')
-          // 此处似乎有误差
-          .style('left', location.x + (d.x as number) + 'px')
-          .style('top', location.y + (d.y as number) + 'px')
-          .style('cursor', 'default')
-          .style('user-select', 'none');
-      })
-      .on('mouseout', (_) => {
-        tooltip.style('opacity', 0);
-      });
+      .on('mouseover', showToolTip)
+      .on('mouseout', hideTooltip)
+      .on('touchstart', showToolTip)
+      .on('touchend', hideTooltip);
   }
 
   // 是否可拖拽
