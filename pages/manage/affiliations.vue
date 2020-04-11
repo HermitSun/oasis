@@ -89,9 +89,14 @@
       :current-page.sync="page"
       :total="totalRecords"
       background
+      hide-on-single-page
       style="text-align: center; margin-bottom: 20px"
       @current-change="showNextPage"
     />
+    <!--超过100页时隐藏-->
+    <p v-if="page === 100" class="hide-on-not-related">
+      我们已为您隐藏了相关度较低的检索结果。
+    </p>
   </div>
 </template>
 
@@ -271,3 +276,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped lang="less">
+.hide-on-not-related {
+  color: #c0c4cc;
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+}
+</style>
