@@ -345,15 +345,22 @@ export default Vue.extend({
   },
   mounted() {
     // 暂时性的解决一下高级搜索首次加载不显示的问题(#24)
-    this.searchContent = (
-      this.author +
-      ' ' +
-      this.affiliation +
-      ' ' +
-      this.publicationName +
-      ' ' +
-      this.keyword
-    ).trim();
+    if (this.mode === 'advanced') {
+      this.searchContent = '';
+      if (this.author) {
+        this.searchContent += this.author + ' ';
+      }
+      if (this.affiliation) {
+        this.searchContent += this.affiliation + ' ';
+      }
+      if (this.publicationName) {
+        this.searchContent += this.publicationName + ' ';
+      }
+      if (this.keyword) {
+        this.searchContent += this.keyword;
+      }
+      this.searchContent = this.searchContent.trim();
+    }
     this.getSearchFilter();
   },
   methods: {
