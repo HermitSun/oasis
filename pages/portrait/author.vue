@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="author-portrait-wrapper">
     <SearchBar />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
@@ -105,6 +105,7 @@ interface AuthorNode extends ForceChartNode {
   name: string;
   count: number;
   citation: number;
+  value: number;
 }
 
 interface AuthorLink extends ForceChartLink {
@@ -336,8 +337,8 @@ export default Vue.extend({
       this.academicRelation = academiaRelationReq.academicRelation;
       // 渲染图表
       createForceChart('#force', this.academicRelation, {
-        width: 500,
-        height: 400,
+        width: 600,
+        height: 600,
         // nodeColor: '#666',
         linkWidth: (_) => 1,
         linkLength: (d) => {
@@ -347,10 +348,9 @@ export default Vue.extend({
         },
         nodeRadius: (d) => {
           const node = d as AuthorNode;
-          // 大小 = 被引数 / 论文数
-          // ÷5是为了显示
-          const radius = node.citation / node.count / 5;
-          return radius < 2 ? 2 : radius;
+          // 根据公式计算出的权重
+          const radius = node.value;
+          return radius < 2 ? 2 : radius > 20 ? 20 : radius;
         },
         tooltip: (d) => {
           const node = d as AuthorNode;
@@ -403,4 +403,8 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+.author-portrait-wrapper {
+  overflow-x: hidden;
+}
 </style>
