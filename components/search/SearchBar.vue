@@ -53,6 +53,11 @@ export default Vue.extend({
       showAdvancedSearch: false
     };
   },
+  watch: {
+    keyword(val: string) {
+      this.searchContent = val;
+    }
+  },
   methods: {
     // 开始另一次搜索（关键字不同）回车时默认为普通搜索
     startAnotherBasicSearch(keyword: string) {

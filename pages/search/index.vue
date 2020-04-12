@@ -344,6 +344,16 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // 暂时性的解决一下高级搜索首次加载不显示的问题(#24)
+    this.searchContent = (
+      this.author +
+      ' ' +
+      this.affiliation +
+      ' ' +
+      this.publicationName +
+      ' ' +
+      this.keyword
+    ).trim();
     this.getSearchFilter();
   },
   methods: {
@@ -358,14 +368,15 @@ export default Vue.extend({
           sortKey: this.sortKey
         });
       } else if (this.mode === 'advanced') {
-        this.searchContent =
+        this.searchContent = (
           this.author +
           ' ' +
           this.affiliation +
           ' ' +
           this.publicationName +
           ' ' +
-          this.keyword;
+          this.keyword
+        ).trim();
         this.requestAdvancedSearch({
           keyword: this.keyword,
           page: this.page,
