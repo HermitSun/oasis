@@ -218,10 +218,7 @@ import {
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import {
-  SearchDataFromProp,
-  SearchPageComp
-} from '~/interfaces/pages/search/SearchPageComp';
+import { SearchPageComp } from '~/interfaces/pages/search/SearchPageComp';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
@@ -234,6 +231,7 @@ import {
   SearchFilterResponse
 } from '~/interfaces/responses/search/SearchFilterResponse';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import { SearchFullResponse } from '~/interfaces/responses/search/SearchResponse';
 
 async function requestBasicSearchFilterCondition(keyword: string) {
   const res: { filters: SearchFilterResponse } = {
@@ -270,16 +268,23 @@ export default Vue.extend({
   mixins: [PaginationMaxSizeLimit],
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
-    const searchPayload = {
-      ...((query as unknown) as Required<SearchDataFromProp>),
-      startYear: Number(query.startYear),
-      endYear: Number(query.endYear)
-    };
+    const { mode, ...args } = query;
     // 这里非常不优雅，但是没有办法
     // 增加默认值，相当于静默失败，避免500
-    const searchRes = await basicSearch(searchPayload);
-    const searchData =
-      searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
+    let searchData: SearchFullResponse = { papers: [], size: 0 };
+    let searchRes;
+    if (mode === 'basic') {
+      searchRes = await basicSearch((args as unknown) as BasicSearchPayload);
+    } else {
+      searchRes = await advancedSearch({
+        ...args,
+        startYear: Number(query.startYear),
+        endYear: Number(query.endYear)
+      } as AdvancedSearchPayload);
+    }
+    if (searchRes && searchRes.data) {
+      searchData = searchRes.data;
+    }
 
     return {
       searchResponse: searchData.papers,
@@ -339,6 +344,16 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // 暂时性的解决一下高级搜索首次加载不显示的问题(#24)
+    this.searchContent = (
+      this.author +
+      ' ' +
+      this.affiliation +
+      ' ' +
+      this.publicationName +
+      ' ' +
+      this.keyword
+    ).trim();
     this.getSearchFilter();
   },
   methods: {
@@ -353,14 +368,15 @@ export default Vue.extend({
           sortKey: this.sortKey
         });
       } else if (this.mode === 'advanced') {
-        this.searchContent =
+        this.searchContent = (
           this.author +
           ' ' +
           this.affiliation +
           ' ' +
           this.publicationName +
           ' ' +
-          this.keyword;
+          this.keyword
+        ).trim();
         this.requestAdvancedSearch({
           keyword: this.keyword,
           page: this.page,

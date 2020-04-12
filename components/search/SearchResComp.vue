@@ -198,26 +198,34 @@ export default Vue.extend({
 
 <style lang="less">
 /* 只能通过这种比较原始的方式向v-html解析的内容增加样式 */
+@font-highlight: #dd4b39;
+@bright-yellow: #edc22c;
+
 .searchPage-item {
   .title {
-    em,
-    font {
+    em {
       font-weight: bold;
-      color: #dd4b39;
+      color: @font-highlight;
+    }
+  }
+
+  .author {
+    em {
+      font-weight: bold;
+      color: @font-highlight;
     }
 
     &:hover {
-      font {
-        color: #edc22c;
+      em {
+        color: @bright-yellow;
       }
     }
   }
 
   .abstract {
-    em,
-    font {
+    em {
       font-weight: bold;
-      color: #dd4b39;
+      color: @font-highlight;
     }
   }
 }
