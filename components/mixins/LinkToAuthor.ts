@@ -12,7 +12,7 @@ const link = Vue.extend({
           query: { authorId: author.id, sortKey: 'recent', page: '1' }
         });
       } else {
-        this.$message.error('找不到该作者的信息🤷🏻');
+        this.$message.error('找不到该学者的信息🤷🏻');
       }
     }
   }

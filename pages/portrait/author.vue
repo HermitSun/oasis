@@ -362,7 +362,11 @@ export default Vue.extend({
           </div>
         `;
         },
-        draggable: true
+        draggable: true,
+        noDataPrompt() {
+          Message.error('暂无该学者的学术关系🤷🏻');
+          return '暂无数据...';
+        }
       });
       // 加载完毕
       this.isInterestLoading = false;

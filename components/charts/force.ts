@@ -18,9 +18,11 @@ export interface ForceChartNode extends SimulationNodeDatum {
   id: string;
   group?: number | string;
 }
+
 export interface ForceChartLink extends SimulationLinkDatum<ForceChartNode> {
   [key: string]: any;
 }
+
 export interface ForceChartData {
   nodes: ForceChartNode[];
   links: ForceChartLink[];
@@ -56,23 +58,30 @@ interface ForceChartOptions {
   nodeColor?: string | D3CallbackFn<ForceChartNode>;
   tooltip?: D3CallbackFn<ForceChartNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
+  noDataPrompt?: (() => string) | string; // 无数据的提示
 }
+
 type ForceChartOptionsWithDefaultWrapper = Required<
-  Omit<ForceChartOptions, 'tooltip'>
+  Omit<ForceChartOptions, 'tooltip' | 'noDataPrompt'>
 >;
 type Primitive = number | string | boolean | null | undefined | symbol | bigint;
 // 经过处理的带默认值的选项类型
-type ForceChartOptionsWithDefault = Required<
-  {
-    [K in keyof ForceChartOptionsWithDefaultWrapper]: Extract<
-      ForceChartOptionsWithDefaultWrapper[K],
-      Primitive
-    >;
-  }
->;
+interface ForceChartOptionsWithDefault
+  extends Required<
+    {
+      [K in keyof ForceChartOptionsWithDefaultWrapper]: Extract<
+        ForceChartOptionsWithDefaultWrapper[K],
+        Primitive
+      >;
+    }
+  > {
+  noDataPrompt: NonNullable<ForceChartOptions['noDataPrompt']>;
+}
+
 interface ForceChartUtils {
   clear(): void; // 对图表的DOM元素进行清理
 }
+
 // 给tooltip挂载一个清理方法
 export interface ForceChartTooltipElement
   extends HTMLDivElement,
@@ -101,8 +110,35 @@ export function createForceChart(
     nodeRadius: 5,
     nodeColor: groupByColor,
     draggable: false,
+    noDataPrompt: '暂无数据...',
     ...options
   } as ForceChartOptionsWithDefault;
+
+  const isDataValid =
+    data && data.nodes && data.links && data.nodes.length && data.links.length;
+  // 无数据时的处理
+  if (!isDataValid) {
+    const prompt =
+      typeof config.noDataPrompt === 'string'
+        ? config.noDataPrompt
+        : config.noDataPrompt();
+
+    const noDataPrompt = d3
+      .select(selectorOrDOM as HTMLElement)
+      .append('p')
+      .text(prompt)
+      .style('text-align', 'center')
+      .style('line-height', config.height - 200 + 'px');
+    // 仍然暴露一个清理方法
+    const noDataClearFn = () => {
+      noDataPrompt.remove();
+    };
+    return {
+      clear() {
+        noDataClearFn();
+      }
+    };
+  }
 
   // 拖拽逻辑
   const drag = (simulation: Simulation<ForceChartNode, ForceChartLink>) => {
