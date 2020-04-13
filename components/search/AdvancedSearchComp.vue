@@ -34,7 +34,7 @@
             <input
               id="author"
               v-model="author"
-              placeholder="e.g. M. Erwig"
+              placeholder="e.g. Frede Blaabjerg"
               maxlength="33"
             />
             <div class="error">
@@ -67,6 +67,20 @@
             />
             <div class="error">
               {{ getInputLengthError(publicationName) }}
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <label>with in the field of </label>
+          <div class="input">
+            <input
+              id="field"
+              v-model="field"
+              placeholder="e.g. Optimization"
+              maxlength="33"
+            />
+            <div class="error">
+              {{ getInputLengthError(field) }}
             </div>
           </div>
         </div>
@@ -108,10 +122,11 @@ export default Vue.extend({
   name: 'AdvancedSearchComp',
   data() {
     return {
+      keyword: '', // 泛化关键字
       author: '', // 作者
       affiliation: '', // 机构
       publicationName: '', // 会议|期刊
-      keyword: '', // 研究关键字
+      field: '', // 研究关键字
       startYear: '1979', // 开始日期
       endYear: '2020', // 结束日期
       isError: false
@@ -122,10 +137,11 @@ export default Vue.extend({
       const defaultPage = '1';
       if (
         !(
+          this.keyword === '' &&
           this.author === '' &&
           this.affiliation === '' &&
           this.publicationName === '' &&
-          this.keyword === ''
+          this.field === ''
         ) &&
         !this.isError
       ) {
@@ -134,10 +150,11 @@ export default Vue.extend({
           path: '/search',
           query: {
             mode: 'advanced',
+            keyword: this.keyword, // 泛化关键字
             author: this.author,
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议
-            keyword: this.keyword, // 研究关键字
+            field: this.field, // 研究关键字
             startYear: this.startYear, // 开始日期
             endYear: this.endYear, // 结束日期
             page: defaultPage,

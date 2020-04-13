@@ -325,10 +325,11 @@ export default Vue.extend({
       async handler({ query }) {
         // 手动更新路由
         this.mode = query.mode;
+        this.keyword = query.keyword;
         this.author = query.author;
         this.affiliation = query.affiliation;
         this.publicationName = query.publicationName;
-        this.keyword = query.keyword;
+        this.field = query.field;
         this.startYear = query.startYear;
         this.endYear = query.endYear;
         this.page = Number(query.page);
@@ -374,13 +375,15 @@ export default Vue.extend({
         });
       } else if (this.mode === 'advanced') {
         this.searchContent = (
+          this.keyword +
+          ' ' +
           this.author +
           ' ' +
           this.affiliation +
           ' ' +
           this.publicationName +
           ' ' +
-          this.keyword
+          this.field
         ).trim();
         this.requestAdvancedSearch({
           keyword: this.keyword,
@@ -388,6 +391,7 @@ export default Vue.extend({
           author: this.author,
           affiliation: this.affiliation,
           publicationName: this.publicationName,
+          field: this.field,
           startYear: Number(this.startYear),
           endYear: Number(this.endYear),
           sortKey: this.sortKey
@@ -475,10 +479,11 @@ export default Vue.extend({
           path: '/search',
           query: {
             mode: 'advanced',
+            keyword: this.keyword, // 泛化关键字
             author: this.author,
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议|期刊
-            keyword: this.keyword, // 研究关键字
+            field: this.field, // 研究关键字
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
@@ -520,10 +525,11 @@ export default Vue.extend({
           path: '/search',
           query: {
             mode: 'advanced',
+            keyword: this.keyword,
             author: this.author,
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议|期刊
-            keyword: this.keyword, // 研究关键字
+            field: this.field, // 研究关键字
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: '1',
