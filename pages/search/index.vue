@@ -213,7 +213,8 @@ import {
 import {
   basicSearch,
   advancedSearch,
-  getBasicSearchFilterCondition
+  getBasicSearchFilterCondition,
+  basicFilterSearch
 } from '~/api';
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
@@ -222,6 +223,7 @@ import { SearchPageComp } from '~/interfaces/pages/search/SearchPageComp';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
+  FilterSearchPayload,
   sortKey
 } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
@@ -417,6 +419,27 @@ export default Vue.extend({
         this.isLoading = false;
       }
     },
+    // 二次搜索
+    async requestBasicFilterSearch(args: FilterSearchPayload) {
+      this.isLoading = true;
+      try {
+        const basicFilterSearchRes = await basicFilterSearch(args);
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData =
+          basicFilterSearchRes && basicFilterSearchRes.data
+            ? basicFilterSearchRes.data
+            : { papers: [], size: this.resultCount };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
+      } catch (e) {
+        this.$message.error(e.toString());
+        // 增加一个默认值
+        this.searchResponse = [];
+      } finally {
+        this.isLoading = false;
+      }
+    },
     // 高级搜索
     async requestAdvancedSearch(args: AdvancedSearchPayload) {
       this.isLoading = true;
@@ -526,6 +549,8 @@ export default Vue.extend({
         loading.close();
       }
     },
+
+    // 根据二次筛选条件发送搜索请求
     async sendSearchFilter() {
       const author = this.checkedAuthors.join(' ');
       const affiliation = this.checkedAffiliations.join(' ');
@@ -539,7 +564,7 @@ export default Vue.extend({
 
       if (!this.isError) {
         this.showNextPage(1); // 刷新路由
-        await this.requestAdvancedSearch({
+        await this.requestBasicFilterSearch({
           author,
           affiliation,
           publicationName,

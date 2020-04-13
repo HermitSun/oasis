@@ -1,7 +1,8 @@
 import axios from './config';
 import {
   AdvancedSearchPayload,
-  BasicSearchPayload
+  BasicSearchPayload,
+  FilterSearchPayload
 } from '~/interfaces/requests/search/SearchPayload';
 import { BasicResponse } from '@/interfaces/responses/BasicResponse';
 import {
@@ -45,6 +46,15 @@ export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/search/basic/es/highlight', {
+    params: args
+  });
+  return data;
+}
+// 1.1 二次搜索（模式：关键词分词，其他精确匹配）
+export async function basicFilterSearch(
+  args: FilterSearchPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/search/filter/es', {
     params: args
   });
   return data;
