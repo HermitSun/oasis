@@ -15,14 +15,10 @@
     <div>
       <!--跳转到学者画像-->
       <!--高亮-->
-      <span
-        v-for="(author, index) in res.authors"
-        :key="index"
-        class="author"
-        style="margin-right: 5px"
-        @click="linkToAuthor(author)"
-        v-html="author.name"
-      >
+      <span v-for="(author, index) in res.authors" :key="index" class="author">
+        <span class="name" @click="linkToAuthor(author)" v-html="author.name">
+        </span>
+        <span v-if="index !== res.authors.length - 1">,</span>
       </span>
       <span class="info">
         <span
@@ -209,7 +205,7 @@ export default Vue.extend({
     }
   }
 
-  .author {
+  .name {
     em {
       font-weight: bold;
       color: @font-highlight;
