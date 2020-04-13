@@ -26,11 +26,7 @@
         <div
           class="searchPage-content__result"
           style="text-align: left"
-          :style="
-            mode === 'advanced' || searchResponse.length === 0
-              ? { width: '100%' }
-              : {}
-          "
+          :style="mode === 'advanced' ? { width: '100%' } : {}"
         >
           <!--TODO 优化样式-->
           <template>
@@ -60,7 +56,7 @@
           <!--展示搜索内容-->
           <p
             v-if="searchResponse.length === 0"
-            style="min-height: 400px; line-height: 400px; text-align: center"
+            style="min-height: 400px; line-height: 600px; text-align: center"
           >
             暂时没有数据...
           </p>
@@ -93,7 +89,7 @@
         <!--过滤条件-->
         <!--可以考虑抽取一个组件，利于后续优化-->
         <div
-          v-if="mode === 'basic' && searchResponse.length !== 0"
+          v-if="mode === 'basic'"
           class="searchPage-content__filter mobile-hidden"
         >
           <span class="searchPage-content__sub-hint">Filter By</span>
@@ -122,7 +118,7 @@
               </div>
             </div>
             <!--具体的筛选内容-->
-            <div id="filter-content" style="min-height: 400px; width: 100%">
+            <div id="filter-content" style="min-height: 400px;width:100%">
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
