@@ -194,9 +194,9 @@ export default Vue.extend({
     // 跳转到期刊画像
     linkToJournal(name: string) {
       const url = this.$router.resolve({
-        path: '/portrait/conference',
+        path: '/portrait/journal',
         query: {
-          conference: name
+          journal: name
         }
       });
       window.open(url.href, '_blank');
