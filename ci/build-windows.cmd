@@ -1,7 +1,9 @@
 :: build nuxt release
 call npm run build
 :: set current time as version
-set version=%date:~0,4%%date:~5,2%%date:~8,2%%time:~0,2%%time:~3,2%%time:~6,2%
+:: fix one-bit time
+set now=%time: =0%
+set version=%date:~0,4%%date:~5,2%%date:~8,2%%now:~0,2%%now:~3,2%%now:~6,2%
 :: build docker image
 docker build -t registry.cn-hangzhou.aliyuncs.com/seciii/frontend-app:%version% .
 :: add latest tag
