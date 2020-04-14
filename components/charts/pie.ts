@@ -33,7 +33,16 @@ interface PieChartConfig {
     | 'value-desc'
     | 'label-asc'
     | 'label-desc';
+  segmentClick?: PieChartCallback;
 }
+
+interface PieChartCallbackArgs {
+  data: {
+    label: string;
+    value: number;
+  };
+}
+type PieChartCallback = (args: PieChartCallbackArgs) => unknown;
 
 const minimizedD3 = {
   ...d3,
@@ -125,6 +134,9 @@ export function createPieChart(
         speed: 400,
         size: 8
       }
+    },
+    callbacks: {
+      onClickSegment: config.segmentClick ? config.segmentClick : () => {}
     }
   });
 }

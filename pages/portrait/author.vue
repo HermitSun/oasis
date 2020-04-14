@@ -100,6 +100,7 @@ import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
+import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -223,7 +224,7 @@ export default Vue.extend({
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法
-  mixins: [ForceChartClear],
+  mixins: [ForceChartClear, LinkToAuthor],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
@@ -322,7 +323,16 @@ export default Vue.extend({
           .slice(0, 20),
         {
           width: getSizeById('pie').width,
-          height: getSizeById('pie').height
+          height: getSizeById('pie').height,
+          // 点击后跳转到对应的研究方向画像
+          segmentClick: ({ data }) => {
+            this.$router.push({
+              path: '/portrait/keyword',
+              query: {
+                keyword: data.label
+              }
+            });
+          }
         }
       );
       // 加载完毕
@@ -351,6 +361,10 @@ export default Vue.extend({
           // 根据公式计算出的权重
           const radius = node.value;
           return radius < 2 ? 2 : radius > 20 ? 20 : radius;
+        },
+        // 这里是没有办法的断言，因为用了mixin
+        nodeClick: (d) => {
+          (this as any).linkToAuthor(d);
         },
         tooltip: (d) => {
           const node = d as AuthorNode;
