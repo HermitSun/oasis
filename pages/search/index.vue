@@ -334,8 +334,10 @@ export default Vue.extend({
         this.endYear = query.endYear;
         this.page = Number(query.page);
         this.sortKey = query.sortKey;
-        // 然后进行搜索
-        this.doSearch();
+        // 如果不是filter search，则发起常规的搜索（basic或者advanced）
+        if (!query.filter) {
+          this.doSearch();
+        }
         await requestBasicSearchFilterCondition(this.keyword as string).then(
           (res) => (this.filters = res.filters)
         );
@@ -461,7 +463,7 @@ export default Vue.extend({
       }
     },
     // 展示下一页的搜索结果
-    showNextPage(page: number) {
+    showNextPage(page: number, filter: boolean = false) {
       if (this.mode === 'basic') {
         this.$router.push({
           path: '/search',
@@ -471,7 +473,8 @@ export default Vue.extend({
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
-            sortKey: this.sortKey as sortKey
+            sortKey: this.sortKey as sortKey,
+            filter: filter.toString()
           }
         });
       } else if (this.mode === 'advanced') {
@@ -487,7 +490,8 @@ export default Vue.extend({
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
-            sortKey: this.sortKey as sortKey
+            sortKey: this.sortKey as sortKey,
+            filter: filter.toString()
           }
         });
       }
