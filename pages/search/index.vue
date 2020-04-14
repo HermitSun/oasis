@@ -335,6 +335,7 @@ export default Vue.extend({
         this.page = Number(query.page);
         this.sortKey = query.sortKey;
         // 如果不是filter search，则发起常规的搜索（basic或者advanced）
+        // @see issue #33[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/33]]
         if (!query.filter) {
           this.doSearch();
         }
@@ -511,6 +512,8 @@ export default Vue.extend({
       });
     },
     // 切换sortKey
+    // 切换后重置日期
+    // @see issue #35 [[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
     changeSortKey(sortKey: sortKey) {
       if (this.mode === 'basic') {
         this.$router.push({
@@ -518,8 +521,8 @@ export default Vue.extend({
           query: {
             mode: 'basic',
             keyword: this.keyword,
-            startYear: String(this.startYear), // 开始日期
-            endYear: String(this.endYear), // 结束日期
+            startYear: '1979', // 开始日期
+            endYear: new Date().getFullYear().toString(), // 结束日期
             page: '1',
             sortKey
           }
@@ -534,8 +537,8 @@ export default Vue.extend({
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议|期刊
             field: this.field, // 研究关键字
-            startYear: String(this.startYear), // 开始日期
-            endYear: String(this.endYear), // 结束日期
+            startYear: '1979', // 开始日期
+            endYear: new Date().getFullYear().toString(), // 结束日期
             page: '1',
             sortKey
           }
