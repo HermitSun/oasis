@@ -3,7 +3,7 @@
     <!--标题-->
     <el-header>
       <h1 style="text-align: center">
-        OASIS DBMS
+        <img src="~/assets/logo.png" style="width: 20vw" /> DBMS
       </h1>
     </el-header>
     <el-container>
