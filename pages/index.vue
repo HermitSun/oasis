@@ -276,6 +276,9 @@ export default Vue.extend({
   height: @homepage-header-height;
   min-height: 220px;
   .mobile-height(100vh);
+  @media @max-mobile-width {
+    padding-bottom: 20vh;
+  }
   .homepage-header__logo {
     .pc-width__mobile(30vw);
     .mobile-width(70vw);

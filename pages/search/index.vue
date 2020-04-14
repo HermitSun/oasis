@@ -26,11 +26,7 @@
         <div
           class="searchPage-content__result"
           style="text-align: left"
-          :style="
-            mode === 'advanced' || searchResponse.length === 0
-              ? { width: '100%' }
-              : {}
-          "
+          :style="mode === 'advanced' ? { width: '100%' } : {}"
         >
           <!--TODO 优化样式-->
           <template>
@@ -60,7 +56,7 @@
           <!--展示搜索内容-->
           <p
             v-if="searchResponse.length === 0"
-            style="min-height: 400px; line-height: 400px; text-align: center"
+            style="min-height: 400px; line-height: 600px; text-align: center"
           >
             暂时没有数据...
           </p>
@@ -93,7 +89,7 @@
         <!--过滤条件-->
         <!--可以考虑抽取一个组件，利于后续优化-->
         <div
-          v-if="mode === 'basic' && searchResponse.length !== 0"
+          v-if="mode === 'basic'"
           class="searchPage-content__filter mobile-hidden"
         >
           <span class="searchPage-content__sub-hint">Filter By</span>
@@ -122,7 +118,7 @@
               </div>
             </div>
             <!--具体的筛选内容-->
-            <div id="filter-content" style="min-height: 400px; width: 100%">
+            <div id="filter-content" style="min-height: 400px;width:100%">
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
@@ -213,7 +209,8 @@ import {
 import {
   basicSearch,
   advancedSearch,
-  getBasicSearchFilterCondition
+  getBasicSearchFilterCondition,
+  basicFilterSearch
 } from '~/api';
 import SearchBar from '~/components/search/SearchBar.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
@@ -222,6 +219,7 @@ import { SearchPageComp } from '~/interfaces/pages/search/SearchPageComp';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
+  FilterSearchPayload,
   sortKey
 } from '~/interfaces/requests/search/SearchPayload';
 import { isMobile } from '~/utils/breakpoint';
@@ -327,10 +325,11 @@ export default Vue.extend({
       async handler({ query }) {
         // 手动更新路由
         this.mode = query.mode;
+        this.keyword = query.keyword;
         this.author = query.author;
         this.affiliation = query.affiliation;
         this.publicationName = query.publicationName;
-        this.keyword = query.keyword;
+        this.field = query.field;
         this.startYear = query.startYear;
         this.endYear = query.endYear;
         this.page = Number(query.page);
@@ -376,13 +375,15 @@ export default Vue.extend({
         });
       } else if (this.mode === 'advanced') {
         this.searchContent = (
+          this.keyword +
+          ' ' +
           this.author +
           ' ' +
           this.affiliation +
           ' ' +
           this.publicationName +
           ' ' +
-          this.keyword
+          this.field
         ).trim();
         this.requestAdvancedSearch({
           keyword: this.keyword,
@@ -390,6 +391,7 @@ export default Vue.extend({
           author: this.author,
           affiliation: this.affiliation,
           publicationName: this.publicationName,
+          field: this.field,
           startYear: Number(this.startYear),
           endYear: Number(this.endYear),
           sortKey: this.sortKey
@@ -406,6 +408,27 @@ export default Vue.extend({
         const searchData =
           basicSearchRes && basicSearchRes.data
             ? basicSearchRes.data
+            : { papers: [], size: this.resultCount };
+        this.searchResponse = searchData.papers;
+        this.resultCount = searchData.size;
+      } catch (e) {
+        this.$message.error(e.toString());
+        // 增加一个默认值
+        this.searchResponse = [];
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    // 二次搜索
+    async requestBasicFilterSearch(args: FilterSearchPayload) {
+      this.isLoading = true;
+      try {
+        const basicFilterSearchRes = await basicFilterSearch(args);
+        // 增加默认值，相当于静默失败，避免500
+        // size不变
+        const searchData =
+          basicFilterSearchRes && basicFilterSearchRes.data
+            ? basicFilterSearchRes.data
             : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
@@ -456,10 +479,11 @@ export default Vue.extend({
           path: '/search',
           query: {
             mode: 'advanced',
+            keyword: this.keyword, // 泛化关键字
             author: this.author,
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议|期刊
-            keyword: this.keyword, // 研究关键字
+            field: this.field, // 研究关键字
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
@@ -501,10 +525,11 @@ export default Vue.extend({
           path: '/search',
           query: {
             mode: 'advanced',
+            keyword: this.keyword,
             author: this.author,
             affiliation: this.affiliation, // 机构
             publicationName: this.publicationName, // 会议|期刊
-            keyword: this.keyword, // 研究关键字
+            field: this.field, // 研究关键字
             startYear: String(this.startYear), // 开始日期
             endYear: String(this.endYear), // 结束日期
             page: '1',
@@ -526,6 +551,8 @@ export default Vue.extend({
         loading.close();
       }
     },
+
+    // 根据二次筛选条件发送搜索请求
     async sendSearchFilter() {
       const author = this.checkedAuthors.join(' ');
       const affiliation = this.checkedAffiliations.join(' ');
@@ -539,7 +566,7 @@ export default Vue.extend({
 
       if (!this.isError) {
         this.showNextPage(1); // 刷新路由
-        await this.requestAdvancedSearch({
+        await this.requestBasicFilterSearch({
           author,
           affiliation,
           publicationName,

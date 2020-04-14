@@ -14,12 +14,25 @@ export interface BasicSearchPayload {
   sortKey: sortKey;
 }
 
-// 组合搜索
-export interface AdvancedSearchPayload {
+// 二次搜索
+export interface FilterSearchPayload {
+  keyword?: string; // 泛用关键字
   author?: string; // 作者
   affiliation?: string; // 机构
   publicationName?: string; // 会议
-  keyword?: string; // 研究关键字
+  page: number;
+  startYear?: number; // 开始日期
+  endYear?: number; // 结束日期
+  sortKey: sortKey;
+}
+
+// 组合搜索
+export interface AdvancedSearchPayload {
+  keyword?: string; // 泛用关键字
+  author?: string; // 作者
+  affiliation?: string; // 机构
+  publicationName?: string; // 会议
+  field?: string; // 研究关键字
   page: number;
   startYear?: number; // 开始日期
   endYear?: number; // 结束日期
