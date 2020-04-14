@@ -9,7 +9,8 @@ import {
   SimulationNodeDatum,
   SimulationLinkDatum,
   Simulation,
-  ValueFn
+  ValueFn,
+  BaseType
 } from 'd3';
 import { getElementLocation } from '~/utils/location';
 
@@ -32,7 +33,7 @@ export interface ForceChartData {
 type D3CallbackFn<
   T,
   R = string | number,
-  E extends Element = Element
+  E extends BaseType = Element
 > = ValueFn<E, T, R>;
 type D3SelectionElement<T> = T extends Selection<
   infer _,
@@ -56,13 +57,14 @@ interface ForceChartOptions {
   nodeBorderWidth?: number | D3CallbackFn<ForceChartNode>;
   nodeRadius?: number | D3CallbackFn<ForceChartNode>;
   nodeColor?: string | D3CallbackFn<ForceChartNode>;
+  nodeClick?: D3CallbackFn<ForceChartNode, void, BaseType>;
   tooltip?: D3CallbackFn<ForceChartNode, string>; // 目前直接返回HTML模板的实现不安全
   draggable?: boolean;
   noDataPrompt?: (() => string) | string; // 无数据的提示
 }
 
 type ForceChartOptionsWithDefaultWrapper = Required<
-  Omit<ForceChartOptions, 'tooltip' | 'noDataPrompt'>
+  Omit<ForceChartOptions, 'nodeClick' | 'tooltip' | 'noDataPrompt'>
 >;
 type Primitive = number | string | boolean | null | undefined | symbol | bigint;
 // 经过处理的带默认值的选项类型
@@ -238,6 +240,8 @@ export function createForceChart(
   if (options.tooltip) {
     // 显示tooltip
     const showToolTip = (d: ForceChartNode) => {
+      // hover效果
+      node.style('opacity', (node) => (node.id === d.id ? 0.8 : 1));
       // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
       const tooltipHTML = (options.tooltip as TooltipFn<ForceChartNode>)(d);
       // 渐变效果
@@ -257,6 +261,8 @@ export function createForceChart(
     };
     // 隐藏tooltip
     const hideTooltip = () => {
+      // 取消hover效果
+      node.style('opacity', 1);
       tooltip.style('opacity', 0);
     };
 
@@ -265,6 +271,11 @@ export function createForceChart(
       .on('mouseout', hideTooltip)
       .on('touchstart', showToolTip)
       .on('touchend', hideTooltip);
+  }
+
+  // 增加点击事件
+  if (options.nodeClick) {
+    node.on('click', options.nodeClick);
   }
 
   // 是否可拖拽
