@@ -119,6 +119,7 @@
             </div>
             <!--具体的筛选内容-->
             <div id="filter-content" style="min-height: 400px;width:100%">
+              <!--学者-->
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
@@ -139,6 +140,7 @@
                   </el-checkbox-group>
                 </div>
               </div>
+              <!--机构-->
               <div
                 v-if="filters.affiliations.length !== 0"
                 class="filter-wrapper"
@@ -162,6 +164,28 @@
                   </el-checkbox-group>
                 </div>
               </div>
+              <!--会议-->
+              <div v-if="filters.journals.length !== 0" class="filter-wrapper">
+                <div class="divider"></div>
+                <div class="hint">
+                  Related Conferences
+                </div>
+                <div class="options">
+                  <el-checkbox-group
+                    v-model="checkedConferences"
+                    @change="sendSearchFilter"
+                  >
+                    <el-checkbox
+                      v-for="(conference, index) in filters.conferences"
+                      :key="'conference-checkbox' + index"
+                      :label="conference.name"
+                    >
+                      <span class="option">{{ conference.name }}</span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <!--期刊-->
               <div v-if="filters.journals.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
