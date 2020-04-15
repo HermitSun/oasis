@@ -122,7 +122,7 @@
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
-                  Authors
+                  Related Authors
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -134,9 +134,7 @@
                       :key="index"
                       :label="author.name"
                     >
-                      <span class="option"
-                        >{{ author.name }}({{ author.count }})</span
-                      >
+                      <span class="option">{{ author.name }}</span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
@@ -147,7 +145,7 @@
               >
                 <div class="divider"></div>
                 <div class="hint">
-                  Affiliations
+                  Related Affiliations
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -159,9 +157,7 @@
                       :key="index"
                       :label="affiliation.name"
                     >
-                      <span class="option"
-                        >{{ affiliation.name }}({{ affiliation.count }})
-                      </span>
+                      <span class="option">{{ affiliation.name }} </span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
@@ -169,7 +165,7 @@
               <div v-if="filters.journals.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
-                  Journals
+                  Related Journals
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -181,9 +177,7 @@
                       :key="'journal-checkbox' + index"
                       :label="journal.name"
                     >
-                      <span class="option"
-                        >{{ journal.name }}({{ journal.count }})</span
-                      >
+                      <span class="option">{{ journal.name }}</span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
