@@ -314,3 +314,9 @@ export default Vue.extend({
   }
 }
 </style>
+
+<style lang="less">
+g[class^='p'][class$='arc'] {
+  cursor: pointer;
+}
+</style>

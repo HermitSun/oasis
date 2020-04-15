@@ -275,7 +275,7 @@ export function createForceChart(
 
   // 增加点击事件
   if (options.nodeClick) {
-    node.on('click', options.nodeClick);
+    node.style('cursor', 'pointer').on('click', options.nodeClick);
   }
 
   // 是否可拖拽
