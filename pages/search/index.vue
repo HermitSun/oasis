@@ -333,25 +333,7 @@ export default Vue.extend({
         // 因为分页后也需要发起请求，所以把逻辑暂时移到这里
         // @see issue #41[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/41]]
         if (query.filter === 'true') {
-          const author = this.checkedAuthors.join(' ');
-          const affiliation = this.checkedAffiliations.join(' ');
-          const publicationName =
-            this.checkedJournals.join(' ') + this.checkedConferences.join(' ');
-          const keyword = this.keyword;
-          const page = this.page;
-          const startYear = this.startYear;
-          const endYear = this.endYear;
-          const sortKey = this.sortKey;
-          this.requestBasicFilterSearch({
-            author,
-            affiliation,
-            publicationName,
-            keyword,
-            page,
-            startYear,
-            endYear,
-            sortKey
-          });
+          this.doFilterSearch();
         } else {
           this.doSearch();
         }
@@ -359,6 +341,9 @@ export default Vue.extend({
           (res) => (this.filters = res.filters)
         );
       }
+    },
+    checkedAuthors() {
+      this.doFilterSearch();
     }
   },
   mounted() {
@@ -590,6 +575,27 @@ export default Vue.extend({
         // 此外，这里是filter模式
         this.showNextPage(1, true);
       }
+    },
+    doFilterSearch() {
+      const author = this.checkedAuthors.join(' ');
+      const affiliation = this.checkedAffiliations.join(' ');
+      const publicationName =
+        this.checkedJournals.join(' ') + this.checkedConferences.join(' ');
+      const keyword = this.keyword;
+      const page = this.page;
+      const startYear = this.startYear;
+      const endYear = this.endYear;
+      const sortKey = this.sortKey;
+      this.requestBasicFilterSearch({
+        author,
+        affiliation,
+        publicationName,
+        keyword,
+        page,
+        startYear,
+        endYear,
+        sortKey
+      });
     },
     getYearError(startYear: string, endYear: string) {
       let isYearError = false;
