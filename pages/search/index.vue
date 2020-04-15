@@ -122,7 +122,7 @@
               <div v-if="filters.authors.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
-                  Authors
+                  Related Authors
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -134,9 +134,7 @@
                       :key="index"
                       :label="author.name"
                     >
-                      <span class="option"
-                        >{{ author.name }}({{ author.count }})</span
-                      >
+                      <span class="option">{{ author.name }}</span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
@@ -147,7 +145,7 @@
               >
                 <div class="divider"></div>
                 <div class="hint">
-                  Affiliations
+                  Related Affiliations
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -159,9 +157,7 @@
                       :key="index"
                       :label="affiliation.name"
                     >
-                      <span class="option"
-                        >{{ affiliation.name }}({{ affiliation.count }})
-                      </span>
+                      <span class="option">{{ affiliation.name }} </span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
@@ -169,7 +165,7 @@
               <div v-if="filters.journals.length !== 0" class="filter-wrapper">
                 <div class="divider"></div>
                 <div class="hint">
-                  Journals
+                  Related Journals
                 </div>
                 <div class="options">
                   <el-checkbox-group
@@ -181,9 +177,7 @@
                       :key="'journal-checkbox' + index"
                       :label="journal.name"
                     >
-                      <span class="option"
-                        >{{ journal.name }}({{ journal.count }})</span
-                      >
+                      <span class="option">{{ journal.name }}</span>
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
@@ -336,13 +330,20 @@ export default Vue.extend({
         this.sortKey = query.sortKey;
         // 如果不是filter search，则发起常规的搜索（basic或者advanced）
         // @see issue #33[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/33]]
-        if (!query.filter) {
+        // 因为分页后也需要发起请求，所以把逻辑暂时移到这里
+        // @see issue #41[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/41]]
+        if (query.filter === 'true') {
+          this.doFilterSearch();
+        } else {
           this.doSearch();
         }
         await requestBasicSearchFilterCondition(this.keyword as string).then(
           (res) => (this.filters = res.filters)
         );
       }
+    },
+    checkedAuthors() {
+      this.doFilterSearch();
     }
   },
   mounted() {
@@ -475,7 +476,11 @@ export default Vue.extend({
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
             sortKey: this.sortKey as sortKey,
-            filter: filter.toString()
+            filter: filter
+              ? 'true'
+              : this.$route.query.filter === 'true'
+              ? 'true'
+              : filter.toString()
           }
         });
       } else if (this.mode === 'advanced') {
@@ -492,7 +497,11 @@ export default Vue.extend({
             endYear: String(this.endYear), // 结束日期
             page: page.toString(),
             sortKey: this.sortKey as sortKey,
-            filter: filter.toString()
+            filter: filter
+              ? 'true'
+              : this.$route.query.filter === 'true'
+              ? 'true'
+              : filter.toString()
           }
         });
       }
@@ -513,7 +522,7 @@ export default Vue.extend({
     },
     // 切换sortKey
     // 切换后重置日期
-    // @see issue #35 [[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
+    // @see issue #35[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
     changeSortKey(sortKey: sortKey) {
       if (this.mode === 'basic') {
         this.$router.push({
@@ -558,32 +567,35 @@ export default Vue.extend({
         loading.close();
       }
     },
-
     // 根据二次筛选条件发送搜索请求
-    async sendSearchFilter() {
+    // 具体的请求逻辑移到watch里了
+    sendSearchFilter() {
+      if (!this.isError) {
+        // 刷新路由
+        // 此外，这里是filter模式
+        this.showNextPage(1, true);
+      }
+    },
+    doFilterSearch() {
       const author = this.checkedAuthors.join(' ');
       const affiliation = this.checkedAffiliations.join(' ');
       const publicationName =
         this.checkedJournals.join(' ') + this.checkedConferences.join(' ');
       const keyword = this.keyword;
-      const page = 1;
+      const page = this.page;
       const startYear = this.startYear;
       const endYear = this.endYear;
       const sortKey = this.sortKey;
-
-      if (!this.isError) {
-        this.showNextPage(1); // 刷新路由
-        await this.requestBasicFilterSearch({
-          author,
-          affiliation,
-          publicationName,
-          keyword,
-          page,
-          startYear,
-          endYear,
-          sortKey
-        });
-      }
+      this.requestBasicFilterSearch({
+        author,
+        affiliation,
+        publicationName,
+        keyword,
+        page,
+        startYear,
+        endYear,
+        sortKey
+      });
     },
     getYearError(startYear: string, endYear: string) {
       let isYearError = false;
