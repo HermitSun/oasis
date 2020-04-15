@@ -24,7 +24,7 @@
                   v-for="(author, index) of paperProps.row.authors"
                   :key="index"
                 >
-                  <span>{{ author.name }}</span>
+                  <span>{{ author }}</span>
                 </li>
               </ul>
             </el-form-item>
