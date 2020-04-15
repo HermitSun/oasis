@@ -426,3 +426,9 @@ export default Vue.extend({
   overflow-x: hidden;
 }
 </style>
+
+<style lang="less">
+g[class^='p'][class$='arc'] {
+  cursor: pointer;
+}
+</style>

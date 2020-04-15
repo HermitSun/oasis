@@ -212,8 +212,8 @@ export default Vue.extend({
   mounted(): void {
     // 本人垃圾前端
     if (getClientWidth() > 768) {
-      const elementAuthors = document.getElementById('authors') as any;
-      const elementPapers = document.getElementById('papers') as any;
+      const elementAuthors = document.getElementById('authors') as HTMLElement;
+      const elementPapers = document.getElementById('papers') as HTMLElement;
       elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
     }
     createPieChart(
@@ -234,7 +234,16 @@ export default Vue.extend({
         .slice(0, 20),
       {
         width: getSizeById('pie').width,
-        height: getSizeById('pie').height
+        height: getSizeById('pie').height,
+        // 点击后跳转到对应的研究方向画像
+        segmentClick: ({ data }) => {
+          this.$router.push({
+            path: '/portrait/keyword',
+            query: {
+              keyword: data.label
+            }
+          });
+        }
       }
     );
     createBarChart(
@@ -303,5 +312,11 @@ export default Vue.extend({
       width: 50vw;
     }
   }
+}
+</style>
+
+<style lang="less">
+g[class^='p'][class$='arc'] {
+  cursor: pointer;
 }
 </style>
