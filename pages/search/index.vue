@@ -342,12 +342,24 @@ export default Vue.extend({
         );
       }
     },
+    // 任何一个filter发生变化都应该触发筛选
+    // @see issue #44 [[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/44]]
     checkedAuthors() {
+      this.doFilterSearch();
+    },
+    checkedAffiliations() {
+      this.doFilterSearch();
+    },
+    checkedConferences() {
+      this.doFilterSearch();
+    },
+    checkedJournals() {
       this.doFilterSearch();
     }
   },
   mounted() {
-    // 暂时性的解决一下高级搜索首次加载不显示的问题(#24)
+    // 暂时性的解决一下高级搜索首次加载输入框无内容的问题
+    // @see issue #24[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/24]]
     if (this.mode === 'advanced') {
       this.searchContent = '';
       if (this.author) {
@@ -577,10 +589,14 @@ export default Vue.extend({
       }
     },
     doFilterSearch() {
-      const author = this.checkedAuthors.join(' ');
-      const affiliation = this.checkedAffiliations.join(' ');
+      // 此处应用name中不会出现的字符来进行join
+      // @see issue #44[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/44]]
+      const separator = '#';
+      const author = this.checkedAuthors.join(separator);
+      const affiliation = this.checkedAffiliations.join(separator);
       const publicationName =
-        this.checkedJournals.join(' ') + this.checkedConferences.join(' ');
+        this.checkedJournals.join(separator) +
+        this.checkedConferences.join(separator);
       const keyword = this.keyword;
       const page = this.page;
       const startYear = this.startYear;
