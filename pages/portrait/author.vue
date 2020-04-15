@@ -354,7 +354,7 @@ export default Vue.extend({
         linkLength: (d) => {
           const link = d as AuthorLink;
           // 限制最大长度
-          return link.value * 30 > 200 ? 200 : link.value * 30;
+          return link.value * 50 > 200 ? 200 : link.value * 50;
         },
         nodeRadius: (d) => {
           const node = d as AuthorNode;
