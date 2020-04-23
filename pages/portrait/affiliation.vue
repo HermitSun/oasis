@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <SearchBarComp />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -82,7 +82,7 @@ import {
 } from '~/api';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
-import SearchBar from '~/components/search/SearchBar.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
@@ -155,12 +155,12 @@ async function requestAuthorDetailRanking(affiliation: string) {
 export default Vue.extend({
   name: 'Affiliation',
   components: {
-    Subtitle,
-    PapersSubtitle,
-    PaperInfoComp,
-    PortraitProfileComp,
-    SearchBar,
     AuthorDetailComp,
+    PaperInfoComp,
+    PapersSubtitle,
+    PortraitProfileComp,
+    SearchBarComp,
+    Subtitle,
     [Pagination.name]: Pagination
   },
   async asyncData({ query }) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <SearchBarComp />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -51,7 +51,7 @@ import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import SearchBar from '~/components/search/SearchBar.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
@@ -91,11 +91,11 @@ async function requestPapers(args: KeywordPapersPayload) {
 export default Vue.extend({
   name: 'Keyword',
   components: {
-    Subtitle,
-    PapersSubtitle,
     PaperInfoComp,
+    PapersSubtitle,
     PortraitProfileComp,
-    SearchBar,
+    SearchBarComp,
+    Subtitle,
     [Pagination.name]: Pagination
   },
   async asyncData({ query }) {

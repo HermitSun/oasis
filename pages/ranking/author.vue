@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import SearchBar from '~/components/search/SearchBar.vue';
+import SearchBar from '~/components/search/SearchBarComp.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import { getAuthorAdvancedRanking } from '~/api';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
