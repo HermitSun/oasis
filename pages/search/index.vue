@@ -2,7 +2,7 @@
   <div>
     <!--搜索框-->
     <SearchBar
-      :keyword="searchContent"
+      v-model="searchContent"
       :start-year="startYear"
       :end-year="endYear"
     />

@@ -41,6 +41,10 @@ export default Vue.extend({
   components: {
     AdvancedSearchComp
   },
+  model: {
+    prop: 'keyword',
+    event: 'changed'
+  },
   props: {
     keyword: {
       type: String,
