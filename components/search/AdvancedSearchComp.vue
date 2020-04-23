@@ -1,6 +1,7 @@
 <template>
   <div class="mask">
     <div class="mask-box absolute-center advanced-search__mask-box-size">
+      <!--关闭-->
       <div class="mask-box-header">
         Advanced Search
         <span>
@@ -13,90 +14,97 @@
         </span>
       </div>
       <div class="advanced-search__mask-box-divider"></div>
+      <!--搜索框-->
       <div class="advanced-search__mask-content mask-box-content">
+        <!--关键词 (title + abstract)-->
         <div class="item">
           <label>with all of the words </label>
           <div class="input">
             <input
-              id="keyword"
               v-model="keyword"
               placeholder="e.g. Software"
               maxlength="33"
+              aria-label="advanced-search-keyword"
             />
             <div class="error">
               {{ getInputLengthError(keyword) }}
             </div>
           </div>
         </div>
+        <!--学者姓名-->
         <div class="item">
           <label>return paper authored by</label>
           <div class="input">
             <input
-              id="author"
               v-model="author"
               placeholder="e.g. Frede Blaabjerg"
               maxlength="33"
+              aria-label="advanced-search-author"
             />
             <div class="error">
               {{ getInputLengthError(author) }}
             </div>
           </div>
         </div>
+        <!--机构名称-->
         <div class="item">
           <label>return paper authored from</label>
           <div class="input">
             <input
-              id="affiliation"
               v-model="affiliation"
               placeholder="e.g. UC Berkely"
               maxlength="33"
+              aria-label="advanced-search-affiliation"
             />
             <div class="error">
               {{ getInputLengthError(affiliation) }}
             </div>
           </div>
         </div>
+        <!--出版位置-->
         <div class="item">
           <label>return papers published in</label>
           <div class="input">
             <input
-              id="publicationName"
               v-model="publicationName"
               placeholder="e.g. ASE"
               maxlength="33"
+              aria-label="advanced-search-publicationName"
             />
             <div class="error">
               {{ getInputLengthError(publicationName) }}
             </div>
           </div>
         </div>
+        <!--研究方向-->
         <div class="item">
           <label>with in the field of </label>
           <div class="input">
             <input
-              id="field"
               v-model="field"
               placeholder="e.g. Optimization"
               maxlength="33"
+              aria-label="advanced-search-field"
             />
             <div class="error">
               {{ getInputLengthError(field) }}
             </div>
           </div>
         </div>
+        <!--日期-->
         <div class="item">
           <label>return papers dated between</label>
           <div class="input">
             <input
-              id="startYear"
               v-model="startYear"
               style="width: 67px;margin-right: 5px"
               maxlength="4"
+              aria-label="advanced-search-startYear"
             />-<input
-              id="endYear"
               v-model="endYear"
               style="width: 67px;margin-left: 5px"
               maxlength="4"
+              aria-label="advanced-search-endYear"
             />
             <div class="error">
               {{ getYearError(startYear, endYear) }}
@@ -104,6 +112,7 @@
           </div>
         </div>
       </div>
+      <!--搜索-->
       <button
         class="advanced-search__button"
         style="width:50px;float: right"
@@ -133,20 +142,18 @@ export default Vue.extend({
     };
   },
   methods: {
-    async sendAdvancedSearch() {
+    sendAdvancedSearch() {
       const defaultPage = '1';
-      if (
-        !(
-          this.keyword === '' &&
-          this.author === '' &&
-          this.affiliation === '' &&
-          this.publicationName === '' &&
-          this.field === ''
-        ) &&
-        !this.isError
-      ) {
+      const isInputEmpty =
+        this.keyword === '' &&
+        this.author === '' &&
+        this.affiliation === '' &&
+        this.publicationName === '' &&
+        this.field === '';
+      const isInputValid = !isInputEmpty && !this.isError;
+      if (isInputValid) {
         this.$emit('close');
-        await this.$router.push({
+        this.$router.push({
           path: '/search',
           query: {
             mode: 'advanced',
