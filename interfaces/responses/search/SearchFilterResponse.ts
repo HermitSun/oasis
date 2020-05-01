@@ -4,14 +4,9 @@
  * @date 2020.03.16
  */
 
-export interface FilterTag {
-  name: string;
-  count: number;
-}
-
 export interface SearchFilterResponse {
-  authors: FilterTag[];
-  affiliations: FilterTag[];
-  conferences: FilterTag[];
-  journals: FilterTag[];
+  authors: string[];
+  affiliations: string[];
+  conferences: string[];
+  journals: string[];
 }

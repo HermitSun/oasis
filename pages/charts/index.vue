@@ -1,5 +1,6 @@
 <template>
   <div class="chart-wrapper">
+    <SearchFilterComp keyword="software" />
     <div id="force" style="width: 600px; height: 600px"></div>
     <div id="pie"></div>
     <div id="bar"></div>
@@ -20,6 +21,7 @@ import {
 import { createPieChart } from '~/components/charts/pie';
 import { createBarChart } from '~/components/charts/bar';
 import journalInterestMockData from '~/server/mock/portrait/journal/journalInterestMockData';
+import SearchFilterComp from '~/components/search/SearchFilterComp.vue';
 
 export interface AuthorNode extends ForceChartNode {
   name: string;
@@ -33,6 +35,7 @@ export interface AuthorLink extends ForceChartLink {
 
 export default Vue.extend({
   name: 'Index',
+  components: { SearchFilterComp },
   async mounted() {
     const data = await import('./data.json');
     createForceChart('#force', data, {

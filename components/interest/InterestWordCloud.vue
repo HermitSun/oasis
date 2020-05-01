@@ -49,7 +49,7 @@ export default Vue.extend({
           mode: 'basic',
           keyword: name,
           page: '1',
-          startYear: '1979', // 开始日期
+          startYear: '1963', // 开始日期
           endYear: '2020', // 结束日期
           sortKey: 'related' as sortKey
         }
