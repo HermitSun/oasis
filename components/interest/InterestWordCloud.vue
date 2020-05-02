@@ -44,9 +44,8 @@ export default Vue.extend({
   methods: {
     wordClickHandler(name: string) {
       this.$router.push({
-        path: '/search',
+        path: '/search/basic',
         query: {
-          mode: 'basic',
           keyword: name,
           page: '1',
           startYear: '1963', // 开始日期

@@ -10,20 +10,17 @@ import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilter
 
 interface AsyncSearchData {
   searchResponse: SearchResponse[];
-  filters: SearchFilterResponse;
   resultCount: number;
 }
 
-export type SearchDataFromProp = {
-  mode: 'basic' | 'advanced';
-} & AdvancedSearchPayload;
+export type SearchDataFromProp = AdvancedSearchPayload;
 
 interface SearchLocalData {
-  searchContent: string;
-  showAdvancedSearch: boolean;
   isLoading: boolean; // 是否正在加载
   options: []; // sortKey Options
+  filters: SearchFilterResponse;
   isError: boolean; // time range
+  isFilter: boolean; // 是否正在过滤状态
 }
 
 interface SearchFilterCheckedOptions {
