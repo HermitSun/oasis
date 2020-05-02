@@ -250,9 +250,8 @@ export default Vue.extend({
       const defaultPage = '1';
       if (this.keyword !== '') {
         await this.$router.push({
-          path: '/search',
+          path: '/search/basic',
           query: {
-            mode: 'basic',
             keyword: this.keyword,
             page: defaultPage,
             // 默认数据，主要是为了显示，其实并没有什么实际作用
