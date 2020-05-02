@@ -60,6 +60,9 @@ export default Vue.extend({
 
 <style lang="less">
 .wordCloud {
+  width: 100%;
+  height: 400px;
+
   .text {
     cursor: pointer;
 
