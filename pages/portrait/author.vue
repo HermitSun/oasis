@@ -1,6 +1,6 @@
 <template>
   <div class="author-portrait-wrapper">
-    <SearchBar />
+    <SearchBarComp />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
         <div class="profile-module">
@@ -71,7 +71,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Pagination, Loading, Message } from 'element-ui';
-import SearchBar from '~/components/search/SearchBar.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
@@ -216,11 +216,11 @@ async function fetchData(query: AuthorPapersPayload) {
 export default Vue.extend({
   name: 'Author',
   components: {
-    Subtitle,
-    PapersSubtitle,
     PaperInfoComp,
+    PapersSubtitle,
     PortraitProfileComp,
-    SearchBar,
+    SearchBarComp,
+    Subtitle,
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法

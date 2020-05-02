@@ -256,7 +256,7 @@ export default Vue.extend({
             keyword: this.keyword,
             page: defaultPage,
             // 默认数据，主要是为了显示，其实并没有什么实际作用
-            startYear: '1979',
+            startYear: '1963',
             endYear: new Date().getFullYear().toString(),
             sortKey: 'related'
           }

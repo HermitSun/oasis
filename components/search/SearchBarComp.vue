@@ -1,5 +1,6 @@
 <template>
   <div class="searchPage-header">
+    <!--LOGO-->
     <img
       src="~/assets/logo.png"
       class="searchPage-header__logo"
@@ -7,14 +8,15 @@
       style="cursor: pointer"
       @click="$router.push('/')"
     />
-    <label>
-      <input
-        v-model="searchContent"
-        class="basic-search__input"
-        type="text"
-        @keyup.enter="startAnotherBasicSearch(searchContent)"
-      />
-    </label>
+    <!--普通搜索-->
+    <input
+      v-model="searchContent"
+      class="basic-search__input"
+      type="text"
+      aria-label="search input"
+      @keyup.enter="startAnotherBasicSearch(searchContent)"
+    />
+    <!--高级搜索-->
     <button
       class="mobile-hidden advanced-search__button"
       style="margin-left: 20px"
@@ -40,6 +42,10 @@ export default Vue.extend({
   name: 'SearchBar',
   components: {
     AdvancedSearchComp
+  },
+  model: {
+    prop: 'keyword',
+    event: 'changed'
   },
   props: {
     keyword: {
@@ -67,7 +73,7 @@ export default Vue.extend({
           mode: 'basic',
           keyword,
           page: '1',
-          startYear: '1979', // 开始日期
+          startYear: '1963', // 开始日期
           endYear: '2020', // 结束日期
           sortKey: defaultSortKey as sortKey
         }

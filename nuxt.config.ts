@@ -76,6 +76,9 @@ const config: Configuration = {
   /*
    ** Build configuration
    */
+  generate: {
+    fallback: true
+  },
   build: {
     // analyze: true,
     // 按需引入element-ui

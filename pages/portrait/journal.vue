@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <SearchBarComp />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -30,7 +30,7 @@ import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitRespon
 import { getJournalInterest, getJournalPortrait } from '~/api';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import Subtitle from '~/components/public/Subtitle.vue';
-import SearchBar from '~/components/search/SearchBar.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import { createPieChart } from '~/components/charts/pie';
@@ -63,9 +63,9 @@ async function requestInterests(journal: string) {
 export default Vue.extend({
   name: 'Journal',
   components: {
-    Subtitle,
     PortraitProfileComp,
-    SearchBar
+    SearchBarComp,
+    Subtitle
   },
   async asyncData({ query }) {
     const journal = query.journal as string;
