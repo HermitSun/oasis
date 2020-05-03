@@ -57,7 +57,8 @@
         <el-pagination
           layout="prev, pager, next"
           :current-page="page"
-          :total="size"
+          :total="totalRecords"
+          :pager-count="pagerSize"
           hide-on-single-page
           small
           style="text-align: center; margin-bottom: 10px"
@@ -101,6 +102,7 @@ import loadingConfig from '~/components/portrait/loadingConfig';
 import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -209,7 +211,8 @@ async function fetchData(query: AuthorPapersPayload) {
     profile,
     citationTrend,
     publicationTrend,
-    ...papersRes
+    papers: papersRes.papers,
+    resultCount: papersRes.size
   };
 }
 
@@ -224,7 +227,7 @@ export default Vue.extend({
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法
-  mixins: [ForceChartClear, LinkToAuthor],
+  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
@@ -260,7 +263,7 @@ export default Vue.extend({
         this.citationTrend = data.citationTrend; // 被引用趋势
         this.publicationTrend = data.citationTrend; // 发论文趋势
         this.papers = data.papers;
-        this.size = data.size;
+        this.resultCount = data.resultCount;
         // 加载完成后加载图表
         this.showPortrait = true;
         loading.close();
@@ -385,8 +388,10 @@ export default Vue.extend({
       // 加载完毕
       this.isInterestLoading = false;
     },
-    async showNextPage() {
-      this.page = this.page + 1;
+    // 展示**指定页码**的内容
+    // 这名字起得不好
+    async showNextPage(page: number) {
+      this.page = page;
       const loadingInstance = Loading.service(
         loadingConfig(document.getElementById('papers') as HTMLElement)
       );

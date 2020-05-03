@@ -104,7 +104,7 @@ export default Vue.extend({
   data() {
     return {} as any;
   },
-  mounted(): void {
+  mounted() {
     createPieChart(
       '#pie',
       this.interests

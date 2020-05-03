@@ -27,7 +27,7 @@ interface AsyncPortraitAuthorData {
   citationTrend: number[]; // 被引用趋势
   publicationTrend: number[]; // 发论文趋势
   papers: SearchResponse[];
-  size: number;
+  resultCount: number;
 }
 
 export type PortraitAuthorDataFromProp = {};

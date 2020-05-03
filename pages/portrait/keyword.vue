@@ -31,7 +31,8 @@
         <el-pagination
           layout="prev, pager, next"
           :current-page="page"
-          :total="size"
+          :total="totalRecords"
+          :pager-count="pagerSize"
           hide-on-single-page
           small
           style="text-align: center; margin-bottom: 10px"
@@ -56,9 +57,9 @@ import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
-import { isMobile } from '~/utils/breakpoint';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -74,14 +75,14 @@ async function requestPortrait(keyword: string) {
 }
 
 async function requestPapers(args: KeywordPapersPayload) {
-  const res: { papers: SearchResponse[]; size: number } = {
+  const res: { papers: SearchResponse[]; resultCount: number } = {
     papers: [],
-    size: 0
+    resultCount: 0
   };
   try {
     const papersResponse = await getKeywordPapers(args);
     res.papers = papersResponse.data.papers;
-    res.size = papersResponse.data.size;
+    res.resultCount = papersResponse.data.size;
   } catch (e) {
     Message.error(e.toString());
   }
@@ -98,6 +99,7 @@ export default Vue.extend({
     Subtitle,
     [Pagination.name]: Pagination
   },
+  mixins: [PaginationMaxSizeLimit],
   async asyncData({ query }) {
     const keyword = query.keyword as string;
     const sortKey = 'recent';
@@ -140,12 +142,7 @@ export default Vue.extend({
       sortKey: 'recent' as sortKey
     } as any;
   },
-  computed: {
-    pagerSize(): number {
-      return isMobile() ? 5 : 7;
-    }
-  },
-  mounted(): void {
+  mounted() {
     createBarChart(
       '#citation-bar',
       this.citationTrend,
@@ -164,8 +161,10 @@ export default Vue.extend({
     );
   },
   methods: {
-    async showNextPage() {
-      this.page = this.page + 1;
+    // 展示**指定页码**的内容
+    // 这名字起得不好
+    async showNextPage(page: number) {
+      this.page = page;
       const loadingInstance = Loading.service(
         loadingConfig(document.getElementById('papers') as any)
       );
