@@ -58,7 +58,8 @@
           <el-pagination
             layout="prev, pager, next"
             :current-page="page"
-            :total="size"
+            :total="totalRecords"
+            :pager-count="pagerSize"
             hide-on-single-page
             small
             style="text-align: center; margin-bottom: 10px"
@@ -97,6 +98,7 @@ import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -112,14 +114,14 @@ async function requestPortrait(affiliation: string) {
 }
 
 async function requestPapers(args: AffiliationPapersPayload) {
-  const res: { papers: SearchResponse[]; size: number } = {
+  const res: { papers: SearchResponse[]; resultCount: number } = {
     papers: [],
-    size: 0
+    resultCount: 0
   };
   try {
     const papersResponse = await getAffiliationPapers(args);
     res.papers = papersResponse.data.papers;
-    res.size = papersResponse.data.size;
+    res.resultCount = papersResponse.data.size;
   } catch (e) {
     Message.error(e.toString());
   }
@@ -163,6 +165,7 @@ export default Vue.extend({
     Subtitle,
     [Pagination.name]: Pagination
   },
+  mixins: [PaginationMaxSizeLimit],
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
@@ -209,7 +212,7 @@ export default Vue.extend({
       sortKey: 'recent' as sortKey
     } as any;
   },
-  mounted(): void {
+  mounted() {
     // 本人垃圾前端
     if (getClientWidth() > 768) {
       const elementAuthors = document.getElementById('authors') as HTMLElement;
@@ -264,8 +267,10 @@ export default Vue.extend({
     );
   },
   methods: {
-    async showNextPage() {
-      this.page = this.page + 1;
+    // 展示**指定页码**的内容
+    // 这名字起得不好
+    async showNextPage(page: number) {
+      this.page = page;
       const loadingInstance = Loading.service(
         loadingConfig(document.getElementById('papers') as any)
       );

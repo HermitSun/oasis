@@ -33,9 +33,6 @@ export default Vue.extend({
       type: Object,
       default: () => ({})
     }
-  },
-  mounted(): void {
-    console.log(this.profile);
   }
 });
 </script>
