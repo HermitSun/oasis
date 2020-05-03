@@ -183,16 +183,16 @@ export default Vue.extend({
     setReadableSearchContent() {
       this.searchContent = '';
       if (this.author) {
-        this.searchContent += this.author + ' ';
+        this.searchContent = this.searchContent + this.author + ' ';
       }
       if (this.affiliation) {
-        this.searchContent += this.affiliation + ' ';
+        this.searchContent = this.searchContent + this.affiliation + ' ';
       }
       if (this.publicationName) {
-        this.searchContent += this.publicationName + ' ';
+        this.searchContent = this.searchContent + this.publicationName + ' ';
       }
       if (this.keyword) {
-        this.searchContent += this.keyword;
+        this.searchContent = this.searchContent + this.keyword;
       }
       this.searchContent = this.searchContent.trim();
     },
