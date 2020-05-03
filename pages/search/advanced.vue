@@ -181,20 +181,21 @@ export default Vue.extend({
   methods: {
     // 更具有可读性的搜索内容
     setReadableSearchContent() {
-      this.searchContent = '';
+      let tmpSearchContent = '';
       if (this.author) {
-        this.searchContent = this.searchContent + this.author + ' ';
+        tmpSearchContent += this.author + ' ';
       }
       if (this.affiliation) {
-        this.searchContent = this.searchContent + this.affiliation + ' ';
+        tmpSearchContent += this.affiliation + ' ';
       }
       if (this.publicationName) {
-        this.searchContent = this.searchContent + this.publicationName + ' ';
+        tmpSearchContent += this.publicationName + ' ';
       }
       if (this.keyword) {
-        this.searchContent = this.searchContent + this.keyword;
+        tmpSearchContent += this.keyword;
       }
-      this.searchContent = this.searchContent.trim();
+      tmpSearchContent.trim();
+      this.searchContent = tmpSearchContent;
     },
     // 统一的搜索方法
     doSearch() {
