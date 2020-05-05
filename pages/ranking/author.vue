@@ -47,6 +47,17 @@ export default Vue.extend({
     return {
       rankings: affiliationAdvancedRankingRes.data
     };
+  },
+  head() {
+    return {
+      script: [
+        {
+          src:
+            'https://cdn.jsdelivr.net/npm/vue-wordcloud@1.1.1/dist/word-cloud.min.js',
+          defer: true
+        }
+      ]
+    };
   }
 });
 </script>

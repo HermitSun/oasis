@@ -34,10 +34,10 @@ const config: Configuration = {
       }
     ]
   },
-  router: {
-    middleware: ['authenticated']
-    // base: '/oasis/'
-  },
+  // router: {
+  //   middleware: ['authenticated']
+  //   base: '/oasis/'
+  // },
   serverMiddleware: ['~/server/index.ts'],
   /*
    ** Customize the progress-bar color
@@ -80,7 +80,7 @@ const config: Configuration = {
     fallback: true
   },
   build: {
-    // analyze: true,
+    analyze: true,
     // 按需引入element-ui
     babel: {
       plugins: [
@@ -107,17 +107,16 @@ const config: Configuration = {
         }
       }
     },
-    transpile: [/^element-ui/]
-    // extend(config) {
-    //   // 外部引入
-    //   config.externals = {
-    //     'vue-wordcloud': 'WordCloud'
-    //   };
-    //   // if (isClient) {
-    //   //   (config.optimization!
-    //   //     .splitChunks! as SplitChunksOptions).maxSize = 244_000;
-    //   // }
-    // }
+    transpile: [/^element-ui/],
+    extend(config) {
+      config.externals = {
+        'vue-wordcloud': 'WordCloud'
+      };
+      // if (isClient) {
+      //   (config.optimization!
+      //     .splitChunks! as SplitChunksOptions).maxSize = 244_000;
+      // }
+    }
   }
 };
 
