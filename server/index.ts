@@ -1,6 +1,7 @@
 import express from 'express';
 import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-middleware';
 // 因为服务端不走webpack，所以只能使用相对路径
+// import basicSearchMockData from './mock/search/basicSearchMockData';
 // import searchFilterMockData from './mock/search/searchFilterMockData';
 // import affiliationPortraitMockData from './mock/portrait/affiliation/affiliationPortraitMockData';
 // import affiliationInterestMockData from './mock/portrait/affiliation/affiliationInterestMockData';
@@ -32,6 +33,10 @@ const app = express();
 // });
 //
 // app.get('/search/basic/es', (_, res) => {
+//   res.json(basicSearchMockData);
+// });
+//
+// app.get('/search/basic/es/highlight', (_, res) => {
 //   res.json(basicSearchMockData);
 // });
 //

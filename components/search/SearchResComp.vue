@@ -8,16 +8,18 @@
         rel="noopener noreferrer"
       >
         <!--高亮-->
-        <!--TODO:对后端返回内容的校验-->
-        <div v-html="res.title"></div>
+        <div v-html="filterHTML(res.title)"></div>
       </a>
     </div>
     <div>
       <!--跳转到学者画像-->
       <!--高亮-->
       <span v-for="(author, index) in res.authors" :key="index" class="author">
-        <span class="name" @click="linkToAuthor(author)" v-html="author.name">
-        </span>
+        <span
+          class="name"
+          @click="linkToAuthor(author)"
+          v-html="filterHTML(author.name)"
+        ></span>
         <span v-if="index !== res.authors.length - 1">,</span>
       </span>
       <span class="info">
@@ -31,7 +33,7 @@
     </div>
     <div class="abstract">
       <!--高亮-->
-      <div v-html="res._abstract"></div>
+      <div v-html="filterHTML(res._abstract)"></div>
     </div>
     <div class="divider"></div>
     <!--关键词-->
@@ -118,6 +120,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { filterXSS } from 'xss';
 import { getReferenceById } from '~/api';
 import { SearchReference } from '~/interfaces/responses/search/SearchResponse';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
@@ -139,6 +142,10 @@ export default Vue.extend({
     };
   },
   methods: {
+    // 对HTML进行过滤
+    filterHTML(html: string) {
+      return filterXSS(html);
+    },
     // 展示参考文献
     showReferences() {
       this.showReference = !this.showReference;
