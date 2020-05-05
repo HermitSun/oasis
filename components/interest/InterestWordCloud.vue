@@ -26,9 +26,7 @@ export default Vue.extend({
   name: 'InterestWordCloud',
   // 此处的实现确实不是很必要，但是为了控制台不报错，加了个没什么用的判断
   components: {
-    wordcloud: process.client
-      ? () => import('vue-wordcloud')
-      : () => import('~/components/AsyncCompLoading')
+    wordcloud: () => import('vue-wordcloud')
   },
   props: {
     interests: {
