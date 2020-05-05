@@ -320,7 +320,6 @@ export default Vue.extend({
         this.filters = filter;
         // 先判断filter是否为空
         const filterComp = this.$refs.searchFilter as OasisSearchFilter;
-        console.log(filterComp.isEmpty());
         // 为空则回到普通搜索
         if (filterComp.isEmpty()) {
           this.isFilter = false;
@@ -355,7 +354,14 @@ export default Vue.extend({
             endYear,
             sortKey
           });
-          this.showNextPage(1, 'true');
+          this.showSpecifiedPage(
+            keyword as string,
+            String(startYear),
+            String(endYear),
+            '1',
+            sortKey,
+            'true'
+          );
         }
       }
     },

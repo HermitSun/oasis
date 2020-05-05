@@ -159,6 +159,12 @@ export default Vue.extend({
       checkedJournals: [] as string[]
     };
   },
+  watch: {
+    $route() {
+      this.startYear = this.$route.query.startYear as string;
+      this.endYear = this.$route.query.endYear as string;
+    }
+  },
   mounted() {
     this.getSearchFilter();
   },
