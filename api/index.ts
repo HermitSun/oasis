@@ -40,6 +40,7 @@ import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorRe
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import { ForceChartData } from '~/components/charts/force';
+import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -440,5 +441,37 @@ export async function mergeAuthorInfo(
   dest: string
 ): Promise<BasicResponse> {
   const { data } = await axios.put('/info/author', { src, dest });
+  return data;
+}
+
+// 38. 查看研究方向排名详情
+export async function getKeywordAdvancedRanking(
+  args: RankingAdvancedPayload
+): Promise<BasicResponse<KeywordAdvancedRankingResponse[]>> {
+  const { data } = await axios.get('/rank/advanced/keyword', {
+    params: args
+  });
+  return data;
+}
+
+// 39.获取某研究方向下的作者排名详情
+export async function getAuthorDetailRankingByKeyword(
+  keyword: string
+): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
+  // TODO 填写url
+  const { data } = await axios.get('/rank/advanced/keyword/author', {
+    params: { keyword }
+  });
+  return data;
+}
+
+// 40. 获取某研究方向下的机构排名详情
+export async function getAffiliationDetailRankingByKeyword(
+  keyword: string
+): Promise<BasicResponse<AffiliationAdvancedRankingResponse[]>> {
+  // TODO 填写url
+  const { data } = await axios.get('/rank/advanced/keyword/affiliation', {
+    params: { keyword }
+  });
   return data;
 }

@@ -20,6 +20,9 @@ import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
+import keywordAdvancedRankingMockData from '~/server/mock/ranking/keyword/keywordAdvancedRankingMockData';
+import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
+import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 
 const app = express();
 
@@ -142,6 +145,24 @@ const app = express();
 //   console.log(req.params);
 //   res.json(journalInterestMockData);
 // });
+
+// 38
+app.get('/rank/advanced/keyword', (req, res) => {
+  console.log(req.params);
+  res.json(keywordAdvancedRankingMockData);
+});
+
+// 39.
+app.get('/rank/advanced/keyword/author', (req, res) => {
+  console.log(req.params);
+  res.json(authorAdvancedRankingMockData);
+});
+
+// 40.
+app.get('/rank/advanced/keyword/affiliation', (req, res) => {
+  console.log(req.params);
+  res.json(affiliationAdvancedRankingMockData);
+});
 
 // 管理员部分
 // 作者信息管理
