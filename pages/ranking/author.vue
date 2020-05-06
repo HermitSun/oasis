@@ -2,7 +2,7 @@
   <div>
     <SearchBar />
     <div class="advanced-ranking-page">
-      <Subtitle title="🏆 OASIS RANKING" />
+      <AdvancedRankingSubtitle title="🏆 OASIS RANKING" subject="Author" />
       <div class="ranking-advanced">
         <div class="header">
           <span class="prop">Author</span>
@@ -27,14 +27,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import SearchBar from '~/components/search/SearchBarComp.vue';
-import Subtitle from '~/components/public/Subtitle.vue';
 import { getAuthorAdvancedRanking } from '~/api';
 import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
+import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 export default Vue.extend({
   name: 'Author',
   components: {
     SearchBar,
-    Subtitle,
+    AdvancedRankingSubtitle,
     AuthorDetailComp
   },
   async asyncData() {
