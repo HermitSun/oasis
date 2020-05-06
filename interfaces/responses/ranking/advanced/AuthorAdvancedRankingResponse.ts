@@ -9,7 +9,7 @@ export interface AuthorAdvancedRankingResponse {
   authorName: string;
   count: number; // 发论文总数
   citation: number; // 总被引用数
-  publicationTrend: []; // 返回最近十年每年的发表论文数
+  publicationTrend: number[]; // 返回最近十年每年的发表论文数
 }
 
 export interface AuthorDetailRankingResponse {
