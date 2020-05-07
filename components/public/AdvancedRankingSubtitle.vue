@@ -42,7 +42,7 @@ export default Vue.extend({
   },
   methods: {
     jumpToRanking(subject: string) {
-      this.$router.push({ path: '/ranking/' + subject });
+      this.$router.push({ path: '/ranking/' + subject.toLowerCase() });
     }
   }
 });

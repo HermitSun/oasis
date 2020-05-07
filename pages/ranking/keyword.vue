@@ -15,6 +15,8 @@ import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle
 import { getKeywordAdvancedRanking } from '~/api';
 import keywordAdvancedRankingMockData from '~/server/mock/ranking/keyword/keywordAdvancedRankingMockData';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
+import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+
 export default Vue.extend({
   name: 'Keyword',
   components: {
@@ -22,7 +24,12 @@ export default Vue.extend({
     AdvancedRankingSubtitle,
     KeywordAdvancedComp
   },
-  async asyncData() {
+  data() {
+    return {
+      rankings: [] as KeywordAdvancedRankingResponse[]
+    };
+  },
+  async mounted() {
     // TODO 添加可选择的sortKey和year
     let keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
       sortKey: 'acceptanceCount',
@@ -30,9 +37,7 @@ export default Vue.extend({
       endYear: 2019
     });
     keywordAdvancedRankingRes = keywordAdvancedRankingMockData;
-    return {
-      rankings: keywordAdvancedRankingRes.data
-    };
+    this.rankings = keywordAdvancedRankingRes.data;
   }
 });
 </script>
