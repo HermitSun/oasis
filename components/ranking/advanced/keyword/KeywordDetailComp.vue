@@ -70,18 +70,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import PaperInfoComp from './PaperInfoComp.vue';
-import { createBarChart } from '~/components/charts/bar';
-import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
-import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
-import {
-  getAffiliationDetailRankingByKeyword,
-  getAuthorDetailRankingByKeyword
-} from '~/api';
-import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
-
-import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
-
+import PaperInfoComp from '../PaperInfoComp.vue';
+import { createBarChart } from '@/components/charts/bar';
 export default Vue.extend({
   name: 'KeywordDetailComp',
   components: {
@@ -100,9 +90,7 @@ export default Vue.extend({
   data() {
     return {
       showDetail: false,
-      isLoading: false,
-      authorRanking: [] as AuthorAdvancedRankingResponse[],
-      affiliationRanking: [] as AffiliationAdvancedRankingResponse[]
+      isLoading: false
     };
   },
   mounted() {
@@ -124,30 +112,11 @@ export default Vue.extend({
           keyword: this.rank.keyword
         }
       });
-    },
-    async requestRankingDetail() {
-      this.isLoading = true;
-      try {
-        let authorRankingRes = await getAuthorDetailRankingByKeyword(
-          this.rank.keyword
-        );
-        // TODO delete
-        authorRankingRes = authorAdvancedRankingMockData;
-        let affiliationRankingRes = await getAffiliationDetailRankingByKeyword(
-          this.rank.keyword
-        );
-        affiliationRankingRes = affiliationAdvancedRankingMockData;
-        this.authorRanking = authorRankingRes.data;
-        this.affiliationRanking = affiliationRankingRes.data;
-        this.isLoading = false;
-      } catch (e) {
-        this.$message.error(e.toString());
-      }
     }
   }
 });
 </script>
 
 <style scoped lang="less">
-@import '../../../stylesheets/index.less';
+@import '../../../../stylesheets/index.less';
 </style>

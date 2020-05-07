@@ -84,7 +84,7 @@ import {
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
-import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
+import AuthorDetailComp from '~/components/ranking/advanced/author/AuthorDetailComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';

@@ -8,24 +8,23 @@
             <img
               v-if="!showDetail"
               src="~/assets/icon/icon-arrow-right.svg"
-              alt="icon-arrow-right"
               width="30"
+              alt="icon-arrow-right"
               @click="requestShowDetail"
             />
             <img
               v-if="showDetail"
               src="~/assets/icon/icon-arrow-top.svg"
-              alt="icon-arrow-top"
               width="30"
+              alt="icon-arrow-top"
               @click="requestShowDetail"
             />
           </span>
         </span>
-        <span class="name" style="padding-left: 10px;" @click="jumpToPortrait"
-          >{{ rank.affiliationName }}
+        <span class="name" @click="jumpToPortrait"
+          >{{ rank.authorName }}
           <img
             src="~/assets/icon/icon-share.svg"
-            width="20"
             class="icon"
             alt="icon-share"
           />
@@ -33,7 +32,11 @@
       </span>
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
-      <span class="value">{{ rank.authorNum }}</span>
+      <span class="value">
+        <div
+          :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + rank.authorId"
+        ></div>
+      </span>
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
@@ -42,22 +45,41 @@
       <div class="detail">
         <div class="info">
           <div class="title">
-            📉 Publication Trend
-          </div>
-          <div class="content">
-            <div :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"></div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="title">
             📃 Keywords
           </div>
           <div class="content">
             <InterestWordCloud
               v-if="showWordCloud"
-              id="wordCloud"
               :interests="rankingDetail.keywords"
             />
+          </div>
+        </div>
+        <div class="info">
+          <div class="title">
+            📜 Most Influential Papers
+          </div>
+          <div class="content">
+            <div
+              v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
+              :key="i"
+              style="margin-bottom: 10px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
+          </div>
+        </div>
+        <div class="info">
+          <div class="title">
+            📝 Most Recent Papers
+          </div>
+          <div class="content">
+            <div
+              v-for="(paper, i) in rankingDetail.mostRecentPapers"
+              :key="i"
+              style="margin-bottom: 10px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
           </div>
         </div>
       </div>
@@ -67,14 +89,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { AffiliationDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
-import { getAffiliationDetailRankingById } from '~/api';
-import { createBarChart } from '~/components/charts/bar';
-import InterestWordCloud from '~/components/interest/InterestWordCloud.vue';
+import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import { getAuthorDetailRankingById } from '@/api';
+import PaperInfoComp from '@/components/ranking/advanced/PaperInfoComp.vue';
+import InterestWordCloud from '@/components/interest/InterestWordCloud.vue';
+import { createBarChart } from '@/components/charts/bar';
 
 export default Vue.extend({
-  name: 'AffiliationDetailComp',
+  name: 'AuthorDetailComp',
   components: {
+    PaperInfoComp,
     InterestWordCloud
   },
   props: {
@@ -91,10 +115,19 @@ export default Vue.extend({
     return {
       showDetail: false,
       showWordCloud: false,
-      rankingDetail: {} as AffiliationDetailRankingResponse,
-      cachedRankingDetail: {} as AffiliationDetailRankingResponse,
+      rankingDetail: {} as AuthorDetailRankingResponse,
+      cachedRankingDetail: {} as AuthorDetailRankingResponse,
       isLoading: false
     };
+  },
+  mounted() {
+    const selector =
+      '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
+    createBarChart(selector, this.rank.publicationTrend, {
+      width: 150,
+      height: 80,
+      tooltipThreshold: 15
+    });
   },
   methods: {
     requestShowDetail() {
@@ -107,38 +140,20 @@ export default Vue.extend({
     },
     jumpToPortrait() {
       this.$router.push({
-        path: '/portrait/affiliation',
+        path: '/portrait/author',
         query: {
-          affiliation: this.rank.affiliationId
+          authorId: this.rank.authorId
         }
       });
     },
     async requestRankingDetail() {
       this.isLoading = true;
       try {
-        const rankingDetailRes = await getAffiliationDetailRankingById(
-          this.rank.affiliationId
+        const rankingDetailRes = await getAuthorDetailRankingById(
+          this.rank.authorId
         );
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
-
-        const selector =
-          '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
-        createBarChart(selector, this.rankingDetail.publicationTrend, {
-          width: 500,
-          height: 400,
-          barMargin: 20,
-          tooltipThreshold: 15
-        });
-        // TODO 控制word-cloud高度
-        // const elementWordCloud = document.getElementById('wordCloud') as any;
-        // const elementPublicationTrend = document.getElementById(
-        //   this.rank.affiliationName.replace(/[^a-zA-Z]/g, '')
-        // ) as HTMLElement;
-        // elementWordCloud.style.height =
-        //   elementPublicationTrend.offsetHeight - 60 + 'px';
-        // console.log(elementPublicationTrend.offsetHeight);
-        // console.log(elementWordCloud.offsetHeight);
         this.showWordCloud = true;
         this.isLoading = false;
       } catch (e) {
@@ -150,5 +165,5 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="less">
-@import '../../../stylesheets/index.less';
+@import '../../../../stylesheets/index.less';
 </style>

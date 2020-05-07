@@ -3,23 +3,7 @@
     <SearchBar />
     <div class="advanced-ranking-page">
       <AdvancedRankingSubtitle title="🏆 OASIS RANKING" subject="Author" />
-      <div class="ranking-advanced">
-        <div class="header">
-          <span class="prop">Author</span>
-          <span class="prop">Count</span>
-          <span class="prop">Citation</span>
-          <span class="prop">Publication Trend</span>
-        </div>
-        <div class="body">
-          <div
-            v-for="(rank, index) in rankings"
-            :key="index"
-            style="margin-bottom: 5px"
-          >
-            <AuthorDetailComp :rank="rank" :index="index + 1" />
-          </div>
-        </div>
-      </div>
+      <AuthorAdvancedComp :rankings="rankings" />
     </div>
   </div>
 </template>
@@ -28,14 +12,15 @@
 import Vue from 'vue';
 import SearchBar from '~/components/search/SearchBarComp.vue';
 import { getAuthorAdvancedRanking } from '~/api';
-import AuthorDetailComp from '~/components/ranking/advanced/AuthorDetailComp.vue';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
+import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+
 export default Vue.extend({
   name: 'Author',
   components: {
     SearchBar,
     AdvancedRankingSubtitle,
-    AuthorDetailComp
+    AuthorAdvancedComp
   },
   async asyncData() {
     // TODO 添加可选择的sortKey和year
