@@ -62,13 +62,32 @@
     </div>
     <!--确认选择的对话框-->
     <el-dialog :visible="showSelectDestDialog" :before-close="clearDialog">
-      <el-select v-model="mergeDest" filterable placeholder="请选择合并目标">
-        <el-option
-          v-for="affiliation in waitToMerge"
-          :key="affiliation.id"
-          :label="affiliation.name"
-          :value="affiliation.id"
-        />
+      <el-select
+        v-model="mergeDest"
+        filterable
+        placeholder="请选择合并目标"
+        style="width: 100%;"
+      >
+        <!--显示前70个字符-->
+        <template v-for="affiliation in waitToMerge">
+          <el-option
+            v-if="affiliation.name.length <= 70"
+            :key="affiliation.id"
+            :label="affiliation.name"
+            :value="affiliation.id"
+          />
+          <el-tooltip
+            v-else
+            :key="affiliation.id"
+            :content="affiliation.name"
+            placement="right"
+          >
+            <el-option
+              :label="affiliation.name.substr(0, 70) + '...'"
+              :value="affiliation.id"
+            />
+          </el-tooltip>
+        </template>
       </el-select>
       <p style="margin-top: 10px">
         所有选中的机构信息会合并到该机构名下。
@@ -109,14 +128,15 @@ import {
   Pagination,
   Select,
   Table,
-  TableColumn
+  TableColumn,
+  Tooltip
 } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import { getAffiliationInfo, mergeAffiliationInfo } from '~/api';
-import { WaitToMergeAuthorInfo } from '~/interfaces/pages/manage/ManageAuthorsPageComp';
 import { AffiliationInfo } from '~/interfaces/responses/manage/AffiliationInfoResponse';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { ElPaginationTotal } from '~/interfaces/ElPaginationTotal';
+import { WaitToMergeAffiliationInfo } from '~/interfaces/pages/manage/ManageAffiliationsPageComp';
 
 export default Vue.extend({
   name: 'ManageAffiliations',
@@ -127,7 +147,8 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    [Tooltip.name]: Tooltip
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -138,7 +159,7 @@ export default Vue.extend({
       page: 1, // 当前页码
       // 待合并的机构
       // 此处需要特别注意的是，需要能够跨页记录
-      waitToMerge: [] as WaitToMergeAuthorInfo[],
+      waitToMerge: [] as WaitToMergeAffiliationInfo[],
       mergeDest: '', // 合并目标
       affiliationName: '', // 根据输入的机构名称进行搜索
       showSelectDestDialog: false,
@@ -165,9 +186,9 @@ export default Vue.extend({
     // 选择需要合并的机构
     // 只需要名称
     selectToMerge(affiliations: AffiliationInfo[]) {
-      this.waitToMerge = affiliations.map((author) => ({
-        name: author.name,
-        id: author.name
+      this.waitToMerge = affiliations.map((affiliation) => ({
+        name: affiliation.name,
+        id: affiliation.name
       }));
     },
     // 进行合并
@@ -283,5 +304,12 @@ export default Vue.extend({
   font-style: italic;
   text-align: center;
   margin-top: 10px;
+}
+</style>
+
+<style lang="less">
+/* 限制tooltip的最大宽度 */
+.el-tooltip__popper {
+  max-width: 350px;
 }
 </style>
