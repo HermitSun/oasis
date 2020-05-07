@@ -1,4 +1,7 @@
-const authorAdvancedRankingMockData = {
+import { BasicResponse } from '~/interfaces/responses/BasicResponse';
+import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+
+const authorAdvancedRankingMockData: BasicResponse<AuthorAdvancedRankingResponse[]> = {
   code: 200,
   msg: 'Success',
   data: [

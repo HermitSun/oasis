@@ -21,5 +21,5 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="less">
-@import '../../stylesheets/default.less';
+@import '../../stylesheets/index.less';
 </style>

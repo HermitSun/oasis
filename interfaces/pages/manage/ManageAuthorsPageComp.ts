@@ -12,6 +12,7 @@ export type ManageAuthorsDataFromProp = {};
 
 export interface WaitToMergeAuthorInfo {
   name: string;
+  affiliation: string;
   id: string;
 }
 

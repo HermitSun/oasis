@@ -3,7 +3,7 @@
     <!--标题-->
     <el-header>
       <h1 style="text-align: center">
-        <img src="~/assets/logo.png" style="width: 20vw" /> DBMS
+        <el-image :src="require('~/assets/logo.png')" style="width: 20vw" />DBMS
       </h1>
     </el-header>
     <el-container>
@@ -38,6 +38,7 @@ import {
   Container,
   Footer,
   Header,
+  Image,
   Main,
   Menu,
   MenuItem
@@ -50,6 +51,7 @@ export default Vue.extend({
     [Container.name]: Container,
     [Footer.name]: Footer,
     [Header.name]: Header,
+    [Image.name]: Image,
     [Main.name]: Main,
     [Menu.name]: Menu,
     [MenuItem.name]: MenuItem

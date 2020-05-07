@@ -15,9 +15,25 @@
       </template>
       <!--table的内容-->
       <el-table-column type="selection" reserve-selection width="55" />
-      <el-table-column prop="authorName" label="姓名" />
-      <el-table-column prop="count" label="论文数" />
-      <el-table-column prop="citation" label="被引数" />
+      <el-table-column prop="authorName" label="姓名" width="100" />
+      <!--防止机构过长，默认展示前40个字符-->
+      <!--tooltip中展示全部内容-->
+      <el-table-column label="机构">
+        <template #default="authorsData">
+          <span v-if="authorsData.row.affiliation.length <= 40">
+            {{ authorsData.row.affiliation }}
+          </span>
+          <el-tooltip
+            v-else
+            :content="authorsData.row.affiliation"
+            placement="bottom"
+          >
+            <span>{{ authorsData.row.affiliation.substr(0, 40) + '...' }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="count" label="论文数" width="80" />
+      <el-table-column prop="citation" label="被引数" width="80" />
       <!--搜索框和操作-->
       <el-table-column align="right">
         <template #header>
@@ -64,13 +80,34 @@
     </div>
     <!--确认选择的对话框-->
     <el-dialog :visible="showSelectDestDialog" :before-close="clearDialog">
-      <el-select v-model="mergeDest" filterable placeholder="请选择合并目标">
-        <el-option
-          v-for="author in waitToMerge"
-          :key="author.id"
-          :label="author.name"
-          :value="author.id"
-        />
+      <!--每个选项增加一个提示框，提示作者所属机构-->
+      <!--暂不考虑同一机构下的同名作者-->
+      <el-select
+        v-model="mergeDest"
+        filterable
+        placeholder="请选择合并目标"
+        style="width: 100%"
+      >
+        <!--显示前70个字符-->
+        <template v-for="author in waitToMerge">
+          <el-option
+            v-if="author.affiliation.length <= 70"
+            :key="author.id"
+            :label="`${author.name} (${author.affiliation})`"
+            :value="author.id"
+          />
+          <el-tooltip
+            v-else
+            :key="author.id"
+            :content="author.affiliation"
+            placement="right"
+          >
+            <el-option
+              :label="`${author.name} (${author.affiliation.substr(0, 70)}...)`"
+              :value="author.id"
+            />
+          </el-tooltip>
+        </template>
       </el-select>
       <p style="margin-top: 10px">
         所有选中的学者信息会合并到该学者名下。
@@ -111,7 +148,8 @@ import {
   Pagination,
   Select,
   Table,
-  TableColumn
+  TableColumn,
+  Tooltip
 } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import { getAuthorInfo, mergeAuthorInfo } from '~/api';
@@ -129,7 +167,8 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    [Tooltip.name]: Tooltip
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -166,6 +205,7 @@ export default Vue.extend({
     selectToMerge(authors: AuthorInfo[]) {
       this.waitToMerge = authors.map((author) => ({
         name: author.authorName,
+        affiliation: author.affiliation,
         id: author.authorId
       }));
     },
@@ -280,5 +320,12 @@ export default Vue.extend({
   font-style: italic;
   text-align: center;
   margin-top: 10px;
+}
+</style>
+
+<style lang="less">
+/* 限制tooltip的最大宽度 */
+.el-tooltip__popper {
+  max-width: 350px;
 }
 </style>

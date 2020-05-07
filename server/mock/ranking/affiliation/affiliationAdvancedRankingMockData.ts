@@ -1,4 +1,4 @@
-const affiliationAdvancedMockData = {
+const affiliationAdvancedRankingMockData = {
   code: 200,
   msg: 'Success',
   data: [
@@ -175,4 +175,4 @@ const affiliationAdvancedMockData = {
   ]
 };
 
-export default affiliationAdvancedMockData;
+export default affiliationAdvancedRankingMockData;

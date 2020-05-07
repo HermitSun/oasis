@@ -13,6 +13,16 @@
           <div id="publication-bar" class="content"></div>
         </div>
       </div>
+      <div class="keyword-main">
+        <div class="keyword-main__authors portrait-module">
+          <Subtitle title="🏆 Top Authors" />
+          <AuthorAdvancedComp :rankings="authorRanking" />
+        </div>
+        <div class="keyword-main__affiliations portrait-module">
+          <Subtitle title="🏆 Top Affiliations" />
+          <AffiliationAdvancedComp :rankings="affiliationRanking" />
+        </div>
+      </div>
       <div class="portrait-module">
         <PapersSubtitle
           title="📝 All Papers"
@@ -47,7 +57,12 @@
 import Vue from 'vue';
 import { Pagination, Loading, Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
-import { getKeywordPapers, getKeywordPortrait } from '~/api';
+import {
+  getAffiliationDetailRankingByKeyword,
+  getAuthorDetailRankingByKeyword,
+  getKeywordPapers,
+  getKeywordPortrait
+} from '~/api';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import Subtitle from '~/components/public/Subtitle.vue';
@@ -60,6 +75,12 @@ import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
+import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
+import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
+import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -89,6 +110,36 @@ async function requestPapers(args: KeywordPapersPayload) {
   return res;
 }
 
+async function requestAuthorDetailRankingByKeyword(keyword: string) {
+  const res: { authorRanking: AuthorAdvancedRankingResponse[] } = {
+    authorRanking: [] as AuthorAdvancedRankingResponse[]
+  };
+  try {
+    const authorRankingResponse = await getAuthorDetailRankingByKeyword(
+      keyword
+    );
+    res.authorRanking = authorRankingResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
+async function requestAffiliationDetailRankingByKeyword(keyword: string) {
+  const res: { affiliationRanking: AffiliationAdvancedRankingResponse[] } = {
+    affiliationRanking: [] as AffiliationAdvancedRankingResponse[]
+  };
+  try {
+    const affiliationRankingResponse = await getAffiliationDetailRankingByKeyword(
+      keyword
+    );
+    res.affiliationRanking = affiliationRankingResponse.data;
+  } catch (e) {
+    Message.error(e.toString());
+  }
+  return res;
+}
+
 export default Vue.extend({
   name: 'Keyword',
   components: {
@@ -97,6 +148,8 @@ export default Vue.extend({
     PortraitProfileComp,
     SearchBarComp,
     Subtitle,
+    AuthorAdvancedComp,
+    AffiliationAdvancedComp,
     [Pagination.name]: Pagination
   },
   mixins: [PaginationMaxSizeLimit],
@@ -127,13 +180,25 @@ export default Vue.extend({
 
     const papersReq = requestPapers({ keyword, page, sortKey });
 
+    let authorRankingReq = await requestAuthorDetailRankingByKeyword(keyword);
+    // TODO delete
+    authorRankingReq = { authorRanking: authorAdvancedRankingMockData.data };
+    let affiliationRankingReq = await requestAffiliationDetailRankingByKeyword(
+      keyword
+    );
+    affiliationRankingReq = {
+      affiliationRanking: affiliationAdvancedRankingMockData.data
+    };
+
     return {
       ...query,
       keyword,
       profile,
       citationTrend,
       publicationTrend,
-      ...(await papersReq)
+      ...(await papersReq),
+      ...(await authorRankingReq),
+      ...(await affiliationRankingReq)
     };
   },
   data() {
@@ -199,4 +264,17 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+.keyword-main {
+  @media @min-pad-width {
+    .flex-left-left-row;
+    .keyword-main__authors {
+      width: 50vw;
+    }
+
+    .keyword-main__affiliations {
+      width: 50vw;
+    }
+  }
+}
 </style>

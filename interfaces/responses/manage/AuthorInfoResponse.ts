@@ -7,6 +7,7 @@
 export interface AuthorInfo {
   authorId: string;
   authorName: string;
+  affiliation: string; // 所属机构
   count: number; // 发论文总数
   citation: number; // 总被引用数
 }

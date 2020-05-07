@@ -5,10 +5,8 @@ import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-mid
 // import searchFilterMockData from './mock/search/searchFilterMockData';
 // import affiliationPortraitMockData from './mock/portrait/affiliation/affiliationPortraitMockData';
 // import affiliationInterestMockData from './mock/portrait/affiliation/affiliationInterestMockData';
-// import authorAdvancedRankingMockData from './mock/ranking/author/authorAdvancedRankingMockData';
 // import affiliationDetailRankingMockData from './mock/ranking/affiliation/affiliationDetailRankingMockData';
 // import affiliationAdvancedMockData from './mock/ranking/affiliation/affiliationAdvancedRankingMockData';
-// import authorDetailRankingMoxckData from './mock/ranking/author/authorDetailRankingMockData';
 // import authorPortraitMockData from './mock/portrait/author/authorPortraitMockData';
 // import keywordPortraitMockData from './mock/portrait/keyword/keywordPortraitMockData';
 // import conferencePortraitMockData from './mock/portrait/conference/conferencePortraitMockData';
@@ -20,6 +18,11 @@ import authors from './routes/authors';
 import affiliations from './routes/affiliations';
 import journals from './routes/journals';
 import conferences from './routes/conferences';
+// import keywordAdvancedRankingMockData from '~/server/mock/ranking/keyword/keywordAdvancedRankingMockData';
+// import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
+// import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
+// import affiliationPapersMockData from '~/server/mock/portrait/affiliation/affiliationPapersMockData';
+// import authorDetailRankingMockData from '~/server/mock/ranking/author/authorDetailRankingMockData';
 
 const app = express();
 
@@ -141,6 +144,24 @@ const app = express();
 // app.get('/journal/interest', (req, res) => {
 //   console.log(req.params);
 //   res.json(journalInterestMockData);
+// });
+//
+// // 38
+// app.get('/rank/advanced/keyword', (req, res) => {
+//   console.log(req.params);
+//   res.json(keywordAdvancedRankingMockData);
+// });
+//
+// // 39.
+// app.get('/rank/advanced/keyword/author', (req, res) => {
+//   console.log(req.params);
+//   res.json(authorAdvancedRankingMockData);
+// });
+//
+// // 40.
+// app.get('/rank/advanced/keyword/affiliation', (req, res) => {
+//   console.log(req.params);
+//   res.json(affiliationAdvancedRankingMockData);
 // });
 
 // 管理员部分
