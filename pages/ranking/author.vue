@@ -13,7 +13,7 @@ import Vue from 'vue';
 import SearchBar from '~/components/search/SearchBarComp.vue';
 import { getAuthorAdvancedRanking } from '~/api';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
-import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 
 export default Vue.extend({
   name: 'Author',

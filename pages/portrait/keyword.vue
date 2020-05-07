@@ -79,8 +79,8 @@ import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranki
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
 import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
-import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
-import AffiliationAdvancedComp from '~/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
+import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {

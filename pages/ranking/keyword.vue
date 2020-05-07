@@ -14,7 +14,7 @@ import SearchBar from '~/components/search/SearchBarComp.vue';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 import { getKeywordAdvancedRanking } from '~/api';
 import keywordAdvancedRankingMockData from '~/server/mock/ranking/keyword/keywordAdvancedRankingMockData';
-import KeywordAdvancedComp from '~/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
+import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
 export default Vue.extend({
   name: 'Keyword',
   components: {

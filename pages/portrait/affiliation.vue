@@ -82,7 +82,7 @@ import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {

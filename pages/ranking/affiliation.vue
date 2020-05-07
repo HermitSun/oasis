@@ -12,8 +12,8 @@
 import Vue from 'vue';
 import SearchBar from '~/components/search/SearchBarComp.vue';
 import { getAffiliationAdvancedRanking } from '~/api';
-import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
-import AffiliationAdvancedComp from '~/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
+import AdvancedRankingSubtitle from '@/components/public/AdvancedRankingSubtitle.vue';
+import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
 
 export default Vue.extend({
   name: 'Affiliation',
