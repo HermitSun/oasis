@@ -13,6 +13,16 @@
           <div id="publication-bar" class="content"></div>
         </div>
       </div>
+      <div class="keyword-main">
+        <div class="keyword-main__authors portrait-module">
+          <Subtitle title="🏆 Top Authors" />
+          <AuthorAdvancedComp :rankings="authorRanking" />
+        </div>
+        <div class="keyword-main__affiliations portrait-module">
+          <Subtitle title="🏆 Top Affiliations" />
+          <AffiliationAdvancedComp :rankings="affiliationRanking" />
+        </div>
+      </div>
       <div class="portrait-module">
         <PapersSubtitle
           title="📝 All Papers"
@@ -69,6 +79,8 @@ import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranki
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
 import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
+import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import AffiliationAdvancedComp from '~/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -136,6 +148,8 @@ export default Vue.extend({
     PortraitProfileComp,
     SearchBarComp,
     Subtitle,
+    AuthorAdvancedComp,
+    AffiliationAdvancedComp,
     [Pagination.name]: Pagination
   },
   mixins: [PaginationMaxSizeLimit],
@@ -250,4 +264,17 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+.keyword-main {
+  @media @min-pad-width {
+    .flex-left-left-row;
+    .keyword-main__authors {
+      width: 50vw;
+    }
+
+    .keyword-main__affiliations {
+      width: 50vw;
+    }
+  }
+}
 </style>

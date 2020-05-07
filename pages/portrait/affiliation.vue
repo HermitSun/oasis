@@ -22,23 +22,7 @@
       <div class="affiliation-main">
         <div class="affiliation-main__authors portrait-module">
           <Subtitle title="🏆 Top Authors" />
-          <div class="ranking-advanced">
-            <div class="header">
-              <span class="prop">Author</span>
-              <span class="prop">Count</span>
-              <span class="prop">Citation</span>
-              <span class="prop">Publication Trend</span>
-            </div>
-            <div id="authors" class="body" style="overflow: scroll">
-              <div
-                v-for="(rank, index) in authorDetailRanking"
-                :key="index"
-                style="margin-bottom: 5px"
-              >
-                <AuthorDetailComp :rank="rank" />
-              </div>
-            </div>
-          </div>
+          <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
         </div>
         <div class="affiliation-main__paper portrait-module">
           <PapersSubtitle
@@ -84,7 +68,6 @@ import {
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
-import AuthorDetailComp from '~/components/ranking/advanced/author/AuthorDetailComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
@@ -99,6 +82,7 @@ import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import AuthorAdvancedComp from '~/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -157,7 +141,7 @@ async function requestAuthorDetailRanking(affiliation: string) {
 export default Vue.extend({
   name: 'Affiliation',
   components: {
-    AuthorDetailComp,
+    AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
