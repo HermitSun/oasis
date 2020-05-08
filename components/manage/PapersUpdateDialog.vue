@@ -11,12 +11,15 @@
       <el-form-item label="标题" prop="title">
         <el-input v-model="paperForm.title" placeholder="请输入标题" />
       </el-form-item>
-      <!--TODO: 更好的处理数组的方式-->
+      <!--不能修改作者数量-->
       <el-form-item label="作者" prop="authors">
-        <el-input
-          v-model="paperForm.authors"
-          placeholder="请输入作者（使用英文逗号','分隔）"
-        />
+        <template v-for="(_, i) of paperForm.authors">
+          <el-input
+            :key="i"
+            v-model="paperForm.authors[i]"
+            placeholder="请输入作者姓名"
+          />
+        </template>
       </el-form-item>
       <el-form-item label="摘要" prop="_abstract">
         <el-input
@@ -26,14 +29,30 @@
           placeholder="请输入摘要"
         />
       </el-form-item>
-      <!--TODO: 更好的处理数组的方式-->
+      <!--使用Tag管理关键字-->
+      <!--并不打算做修改功能，可以删除再添加-->
       <el-form-item label="关键词" prop="keywords">
+        <el-tag
+          v-for="(keyword, i) of paperForm.keywords"
+          :key="i"
+          size="medium"
+          closable
+          @close="removeKeyword(i)"
+        >
+          {{ keyword }}
+        </el-tag>
+        <!--添加关键字-->
         <el-input
-          v-model="paperForm.keywords"
-          type="textarea"
-          autosize
-          placeholder="请输入关键词（使用英文逗号','分隔）"
+          v-if="showNewKeywordInput"
+          ref="addKeywordInput"
+          v-model="newKeyword"
+          size="small"
+          @keyup.enter.native="addKeyword"
+          @blur="addKeyword"
         />
+        <el-button v-else size="small" @click="showKeywordInput">
+          + 添加关键字
+        </el-button>
       </el-form-item>
       <el-form-item label="出版年份" prop="publicationYear">
         <el-date-picker
@@ -82,7 +101,8 @@ import {
   FormItem,
   Input,
   Option,
-  Select
+  Select,
+  Tag
 } from 'element-ui';
 import { ElForm } from 'element-ui/types/form';
 import { PaperFrom } from '~/interfaces/pages/manage/ManagePapersPageComp';
@@ -100,8 +120,9 @@ export default Vue.extend({
     [Form.name]: Form,
     [FormItem.name]: FormItem,
     [Input.name]: Input,
+    [Option.name]: Option,
     [Select.name]: Select,
-    [Option.name]: Option
+    [Tag.name]: Tag
   },
   props: {
     index: { type: Number, default: 0 },
@@ -109,70 +130,53 @@ export default Vue.extend({
   },
   data() {
     // 校验作者姓名
-    const authorNameValidator: ElFormValidationFunction = (
+    const authorNameValidator: ElFormValidationFunction<string[]> = (
       _,
-      value,
+      authorNames,
       callback
     ) => {
-      if (value === '') {
+      if (authorNames.length === 0 && !this.$data.newKeyword) {
         callback(new Error('请输入论文作者'));
       } else {
-        const authors = value.split(',');
-        // 不止一个作者，并且分割前后没有变化，说明格式不符合
-        if (value.includes(',') && authors[0] === value) {
-          callback(new Error("论文作者之间请用英文逗号','分隔"));
-        }
-        // 分割前后数组长度发生变化
-        // 这个校验逻辑是依赖于状态的，所以放到data里，这样可以利用this来制造context
-        if (authors.length !== this.paper.authors.length) {
-          callback(new Error('不能修改论文作者数量'));
-        }
-        const notEmptyAuthors = authors.filter((author) => author !== '');
-        if (authors.length !== notEmptyAuthors.length) {
-          callback(new Error('不能有姓名为空的作者'));
+        for (const authorName of authorNames) {
+          if (!authorName) {
+            callback(new Error('作者姓名不能为空'));
+            return;
+          }
         }
         callback();
       }
     };
 
     // 校验关键词
+    // 允许关键词为空，有些文章确实没有关键词
     const keywordsValidator: ElFormValidationFunction = (
       _,
-      value,
+      keywords,
       callback
     ) => {
-      if (value === '') {
-        callback(new Error('请输入关键词'));
-      } else {
-        const keywords = value.split(',');
-        // 分割前后没有变化，说明格式不符合
-        if (value.includes(',') && keywords[0] === value) {
-          callback(new Error("论文关键词之间请用英文逗号','分隔"));
+      for (const keyword of keywords) {
+        if (!keyword) {
+          callback(new Error('关键词不能为空'));
+          return;
         }
-        // 不为空串，且不为全是空格的串
-        const notEmptyKeywords = keywords.filter(
-          (keyword) => keyword !== '' && !/^[ ]+$/.test(keyword)
-        );
-        if (keywords.length !== notEmptyKeywords.length) {
-          callback(new Error('不能有为空的关键词'));
-        }
-        callback();
       }
+      callback();
     };
 
     return {
       // 把数组转换成字符串进行绑定
       paperForm: {
         ...this.paper,
-        authors: this.paper.authors.toString(),
-        keywords: this.paper.keywords.toString(),
+        authors: this.paper.authors,
+        keywords: this.paper.keywords,
         publicationYear: this.paper.publicationYear.toString()
       } as PaperFrom,
       paperRules: {
         title: { required: true, message: '请输入论文标题', trigger: 'blur' },
         authors: {
           validator: authorNameValidator,
-          trigger: 'blur'
+          trigger: 'change'
         },
         _abstract: {
           required: true,
@@ -186,7 +190,7 @@ export default Vue.extend({
         },
         keywords: {
           validator: keywordsValidator,
-          trigger: 'blur'
+          trigger: 'change'
         },
         contentType: {
           required: true,
@@ -198,7 +202,10 @@ export default Vue.extend({
           message: '请输入论文出版位置',
           trigger: 'blur'
         }
-      } as ElFormValidationRules
+      } as ElFormValidationRules,
+      // 添加新的关键字
+      newKeyword: '',
+      showNewKeywordInput: false
     };
   },
   methods: {
@@ -224,8 +231,6 @@ export default Vue.extend({
         });
         const updateData = {
           ...this.paperForm,
-          authors: this.paperForm.authors.split(','),
-          keywords: this.paperForm.keywords.split(','),
           publicationYear: Number(this.paperForm.publicationYear)
         };
         const updateRes = await updatePaperInfo(updateData);
@@ -243,13 +248,31 @@ export default Vue.extend({
         this.closeDialogWithoutChange();
       }
     },
+    // 对论文关键词进行的增删查（没有改）
+    showKeywordInput() {
+      this.showNewKeywordInput = true;
+      this.$nextTick(() => {
+        const addKeywordInput = this.$refs.addKeywordInput as Vue;
+        (addKeywordInput.$refs.input as HTMLElement).focus();
+      });
+    },
+    removeKeyword(index: number) {
+      this.paperForm.keywords.splice(index, 1);
+      console.log(this.paperForm.keywords);
+    },
+    addKeyword() {
+      const inputValue = this.newKeyword;
+      if (inputValue) {
+        this.paperForm.keywords.push(inputValue);
+      }
+      this.showNewKeywordInput = false;
+      this.newKeyword = '';
+    },
     // 清理工作
     closeDialog() {
       // 将修改过的数据返回给父组件，避免再次请求
       this.$emit('close', this.index, {
         ...this.paperForm,
-        authors: this.paperForm.authors.split(','),
-        keywords: this.paperForm.keywords.split(','),
         publicationYear: Number(this.paperForm.publicationYear)
       });
     },
@@ -259,3 +282,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="less">
+.el-tag {
+  margin-right: 10px;
+}
+</style>
