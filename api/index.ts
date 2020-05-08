@@ -15,7 +15,11 @@ import {
   RankingBasicPayload
 } from '~/interfaces/requests/ranking/RankingPayload';
 import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
-import { PaperImportResponse } from '@/interfaces/responses/manage/PaperImportResponse';
+import {
+  ConferencesAndJournalsInfoResponse,
+  ConferencesAndJournalsProceedingsInfoResponse,
+  PaperImportResponse
+} from '@/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { InterestResponse } from '@/interfaces/responses/interest/InterestResponse';
 import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
@@ -444,6 +448,27 @@ export async function mergeAuthorInfo(
   return data;
 }
 
+// 36. 获取会议期刊列表 getConferencesAndJournalsList
+export async function getConferencesAndJournalsList(
+  page: number = 1,
+  keyword: string = ''
+): Promise<BasicResponse<ConferencesAndJournalsInfoResponse>> {
+  const { data } = await axios.get('/conference/publication', {
+    params: { page, keyword }
+  });
+  return data;
+}
+
+// 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
+export async function getConferencesAndJournalsProceedings(
+  titleId: string
+): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse>> {
+  const { data } = await axios.get('/conference/proceeding', {
+    params: { titleId }
+  });
+  return data;
+}
+
 // 38. 查看研究方向排名详情
 export async function getKeywordAdvancedRanking(
   args: RankingAdvancedPayload
@@ -473,5 +498,14 @@ export async function getAffiliationDetailRankingByKeyword(
   const { data } = await axios.get('/rank/advanced/keyword/affiliation', {
     params: { keyword }
   });
+  return data;
+}
+
+// 41. 合并关键词信息 mergeKeywords
+export async function mergeKeywords(
+  src: string[],
+  dest: string
+): Promise<BasicResponse> {
+  const { data } = await axios.put('/info/keywords', { src, dest });
   return data;
 }
