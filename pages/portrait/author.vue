@@ -1,6 +1,10 @@
 <template>
   <div class="author-portrait-wrapper">
-    <SearchBarComp />
+    <!--搜索框-->
+    <SearchBarComp
+      v-model="keyword"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
         <div class="profile-module">
@@ -54,6 +58,7 @@
             <PaperInfoComp :paper="paper" />
           </div>
         </div>
+        <!--分页-->
         <el-pagination
           layout="prev, pager, next"
           :current-page="page"
@@ -103,6 +108,7 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -227,7 +233,12 @@ export default Vue.extend({
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法
-  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
+  mixins: [
+    ForceChartClear,
+    LinkToAuthor,
+    PaginationMaxSizeLimit,
+    StartAnotherBasicSearch
+  ],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
@@ -390,35 +401,28 @@ export default Vue.extend({
     },
     // 展示**指定页码**的内容
     // 这名字起得不好
-    async showNextPage(page: number) {
+    showNextPage(page: number) {
       this.page = page;
-      const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as HTMLElement)
-      );
-      await requestPapers({
-        authorId: this.authorId,
-        page: this.page,
-        sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
-      });
+      this.getPapers();
     },
-    async changeSortKey(newSortKey: sortKey) {
+    changeSortKey(newSortKey: sortKey) {
       console.log('newSortKey' + newSortKey);
       this.page = 1;
       this.sortKey = newSortKey;
+      this.getPapers();
+    },
+    // 获取papers的方法，共用行为
+    async getPapers() {
       const loadingInstance = Loading.service(
         loadingConfig(document.getElementById('papers') as HTMLElement)
       );
-      await requestPapers({
+      const papersRes = await requestPapers({
         authorId: this.authorId,
         page: this.page,
         sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
       });
+      this.papers = papersRes.papers;
+      loadingInstance.close();
     }
   }
 });

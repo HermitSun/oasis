@@ -3,8 +3,6 @@
     <!--搜索框-->
     <SearchBarComp
       v-model="keyword"
-      :start-year="startYear"
-      :end-year="endYear"
       @keyword-change="startAnotherBasicSearch"
     />
     <!--搜索内容-->
