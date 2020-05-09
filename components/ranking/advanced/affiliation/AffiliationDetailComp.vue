@@ -10,6 +10,7 @@
               src="~/assets/icon/icon-arrow-right.svg"
               alt="icon-arrow-right"
               width="30"
+              :style="dropdownDisabledStyle"
               @click="requestShowDetail"
             />
             <img
@@ -67,6 +68,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { AffiliationDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '@/api/index.ts';
 import { createBarChart } from '@/components/charts/bar';
@@ -96,13 +98,25 @@ export default Vue.extend({
       isLoading: false
     };
   },
+  // 用来处理异步脚本的加载效果
+  computed: {
+    ...mapGetters('ranking', ['isAffiliationWordCloudLoaded']),
+    dropdownDisabledStyle(): { [key: string]: string | number } {
+      return this.isAffiliationWordCloudLoaded
+        ? {}
+        : { opacity: 0.6, cursor: 'not-allowed' };
+    }
+  },
   methods: {
     requestShowDetail() {
-      this.showDetail = !this.showDetail;
-      if (Object.keys(this.cachedRankingDetail).length === 0) {
-        this.requestRankingDetail();
-      } else {
-        this.rankingDetail = this.cachedRankingDetail;
+      // 加载完之后才能进行操作
+      if (this.isAffiliationWordCloudLoaded) {
+        this.showDetail = !this.showDetail;
+        if (Object.keys(this.cachedRankingDetail).length === 0) {
+          this.requestRankingDetail();
+        } else {
+          this.rankingDetail = this.cachedRankingDetail;
+        }
       }
     },
     jumpToPortrait() {

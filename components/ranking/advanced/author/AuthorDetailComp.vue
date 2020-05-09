@@ -10,6 +10,7 @@
               src="~/assets/icon/icon-arrow-right.svg"
               width="30"
               alt="icon-arrow-right"
+              :style="dropdownDisabledStyle"
               @click="requestShowDetail"
             />
             <img
@@ -33,8 +34,10 @@
       <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
       <span class="value">
+        <!--提前设定宽和高，避免重排-->
         <div
           :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + rank.authorId"
+          style="width: 100%; height: 80px;"
         ></div>
       </span>
     </div>
@@ -89,6 +92,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
 import PaperInfoComp from '@/components/ranking/advanced/PaperInfoComp.vue';
@@ -120,6 +124,15 @@ export default Vue.extend({
       isLoading: false
     };
   },
+  // 用来处理异步脚本的加载效果
+  computed: {
+    ...mapGetters('ranking', ['isAuthorWordCloudLoaded']),
+    dropdownDisabledStyle(): { [key: string]: string | number } {
+      return this.isAuthorWordCloudLoaded
+        ? {}
+        : { opacity: 0.6, cursor: 'not-allowed' };
+    }
+  },
   mounted() {
     const selector =
       '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
@@ -131,11 +144,14 @@ export default Vue.extend({
   },
   methods: {
     requestShowDetail() {
-      this.showDetail = !this.showDetail;
-      if (Object.keys(this.cachedRankingDetail).length === 0) {
-        this.requestRankingDetail();
-      } else {
-        this.rankingDetail = this.cachedRankingDetail;
+      // 加载完之后才能进行操作
+      if (this.isAuthorWordCloudLoaded) {
+        this.showDetail = !this.showDetail;
+        if (Object.keys(this.cachedRankingDetail).length === 0) {
+          this.requestRankingDetail();
+        } else {
+          this.rankingDetail = this.cachedRankingDetail;
+        }
       }
     },
     jumpToPortrait() {

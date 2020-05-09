@@ -31,7 +31,7 @@ export default Vue.extend({
   mounted() {
     // 导入源代码字体
     const fontElement = document.createElement('link');
-    fontElement.rel = 'stylesheet prefetch';
+    fontElement.rel = 'proload';
     fontElement.href =
       'https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap';
     fontElement.as = 'style';
