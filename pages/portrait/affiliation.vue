@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--搜索框-->
     <SearchBarComp
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
@@ -42,6 +43,7 @@
               <PaperInfoComp :paper="paper" />
             </div>
           </div>
+          <!--分页-->
           <el-pagination
             layout="prev, pager, next"
             :current-page="page"
@@ -158,7 +160,16 @@ export default Vue.extend({
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
     const page = 1;
-    const portraitRes = await requestPortrait(affiliation);
+
+    const portraitReq = requestPortrait(affiliation);
+    const papersReq = requestPapers({ affiliation, page, sortKey });
+    const interestsReq = requestInterests(affiliation);
+    const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
+    const portraitRes = await portraitReq;
+    const papersRes = await papersReq;
+    const interestsRes = await interestsReq;
+    const affiliationAuthorRankingRes = await affiliationAuthorRankingReq;
+
     const profile = {
       name: affiliation,
       statistics: [
@@ -179,19 +190,15 @@ export default Vue.extend({
     const citationTrend = portraitRes.portrait.citationTrend;
     const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const papersReq = requestPapers({ affiliation, page, sortKey });
-    const interestsReq = requestInterests(affiliation);
-    const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
-
     return {
       ...query,
       affiliation,
       profile,
       citationTrend,
       publicationTrend,
-      ...(await papersReq),
-      ...(await interestsReq),
-      ...(await affiliationAuthorRankingReq)
+      ...papersRes,
+      ...interestsRes,
+      ...affiliationAuthorRankingRes
     };
   },
   data() {
@@ -207,54 +214,61 @@ export default Vue.extend({
       const elementPapers = document.getElementById('papers') as HTMLElement;
       elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
     }
-    createPieChart(
-      '#pie',
-      this.interests
-        .map((i: { name: string; value: number }) => {
-          return {
-            label: i.name,
-            value: i.value
-          };
-        })
-        .sort(
-          (
-            a: { name: string; value: number },
-            b: { name: string; value: number }
-          ) => b.value - a.value
-        )
-        .slice(0, 20),
-      {
-        width: getSizeById('pie').width,
-        height: getSizeById('pie').height,
-        // 点击后跳转到对应的研究方向画像
-        segmentClick: ({ data }) => {
-          this.$router.push({
-            path: '/portrait/keyword',
-            query: {
-              keyword: data.label
-            }
-          });
-        }
-      }
-    );
-    createBarChart(
-      '#citation-bar',
-      this.citationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as HTMLElement,
-        Math.max(...this.citationTrend)
-      )
-    );
-    createBarChart(
-      '#publication-bar',
-      this.publicationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as HTMLElement,
-        Math.max(...this.publicationTrend)
-      )
-    );
+    this.initCharts();
   },
   methods: {
+    initCharts() {
+      setTimeout(() => {
+        createBarChart(
+          '#citation-bar',
+          this.citationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as HTMLElement,
+            Math.max(...this.citationTrend)
+          )
+        );
+        createBarChart(
+          '#publication-bar',
+          this.publicationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as HTMLElement,
+            Math.max(...this.publicationTrend)
+          )
+        );
+      }, 0);
+      setTimeout(() => {
+        createPieChart(
+          '#pie',
+          this.interests
+            .map((i: { name: string; value: number }) => {
+              return {
+                label: i.name,
+                value: i.value
+              };
+            })
+            .sort(
+              (
+                a: { name: string; value: number },
+                b: { name: string; value: number }
+              ) => b.value - a.value
+            )
+            .slice(0, 20),
+          {
+            width: getSizeById('pie').width,
+            height: getSizeById('pie').height,
+            // 点击后跳转到对应的研究方向画像
+            segmentClick: ({ data }) => {
+              this.$router.push({
+                path: '/portrait/keyword',
+                query: {
+                  keyword: data.label
+                }
+              });
+            }
+          }
+        );
+      }, 0);
+    },
     // 展示**指定页码**的内容
     // 这名字起得不好
     showNextPage(page: number) {

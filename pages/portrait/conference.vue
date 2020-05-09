@@ -74,7 +74,12 @@ export default Vue.extend({
   mixins: [StartAnotherBasicSearch],
   async asyncData({ query }) {
     const conference = query.conference as string;
-    const portraitRes = await requestPortrait(conference);
+
+    const portraitReq = requestPortrait(conference);
+    const interestsReq = requestInterests(conference);
+    const portraitRes = await portraitReq;
+    const interestsRes = await interestsReq;
+
     const profile = {
       name: conference,
       statistics: [
@@ -95,67 +100,74 @@ export default Vue.extend({
     const citationTrend = portraitRes.portrait.citationTrend;
     const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const interestsReq = requestInterests(conference);
-
     return {
       ...query,
       conference,
       profile,
       citationTrend,
       publicationTrend,
-      ...(await interestsReq)
+      ...interestsRes
     };
   },
   data() {
     return {} as any;
   },
   mounted() {
-    createPieChart(
-      '#pie',
-      this.interests
-        .map((i: { name: string; value: number }) => {
-          return {
-            label: i.name,
-            value: i.value
-          };
-        })
-        .sort(
-          (
-            a: { name: string; value: number },
-            b: { name: string; value: number }
-          ) => b.value - a.value
-        )
-        .slice(0, 20),
-      {
-        width: getSizeById('pie').width,
-        height: getSizeById('pie').height,
-        // 点击后跳转到对应的研究方向画像
-        segmentClick: ({ data }) => {
-          this.$router.push({
-            path: '/portrait/keyword',
-            query: {
-              keyword: data.label
+    this.initCharts();
+  },
+  methods: {
+    initCharts() {
+      setTimeout(() => {
+        createBarChart(
+          '#citation-bar',
+          this.citationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as HTMLElement,
+            Math.max(...this.citationTrend)
+          )
+        );
+        createBarChart(
+          '#publication-bar',
+          this.publicationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as HTMLElement,
+            Math.max(...this.publicationTrend)
+          )
+        );
+      }, 0);
+      setTimeout(() => {
+        createPieChart(
+          '#pie',
+          this.interests
+            .map((i: { name: string; value: number }) => {
+              return {
+                label: i.name,
+                value: i.value
+              };
+            })
+            .sort(
+              (
+                a: { name: string; value: number },
+                b: { name: string; value: number }
+              ) => b.value - a.value
+            )
+            .slice(0, 20),
+          {
+            width: getSizeById('pie').width,
+            height: getSizeById('pie').height,
+            // 点击后跳转到对应的研究方向画像
+            segmentClick: ({ data }) => {
+              this.$router.push({
+                path: '/portrait/keyword',
+                query: {
+                  keyword: data.label
+                }
+              });
             }
-          });
-        }
-      }
-    );
-    createBarChart(
-      '#citation-bar',
-      this.citationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.citationTrend)
-      )
-    );
-    createBarChart(
-      '#publication-bar',
-      this.publicationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.publicationTrend)
-      )
-    );
+          }
+        );
+      });
+    }
   }
 });
 </script>
