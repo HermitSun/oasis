@@ -1,6 +1,9 @@
 <template>
   <div>
-    <SearchBar />
+    <SearchBarComp
+      v-model="searchContent"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div class="advanced-ranking-page">
       <AdvancedRankingSubtitle title="🏆 OASIS RANKING" subject="Author" />
       <AuthorAdvancedComp :rankings="rankings" />
@@ -10,18 +13,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import SearchBar from '~/components/search/SearchBarComp.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import { getAuthorAdvancedRanking } from '~/api';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 export default Vue.extend({
   name: 'Author',
   components: {
-    SearchBar,
+    SearchBarComp,
     AdvancedRankingSubtitle,
     AuthorAdvancedComp
   },
+  mixins: [StartAnotherBasicSearch],
   async asyncData() {
     // TODO 添加可选择的sortKey和year
     const affiliationAdvancedRankingRes = await getAuthorAdvancedRanking({

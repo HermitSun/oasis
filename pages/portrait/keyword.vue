@@ -1,6 +1,9 @@
 <template>
   <div>
-    <SearchBarComp />
+    <SearchBarComp
+      v-model="keyword"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -81,6 +84,7 @@ import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAd
 import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -152,7 +156,7 @@ export default Vue.extend({
     AffiliationAdvancedComp,
     [Pagination.name]: Pagination
   },
-  mixins: [PaginationMaxSizeLimit],
+  mixins: [PaginationMaxSizeLimit, StartAnotherBasicSearch],
   async asyncData({ query }) {
     const keyword = query.keyword as string;
     const sortKey = 'recent';

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <SearchBarComp />
+    <SearchBarComp
+      v-model="keyword"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -82,6 +85,7 @@ import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 
 async function requestPortrait(affiliation: string) {
@@ -149,7 +153,7 @@ export default Vue.extend({
     Subtitle,
     [Pagination.name]: Pagination
   },
-  mixins: [PaginationMaxSizeLimit],
+  mixins: [PaginationMaxSizeLimit, StartAnotherBasicSearch],
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
@@ -237,7 +241,7 @@ export default Vue.extend({
       '#citation-bar',
       this.citationTrend,
       portraitBarConfig(
-        document.getElementById('portrait') as any,
+        document.getElementById('portrait') as HTMLElement,
         Math.max(...this.citationTrend)
       )
     );
@@ -245,7 +249,7 @@ export default Vue.extend({
       '#publication-bar',
       this.publicationTrend,
       portraitBarConfig(
-        document.getElementById('portrait') as any,
+        document.getElementById('portrait') as HTMLElement,
         Math.max(...this.publicationTrend)
       )
     );
@@ -253,35 +257,28 @@ export default Vue.extend({
   methods: {
     // 展示**指定页码**的内容
     // 这名字起得不好
-    async showNextPage(page: number) {
+    showNextPage(page: number) {
       this.page = page;
-      const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
-      );
-      await requestPapers({
-        affiliation: this.affiliation,
-        page: this.page,
-        sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
-      });
+      this.getPapers();
     },
-    async changeSortKey(newSortKey: sortKey) {
+    changeSortKey(newSortKey: sortKey) {
       console.log('newSortKey' + newSortKey);
       this.page = 1;
       this.sortKey = newSortKey;
+      this.getPapers();
+    },
+    // 获取papers的方法，共用行为
+    async getPapers() {
       const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
+        loadingConfig(document.getElementById('papers') as HTMLElement)
       );
-      await requestPapers({
+      const papersRes = await requestPapers({
         affiliation: this.affiliation,
         page: this.page,
         sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
       });
+      this.papers = papersRes.papers;
+      loadingInstance.close();
     }
   }
 });

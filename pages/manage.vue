@@ -95,6 +95,11 @@ export default Vue.extend({
           path: '/manage/journals',
           title: '期刊数据管理',
           icon: 'el-icon-reading'
+        },
+        {
+          path: '/manage/keywords',
+          title: '研究方向管理',
+          icon: 'el-icon-position'
         }
       ];
     }

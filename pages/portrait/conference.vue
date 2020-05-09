@@ -1,6 +1,9 @@
 <template>
   <div>
-    <SearchBarComp />
+    <SearchBarComp
+      v-model="keyword"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -36,6 +39,7 @@ import { createBarChart } from '~/components/charts/bar';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createPieChart } from '~/components/charts/pie';
 import portraitBarConfig from '~/components/portrait/barConfig';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 async function requestPortrait(conference: string) {
   const res: { portrait: PortraitResponse } = {
@@ -67,6 +71,7 @@ export default Vue.extend({
     SearchBarComp,
     Subtitle
   },
+  mixins: [StartAnotherBasicSearch],
   async asyncData({ query }) {
     const conference = query.conference as string;
     const portraitRes = await requestPortrait(conference);

@@ -1,6 +1,9 @@
 <template>
   <div class="author-portrait-wrapper">
-    <SearchBarComp />
+    <SearchBarComp
+      v-model="keyword"
+      @keyword-change="startAnotherBasicSearch"
+    />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
         <div class="profile-module">
@@ -103,6 +106,7 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -227,7 +231,12 @@ export default Vue.extend({
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法
-  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
+  mixins: [
+    ForceChartClear,
+    LinkToAuthor,
+    PaginationMaxSizeLimit,
+    StartAnotherBasicSearch
+  ],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
