@@ -1,7 +1,7 @@
 <template>
   <div>
     <SearchBarComp
-      v-model="searchContent"
+      v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
     />
     <div class="advanced-ranking-page">
