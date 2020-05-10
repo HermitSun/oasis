@@ -11,6 +11,7 @@ import {
 } from '@/interfaces/responses/search/SearchResponse';
 import { BasicRankingResponse } from '@/interfaces/responses/ranking/basic/BasicRankingResponse';
 import {
+  KeywordRankingAdvancedPayload,
   RankingAdvancedPayload,
   RankingBasicPayload
 } from '~/interfaces/requests/ranking/RankingPayload';
@@ -481,22 +482,22 @@ export async function getKeywordAdvancedRanking(
 
 // 39.获取某研究方向下的作者排名详情
 export async function getAuthorDetailRankingByKeyword(
-  keyword: string
+  args: KeywordRankingAdvancedPayload
 ): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
   // TODO 填写url
   const { data } = await axios.get('/rank/advanced/keyword/author', {
-    params: { keyword }
+    params: args
   });
   return data;
 }
 
 // 40. 获取某研究方向下的机构排名详情
 export async function getAffiliationDetailRankingByKeyword(
-  keyword: string
+  args: KeywordRankingAdvancedPayload
 ): Promise<BasicResponse<AffiliationAdvancedRankingResponse[]>> {
   // TODO 填写url
   const { data } = await axios.get('/rank/advanced/keyword/affiliation', {
-    params: { keyword }
+    params: args
   });
   return data;
 }

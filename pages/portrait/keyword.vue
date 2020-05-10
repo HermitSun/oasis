@@ -119,9 +119,12 @@ async function requestAuthorDetailRankingByKeyword(keyword: string) {
     authorRanking: [] as AuthorAdvancedRankingResponse[]
   };
   try {
-    const authorRankingResponse = await getAuthorDetailRankingByKeyword(
-      keyword
-    );
+    const authorRankingResponse = await getAuthorDetailRankingByKeyword({
+      keyword,
+      sortKey: 'acceptanceCount',
+      startYear: 2019,
+      endYear: 2020
+    });
     res.authorRanking = authorRankingResponse.data;
   } catch (e) {
     Message.error(e.toString());
@@ -135,7 +138,12 @@ async function requestAffiliationDetailRankingByKeyword(keyword: string) {
   };
   try {
     const affiliationRankingResponse = await getAffiliationDetailRankingByKeyword(
-      keyword
+      {
+        keyword,
+        sortKey: 'acceptanceCount',
+        startYear: 2019,
+        endYear: 2020
+      }
     );
     res.affiliationRanking = affiliationRankingResponse.data;
   } catch (e) {
