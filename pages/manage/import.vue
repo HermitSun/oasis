@@ -28,6 +28,18 @@ export default Vue.extend({
       showUploadDialog: false
     };
   },
+  beforeMount() {
+    // preconnect
+    const cdnPreConnect = document.createElement('link');
+    cdnPreConnect.href = 'https://fonts.googleapis.com';
+    cdnPreConnect.crossOrigin = 'anonymous';
+    // dns-prefetch
+    const dnsPrefetch = document.createElement('link');
+    dnsPrefetch.href = 'https://fonts.googleapis.com';
+    // apply to html
+    document.head.appendChild(cdnPreConnect);
+    document.head.appendChild(dnsPrefetch);
+  },
   mounted() {
     // 导入源代码字体
     const fontElement = document.createElement('link');
