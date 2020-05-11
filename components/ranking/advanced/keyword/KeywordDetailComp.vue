@@ -45,7 +45,7 @@
           </div>
           <div class="content">
             <span class="value">
-              <div :id="rank.keyword"></div>
+              <div :id="rank.keyword.replace(/[^a-zA-Z]/g, '')"></div>
             </span>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default Vue.extend({
     };
   },
   mounted() {
-    const selector = '#' + this.rank.keyword;
+    const selector = '#' + this.rank.keyword.replace(/[^a-zA-Z]/g, '');
     createBarChart(selector, this.rank.publicationTrend, {
       width: 150,
       height: 80,
