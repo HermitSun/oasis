@@ -1,3 +1,4 @@
+import globalAxios from 'axios';
 import axios from './config';
 import {
   AdvancedSearchPayload,
@@ -450,11 +451,11 @@ export async function mergeAuthorInfo(
 
 // 36. 获取会议期刊列表 getConferencesAndJournalsList
 export async function getConferencesAndJournalsList(
-  page: number = 1,
-  keyword: string = ''
+  keyword: string = '',
+  page: number = 1
 ): Promise<BasicResponse<ConferencesAndJournalsInfoResponse>> {
   const { data } = await axios.get('/conference/publication', {
-    params: { page, keyword }
+    params: { keyword, page }
   });
   return data;
 }
@@ -462,7 +463,7 @@ export async function getConferencesAndJournalsList(
 // 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
 export async function getConferencesAndJournalsProceedings(
   titleId: string
-): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse>> {
+): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse[]>> {
   const { data } = await axios.get('/conference/proceeding', {
     params: { titleId }
   });
@@ -507,5 +508,26 @@ export async function mergeKeywords(
   dest: string
 ): Promise<BasicResponse> {
   const { data } = await axios.put('/info/keywords', { src, dest });
+  return data;
+}
+
+// 46. 获取爬虫任务状态 getCrawlTask
+export async function getCrawlTask(): Promise<BasicResponse> {
+  const { data } = await axios.get('');
+  return data;
+}
+
+// 47. 运行爬虫任务 crawl
+export async function execCrawlTask(
+  proceedings: string[]
+): Promise<BasicResponse> {
+  const { data } = await globalAxios.post('http://34.102.235.205/crawl.json', {
+    request: {
+      url: 'http://34.102.235.205/prod/actuator/health',
+      meta: { proceedings },
+      callback: 'start'
+    },
+    spider_name: 'conferences'
+  });
   return data;
 }
