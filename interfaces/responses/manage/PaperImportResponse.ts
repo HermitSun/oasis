@@ -22,7 +22,18 @@ export interface ConferencesAndJournalsInfoResponse {
 }
 
 // 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
-export interface ConferencesAndJournalsProceedingsInfoResponse {
+interface ProceedingInfo {
   proceedingId: string;
   proceedingTitle: string;
+}
+
+export type ConferencesAndJournalsProceedingsInfoResponse = ProceedingInfo;
+
+// 46. 获取爬虫任务状态 getCrawlTask
+export interface CrawlTaskResponse {
+  proceedings: ProceedingInfo[]; // 爬取的论文集
+  startTime: number;
+  endTime: number;
+  isFinished: boolean;
+  paperCount: number;
 }

@@ -14,10 +14,11 @@ import { NuxtConfigurationServerMiddleware } from '@nuxt/types/config/server-mid
 // import journalInterestMockData from './mock/portrait/journal/journalInterestMockData';
 
 // 路由
-import authors from './routes/authors';
-import affiliations from './routes/affiliations';
-import journals from './routes/journals';
-import conferences from './routes/conferences';
+// import authors from './routes/authors';
+// import affiliations from './routes/affiliations';
+// import journals from './routes/journals';
+// import conferences from './routes/conferences';
+import tasks from './routes/import';
 // import keywordAdvancedRankingMockData from '~/server/mock/ranking/keyword/keywordAdvancedRankingMockData';
 // import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
 // import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
@@ -26,9 +27,9 @@ import conferences from './routes/conferences';
 
 const app = express();
 
-// app.get('/echo/:what', (req, res) => {
-//   res.json(req.params);
-// });
+app.get('/echo/:what', (req, res) => {
+  res.json(req.params);
+});
 //
 // app.get('/search/basic/mongo', (req, res) => {
 //   console.log(req.params);
@@ -165,16 +166,18 @@ const app = express();
 // });
 
 // 管理员部分
-// 作者信息管理
-app.use('/authors', authors);
-// 机构信息管理
-app.use('/affiliations', affiliations);
-// 期刊信息管理
-app.use('/journals', journals);
-// 会议信息管理
-app.use('/conferences', conferences);
-// 论文信息管理
-app.use('/papers', conferences);
+// // 作者信息管理
+// app.use('/authors', authors);
+// // 机构信息管理
+// app.use('/affiliations', affiliations);
+// // 期刊信息管理
+// app.use('/journals', journals);
+// // 会议信息管理
+// app.use('/conferences', conferences);
+// // 论文信息管理
+// app.use('/papers', conferences);
+// 导入数据
+app.use('/crawl', tasks);
 
 const expressMiddleware: NuxtConfigurationServerMiddleware = {
   path: '/test',

@@ -1,0 +1,26 @@
+[
+  {
+    "proceedings": [
+      {
+        "proceedingTitle": "ESEM",
+        "proceedingId": "123"
+      }
+    ],
+    "startTime": 1589378434887,
+    "endTime": 1589378444887,
+    "isFinished": false,
+    "paperCount": 100
+  },
+  {
+    "proceedings": [
+      {
+        "proceedingTitle": "EMSE",
+        "proceedingId": "456"
+      }
+    ],
+    "startTime": 1589378454887,
+    "endTime": 1589378464887,
+    "isFinished": true,
+    "paperCount": 200
+  }
+]

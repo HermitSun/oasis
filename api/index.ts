@@ -19,6 +19,7 @@ import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/basic
 import {
   ConferencesAndJournalsInfoResponse,
   ConferencesAndJournalsProceedingsInfoResponse,
+  CrawlTaskResponse,
   PaperImportResponse
 } from '@/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
@@ -343,14 +344,6 @@ export async function getJournalInterest(
 }
 
 // 以下为管理员端
-// const mockConfig = {
-//   baseURL:
-//     process.env.NODE_ENV === 'production'
-//       ? 'https://wensun.top'
-//       : 'http://101.37.175.237:8081/',
-//   timeout: 60 * 1000
-// };
-// const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
@@ -512,8 +505,18 @@ export async function mergeKeywords(
 }
 
 // 46. 获取爬虫任务状态 getCrawlTask
-export async function getCrawlTask(): Promise<BasicResponse> {
-  const { data } = await axios.get('');
+const mockConfig = {
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://wensun.top/test'
+      : 'http://localhost:3000/test',
+  timeout: 60 * 1000
+};
+const mockAxios = globalAxios.create(mockConfig);
+export async function getCrawlTask(): Promise<
+  BasicResponse<CrawlTaskResponse[]>
+> {
+  const { data } = await mockAxios.get('/crawl/info');
   return data;
 }
 
