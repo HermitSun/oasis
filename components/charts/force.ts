@@ -97,16 +97,15 @@ export function createForceChart(
 ): ForceChartUtils {
   // 默认颜色
   const scale = scaleOrdinal(schemeCategory10);
-  const groupByColor = (d: ForceChartNode) =>
-    scale((d.group ? d.group : Math.random() * 10).toString());
+  const groupByColor = ({ group = Math.random() * 10 }: ForceChartNode) =>
+    scale(group.toString());
 
   // 配置项（包括默认值）
   const config = {
     linkColor: '#999',
     linkOpacity: 0.6,
-    linkWidth: (d: ForceChartLink) =>
-      d.value ? Math.sqrt(d.value) : Math.random(),
-    linkLength: (d: ForceChartLink) => (d.value ? d.value : Math.random()),
+    linkWidth: ({ value = Math.random() }: ForceChartLink) => Math.sqrt(value),
+    linkLength: ({ value = Math.random() }: ForceChartLink) => value,
     nodeBorderColor: '#fff',
     nodeBorderWidth: 0.5,
     nodeRadius: 5,
