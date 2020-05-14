@@ -40,6 +40,7 @@ import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
+import { PortraitJournalPageComp } from '~/interfaces/pages/portrait/PortraitJournalPageComp';
 
 async function requestPortrait(journal: string) {
   const res: { portrait: PortraitResponse } = {
@@ -75,10 +76,10 @@ export default Vue.extend({
   async asyncData({ query }) {
     const journal = query.journal as string;
 
-    const portraitReq = requestPortrait(journal);
-    const interestsReq = requestInterests(journal);
-    const portraitRes = await portraitReq;
-    const interestsRes = await interestsReq;
+    const [portraitRes, interestsRes] = await Promise.all([
+      requestPortrait(journal),
+      requestInterests(journal)
+    ]);
 
     const profile = {
       name: journal,
@@ -110,7 +111,7 @@ export default Vue.extend({
     };
   },
   data() {
-    return {} as any;
+    return {} as PortraitJournalPageComp;
   },
   mounted() {
     this.initCharts();
@@ -139,18 +140,8 @@ export default Vue.extend({
         createPieChart(
           '#pie',
           this.interests
-            .map((i: { name: string; value: number }) => {
-              return {
-                label: i.name,
-                value: i.value
-              };
-            })
-            .sort(
-              (
-                a: { name: string; value: number },
-                b: { name: string; value: number }
-              ) => b.value - a.value
-            )
+            .map((i) => ({ label: i.name, value: i.value }))
+            .sort((a, b) => b.value - a.value)
             .slice(0, 20),
           {
             width: getSizeById('pie').width,
