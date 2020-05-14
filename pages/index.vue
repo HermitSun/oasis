@@ -223,20 +223,29 @@ export default Vue.extend({
   },
   // 渲染初始数据
   async asyncData() {
-    const abstractReq = requestActivePaperAbstract();
-    const affiliationRankingReq = requestAffiliationBasicRanking();
-    const authorRankingReq = requestAuthorBasicRanking();
-    const conferenceRankingReq = requestConferenceBasicRanking();
-    const journalRankingReq = requestJournalBasicRanking();
-    const keywordRankingReq = requestKeywordBasicRanking();
-    // 并发执行请求，降低阻塞时间
+    const [
+      abstractRes,
+      affiliationRankingRes,
+      authorRankingRes,
+      conferenceRankingRes,
+      journalRankingRes,
+      keywordRankingRes
+    ] = await Promise.all([
+      requestActivePaperAbstract(),
+      requestAffiliationBasicRanking(),
+      requestAuthorBasicRanking(),
+      requestConferenceBasicRanking(),
+      requestJournalBasicRanking(),
+      requestKeywordBasicRanking()
+    ]);
+
     return {
-      ...(await abstractReq),
-      ...(await affiliationRankingReq),
-      ...(await authorRankingReq),
-      ...(await conferenceRankingReq),
-      ...(await journalRankingReq),
-      ...(await keywordRankingReq)
+      ...abstractRes,
+      ...affiliationRankingRes,
+      ...authorRankingRes,
+      ...conferenceRankingRes,
+      ...journalRankingRes,
+      ...keywordRankingRes
     };
   },
   data() {
