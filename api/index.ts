@@ -1,29 +1,33 @@
+import globalAxios from 'axios';
 import axios from './config';
+import { getters } from '~/store/manage';
+import importBus from '~/components/manage/bus';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
   FilterSearchPayload
 } from '~/interfaces/requests/search/SearchPayload';
-import { BasicResponse } from '@/interfaces/responses/BasicResponse';
+import { BasicResponse } from '~/interfaces/responses/BasicResponse';
 import {
   SearchFullResponse,
   SearchReference
-} from '@/interfaces/responses/search/SearchResponse';
-import { BasicRankingResponse } from '@/interfaces/responses/ranking/basic/BasicRankingResponse';
+} from '~/interfaces/responses/search/SearchResponse';
+import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
 import {
   KeywordRankingAdvancedPayload,
   RankingAdvancedPayload,
   RankingBasicPayload
 } from '~/interfaces/requests/ranking/RankingPayload';
-import { AuthorBasicRankingResponse } from '@/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
+import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import {
   ConferencesAndJournalsInfoResponse,
   ConferencesAndJournalsProceedingsInfoResponse,
+  CrawlTaskResponse,
   PaperImportResponse
-} from '@/interfaces/responses/manage/PaperImportResponse';
+} from '~/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
-import { InterestResponse } from '@/interfaces/responses/interest/InterestResponse';
-import { ActivePaperAbstractResponse } from '@/interfaces/responses/abstract/ActivePaperAbstractResponse';
+import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
+import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
 import { AffiliationInfoResponse } from '~/interfaces/responses/manage/AffiliationInfoResponse';
@@ -343,14 +347,6 @@ export async function getJournalInterest(
 }
 
 // 以下为管理员端
-// const mockConfig = {
-//   baseURL:
-//     process.env.NODE_ENV === 'production'
-//       ? 'https://wensun.top'
-//       : 'http://101.37.175.237:8081/',
-//   timeout: 60 * 1000
-// };
-// const mockAxios = globalAxios.create(mockConfig);
 // 26. 获取机构信息 getAffiliationInfo
 export async function getAffiliationInfo(
   page: number = 1,
@@ -451,11 +447,11 @@ export async function mergeAuthorInfo(
 
 // 36. 获取会议期刊列表 getConferencesAndJournalsList
 export async function getConferencesAndJournalsList(
-  page: number = 1,
-  keyword: string = ''
+  keyword: string = '',
+  page: number = 1
 ): Promise<BasicResponse<ConferencesAndJournalsInfoResponse>> {
   const { data } = await axios.get('/conference/publication', {
-    params: { page, keyword }
+    params: { keyword, page }
   });
   return data;
 }
@@ -463,7 +459,7 @@ export async function getConferencesAndJournalsList(
 // 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
 export async function getConferencesAndJournalsProceedings(
   titleId: string
-): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse>> {
+): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse[]>> {
   const { data } = await axios.get('/conference/proceeding', {
     params: { titleId }
   });
@@ -508,5 +504,49 @@ export async function mergeKeywords(
   dest: string
 ): Promise<BasicResponse> {
   const { data } = await axios.put('/info/keywords', { src, dest });
+  return data;
+}
+
+// 46. 获取爬虫任务状态 getCrawlTask
+// 这里的实现非常dirty，需要留意可能存在的bug
+const mockConfig = {
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://wensun.top/test'
+      : 'http://localhost:3000/test',
+  timeout: 5 * 1000
+};
+const mockAxios = globalAxios.create(mockConfig);
+// 利用总线判断正在进行的请求数
+// 为什么不用vuex，因为nuxt对vuex的集成非常憨批，完全没法用
+// 下次不用了
+mockAxios.interceptors.request.use((config) => {
+  ++importBus.crawlTaskReqNum;
+  return config;
+});
+mockAxios.interceptors.request.use((config) => {
+  --importBus.crawlTaskReqNum;
+  return config;
+});
+
+export async function getCrawlTask(): Promise<
+  BasicResponse<CrawlTaskResponse[]>
+> {
+  const { data } = await mockAxios.get('/crawl/info');
+  return data;
+}
+
+// 47. 运行爬虫任务 crawl
+export async function execCrawlTask(
+  proceedings: string[]
+): Promise<BasicResponse> {
+  const { data } = await globalAxios.post('http://34.102.235.205/crawl.json', {
+    request: {
+      url: 'http://34.102.235.205/prod/actuator/health',
+      meta: { proceedings },
+      callback: 'start'
+    },
+    spider_name: 'conferences'
+  });
   return data;
 }
