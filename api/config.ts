@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+import { addPending, removePending } from '~/utils/pending';
 
 const globalConfig = {
   baseURL:
@@ -20,6 +21,8 @@ const globalAxios = axios.create(globalConfig);
 // 请求过滤器
 globalAxios.interceptors.request.use(
   (config) => {
+    removePending(config);
+    addPending(config);
     return config;
   },
   (error) => {
@@ -30,6 +33,7 @@ globalAxios.interceptors.request.use(
 // 响应过滤器
 globalAxios.interceptors.response.use(
   (config) => {
+    removePending(config);
     return config;
   },
   (error) => {

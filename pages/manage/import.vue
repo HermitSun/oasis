@@ -112,6 +112,8 @@ import importBus from '~/components/manage/bus';
 
 // 爬虫任务需要的信息
 type CrawlTaskInfo = Array<CrawlTaskResponse & { percentage: number }>;
+// 轮询任务
+let pollingTask: NodeJS.Timeout;
 
 export default Vue.extend({
   name: 'DataImport',
@@ -161,11 +163,14 @@ export default Vue.extend({
   },
   mounted() {
     // 每秒更新一次结果
-    setInterval(() => {
+    pollingTask = setInterval(() => {
       this.getCrawlTasks();
     }, 1000);
     // 提前加载字体
     this.preloadSrcCodeFont();
+  },
+  beforeDestroy() {
+    clearInterval(pollingTask);
   },
   methods: {
     // **提前**导入源代码字体
