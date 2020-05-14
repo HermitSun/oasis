@@ -1,6 +1,5 @@
 import globalAxios from 'axios';
 import axios from './config';
-import { getters } from '~/store/manage';
 import importBus from '~/components/manage/bus';
 import {
   AdvancedSearchPayload,
