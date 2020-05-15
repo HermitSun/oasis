@@ -479,8 +479,7 @@ export async function getKeywordAdvancedRanking(
 export async function getAuthorDetailRankingByKeyword(
   args: KeywordRankingAdvancedPayload
 ): Promise<BasicResponse<AuthorAdvancedRankingResponse[]>> {
-  // TODO 填写url
-  const { data } = await axios.get('/rank/advanced/keyword/author', {
+  const { data } = await axios.get('/rank/detail/author/keyword', {
     params: args
   });
   return data;
@@ -490,8 +489,7 @@ export async function getAuthorDetailRankingByKeyword(
 export async function getAffiliationDetailRankingByKeyword(
   args: KeywordRankingAdvancedPayload
 ): Promise<BasicResponse<AffiliationAdvancedRankingResponse[]>> {
-  // TODO 填写url
-  const { data } = await axios.get('/rank/advanced/keyword/affiliation', {
+  const { data } = await axios.get('/rank/detail/affiliation/keyword', {
     params: args
   });
   return data;

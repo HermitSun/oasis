@@ -76,17 +76,16 @@ import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
-import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
-import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
-import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
+import { PortraitKeywordPageComp } from '~/interfaces/pages/portrait/PortraitKeywordPageComp';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -171,7 +170,19 @@ export default Vue.extend({
     const keyword = query.keyword as string;
     const sortKey = 'recent';
     const page = 1;
-    const portraitRes = await requestPortrait(keyword);
+
+    const [
+      portraitRes,
+      papersRes,
+      authorRankingRes,
+      affiliationRankingRes
+    ] = await Promise.all([
+      requestPortrait(keyword),
+      requestPapers({ keyword, page, sortKey }),
+      requestAuthorDetailRankingByKeyword(keyword),
+      requestAffiliationDetailRankingByKeyword(keyword)
+    ]);
+
     const profile = {
       name: keyword,
       statistics: [
@@ -192,85 +203,71 @@ export default Vue.extend({
     const citationTrend = portraitRes.portrait.citationTrend;
     const publicationTrend = portraitRes.portrait.publicationTrends;
 
-    const papersReq = requestPapers({ keyword, page, sortKey });
-
-    let authorRankingReq = await requestAuthorDetailRankingByKeyword(keyword);
-    // TODO delete
-    authorRankingReq = { authorRanking: authorAdvancedRankingMockData.data };
-    let affiliationRankingReq = await requestAffiliationDetailRankingByKeyword(
-      keyword
-    );
-    affiliationRankingReq = {
-      affiliationRanking: affiliationAdvancedRankingMockData.data
-    };
-
     return {
       ...query,
       keyword,
       profile,
       citationTrend,
       publicationTrend,
-      ...(await papersReq),
-      ...(await authorRankingReq),
-      ...(await affiliationRankingReq)
+      ...papersRes,
+      ...authorRankingRes,
+      ...affiliationRankingRes
     };
   },
   data() {
     return {
       page: 1,
       sortKey: 'recent' as sortKey
-    } as any;
+    } as PortraitKeywordPageComp;
   },
   mounted() {
-    createBarChart(
-      '#citation-bar',
-      this.citationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.citationTrend)
-      )
-    );
-    createBarChart(
-      '#publication-bar',
-      this.publicationTrend,
-      portraitBarConfig(
-        document.getElementById('portrait') as any,
-        Math.max(...this.publicationTrend)
-      )
-    );
+    this.initCharts();
   },
   methods: {
+    initCharts() {
+      setTimeout(() => {
+        createBarChart(
+          '#citation-bar',
+          this.citationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as any,
+            Math.max(...this.citationTrend)
+          )
+        );
+        createBarChart(
+          '#publication-bar',
+          this.publicationTrend,
+          portraitBarConfig(
+            document.getElementById('portrait') as any,
+            Math.max(...this.publicationTrend)
+          )
+        );
+      }, 0);
+    },
     // 展示**指定页码**的内容
     // 这名字起得不好
-    async showNextPage(page: number) {
+    showNextPage(page: number) {
       this.page = page;
-      const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
-      );
-      await requestPapers({
-        keyword: this.keyword,
-        page: this.page,
-        sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
-      });
+      this.getPapers();
     },
-    async changeSortKey(newSortKey: sortKey) {
+    changeSortKey(newSortKey: sortKey) {
       console.log('newSortKey' + newSortKey);
       this.page = 1;
       this.sortKey = newSortKey;
+      this.getPapers();
+    },
+    // 获取papers的方法，共用行为
+    async getPapers() {
       const loadingInstance = Loading.service(
-        loadingConfig(document.getElementById('papers') as any)
+        loadingConfig(document.getElementById('papers') as HTMLElement)
       );
-      await requestPapers({
+      const papersRes = await requestPapers({
         keyword: this.keyword,
         page: this.page,
         sortKey: this.sortKey
-      }).then((res) => {
-        this.papers = res.papers;
-        loadingInstance.close();
       });
+      this.papers = papersRes.papers;
+      loadingInstance.close();
     },
     // template method pattern
     ...mapActions('portrait', [
