@@ -1,8 +1,15 @@
-import * as D3 from 'd3';
+/// <reference types="d3" />
+/// <reference types="echarts" />
+
+export {};
 
 declare global {
+  // extends window
   interface Window {
-    d3: D3;
+    d3: d3;
+    echarts: echarts;
   }
-  const d3: D3;
+  // directly used global vars
+  const d3: d3;
+  const echarts: echarts;
 }

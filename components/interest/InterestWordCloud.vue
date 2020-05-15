@@ -24,7 +24,6 @@ import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 
 export default Vue.extend({
   name: 'InterestWordCloud',
-  // 此处的实现确实不是很必要，但是为了控制台不报错，加了个没什么用的判断
   components: {
     wordcloud: () => import('vue-wordcloud')
   },
