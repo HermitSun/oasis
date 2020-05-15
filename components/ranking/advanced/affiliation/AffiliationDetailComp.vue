@@ -101,14 +101,18 @@ export default Vue.extend({
   // 用来处理异步脚本的加载效果
   computed: {
     ...mapGetters('ranking', {
-      isRankingAffiliationWordCloudLoaded: 'isAuthorWordCloudLoaded'
+      isRankingAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
+      isRankingAuthorWordCloudLoaded: 'isAuthorWordCloudLoaded'
     }),
     ...mapGetters('portrait', {
+      isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isPortraitKeywordWordCloudLoaded: 'isKeywordWordCloudLoaded'
     }),
     isWordCloudLoaded(): boolean {
       return (
         this.isRankingAffiliationWordCloudLoaded ||
+        this.isRankingAuthorWordCloudLoaded ||
+        this.isPortraitAffiliationWordCloudLoaded ||
         this.isPortraitKeywordWordCloudLoaded
       );
     },

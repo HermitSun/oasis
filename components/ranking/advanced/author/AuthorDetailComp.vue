@@ -128,7 +128,8 @@ export default Vue.extend({
   // 此处会与store紧耦合
   computed: {
     ...mapGetters('ranking', {
-      isRankingAffiliationWordCloudLoaded: 'isAuthorWordCloudLoaded'
+      isRankingAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
+      isRankingAuthorWordCloudLoaded: 'isAuthorWordCloudLoaded'
     }),
     ...mapGetters('portrait', {
       isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
@@ -137,6 +138,7 @@ export default Vue.extend({
     isWordCloudLoaded(): boolean {
       return (
         this.isRankingAffiliationWordCloudLoaded ||
+        this.isRankingAuthorWordCloudLoaded ||
         this.isPortraitAffiliationWordCloudLoaded ||
         this.isPortraitKeywordWordCloudLoaded
       );
@@ -148,15 +150,22 @@ export default Vue.extend({
     }
   },
   mounted() {
-    const selector =
-      '#' + this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
-    createBarChart(selector, this.rank.publicationTrend, {
-      width: 150,
-      height: 80,
-      tooltipThreshold: 15
-    });
+    this.initChart();
   },
   methods: {
+    initChart() {
+      setTimeout(() => {
+        const selector =
+          '#' +
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') +
+          this.rank.authorId;
+        createBarChart(selector, this.rank.publicationTrend, {
+          width: 150,
+          height: 80,
+          tooltipThreshold: 15
+        });
+      }, 0);
+    },
     requestShowDetail() {
       // 加载完之后才能进行操作
       if (this.isWordCloudLoaded) {
