@@ -37,7 +37,10 @@ globalAxios.interceptors.response.use(
     return config;
   },
   (error) => {
-    Message.error(error.toString());
+    // 被取消时不提示信息
+    if (!axios.isCancel(error)) {
+      Message.error(error.toString());
+    }
     return Promise.resolve(error);
   }
 );
