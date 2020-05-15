@@ -5,12 +5,13 @@
  * @update 2020.05.08
  */
 
+// 6. 导入论文数据 importPaperData
 export interface PaperImportResponse {
   increasedCount: number;
 }
 
-// 接口36
-interface ConferencesAndJournalsInfo {
+// 36. 获取会议期刊列表 getConferencesAndJournalsList
+export interface ConferencesAndJournalsInfo {
   titleId: string;
   publicationTitle: string;
 }
@@ -20,12 +21,19 @@ export interface ConferencesAndJournalsInfoResponse {
   size: number;
 }
 
-// 接口37
-interface ConferencesAndJournalsProceedingsInfo {
+// 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
+interface ProceedingInfo {
   proceedingId: string;
   proceedingTitle: string;
 }
 
-export interface ConferencesAndJournalsProceedingsInfoResponse {
-  list: ConferencesAndJournalsProceedingsInfo[];
+export type ConferencesAndJournalsProceedingsInfoResponse = ProceedingInfo;
+
+// 46. 获取爬虫任务状态 getCrawlTask
+export interface CrawlTaskResponse {
+  proceedings: ProceedingInfo[]; // 爬取的论文集
+  startTime: number;
+  endTime: number;
+  isFinished: boolean;
+  paperCount: number;
 }

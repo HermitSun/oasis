@@ -77,7 +77,13 @@ let D3Pie: d3pie.ID3PieClass;
 export function createPieChart(
   selectorOrDOM: string | HTMLElement,
   data: PieChartDatum[],
-  config: PieChartConfig
+  {
+    title,
+    width,
+    height,
+    sortOrder = 'value-asc',
+    segmentClick = () => {}
+  }: PieChartConfig
 ) {
   // load d3pie here, only for the first time
   if (!D3Pie) {
@@ -91,31 +97,25 @@ export function createPieChart(
   return new D3Pie(selectorOrDOM, {
     header: {
       title: {
-        text: config.title,
+        text: title,
         fontSize: 22,
         font: 'verdana'
       }
     },
     size: {
-      canvasHeight: config.height,
-      canvasWidth: config.width,
+      canvasHeight: height,
+      canvasWidth: width,
       pieOuterRadius: '88%',
       pieInnerRadius: '50%'
     },
     data: {
-      sortOrder: config.sortOrder ? config.sortOrder : 'value-asc',
+      sortOrder,
       content: data
     },
     labels: {
-      outer: {
-        pieDistance: 32
-      },
-      inner: {
-        format: 'value'
-      },
-      mainLabel: {
-        font: 'verdana'
-      },
+      outer: { pieDistance: 32 },
+      inner: { format: 'value' },
+      mainLabel: { font: 'verdana' },
       value: {
         color: '#e1e1e1',
         font: 'verdana'
@@ -124,9 +124,7 @@ export function createPieChart(
         enabled: true,
         color: '#cccccc'
       },
-      truncation: {
-        enabled: true
-      }
+      truncation: { enabled: true }
     },
     effects: {
       pullOutSegmentOnClick: {
@@ -135,8 +133,6 @@ export function createPieChart(
         size: 8
       }
     },
-    callbacks: {
-      onClickSegment: config.segmentClick ? config.segmentClick : () => {}
-    }
+    callbacks: { onClickSegment: segmentClick }
   });
 }

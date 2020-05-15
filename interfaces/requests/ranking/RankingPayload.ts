@@ -14,3 +14,7 @@ export interface RankingAdvancedPayload {
   startYear: number;
   endYear: number;
 }
+
+export interface KeywordRankingAdvancedPayload extends RankingAdvancedPayload {
+  keyword: string;
+}

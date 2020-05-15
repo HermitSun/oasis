@@ -185,10 +185,10 @@ async function fetchData(query: AuthorPapersPayload) {
   const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
   const page = query.page ? Number(query.page) : 1;
 
-  const portraitReq = requestPortrait(authorId);
-  const papersReq = requestPapers({ authorId, page, sortKey });
-  const portraitRes = await portraitReq;
-  const papersRes = await papersReq;
+  const [portraitRes, papersRes] = await Promise.all([
+    requestPortrait(authorId),
+    requestPapers({ authorId, page, sortKey })
+  ]);
 
   const profile = {
     name: portraitRes.portrait.name,
@@ -327,12 +327,7 @@ export default Vue.extend({
       createPieChart(
         '#pie',
         this.interests
-          .map((i: { name: string; value: number }) => {
-            return {
-              label: i.name,
-              value: i.value
-            };
-          })
+          .map((i) => ({ label: i.name, value: i.value }))
           .sort((a, b) => b.value - a.value)
           .slice(0, 20),
         {

@@ -34,10 +34,10 @@ const config: Configuration = {
       }
     ]
   },
-  // router: {
-  //   middleware: ['authenticated']
-  //   base: '/oasis/'
-  // },
+  router: {
+    middleware: ['authenticated', 'cancel-pending']
+    // base: '/oasis/'
+  },
   serverMiddleware: ['~/server/index.ts'],
   /*
    ** Customize the progress-bar color

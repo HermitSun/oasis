@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+import { addPending, removePending } from '~/utils/pending';
 
 const globalConfig = {
   baseURL:
     process.env.NODE_ENV === 'production'
       ? 'https://wensun.top/api'
-      : 'http://34.102.235.205/test', // 测试
-  // : 'http://34.102.235.205/prod', // 正式
+      : 'http://34.102.235.205/prod', // 测试
+  // : 'http://34.102.235.205/test', // 正式
   // : 'http://localhost:3000/test',
   // : 'http://47.101.33.219:8081',
 
@@ -20,6 +21,8 @@ const globalAxios = axios.create(globalConfig);
 // 请求过滤器
 globalAxios.interceptors.request.use(
   (config) => {
+    removePending(config);
+    addPending(config);
     return config;
   },
   (error) => {
@@ -30,6 +33,7 @@ globalAxios.interceptors.request.use(
 // 响应过滤器
 globalAxios.interceptors.response.use(
   (config) => {
+    removePending(config);
     return config;
   },
   (error) => {

@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { Pagination, Loading, Message } from 'element-ui';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
@@ -84,11 +85,13 @@ import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
-import { sortKey } from '~/interfaces/requests/search/SearchPayload';
+import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import { PortraitAffiliationPageComp } from '~/interfaces/pages/portrait/PortraitAffiliationPageComp';
 
 async function requestPortrait(affiliation: string) {
   const res: { portrait: PortraitResponse } = {
@@ -155,20 +158,23 @@ export default Vue.extend({
     Subtitle,
     [Pagination.name]: Pagination
   },
-  mixins: [PaginationMaxSizeLimit, StartAnotherBasicSearch],
+  mixins: [AsyncLoadWordCloud, PaginationMaxSizeLimit, StartAnotherBasicSearch],
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
     const page = 1;
 
-    const portraitReq = requestPortrait(affiliation);
-    const papersReq = requestPapers({ affiliation, page, sortKey });
-    const interestsReq = requestInterests(affiliation);
-    const affiliationAuthorRankingReq = requestAuthorDetailRanking(affiliation);
-    const portraitRes = await portraitReq;
-    const papersRes = await papersReq;
-    const interestsRes = await interestsReq;
-    const affiliationAuthorRankingRes = await affiliationAuthorRankingReq;
+    const [
+      portraitRes,
+      papersRes,
+      interestsRes,
+      affiliationAuthorRankingRes
+    ] = await Promise.all([
+      requestPortrait(affiliation),
+      requestPapers({ affiliation, page, sortKey }),
+      requestInterests(affiliation),
+      requestAuthorDetailRanking(affiliation)
+    ]);
 
     const profile = {
       name: affiliation,
@@ -205,7 +211,7 @@ export default Vue.extend({
     return {
       page: 1,
       sortKey: 'recent' as sortKey
-    } as any;
+    } as PortraitAffiliationPageComp;
   },
   mounted() {
     // 本人垃圾前端
@@ -240,18 +246,8 @@ export default Vue.extend({
         createPieChart(
           '#pie',
           this.interests
-            .map((i: { name: string; value: number }) => {
-              return {
-                label: i.name,
-                value: i.value
-              };
-            })
-            .sort(
-              (
-                a: { name: string; value: number },
-                b: { name: string; value: number }
-              ) => b.value - a.value
-            )
+            .map((i) => ({ label: i.name, value: i.value }))
+            .sort((a, b) => b.value - a.value)
             .slice(0, 20),
           {
             width: getSizeById('pie').width,
@@ -293,6 +289,11 @@ export default Vue.extend({
       });
       this.papers = papersRes.papers;
       loadingInstance.close();
+    },
+    // template method pattern
+    ...mapActions('portrait', ['updateIsAffiliationWordCloudLoaded']),
+    updateWordCloudLoaded(loaded: boolean) {
+      this.updateIsAffiliationWordCloudLoaded(loaded);
     }
   }
 });

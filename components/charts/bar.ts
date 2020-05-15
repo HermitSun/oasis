@@ -25,38 +25,32 @@ export interface BarChartConfig {
     mouseOverColor: string | D3CallbackFn<BarChartDatum>;
   };
 }
-interface BarChartConfigWithDefault
-  extends Required<Omit<BarChartConfig, 'hover'>> {
-  hover: BarChartConfig['hover'];
-}
+
 export function createBarChart(
   selectorOrDOM: string | HTMLElement,
   data: BarChartDatum[],
-  options: BarChartConfig
-) {
-  // 默认值
-  const config = {
-    // barColor: (d: BarChartDatum) => 'rgb(0, 0, ' + d * 10 + ')',
-    barColor: '#2f6681',
-    barMargin: 1,
-    barHeight: (d) => d * 4,
-    tooltipThreshold: 10,
-    fontFamily: 'sans-serif',
-    fontSize: '11px',
-    fontColorInsideBar: 'white',
-    fontColorOutsideBar: 'black',
-    hover: {
+  {
+    width = 300,
+    height = 100,
+    barColor = '#2f6681',
+    barMargin = 1,
+    barHeight = (d) => d * 4,
+    tooltipThreshold = 10,
+    fontFamily = 'sans-serif',
+    fontSize = '11px',
+    fontColorInsideBar = 'white',
+    fontColorOutsideBar = 'black',
+    hover = {
       mouseOverColor: '#b5d4e3'
-    },
-    ...options
-  } as BarChartConfigWithDefault;
-
+    }
+  }: BarChartConfig
+) {
   const svg = d3
     .select(selectorOrDOM as string)
     .append('svg')
-    .attr('width', config.width)
-    .attr('height', config.height)
-    .attr('viewBox', `0,0,${config.width},${config.height}`)
+    .attr('width', width)
+    .attr('height', height)
+    .attr('viewBox', `0,0,${width},${height}`)
     .attr('preserveAspectRatio', 'xMinYMin');
 
   svg
@@ -64,31 +58,31 @@ export function createBarChart(
     .data(data)
     .enter()
     .append('rect')
-    .attr('x', (_, i) => i * (config.width / data.length))
+    .attr('x', (_, i) => i * (width / data.length))
     .attr('y', (d) => {
-      const height =
-        typeof config.barHeight === 'number'
-          ? config.barHeight
-          : typeof config.barHeight === 'string'
-          ? parseInt(config.barHeight)
-          : config.barHeight(d);
-      return config.height - height;
+      const transformedBarHeight =
+        typeof barHeight === 'number'
+          ? barHeight
+          : typeof barHeight === 'string'
+          ? parseInt(barHeight)
+          : barHeight(d);
+      return height - transformedBarHeight;
     })
-    .attr('width', config.width / data.length - config.barMargin)
+    .attr('width', width / data.length - barMargin)
     .attr('height', (d) => {
-      return typeof config.barHeight === 'number'
-        ? config.barHeight
-        : typeof config.barHeight === 'string'
-        ? parseInt(config.barHeight)
-        : config.barHeight(d);
+      return typeof barHeight === 'number'
+        ? barHeight
+        : typeof barHeight === 'string'
+        ? parseInt(barHeight)
+        : barHeight(d);
     })
     .attr('fill', (d) =>
-      typeof config.barColor === 'string' ? config.barColor : config.barColor(d)
+      typeof barColor === 'string' ? barColor : barColor(d)
     );
 
   // 如果需要hover效果
-  if (config.hover) {
-    const overColor = config.hover.mouseOverColor;
+  if (hover) {
+    const overColor = hover.mouseOverColor;
     svg
       .selectAll('rect')
       .on('mouseover', function(d) {
@@ -98,9 +92,7 @@ export function createBarChart(
       })
       .on('mouseout', function(d) {
         const color =
-          typeof config.barColor === 'string'
-            ? config.barColor
-            : config.barColor(d as number);
+          typeof barColor === 'string' ? barColor : barColor(d as number);
         d3.select(this).attr('fill', color);
       });
   }
@@ -114,31 +106,30 @@ export function createBarChart(
     .attr(
       'x',
       (_, i) =>
-        i * (config.width / data.length) +
-        (config.width / data.length - config.barMargin) / 2
+        i * (width / data.length) + (width / data.length - barMargin) / 2
     )
     .attr('y', (d) => {
-      const bias = d > config.tooltipThreshold ? 14 : -2;
-      const height =
-        typeof config.barHeight === 'number'
-          ? config.barHeight
-          : typeof config.barHeight === 'string'
-          ? parseInt(config.barHeight)
-          : config.barHeight(d);
-      return config.height - height + bias;
+      const bias = d > tooltipThreshold ? 14 : -2;
+      const transformedBarHeight =
+        typeof barHeight === 'number'
+          ? barHeight
+          : typeof barHeight === 'string'
+          ? parseInt(barHeight)
+          : barHeight(d);
+      return height - transformedBarHeight + bias;
     })
-    .attr('font-family', config.fontFamily)
+    .attr('font-family', fontFamily)
     .attr('font-size', (d) =>
-      typeof config.fontSize === 'string' ? config.fontSize : config.fontSize(d)
+      typeof fontSize === 'string' ? fontSize : fontSize(d)
     )
     .attr('fill', (d) =>
-      d > config.tooltipThreshold
-        ? typeof config.fontColorInsideBar === 'string'
-          ? config.fontColorInsideBar
-          : config.fontColorInsideBar(d)
-        : typeof config.fontColorOutsideBar === 'string'
-        ? config.fontColorOutsideBar
-        : config.fontColorOutsideBar(d)
+      d > tooltipThreshold
+        ? typeof fontColorInsideBar === 'string'
+          ? fontColorInsideBar
+          : fontColorInsideBar(d)
+        : typeof fontColorOutsideBar === 'string'
+        ? fontColorOutsideBar
+        : fontColorOutsideBar(d)
     )
     .attr('text-anchor', 'middle');
 }
