@@ -25,6 +25,10 @@ const load = Vue.extend({
       this.updateWordCloudLoaded(true);
     });
   },
+  // improve robust
+  beforeDestroy() {
+    this.updateWordCloudLoaded(false);
+  },
   methods: {
     // placeholder
     updateWordCloudLoaded(loaded: boolean) {

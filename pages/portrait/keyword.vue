@@ -58,6 +58,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { Pagination, Loading, Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import {
@@ -77,14 +78,15 @@ import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import authorAdvancedRankingMockData from '~/server/mock/ranking/author/authorAdvancedRankingMockData';
 import affiliationAdvancedRankingMockData from '~/server/mock/ranking/affiliation/affiliationAdvancedRankingMockData';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 async function requestPortrait(keyword: string) {
   const res: { portrait: PortraitResponse } = {
@@ -164,7 +166,7 @@ export default Vue.extend({
     AffiliationAdvancedComp,
     [Pagination.name]: Pagination
   },
-  mixins: [PaginationMaxSizeLimit, StartAnotherBasicSearch],
+  mixins: [AsyncLoadWordCloud, PaginationMaxSizeLimit, StartAnotherBasicSearch],
   async asyncData({ query }) {
     const keyword = query.keyword as string;
     const sortKey = 'recent';
@@ -269,6 +271,15 @@ export default Vue.extend({
         this.papers = res.papers;
         loadingInstance.close();
       });
+    },
+    // template method pattern
+    ...mapActions('portrait', [
+      'updateIsAffiliationWordCloudLoaded',
+      'updateIsKeywordWordCloudLoaded'
+    ]),
+    updateWordCloudLoaded(loaded: boolean) {
+      this.updateIsAffiliationWordCloudLoaded(loaded);
+      this.updateIsKeywordWordCloudLoaded(loaded);
     }
   }
 });

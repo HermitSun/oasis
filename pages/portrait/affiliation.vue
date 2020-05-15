@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { Pagination, Loading, Message } from 'element-ui';
 import Subtitle from '../../components/public/Subtitle.vue';
 import {
@@ -86,6 +87,7 @@ import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
+import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
@@ -156,7 +158,7 @@ export default Vue.extend({
     Subtitle,
     [Pagination.name]: Pagination
   },
-  mixins: [PaginationMaxSizeLimit, StartAnotherBasicSearch],
+  mixins: [AsyncLoadWordCloud, PaginationMaxSizeLimit, StartAnotherBasicSearch],
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
@@ -287,6 +289,11 @@ export default Vue.extend({
       });
       this.papers = papersRes.papers;
       loadingInstance.close();
+    },
+    // template method pattern
+    ...mapActions('portrait', ['updateIsAffiliationWordCloudLoaded']),
+    updateWordCloudLoaded(loaded: boolean) {
+      this.updateIsAffiliationWordCloudLoaded(loaded);
     }
   }
 });

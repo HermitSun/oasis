@@ -125,10 +125,24 @@ export default Vue.extend({
     };
   },
   // 用来处理异步脚本的加载效果
+  // 此处会与store紧耦合
   computed: {
-    ...mapGetters('ranking', ['isAuthorWordCloudLoaded']),
+    ...mapGetters('ranking', {
+      isRankingAffiliationWordCloudLoaded: 'isAuthorWordCloudLoaded'
+    }),
+    ...mapGetters('portrait', {
+      isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
+      isPortraitKeywordWordCloudLoaded: 'isKeywordWordCloudLoaded'
+    }),
+    isWordCloudLoaded(): boolean {
+      return (
+        this.isRankingAffiliationWordCloudLoaded ||
+        this.isPortraitAffiliationWordCloudLoaded ||
+        this.isPortraitKeywordWordCloudLoaded
+      );
+    },
     dropdownDisabledStyle(): { [key: string]: string | number } {
-      return this.isAuthorWordCloudLoaded
+      return this.isWordCloudLoaded
         ? {}
         : { opacity: 0.6, cursor: 'not-allowed' };
     }
@@ -145,7 +159,7 @@ export default Vue.extend({
   methods: {
     requestShowDetail() {
       // 加载完之后才能进行操作
-      if (this.isAuthorWordCloudLoaded) {
+      if (this.isWordCloudLoaded) {
         this.showDetail = !this.showDetail;
         if (Object.keys(this.cachedRankingDetail).length === 0) {
           this.requestRankingDetail();
