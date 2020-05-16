@@ -101,14 +101,18 @@ export default Vue.extend({
   // 用来处理异步脚本的加载效果
   computed: {
     ...mapGetters('ranking', {
-      isRankingAffiliationWordCloudLoaded: 'isAuthorWordCloudLoaded'
+      isRankingAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
+      isRankingAuthorWordCloudLoaded: 'isAuthorWordCloudLoaded'
     }),
     ...mapGetters('portrait', {
+      isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isPortraitKeywordWordCloudLoaded: 'isKeywordWordCloudLoaded'
     }),
     isWordCloudLoaded(): boolean {
       return (
         this.isRankingAffiliationWordCloudLoaded ||
+        this.isRankingAuthorWordCloudLoaded ||
+        this.isPortraitAffiliationWordCloudLoaded ||
         this.isPortraitKeywordWordCloudLoaded
       );
     },
@@ -119,6 +123,18 @@ export default Vue.extend({
     }
   },
   methods: {
+    initChart() {
+      setTimeout(() => {
+        const selector =
+          '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
+        createBarChart(selector, this.rankingDetail.publicationTrend, {
+          width: 500,
+          height: 400,
+          barMargin: 20,
+          tooltipThreshold: 15
+        });
+      }, 0);
+    },
     requestShowDetail() {
       // 加载完之后才能进行操作
       if (this.isWordCloudLoaded) {
@@ -147,14 +163,7 @@ export default Vue.extend({
         this.rankingDetail = rankingDetailRes.data;
         this.cachedRankingDetail = this.rankingDetail;
 
-        const selector =
-          '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
-        createBarChart(selector, this.rankingDetail.publicationTrend, {
-          width: 500,
-          height: 400,
-          barMargin: 20,
-          tooltipThreshold: 15
-        });
+        this.initChart();
         // TODO 控制word-cloud高度
         // const elementWordCloud = document.getElementById('wordCloud') as any;
         // const elementPublicationTrend = document.getElementById(

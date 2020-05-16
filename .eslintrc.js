@@ -4,6 +4,9 @@ module.exports = {
     browser: true,
     node: true
   },
+  globals: {
+    'echarts': 'readonly'
+  },
   // parserOptions: {
   //   parser: 'babel-eslint'
   // },

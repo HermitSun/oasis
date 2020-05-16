@@ -17,3 +17,15 @@ export interface KeywordAdvancedRankingResponse {
     link: string;
   }[]; // 根据citation数 5个
 }
+
+export interface KeywordDetailRankingResponse {
+  publicationTrend: number[]; // 返回最近十年每年的发表论文数
+  mostInfluentialPapers: [
+    {
+      publicationYear: number;
+      title: string;
+      publicationName: string;
+      link: string;
+    }
+  ]; // 根据citation数 5个
+}

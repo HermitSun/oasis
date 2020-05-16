@@ -10,6 +10,7 @@
               src="~/assets/icon/icon-arrow-right.svg"
               width="30"
               alt="icon-arrow-right"
+              :style="dropdownDisabledStyle"
               @click="requestShowDetail"
             />
             <img
@@ -55,7 +56,7 @@
           </div>
           <div class="content">
             <div
-              v-for="(paper, i) in rank.mostInfluentialPapers"
+              v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
               :key="i"
               style="margin-bottom: 10px"
             >
@@ -70,8 +71,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import PaperInfoComp from '../PaperInfoComp.vue';
+import { getKeywordDetailRanking } from '~/api';
+import { KeywordDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
 import { createBarChart } from '@/components/charts/bar';
+
 export default Vue.extend({
   name: 'KeywordDetailComp',
   components: {
@@ -79,6 +84,9 @@ export default Vue.extend({
   },
   props: {
     rank: {
+      /**
+       * type: KeywordAdvancedRankingResponse
+       */
       type: Object,
       default: () => ({})
     },
@@ -90,20 +98,53 @@ export default Vue.extend({
   data() {
     return {
       showDetail: false,
+      showWordCloud: false,
+      rankingDetail: {} as KeywordDetailRankingResponse,
+      cachedRankingDetail: {} as KeywordDetailRankingResponse,
       isLoading: false
     };
   },
-  mounted() {
-    const selector = '#' + this.rank.keyword.replace(/[^a-zA-Z]/g, '');
-    createBarChart(selector, this.rank.publicationTrend, {
-      width: 150,
-      height: 80,
-      tooltipThreshold: 15
-    });
+  computed: {
+    ...mapGetters('ranking', {
+      isRankingWordCloudWordCloudLoaded: 'isKeywordWordCloudLoaded'
+    }),
+    isWordCloudLoaded(): boolean {
+      return this.isRankingWordCloudWordCloudLoaded;
+    },
+    dropdownDisabledStyle(): { [key: string]: string | number } {
+      return this.isWordCloudLoaded
+        ? {}
+        : { opacity: 0.6, cursor: 'not-allowed' };
+    }
   },
   methods: {
+    initChart() {
+      setTimeout(() => {
+        const selector = '#' + this.rank.keyword.replace(/[^a-zA-Z]/g, '');
+        // 这一块目前还没看到有统一抽取的必要性，也许后面会需要抽出来做一个单独的初始化图表的函数
+        const chartWidth = 500;
+        const chartHeight = 400;
+        const maxHeight = Math.max(...this.rankingDetail.publicationTrend);
+        createBarChart(selector, this.rankingDetail.publicationTrend, {
+          width: chartWidth,
+          height: chartHeight,
+          barHeight: (d: number) =>
+            maxHeight === 0 ? 0 : (d / maxHeight) * (chartHeight - 20),
+          barMargin: 20,
+          tooltipThreshold: maxHeight
+        });
+      }, 0);
+    },
     requestShowDetail() {
-      this.showDetail = !this.showDetail;
+      // 加载完之后才能进行操作
+      if (this.isWordCloudLoaded) {
+        this.showDetail = !this.showDetail;
+        if (Object.keys(this.cachedRankingDetail).length === 0) {
+          this.requestRankingDetail();
+        } else {
+          this.rankingDetail = this.cachedRankingDetail;
+        }
+      }
     },
     jumpToPortrait() {
       this.$router.push({
@@ -112,6 +153,24 @@ export default Vue.extend({
           keyword: this.rank.keyword
         }
       });
+    },
+    async requestRankingDetail() {
+      this.isLoading = true;
+      try {
+        console.log(this.rank);
+        const rankingDetailRes = await getKeywordDetailRanking(
+          this.rank.keyword
+        );
+        this.rankingDetail = rankingDetailRes.data;
+        this.cachedRankingDetail = this.rankingDetail;
+
+        this.initChart();
+
+        this.showWordCloud = true;
+        this.isLoading = false;
+      } catch (e) {
+        this.$message.error(e.toString());
+      }
     }
   }
 });

@@ -13,11 +13,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 import { getKeywordAdvancedRanking } from '~/api';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
 import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 export default Vue.extend({
@@ -27,7 +29,7 @@ export default Vue.extend({
     AdvancedRankingSubtitle,
     KeywordAdvancedComp
   },
-  mixins: [StartAnotherBasicSearch],
+  mixins: [AsyncLoadWordCloud, StartAnotherBasicSearch],
   async asyncData() {
     // TODO 添加可选择的sortKey和year
     const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
@@ -35,14 +37,23 @@ export default Vue.extend({
       startYear: 2019,
       endYear: 2019
     });
+
     return {
-      rankings: keywordAdvancedRankingRes.data
+      rankings:
+        keywordAdvancedRankingRes && keywordAdvancedRankingRes.data
+          ? keywordAdvancedRankingRes.data
+          : []
     };
   },
   data() {
     return {
       rankings: [] as KeywordAdvancedRankingResponse[]
     };
+  },
+  methods: {
+    ...mapActions('ranking', {
+      updateWordCloudLoaded: 'updateIsKeywordWordCloudLoaded'
+    })
   }
 });
 </script>
