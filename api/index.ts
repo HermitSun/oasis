@@ -48,7 +48,10 @@ import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorRe
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import { ForceChartData } from '~/components/charts/force';
-import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+import {
+  KeywordAdvancedRankingResponse,
+  KeywordDetailRankingResponse
+} from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -544,6 +547,16 @@ export async function execCrawlTask(
       callback: 'start'
     },
     spider_name: 'conferences'
+  });
+  return data;
+}
+
+// 48. 根据研究方向获取排名详情
+export async function getKeywordDetailRanking(
+  keyword: string
+): Promise<BasicResponse<KeywordDetailRankingResponse>> {
+  const { data } = await axios.get('/rank/detail/keyword', {
+    params: { keyword }
   });
   return data;
 }
