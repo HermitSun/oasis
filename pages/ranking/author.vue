@@ -10,8 +10,10 @@ import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/ad
 
 const cache = {
   data: [] as AuthorAdvancedRankingResponse[],
-  cached: false
+  cached: false,
+  expires: 300 * 1000 // 300s过期
 };
+let cacheTimer: NodeJS.Timeout;
 
 export default Vue.extend({
   name: 'Author',
@@ -34,6 +36,15 @@ export default Vue.extend({
     return {
       rankings: cache.data
     };
+  },
+  activated() {
+    clearTimeout(cacheTimer);
+  },
+  deactivated() {
+    cacheTimer = setTimeout(() => {
+      cache.data = [];
+      cache.cached = false;
+    }, cache.expires);
   }
 });
 </script>
