@@ -1,35 +1,16 @@
 <template>
-  <div>
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
-    <div class="advanced-ranking-page">
-      <AdvancedRankingSubtitle title="🏆 OASIS RANKING" subject="Keyword" />
-      <KeywordAdvancedComp :rankings="rankings" />
-    </div>
-  </div>
+  <KeywordAdvancedComp :rankings="rankings" />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
-import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 import { getKeywordAdvancedRanking } from '~/api';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
 import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
-import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 export default Vue.extend({
   name: 'Keyword',
-  components: {
-    SearchBarComp,
-    AdvancedRankingSubtitle,
-    KeywordAdvancedComp
-  },
-  mixins: [AsyncLoadWordCloud, StartAnotherBasicSearch],
+  components: { KeywordAdvancedComp },
   async asyncData() {
     // TODO 添加可选择的sortKey和year
     const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
@@ -49,11 +30,6 @@ export default Vue.extend({
     return {
       rankings: [] as KeywordAdvancedRankingResponse[]
     };
-  },
-  methods: {
-    ...mapActions('ranking', {
-      updateWordCloudLoaded: 'updateIsKeywordWordCloudLoaded'
-    })
   }
 });
 </script>
