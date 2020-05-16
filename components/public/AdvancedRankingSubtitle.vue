@@ -4,9 +4,12 @@
       {{ title }}
       <span style="float: right">
         <span v-for="(item, index) in subjects" :key="index">
+          <!--忽略大小写进行比较-->
           <span
             :class="
-              item === subject ? 'selected_subject' : 'not_selected_subject'
+              item.toLowerCase() === subject.toLowerCase()
+                ? 'selected_subject'
+                : 'not_selected_subject'
             "
             class="subject"
             @click="jumpToRanking(item)"

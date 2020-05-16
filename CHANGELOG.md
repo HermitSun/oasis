@@ -1,3 +1,13 @@
+# 3.1.1 (2020-05-16)
+
+### Code Refactoring
+
+- 对排名页进行重构
+
+### Performance Improvements
+
+- 对排名页进行缓存
+
 # 3.1 (2020-05-16)
 
 ### Bug Fixes
