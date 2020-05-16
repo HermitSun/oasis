@@ -9,7 +9,7 @@
         title="🏆 OASIS RANKING"
         :subject="currentSubject"
       />
-      <nuxt-child />
+      <nuxt-child keep-alive />
     </div>
   </div>
 </template>

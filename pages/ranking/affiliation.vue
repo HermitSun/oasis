@@ -10,15 +10,29 @@ import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/A
 export default Vue.extend({
   name: 'Affiliation',
   components: { AffiliationAdvancedComp },
-  async asyncData() {
+  async asyncData({ store }) {
+    // get load status
+    const isPageLoaded = store.getters['ranking/isAffiliationPageLoaded'];
+    if (isPageLoaded) {
+      return;
+    }
+
     // TODO 添加可选择的sortKey和year
     const affiliationAdvancedRankingRes = await getAffiliationAdvancedRanking({
       sortKey: 'acceptanceCount',
       startYear: 2019,
       endYear: 2019
     });
+    const affiliationAdvancedRankingData =
+      affiliationAdvancedRankingRes && affiliationAdvancedRankingRes.data
+        ? affiliationAdvancedRankingRes.data
+        : [];
+
+    // mark as loaded
+    store.dispatch('ranking/updateIsAffiliationPageLoaded', true);
+
     return {
-      rankings: affiliationAdvancedRankingRes.data
+      rankings: affiliationAdvancedRankingData
     };
   }
 });

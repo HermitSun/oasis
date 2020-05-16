@@ -10,15 +10,29 @@ import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvan
 export default Vue.extend({
   name: 'Author',
   components: { AuthorAdvancedComp },
-  async asyncData() {
+  async asyncData({ store }) {
+    // get load status
+    const isPageLoaded = store.getters['ranking/isAuthorPageLoaded'];
+    if (isPageLoaded) {
+      return;
+    }
+
     // TODO 添加可选择的sortKey和year
     const authorAdvancedRankingRes = await getAuthorAdvancedRanking({
       sortKey: 'acceptanceCount',
       startYear: 2019,
       endYear: 2019
     });
+    const authorAdvancedRankingData =
+      authorAdvancedRankingRes && authorAdvancedRankingRes.data
+        ? authorAdvancedRankingRes.data
+        : [];
+
+    // mark as loaded
+    store.dispatch('ranking/updateIsAuthorPageLoaded', true);
+
     return {
-      rankings: authorAdvancedRankingRes.data
+      rankings: authorAdvancedRankingData
     };
   }
 });
