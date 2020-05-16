@@ -6,33 +6,33 @@
 import Vue from 'vue';
 import { getAuthorAdvancedRanking } from '~/api';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
+import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
+
+const cache = {
+  data: [] as AuthorAdvancedRankingResponse[],
+  cached: false
+};
 
 export default Vue.extend({
   name: 'Author',
   components: { AuthorAdvancedComp },
-  async asyncData({ store }) {
-    // get load status
-    const isPageLoaded = store.getters['ranking/isAuthorPageLoaded'];
-    if (isPageLoaded) {
-      return;
+  async asyncData() {
+    if (!cache.cached) {
+      // TODO 添加可选择的sortKey和year
+      const authorAdvancedRankingRes = await getAuthorAdvancedRanking({
+        sortKey: 'acceptanceCount',
+        startYear: 2019,
+        endYear: 2019
+      });
+      cache.data =
+        authorAdvancedRankingRes && authorAdvancedRankingRes.data
+          ? authorAdvancedRankingRes.data
+          : [];
+      cache.cached = true;
     }
 
-    // TODO 添加可选择的sortKey和year
-    const authorAdvancedRankingRes = await getAuthorAdvancedRanking({
-      sortKey: 'acceptanceCount',
-      startYear: 2019,
-      endYear: 2019
-    });
-    const authorAdvancedRankingData =
-      authorAdvancedRankingRes && authorAdvancedRankingRes.data
-        ? authorAdvancedRankingRes.data
-        : [];
-
-    // mark as loaded
-    store.dispatch('ranking/updateIsAuthorPageLoaded', true);
-
     return {
-      rankings: authorAdvancedRankingData
+      rankings: cache.data
     };
   }
 });
