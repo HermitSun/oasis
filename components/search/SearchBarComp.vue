@@ -28,17 +28,31 @@
       v-if="showAdvancedSearch"
       @close="showAdvancedSearch = false"
     />
+    <!-- 命令搜索-->
+    <button
+      class="mobile-hidden basic-search__button"
+      style="margin-left: 20px"
+      @click="showCommandSearch = true"
+    >
+      Command Search
+    </button>
+    <CommandSearchComp
+      v-if="showCommandSearch"
+      @close="showCommandSearch = false"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
+import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 
 export default Vue.extend({
   name: 'SearchBar',
   components: {
-    AdvancedSearchComp
+    AdvancedSearchComp,
+    CommandSearchComp
   },
   model: {
     prop: 'keyword',
@@ -53,7 +67,8 @@ export default Vue.extend({
   data() {
     return {
       searchContent: this.keyword,
-      showAdvancedSearch: false
+      showAdvancedSearch: false,
+      showCommandSearch: false
     };
   },
   watch: {

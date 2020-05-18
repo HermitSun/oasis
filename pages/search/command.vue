@@ -199,6 +199,7 @@ export default Vue.extend({
       this.sortKey = newSortKey;
       this.showSpecifiedPage(this.query, 1, newSortKey);
     },
+
     // 开始另一次搜索（关键字不同）
     // 默认为普通搜索，此时相当于返回basic search页面
     startAnotherBasicSearch(keyword: string) {

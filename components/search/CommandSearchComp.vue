@@ -17,9 +17,11 @@
       <!--搜索框-->
       <div class="advanced-search__mask-content mask-box-content">
         <!--搜索-->
-        <input v-model="query" />
-        Operators need to be in all caps - i.e. AND/OR/NOT. There is a maximum
-        of 20 search terms.
+        <textarea v-model="query"> </textarea>
+        <div style="margin-top: 20px;line-height: 25px">
+          Operators need to be in all caps - i.e. AND/OR/NOT. <br />There is a
+          maximum of 20 search terms.
+        </div>
         <button
           class="advanced-search__button"
           style="width:50px;float: right"
