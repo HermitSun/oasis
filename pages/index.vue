@@ -22,13 +22,7 @@
             alt="icon-search"
           />
         </button>
-        <button
-          class="basic-search__button mobile-hidden"
-          @click="sendBasicSearch"
-        >
-          OASIS Search
-        </button>
-        <div style="width: 15px"></div>
+
         <button
           class="advanced-search__button"
           @click="showAdvancedSearch = true"
@@ -38,6 +32,17 @@
         <AdvancedSearchComp
           v-if="showAdvancedSearch"
           @close="showAdvancedSearch = false"
+        />
+        <div style="width: 15px"></div>
+        <button
+          class="basic-search__button mobile-hidden"
+          @click="showCommandSearch = true"
+        >
+          Command Search
+        </button>
+        <CommandSearchComp
+          v-if="showCommandSearch"
+          @close="showCommandSearch = false"
         />
       </div>
     </div>
@@ -91,6 +96,7 @@ import Subtitle from '~/components/public/Subtitle.vue';
 import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
 import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
 import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
+import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -214,6 +220,7 @@ export default Vue.extend({
   components: {
     AbstractComp,
     AdvancedSearchComp,
+    CommandSearchComp,
     AuthorBasicRanking,
     AffiliationBasicRanking,
     ConferenceBasicRanking,
@@ -251,7 +258,8 @@ export default Vue.extend({
   data() {
     return {
       keyword: '',
-      showAdvancedSearch: false
+      showAdvancedSearch: false,
+      showCommandSearch: false
     } as HomePageComp;
   },
   methods: {
@@ -287,10 +295,12 @@ export default Vue.extend({
   @media @max-mobile-width {
     padding-bottom: 20vh;
   }
+
   .homepage-header__logo {
     .pc-width__mobile(30vw);
     .mobile-width(70vw);
   }
+
   .homepage-header__input {
     .mobile-width(90vw);
   }

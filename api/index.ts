@@ -62,6 +62,7 @@ export async function basicSearch(
   });
   return data;
 }
+
 // 1.1 二次搜索（模式：关键词分词，其他精确匹配）
 export async function basicFilterSearch(
   args: FilterSearchPayload
@@ -447,6 +448,17 @@ export async function mergeAuthorInfo(
   return data;
 }
 
+// 35. 命令搜索
+export async function commandSearch(
+  query: string,
+  page: number
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/search/command', {
+    params: { query, page }
+  });
+  return data;
+}
+
 // 36. 获取会议期刊列表 getConferencesAndJournalsList
 export async function getConferencesAndJournalsList(
   keyword: string = '',
@@ -498,7 +510,7 @@ export async function getAffiliationDetailRankingByKeyword(
   return data;
 }
 
-// 41. 合并关键词信息 mergeKeywords
+// 42. 合并关键词信息 mergeKeywords
 export async function mergeKeywords(
   src: string[],
   dest: string
@@ -506,6 +518,13 @@ export async function mergeKeywords(
   const { data } = await axios.put('/info/keywords', { src, dest });
   return data;
 }
+
+// 43. 查看活跃人才库
+// export async function getActiveTalentsBase()
+//   : Promise<BasicResponse> {
+//   const { data } = await axios.put('/info/keywords');
+//   return data;
+// }
 
 // 46. 获取爬虫任务状态 getCrawlTask
 // 这里的实现非常dirty，需要留意可能存在的bug

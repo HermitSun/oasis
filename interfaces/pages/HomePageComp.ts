@@ -11,6 +11,7 @@ import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic
 export interface HomePageComp {
   keyword: string;
   showAdvancedSearch: boolean;
+  showCommandSearch: boolean;
   abstractResponse: ActivePaperAbstractResponse[];
   affiliationRanking: BasicRankingResponse[];
   authorRanking: AuthorBasicRankingResponse[];

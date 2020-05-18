@@ -26,9 +26,7 @@
               maxlength="33"
               aria-label="advanced-search-keyword"
             />
-            <div class="error">
-              {{ getInputLengthError(keyword) }}
-            </div>
+            <div class="error"></div>
           </div>
         </div>
         <!--学者姓名-->
@@ -41,9 +39,7 @@
               maxlength="33"
               aria-label="advanced-search-author"
             />
-            <div class="error">
-              {{ getInputLengthError(author) }}
-            </div>
+            <div class="error"></div>
           </div>
         </div>
         <!--机构名称-->
@@ -56,9 +52,7 @@
               maxlength="33"
               aria-label="advanced-search-affiliation"
             />
-            <div class="error">
-              {{ getInputLengthError(affiliation) }}
-            </div>
+            <div class="error"></div>
           </div>
         </div>
         <!--出版位置-->
