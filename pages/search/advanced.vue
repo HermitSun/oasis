@@ -80,6 +80,7 @@ import {
 } from '~/interfaces/requests/search/SearchPayload';
 import { AdvancedSearchPageComp } from '~/interfaces/pages/search/AdvancedSearchPageComp';
 import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
+import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
 
 const defaultSortKey = 'related';
 
@@ -89,6 +90,7 @@ export default Vue.extend({
     SearchBarComp,
     SearchResComp,
     SearchResHeaderComp,
+    SearchSortKeyComp,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     [Option.name]: Option,

@@ -4,6 +4,7 @@ import importBus from '~/components/manage/bus';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
+  CommandSearchPayload,
   FilterSearchPayload
 } from '~/interfaces/requests/search/SearchPayload';
 import { BasicResponse } from '~/interfaces/responses/BasicResponse';
@@ -450,11 +451,10 @@ export async function mergeAuthorInfo(
 
 // 35. 命令搜索
 export async function commandSearch(
-  query: string,
-  page: number
+  args: CommandSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
   const { data } = await axios.get('/search/command', {
-    params: { query, page }
+    params: args
   });
   return data;
 }
