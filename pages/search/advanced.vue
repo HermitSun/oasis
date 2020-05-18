@@ -9,15 +9,7 @@
     <div v-loading="isLoading" class="searchPage-content">
       <!--About 3190 Results-->
       <div style="margin: 10px 0">
-        <span class="searchPage-content__hint-text" style="margin-left:10px">
-          About
-        </span>
-        <span class="searchPage-content__result-text" style="margin-left:5px">
-          {{ resultCount }}
-        </span>
-        <span class="searchPage-content__hint-text" style="margin-left:5px">
-          Results
-        </span>
+        <SearchResHeaderComp :result-count="resultCount" />
       </div>
       <!--搜索结果+过滤条件-->
       <div class="flex-left-left-row">
@@ -27,30 +19,7 @@
           style="text-align: left; width: 100%"
         >
           <!--TODO 优化样式-->
-          <template>
-            <div class="flex-space-between">
-              <span
-                style="margin-right: 10px"
-                class="searchPage-content__sub-hint"
-                >Papers</span
-              >
-              <span style="float: right" class="searchPage-content__sub-hint">
-                Sort By
-                <el-select
-                  v-model="sortKey"
-                  size="mini"
-                  @change="changeSortKey"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </span>
-            </div>
-          </template>
+          <SearchSortKeyComp :sort-key="sortKey" />
           <!--展示搜索内容-->
           <p
             v-if="searchResponse.length === 0"
@@ -106,8 +75,8 @@ import {
   AdvancedSearchPayload,
   sortKey
 } from '~/interfaces/requests/search/SearchPayload';
-import searchSortKeyOptions from '~/components/search/SearchSortKeyOptions';
 import { AdvancedSearchPageComp } from '~/interfaces/pages/search/AdvancedSearchPageComp';
+import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
 
 const defaultSortKey = 'related';
 
@@ -116,6 +85,7 @@ export default Vue.extend({
   components: {
     SearchBarComp,
     SearchResComp,
+    SearchResHeaderComp,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     [Option.name]: Option,
@@ -148,9 +118,7 @@ export default Vue.extend({
     return {
       // common
       isLoading: false, // 是否正在加载
-      showAdvancedSearch: false,
-      // sort
-      options: searchSortKeyOptions
+      showAdvancedSearch: false
     } as AdvancedSearchPageComp;
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染

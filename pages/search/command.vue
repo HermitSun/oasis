@@ -117,7 +117,7 @@ async function requestBasicSearchFilterCondition(keyword: string) {
 const defaultSortKey: sortKey = 'related';
 
 export default Vue.extend({
-  name: 'SearchBasic',
+  name: 'SearchCommand',
   components: {
     SearchBarComp,
     SearchFilterComp,
