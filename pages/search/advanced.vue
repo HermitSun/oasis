@@ -19,7 +19,10 @@
           style="text-align: left; width: 100%"
         >
           <!--TODO 优化样式-->
-          <SearchSortKeyComp :sort-key="sortKey" />
+          <SearchSortKeyComp
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
           <!--展示搜索内容-->
           <p
             v-if="searchResponse.length === 0"
@@ -242,7 +245,8 @@ export default Vue.extend({
     // 切换sortKey
     // 切换后重置日期
     // @see issue #35[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
-    changeSortKey(sortKey: sortKey) {
+    changeSortKey(newSortKey: sortKey) {
+      this.sortKey = newSortKey;
       this.showSpecifiedPage(
         this.keyword,
         this.author,
@@ -252,7 +256,7 @@ export default Vue.extend({
         '1963',
         new Date().getFullYear().toString(),
         '1',
-        sortKey
+        newSortKey
       );
     },
     // 开始另一次搜索（关键字不同）

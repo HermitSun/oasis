@@ -5,7 +5,7 @@
     >
     <span style="float: right" class="searchPage-content__sub-hint">
       Sort By
-      <el-select v-model="sortKey" size="mini" @change="changeSortKey">
+      <el-select v-model="newSortKey" size="mini" @change="sendNewSortKey">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -42,7 +42,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    changeSortKey() {
+    sendNewSortKey() {
       this.$emit('changeSortKey', this.newSortKey);
     }
   }
