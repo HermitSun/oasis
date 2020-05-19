@@ -64,7 +64,7 @@
         </el-button>
       </el-timeline-item>
       <!--正在运行的导入任务-->
-      <el-timeline-item timestamp="正在运行" placement="top" type="primary">
+      <el-timeline-item timestamp="已有任务" placement="top" type="primary">
         <ImportProgressBar :tasks="runningTasks" />
       </el-timeline-item>
     </el-timeline>
@@ -101,7 +101,7 @@ import {
   getConferencesAndJournalsList,
   getConferencesAndJournalsProceedings,
   getCrawlTask
-} from '~/api';
+} from '~/api/manage';
 import {
   ConferencesAndJournalsInfo,
   ConferencesAndJournalsProceedingsInfoResponse,
@@ -224,10 +224,17 @@ export default Vue.extend({
         try {
           const tasksRes = await getCrawlTask();
           const tasks = tasksRes && tasksRes.data ? tasksRes.data : [];
-          this.runningTasks = tasks.map((task) => ({
-            ...task,
-            percentage: (task.endTime - task.startTime) / 100
-          }));
+          this.runningTasks = tasks.map((task) => {
+            const currentPercentage = task.isFinished
+              ? 100
+              : Number(
+                  ((task.paperCount / task.totalPaperNum) * 100).toFixed(2)
+                );
+            return {
+              ...task,
+              percentage: currentPercentage
+            };
+          });
         } catch (e) {
           console.log(e.toString());
         }
