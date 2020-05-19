@@ -80,7 +80,7 @@ import {
 } from '~/interfaces/requests/search/SearchPayload';
 import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
 import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
-import { CommandSearchPageComp } from '~/interfaces/pages/search/CommandSearchPageComp';
+// import { CommandSearchPageComp } from '~/interfaces/pages/search/CommandSearchPageComp';
 
 const defaultSortKey = 'related';
 
@@ -102,9 +102,9 @@ export default Vue.extend({
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
     // 增加默认值，相当于静默失败，避免500
-    const searchRes = await commandSearch({
+    const searchRes = await commandSearch(({
       ...query
-    } as CommandSearchPayload);
+    } as unknown) as CommandSearchPayload);
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
 
@@ -122,7 +122,7 @@ export default Vue.extend({
       // common
       isLoading: false, // 是否正在加载
       showCommandSearch: false
-    } as CommandSearchPageComp;
+    } as any;
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
   // 在SSR时路由是非响应的，需要手动watch
@@ -132,7 +132,7 @@ export default Vue.extend({
         // 手动更新路由
         this.query = query.query;
         this.page = Number(query.page);
-        this.sortKey = query.sortKey;
+        this.sortKey = query.sortKey as sortKey;
         // 然后进行搜索
         this.doSearch();
       }
@@ -182,11 +182,11 @@ export default Vue.extend({
       this.showSpecifiedPage(this.query, page.toString(), this.sortKey);
     },
     // 跳转到指定页面
-    showSpecifiedPage(query, page, sortKey: sortKey) {
+    showSpecifiedPage(query: any, page: string, sortKey: sortKey) {
       this.$router.push({
         path: '/search/command',
         query: {
-          query,
+          ...query,
           page,
           sortKey
         }
