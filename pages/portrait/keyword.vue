@@ -1,51 +1,53 @@
 <template>
-  <div class="portrait">
-    <div class="profile-module">
-      <PortraitProfileComp id="portrait" :profile="profile" />
-      <div class="module">
-        <Subtitle title="📉 Citation Trend" />
-        <div id="citation-bar" class="content"></div>
-      </div>
-      <div class="module">
-        <Subtitle title="📈 Publication Trends" />
-        <div id="publication-bar" class="content"></div>
-      </div>
-    </div>
-    <div class="keyword-main">
-      <div class="keyword-main__authors portrait-module">
-        <Subtitle title="🏆 Top Authors" />
-        <AuthorAdvancedComp :rankings="authorRanking" />
-      </div>
-      <div class="keyword-main__affiliations portrait-module">
-        <Subtitle title="🏆 Top Affiliations" />
-        <AffiliationAdvancedComp :rankings="affiliationRanking" />
-      </div>
-    </div>
-    <div class="portrait-module">
-      <PapersSubtitle
-        title="📝 All Papers"
-        :sort-key="sortKey"
-        @changeSortKey="changeSortKey"
-      />
-      <div id="papers">
-        <div
-          v-for="paper in papers"
-          :key="paper.id"
-          style="margin-bottom: 20px"
-        >
-          <PaperInfoComp :paper="paper" />
+  <div v-if="showPortrait" class="portrait-wrapper">
+    <div class="portrait">
+      <div class="profile-module">
+        <PortraitProfileComp id="portrait" :profile="profile" />
+        <div class="module">
+          <Subtitle title="📉 Citation Trend" />
+          <div id="citation-bar" class="content"></div>
+        </div>
+        <div class="module">
+          <Subtitle title="📈 Publication Trends" />
+          <div id="publication-bar" class="content"></div>
         </div>
       </div>
-      <el-pagination
-        layout="prev, pager, next"
-        :current-page="page"
-        :total="totalRecords"
-        :pager-count="pagerSize"
-        hide-on-single-page
-        small
-        style="text-align: center; margin-bottom: 10px"
-        @current-change="showNextPage"
-      />
+      <div class="keyword-main">
+        <div class="keyword-main__authors portrait-module">
+          <Subtitle title="🏆 Top Authors" />
+          <AuthorAdvancedComp :rankings="authorRanking" />
+        </div>
+        <div class="keyword-main__affiliations portrait-module">
+          <Subtitle title="🏆 Top Affiliations" />
+          <AffiliationAdvancedComp :rankings="affiliationRanking" />
+        </div>
+      </div>
+      <div class="portrait-module">
+        <PapersSubtitle
+          title="📝 All Papers"
+          :sort-key="sortKey"
+          @changeSortKey="changeSortKey"
+        />
+        <div id="papers">
+          <div
+            v-for="paper in papers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <PaperInfoComp :paper="paper" />
+          </div>
+        </div>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="page"
+          :total="totalRecords"
+          :pager-count="pagerSize"
+          hide-on-single-page
+          small
+          style="text-align: center; margin-bottom: 10px"
+          @current-change="showNextPage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -143,71 +145,103 @@ async function requestAffiliationDetailRankingByKeyword(keyword: string) {
   return res;
 }
 
+async function fetchData(query: KeywordPapersPayload) {
+  const keyword = query.keyword;
+  const sortKey = query.sortKey || 'recent';
+  const page = query.page ? Number(query.page) : 1;
+
+  const [
+    portraitRes,
+    papersRes,
+    authorRankingRes,
+    affiliationRankingRes
+  ] = await Promise.all([
+    requestPortrait(keyword),
+    requestPapers({ keyword, page, sortKey }),
+    requestAuthorDetailRankingByKeyword(keyword),
+    requestAffiliationDetailRankingByKeyword(keyword)
+  ]);
+
+  const profile = {
+    name: keyword,
+    statistics: [
+      {
+        prop: '📝 Papers',
+        number: portraitRes.portrait.count
+      },
+      {
+        prop: '📃 Citations',
+        number: portraitRes.portrait.citation
+      },
+      {
+        prop: '💻 Authors',
+        number: portraitRes.portrait.authorNum
+      }
+    ]
+  };
+  const citationTrend = portraitRes.portrait.citationTrend;
+  const publicationTrend = portraitRes.portrait.publicationTrends;
+
+  return {
+    ...query,
+    keyword,
+    profile,
+    citationTrend,
+    publicationTrend,
+    ...papersRes,
+    ...authorRankingRes,
+    ...affiliationRankingRes
+  };
+}
+
 export default Vue.extend({
   name: 'Keyword',
   components: {
+    [Pagination.name]: Pagination,
+    AffiliationAdvancedComp,
+    AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    Subtitle,
-    AuthorAdvancedComp,
-    AffiliationAdvancedComp,
-    [Pagination.name]: Pagination
+    Subtitle
   },
   mixins: [PaginationMaxSizeLimit],
-  async asyncData({ query }) {
-    const keyword = query.keyword as string;
-    const sortKey = 'recent';
-    const page = 1;
-
-    const [
-      portraitRes,
-      papersRes,
-      authorRankingRes,
-      affiliationRankingRes
-    ] = await Promise.all([
-      requestPortrait(keyword),
-      requestPapers({ keyword, page, sortKey }),
-      requestAuthorDetailRankingByKeyword(keyword),
-      requestAffiliationDetailRankingByKeyword(keyword)
-    ]);
-
-    const profile = {
-      name: keyword,
-      statistics: [
-        {
-          prop: '📝 Papers',
-          number: portraitRes.portrait.count
-        },
-        {
-          prop: '📃 Citations',
-          number: portraitRes.portrait.citation
-        },
-        {
-          prop: '💻 Authors',
-          number: portraitRes.portrait.authorNum
-        }
-      ]
-    };
-    const citationTrend = portraitRes.portrait.citationTrend;
-    const publicationTrend = portraitRes.portrait.publicationTrends;
-
-    return {
-      ...query,
-      keyword,
-      profile,
-      citationTrend,
-      publicationTrend,
-      ...papersRes,
-      ...authorRankingRes,
-      ...affiliationRankingRes
-    };
+  asyncData({ query, redirect }) {
+    // 提高健壮性
+    if (!query.keyword) {
+      redirect('/404');
+    }
+    return fetchData((query as unknown) as KeywordPapersPayload);
   },
   data() {
     return {
+      showPortrait: true,
       page: 1,
       sortKey: 'recent' as sortKey
     } as PortraitKeywordPageComp;
+  },
+  watch: {
+    async '$route.query'(query) {
+      if (!query.keyword) {
+        this.$router.push('/404');
+      }
+      this.showPortrait = false;
+      const loading = this.$loading(loadingConfig('.portrait-wrapper'));
+      // 重新获取数据
+      const data = await fetchData(query as KeywordPapersPayload);
+      this.keyword = data.keyword;
+      this.page = data.page;
+      this.sortKey = data.sortKey;
+      this.profile = data.profile;
+      this.citationTrend = data.citationTrend; // 被引用趋势
+      this.publicationTrend = data.citationTrend; // 发论文趋势
+      this.papers = data.papers;
+      this.resultCount = data.resultCount;
+      // 加载完成后加载图表
+      this.showPortrait = true;
+      loading.close();
+      this.initCharts();
+    }
   },
   mounted() {
     this.initCharts();

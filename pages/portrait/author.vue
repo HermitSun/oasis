@@ -245,28 +245,26 @@ export default Vue.extend({
     } as PortraitAuthorPageComp;
   },
   watch: {
-    $route: {
-      async handler({ query }) {
-        if (!query.authorId) {
-          this.$router.push('/404');
-        }
-        this.showPortrait = false;
-        const loading = this.$loading(loadingConfig('.portrait-wrapper'));
-        // 重新获取数据
-        const data = await fetchData(query as AuthorPapersPayload);
-        this.authorId = data.authorId;
-        this.page = data.page;
-        this.sortKey = data.sortKey;
-        this.profile = data.profile;
-        this.citationTrend = data.citationTrend; // 被引用趋势
-        this.publicationTrend = data.citationTrend; // 发论文趋势
-        this.papers = data.papers;
-        this.resultCount = data.resultCount;
-        // 加载完成后加载图表
-        this.showPortrait = true;
-        loading.close();
-        this.initCharts();
+    async '$route.query'(query) {
+      if (!query.authorId) {
+        this.$router.push('/404');
       }
+      this.showPortrait = false;
+      const loading = this.$loading(loadingConfig('.portrait-wrapper'));
+      // 重新获取数据
+      const data = await fetchData(query as AuthorPapersPayload);
+      this.authorId = data.authorId;
+      this.page = data.page;
+      this.sortKey = data.sortKey;
+      this.profile = data.profile;
+      this.citationTrend = data.citationTrend; // 被引用趋势
+      this.publicationTrend = data.citationTrend; // 发论文趋势
+      this.papers = data.papers;
+      this.resultCount = data.resultCount;
+      // 加载完成后加载图表
+      this.showPortrait = true;
+      loading.close();
+      this.initCharts();
     }
   },
   mounted() {

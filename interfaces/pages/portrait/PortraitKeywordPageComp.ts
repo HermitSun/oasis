@@ -33,6 +33,7 @@ interface AsyncPortraitKeywordData {
 export type PortraitKeywordDataFromProp = {};
 
 interface PortraitKeywordLocalData {
+  showPortrait: boolean;
   page: number;
   sortKey: sortKey;
 }
