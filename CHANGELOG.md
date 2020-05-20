@@ -1,8 +1,24 @@
+# 3.2.1 (2020-05-20)
+
+### Bug Fixes
+
+- 修复研究方向画像页点击关键词页面不刷新的问题(#58)
+
+### Code Refactoring
+
+- 对画像页进行重构
+- 按字典序引入components
+- 简化设置默认值的方式（三目运算符 -> `||`）
+
+### Performance Improvements
+
+- 画像页不再重复渲染输入框和加载词云（重构）
+
 # 3.2 (2020-05-20)
 
 ### Bug Fixes
 
-- 修复排名页可能出现内存泄漏的问题
+- 实现可能出现内存泄漏的问题
 - 修复SearchSortKeyComp的emit方法错误
 
 ### Code Refactoring
