@@ -7,6 +7,7 @@ import {
   CrawlTaskResponse
 } from '~/interfaces/responses/manage/PaperImportResponse';
 import axios from '~/api/config';
+import { FilterKey } from '~/interfaces/pages/manage/ManageImportPageComp';
 
 // 36. 获取会议期刊列表 getConferencesAndJournalsList
 export async function getConferencesAndJournalsList(
@@ -32,7 +33,7 @@ export async function getConferencesAndJournalsProceedings(
 // 46. 获取爬虫任务状态 getCrawlTask
 // 这里的实现非常dirty，需要留意可能存在的bug
 const crawlConfig = {
-  baseURL: 'https://wensun.top/api',
+  baseURL: 'https://wensun.top',
   timeout: 5 * 1000
 };
 const crawlAxios = globalAxios.create(crawlConfig);
@@ -47,10 +48,13 @@ crawlAxios.interceptors.request.use((config) => {
   --importBus.crawlTaskReqNum;
   return config;
 });
-export async function getCrawlTask(): Promise<
-  BasicResponse<CrawlTaskResponse[]>
-> {
-  const { data } = await crawlAxios.get('/task/state');
+export async function getCrawlTask(
+  filterKey: FilterKey,
+  date: string
+): Promise<BasicResponse<CrawlTaskResponse[]>> {
+  const { data } = await crawlAxios.get('/api/task/state', {
+    params: { filterKey, date }
+  });
   return data;
 }
 
@@ -58,13 +62,6 @@ export async function getCrawlTask(): Promise<
 export async function execCrawlTask(
   proceedings: string[]
 ): Promise<BasicResponse> {
-  const { data } = await globalAxios.post('http://34.102.235.205/crawl.json', {
-    request: {
-      url: 'http://34.102.235.205/prod/actuator/health',
-      meta: { proceedings },
-      callback: 'start'
-    },
-    spider_name: 'conferences'
-  });
+  const { data } = await crawlAxios.post('/crawl/crawl', { proceedings });
   return data;
 }
