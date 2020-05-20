@@ -21,8 +21,6 @@ const globalAxios = axios.create(globalConfig);
 // 请求过滤器
 globalAxios.interceptors.request.use(
   (config) => {
-    removePending(config);
-    addPending(config);
     return config;
   },
   (error) => {
@@ -33,14 +31,9 @@ globalAxios.interceptors.request.use(
 // 响应过滤器
 globalAxios.interceptors.response.use(
   (config) => {
-    removePending(config);
     return config;
   },
   (error) => {
-    // 被取消时不提示信息
-    if (!axios.isCancel(error)) {
-      Message.error(error.toString());
-    }
     return Promise.resolve(error);
   }
 );

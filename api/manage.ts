@@ -7,6 +7,7 @@ import {
   CrawlTaskResponse
 } from '~/interfaces/responses/manage/PaperImportResponse';
 import axios from '~/api/config';
+import { FilterKey } from '~/interfaces/pages/manage/ManageImportPageComp';
 
 // 36. 获取会议期刊列表 getConferencesAndJournalsList
 export async function getConferencesAndJournalsList(
@@ -47,10 +48,13 @@ crawlAxios.interceptors.request.use((config) => {
   --importBus.crawlTaskReqNum;
   return config;
 });
-export async function getCrawlTask(): Promise<
-  BasicResponse<CrawlTaskResponse[]>
-> {
-  const { data } = await crawlAxios.get('/task/state');
+export async function getCrawlTask(
+  filterKey: FilterKey,
+  date: string
+): Promise<BasicResponse<CrawlTaskResponse[]>> {
+  const { data } = await crawlAxios.get('/task/state', {
+    params: { filterKey, date }
+  });
   return data;
 }
 

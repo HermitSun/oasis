@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-for="(task, index) of tasks" :key="'task' + index">
+    <div
+      v-for="(task, index) of tasks"
+      :key="'task' + index"
+      style="margin-bottom: 5px"
+    >
       <!--进度条-->
       <el-progress
         v-if="task.isFinished"
@@ -24,7 +28,7 @@
         {{ i + 1 }}. {{ proceeding.proceedingTitle }}
       </p>
       <!--进度-->
-      <p style="float: right">
+      <p style="text-align: right">
         <span>已导入：{{ task.paperCount }}，</span>
         <span>总论文数：{{ task.totalPaperNum }} </span>
       </p>

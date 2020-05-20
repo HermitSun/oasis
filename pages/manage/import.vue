@@ -53,6 +53,9 @@
         placement="top"
         :type="step === 3 ? 'primary' : 'success'"
       >
+        <p style="text-align: center">
+          提示：只会导入符合格式的论文，可能会小于论文总数
+        </p>
         <el-button
           type="primary"
           size="medium"
@@ -65,6 +68,30 @@
       </el-timeline-item>
       <!--正在运行的导入任务-->
       <el-timeline-item timestamp="已有任务" placement="top" type="primary">
+        <!--筛选标准-->
+        <template v-if="runningTasks.length > 0">
+          <el-date-picker
+            v-model="selectedDate"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            @change="setDate"
+          />
+          <el-select
+            v-model="selectedTasksFilterKey"
+            placeholder="请选择筛选标准"
+            style="margin-bottom: 5px"
+            @change="setFilterKey"
+          >
+            <el-option
+              v-for="sortKey in tasksFilterKeys"
+              :key="sortKey.value"
+              :label="sortKey.label"
+              :value="sortKey.value"
+            />
+          </el-select>
+        </template>
+        <!--进度条-->
         <ImportProgressBar :tasks="runningTasks" />
       </el-timeline-item>
     </el-timeline>
@@ -89,6 +116,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
+  DatePicker,
   Divider,
   Option,
   Progress,
@@ -109,6 +137,9 @@ import {
 } from '~/interfaces/responses/manage/PaperImportResponse';
 import ImportProgressBar from '~/components/manage/ImportProgressBar.vue';
 import importBus from '~/components/manage/bus';
+import { FilterKey } from '~/interfaces/pages/manage/ManageImportPageComp';
+import { ElOption } from '~/interfaces/ElOptions';
+import { getFormattedDate } from '~/utils/date';
 
 // 爬虫任务需要的信息
 type CrawlTaskInfo = Array<CrawlTaskResponse & { percentage: number }>;
@@ -118,6 +149,7 @@ let pollingTask: NodeJS.Timeout;
 export default Vue.extend({
   name: 'DataImport',
   components: {
+    [DatePicker.name]: DatePicker,
     [Divider.name]: Divider,
     ImportProgressBar,
     ImportUploadDialog: () =>
@@ -136,6 +168,25 @@ export default Vue.extend({
       selectedProceedingIds: [] as string[],
       proceedings: [] as ConferencesAndJournalsProceedingsInfoResponse[],
       // 正在运行的爬虫任务
+      tasksFilterKeys: [
+        {
+          label: '最近',
+          value: 'recent'
+        },
+        {
+          label: '已完成',
+          value: 'finished'
+        },
+        {
+          label: '进行中',
+          value: 'processing'
+        }
+      ] as ElOption<FilterKey>[],
+      // 从路由读取筛选标准
+      selectedTasksFilterKey:
+        (this.$route.query.filter as FilterKey) || ('recent' as FilterKey),
+      selectedDate:
+        (this.$route.query.date as string) || getFormattedDate(new Date()),
       runningTasks: [] as CrawlTaskResponse[],
       // 老版本的导入数据文件
       showUploadDialog: false
@@ -222,7 +273,10 @@ export default Vue.extend({
       // 没有正在运行的请求时再发起请求
       if (importBus.crawlTaskReqNum === 0) {
         try {
-          const tasksRes = await getCrawlTask();
+          const tasksRes = await getCrawlTask(
+            this.selectedTasksFilterKey,
+            this.selectedDate
+          );
           const tasks = tasksRes && tasksRes.data ? tasksRes.data : [];
           this.runningTasks = tasks.map((task) => {
             const currentPercentage = task.isFinished
@@ -239,6 +293,25 @@ export default Vue.extend({
           console.log(e.toString());
         }
       }
+    },
+    // 通过URL持久化
+    setFilterKey(key: FilterKey) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          ...this.$route.query,
+          filter: key
+        }
+      });
+    },
+    setDate(date: string) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          ...this.$route.query,
+          date
+        }
+      });
     }
   }
 });
