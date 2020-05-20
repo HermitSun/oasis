@@ -115,14 +115,14 @@ export default Vue.extend({
     [DatePicker.name]: DatePicker,
     [Divider.name]: Divider,
     [Drawer.name]: Drawer,
+    [Option.name]: Option,
+    [Progress.name]: Progress,
+    [Select.name]: Select,
     ImportProgressBar,
     ImportSelectionDialog: () =>
       import('~/components/manage/ImportSelectionDialog.vue'),
     ImportUploadDialog: () =>
-      import('~/components/manage/ImportUploadDialog.vue'),
-    [Option.name]: Option,
-    [Progress.name]: Progress,
-    [Select.name]: Select
+      import('~/components/manage/ImportUploadDialog.vue')
   },
   data() {
     return {

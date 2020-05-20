@@ -1,10 +1,5 @@
 <template>
   <div class="author-portrait-wrapper">
-    <!--搜索框-->
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
         <div class="profile-module">
@@ -77,7 +72,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Pagination, Loading, Message } from 'element-ui';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
@@ -108,7 +102,6 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -182,7 +175,7 @@ async function requestAcademicRelation(authorId: string) {
 async function fetchData(query: AuthorPapersPayload) {
   const authorId = query.authorId as string;
   // 增加默认值
-  const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
+  const sortKey = query.sortKey || 'recent';
   const page = query.page ? Number(query.page) : 1;
 
   const [portraitRes, papersRes] = await Promise.all([
@@ -225,20 +218,14 @@ async function fetchData(query: AuthorPapersPayload) {
 export default Vue.extend({
   name: 'Author',
   components: {
+    [Pagination.name]: Pagination,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    SearchBarComp,
-    Subtitle,
-    [Pagination.name]: Pagination
+    Subtitle
   },
   // 注入一个清理图表的方法
-  mixins: [
-    ForceChartClear,
-    LinkToAuthor,
-    PaginationMaxSizeLimit,
-    StartAnotherBasicSearch
-  ],
+  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
@@ -258,28 +245,26 @@ export default Vue.extend({
     } as PortraitAuthorPageComp;
   },
   watch: {
-    $route: {
-      async handler({ query }) {
-        if (!query.authorId) {
-          this.$router.push('/404');
-        }
-        this.showPortrait = false;
-        const loading = this.$loading(loadingConfig('.portrait-wrapper'));
-        // 重新获取数据
-        const data = await fetchData(query as AuthorPapersPayload);
-        this.authorId = data.authorId;
-        this.page = data.page;
-        this.sortKey = data.sortKey;
-        this.profile = data.profile;
-        this.citationTrend = data.citationTrend; // 被引用趋势
-        this.publicationTrend = data.citationTrend; // 发论文趋势
-        this.papers = data.papers;
-        this.resultCount = data.resultCount;
-        // 加载完成后加载图表
-        this.showPortrait = true;
-        loading.close();
-        this.initCharts();
+    async '$route.query'(query) {
+      if (!query.authorId) {
+        this.$router.push('/404');
       }
+      this.showPortrait = false;
+      const loading = this.$loading(loadingConfig('.portrait-wrapper'));
+      // 重新获取数据
+      const data = await fetchData(query as AuthorPapersPayload);
+      this.authorId = data.authorId;
+      this.page = data.page;
+      this.sortKey = data.sortKey;
+      this.profile = data.profile;
+      this.citationTrend = data.citationTrend; // 被引用趋势
+      this.publicationTrend = data.citationTrend; // 发论文趋势
+      this.papers = data.papers;
+      this.resultCount = data.resultCount;
+      // 加载完成后加载图表
+      this.showPortrait = true;
+      loading.close();
+      this.initCharts();
     }
   },
   mounted() {

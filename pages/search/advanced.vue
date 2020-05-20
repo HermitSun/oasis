@@ -87,15 +87,15 @@ const defaultSortKey = 'related';
 export default Vue.extend({
   name: 'SearchAdvanced',
   components: {
+    [Checkbox.name]: Checkbox,
+    [CheckboxGroup.name]: CheckboxGroup,
+    [Option.name]: Option,
+    [Pagination.name]: Pagination,
+    [Select.name]: Select,
     SearchBarComp,
     SearchResComp,
     SearchResHeaderComp,
-    SearchSortKeyComp,
-    [Pagination.name]: Pagination,
-    [Select.name]: Select,
-    [Option.name]: Option,
-    [CheckboxGroup.name]: CheckboxGroup,
-    [Checkbox.name]: Checkbox
+    SearchSortKeyComp
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],

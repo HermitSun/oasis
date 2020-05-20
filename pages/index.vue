@@ -220,9 +220,9 @@ export default Vue.extend({
   components: {
     AbstractComp,
     AdvancedSearchComp,
-    CommandSearchComp,
-    AuthorBasicRanking,
     AffiliationBasicRanking,
+    AuthorBasicRanking,
+    CommandSearchComp,
     ConferenceBasicRanking,
     KeywordBasicRanking,
     JournalBasicRanking,

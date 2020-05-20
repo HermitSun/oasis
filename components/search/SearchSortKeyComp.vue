@@ -26,8 +26,8 @@ import searchSortKeyOptions from '~/components/search/SearchSortKeyOptions';
 export default Vue.extend({
   name: 'SearchSortKeyComp',
   components: {
-    [Select.name]: Select,
-    [Option.name]: Option
+    [Option.name]: Option,
+    [Select.name]: Select
   },
   props: {
     sortKey: {
