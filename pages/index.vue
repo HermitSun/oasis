@@ -47,26 +47,37 @@
       </div>
     </div>
     <div class="homepage-content">
-      <div class="homepage-content__abstract">
-        <Subtitle title="📄 OASIS NEWS" />
-        <div
-          v-for="abstract in abstractResponse"
-          :key="abstract.id"
-          style="margin-bottom: 5px"
-        >
-          <AbstractComp :abstract="abstract" />
+      <div class="homepage-content__left">
+        <div class="homepage-content__talents">
+          <Subtitle title="🎓  TALENTS BASE" />
+          <div v-for="(talent, index) in talents" :key="index">
+            <TalentBaseComp :talent="talent" />
+          </div>
+        </div>
+        <div class="homepage-content__abstract">
+          <Subtitle title="📄 OASIS NEWS" />
+          <div
+            v-for="abstract in abstractResponse"
+            :key="abstract.id"
+            style="margin-bottom: 5px"
+          >
+            <AbstractComp :abstract="abstract" />
+          </div>
         </div>
       </div>
-      <Subtitle title="🎓  TALENTS BASE" />
-
-      <div class="homepage-content__ranking">
-        <Subtitle title="🏆 OASIS RANKINGS" />
-        <div class="homepage-content__rankings">
-          <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-          <AffiliationBasicRanking :ranking="affiliationRanking" class="rank" />
-          <JournalBasicRanking :ranking="journalRanking" class="rank" />
-          <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-          <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+      <div class="homepage-content__right">
+        <div class="homepage-content__ranking">
+          <Subtitle title="🏆 OASIS RANKINGS" />
+          <div class="homepage-content__rankings">
+            <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+            <AffiliationBasicRanking
+              :ranking="affiliationRanking"
+              class="rank"
+            />
+            <JournalBasicRanking :ranking="journalRanking" class="rank" />
+            <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
+            <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+          </div>
         </div>
       </div>
     </div>
@@ -100,6 +111,7 @@ import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
 import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
+import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -239,6 +251,7 @@ export default Vue.extend({
   name: 'HomePage',
   components: {
     AbstractComp,
+    TalentBaseComp,
     AdvancedSearchComp,
     CommandSearchComp,
     AuthorBasicRanking,
@@ -330,7 +343,22 @@ export default Vue.extend({
 }
 
 .homepage-content {
+  @media @min-pc-width {
+    .flex-left-left-row;
+    .homepage-content__left {
+      width: 75%;
+    }
+
+    .homepage-content__right {
+      width: 25%;
+    }
+  }
+
   .homepage-content__abstract {
+    .gray-background;
+  }
+
+  .homepage-content__talents {
     .gray-background;
   }
 
@@ -338,13 +366,13 @@ export default Vue.extend({
     .gray-background;
 
     .homepage-content__rankings {
-      @media @min-pc-width {
-        .flex-space-between;
-        .rank {
-          margin: 0 10px;
-          width: 20%;
-        }
-      }
+      /*<!--@media @min-pc-width {-->*/
+      /*<!--.flex-space-between;-->*/
+      /*<!--.rank {-->*/
+      /*<!--margin: 0 10px;-->*/
+      /*<!--width: 20%;-->*/
+      /*<!--}-->*/
+      /*<!--}-->*/
     }
   }
 
