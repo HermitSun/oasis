@@ -1,26 +1,20 @@
 <template>
-  <div>
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
-    <div class="portrait">
-      <div class="profile-module">
-        <PortraitProfileComp id="portrait" :profile="profile" />
-        <div class="module">
-          <Subtitle title="📉 Citation Trend" />
-          <div id="citation-bar" class="content"></div>
-        </div>
-        <div class="module">
-          <Subtitle title="📈 Publication Trends" />
-          <div id="publication-bar" class="content"></div>
-        </div>
+  <div class="portrait">
+    <div class="profile-module">
+      <PortraitProfileComp id="portrait" :profile="profile" />
+      <div class="module">
+        <Subtitle title="📉 Citation Trend" />
+        <div id="citation-bar" class="content"></div>
       </div>
-      <div class="profile-module">
-        <div class="module">
-          <Subtitle title="🌥 Keywords" />
-          <div id="pie" class="chart content"></div>
-        </div>
+      <div class="module">
+        <Subtitle title="📈 Publication Trends" />
+        <div id="publication-bar" class="content"></div>
+      </div>
+    </div>
+    <div class="profile-module">
+      <div class="module">
+        <Subtitle title="🌥 Keywords" />
+        <div id="pie" class="chart content"></div>
       </div>
     </div>
   </div>
@@ -33,13 +27,11 @@ import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitRespon
 import { getConferenceInterest, getConferencePortrait } from '~/api';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import Subtitle from '~/components/public/Subtitle.vue';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createPieChart } from '~/components/charts/pie';
 import portraitBarConfig from '~/components/portrait/barConfig';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import { PortraitConferencePageComp } from '~/interfaces/pages/portrait/PortraitConferencePageComp';
 
 async function requestPortrait(conference: string) {
@@ -69,10 +61,8 @@ export default Vue.extend({
   name: 'Conference',
   components: {
     PortraitProfileComp,
-    SearchBarComp,
     Subtitle
   },
-  mixins: [StartAnotherBasicSearch],
   async asyncData({ query }) {
     const conference = query.conference as string;
 

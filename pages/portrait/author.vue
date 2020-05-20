@@ -1,10 +1,5 @@
 <template>
   <div class="author-portrait-wrapper">
-    <!--搜索框-->
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
     <div v-if="showPortrait" class="portrait-wrapper">
       <div class="portrait">
         <div class="profile-module">
@@ -77,7 +72,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Pagination, Loading, Message } from 'element-ui';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
@@ -108,7 +102,6 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -228,17 +221,11 @@ export default Vue.extend({
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    SearchBarComp,
     Subtitle,
     [Pagination.name]: Pagination
   },
   // 注入一个清理图表的方法
-  mixins: [
-    ForceChartClear,
-    LinkToAuthor,
-    PaginationMaxSizeLimit,
-    StartAnotherBasicSearch
-  ],
+  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {

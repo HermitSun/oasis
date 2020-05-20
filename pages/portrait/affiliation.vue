@@ -1,60 +1,53 @@
 <template>
-  <div>
-    <!--搜索框-->
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
-    <div class="portrait">
-      <div class="profile-module">
-        <PortraitProfileComp id="portrait" :profile="profile" />
-        <div class="module">
-          <Subtitle title="📉 Citation Trend" />
-          <div id="citation-bar" class="content"></div>
-        </div>
-        <div class="module">
-          <Subtitle title="📈 Publication Trends" />
-          <div id="publication-bar" class="content"></div>
-        </div>
+  <div class="portrait">
+    <div class="profile-module">
+      <PortraitProfileComp id="portrait" :profile="profile" />
+      <div class="module">
+        <Subtitle title="📉 Citation Trend" />
+        <div id="citation-bar" class="content"></div>
       </div>
-      <div class="profile-module">
-        <div class="module">
-          <Subtitle title="🌥 Keywords" />
-          <div id="pie" class="chart content"></div>
-        </div>
+      <div class="module">
+        <Subtitle title="📈 Publication Trends" />
+        <div id="publication-bar" class="content"></div>
       </div>
-      <div class="affiliation-main">
-        <div class="affiliation-main__authors portrait-module">
-          <Subtitle title="🏆 Top Authors" />
-          <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
-        </div>
-        <div class="affiliation-main__paper portrait-module">
-          <PapersSubtitle
-            title="📝 All Papers"
-            :sort-key="sortKey"
-            @changeSortKey="changeSortKey"
-          />
-          <div id="papers">
-            <div
-              v-for="paper in papers"
-              :key="paper.id"
-              style="margin-bottom: 20px"
-            >
-              <PaperInfoComp :paper="paper" />
-            </div>
+    </div>
+    <div class="profile-module">
+      <div class="module">
+        <Subtitle title="🌥 Keywords" />
+        <div id="pie" class="chart content"></div>
+      </div>
+    </div>
+    <div class="affiliation-main">
+      <div class="affiliation-main__authors portrait-module">
+        <Subtitle title="🏆 Top Authors" />
+        <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
+      </div>
+      <div class="affiliation-main__paper portrait-module">
+        <PapersSubtitle
+          title="📝 All Papers"
+          :sort-key="sortKey"
+          @changeSortKey="changeSortKey"
+        />
+        <div id="papers">
+          <div
+            v-for="paper in papers"
+            :key="paper.id"
+            style="margin-bottom: 20px"
+          >
+            <PaperInfoComp :paper="paper" />
           </div>
-          <!--分页-->
-          <el-pagination
-            layout="prev, pager, next"
-            :current-page="page"
-            :total="totalRecords"
-            :pager-count="pagerSize"
-            hide-on-single-page
-            small
-            style="text-align: center; margin-bottom: 10px"
-            @current-change="showNextPage"
-          />
         </div>
+        <!--分页-->
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="page"
+          :total="totalRecords"
+          :pager-count="pagerSize"
+          hide-on-single-page
+          small
+          style="text-align: center; margin-bottom: 10px"
+          @current-change="showNextPage"
+        />
       </div>
     </div>
   </div>
@@ -62,9 +55,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import { Pagination, Loading, Message } from 'element-ui';
-import Subtitle from '../../components/public/Subtitle.vue';
+import Subtitle from '~/components/public/Subtitle.vue';
 import {
   getAffiliationInterest,
   getAffiliationPapers,
@@ -73,7 +65,6 @@ import {
 } from '~/api';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
@@ -87,9 +78,7 @@ import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
-import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 import { PortraitAffiliationPageComp } from '~/interfaces/pages/portrait/PortraitAffiliationPageComp';
 
@@ -154,11 +143,10 @@ export default Vue.extend({
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    SearchBarComp,
     Subtitle,
     [Pagination.name]: Pagination
   },
-  mixins: [AsyncLoadWordCloud, PaginationMaxSizeLimit, StartAnotherBasicSearch],
+  mixins: [PaginationMaxSizeLimit],
   async asyncData({ query }) {
     const affiliation = query.affiliation as string;
     const sortKey = 'recent';
@@ -289,11 +277,6 @@ export default Vue.extend({
       });
       this.papers = papersRes.papers;
       loadingInstance.close();
-    },
-    // template method pattern
-    ...mapActions('portrait', ['updateIsAffiliationWordCloudLoaded']),
-    updateWordCloudLoaded(loaded: boolean) {
-      this.updateIsAffiliationWordCloudLoaded(loaded);
     }
   }
 });
