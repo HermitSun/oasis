@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <SearchBarComp
-      v-model="keyword"
-      @keyword-change="startAnotherBasicSearch"
-    />
+  <div v-if="showPortrait" class="portrait-wrapper">
     <div class="portrait">
       <div class="profile-module">
         <PortraitProfileComp id="portrait" :profile="profile" />
@@ -58,7 +54,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import { Pagination, Loading, Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import {
@@ -71,16 +66,13 @@ import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
-import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
@@ -153,72 +145,103 @@ async function requestAffiliationDetailRankingByKeyword(keyword: string) {
   return res;
 }
 
+async function fetchData(query: KeywordPapersPayload) {
+  const keyword = query.keyword;
+  const sortKey = query.sortKey || 'recent';
+  const page = query.page ? Number(query.page) : 1;
+
+  const [
+    portraitRes,
+    papersRes,
+    authorRankingRes,
+    affiliationRankingRes
+  ] = await Promise.all([
+    requestPortrait(keyword),
+    requestPapers({ keyword, page, sortKey }),
+    requestAuthorDetailRankingByKeyword(keyword),
+    requestAffiliationDetailRankingByKeyword(keyword)
+  ]);
+
+  const profile = {
+    name: keyword,
+    statistics: [
+      {
+        prop: '📝 Papers',
+        number: portraitRes.portrait.count
+      },
+      {
+        prop: '📃 Citations',
+        number: portraitRes.portrait.citation
+      },
+      {
+        prop: '💻 Authors',
+        number: portraitRes.portrait.authorNum
+      }
+    ]
+  };
+  const citationTrend = portraitRes.portrait.citationTrend;
+  const publicationTrend = portraitRes.portrait.publicationTrends;
+
+  return {
+    ...query,
+    keyword,
+    profile,
+    citationTrend,
+    publicationTrend,
+    ...papersRes,
+    ...authorRankingRes,
+    ...affiliationRankingRes
+  };
+}
+
 export default Vue.extend({
   name: 'Keyword',
   components: {
+    [Pagination.name]: Pagination,
+    AffiliationAdvancedComp,
+    AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    SearchBarComp,
-    Subtitle,
-    AuthorAdvancedComp,
-    AffiliationAdvancedComp,
-    [Pagination.name]: Pagination
+    Subtitle
   },
-  mixins: [AsyncLoadWordCloud, PaginationMaxSizeLimit, StartAnotherBasicSearch],
-  async asyncData({ query }) {
-    const keyword = query.keyword as string;
-    const sortKey = 'recent';
-    const page = 1;
-
-    const [
-      portraitRes,
-      papersRes,
-      authorRankingRes,
-      affiliationRankingRes
-    ] = await Promise.all([
-      requestPortrait(keyword),
-      requestPapers({ keyword, page, sortKey }),
-      requestAuthorDetailRankingByKeyword(keyword),
-      requestAffiliationDetailRankingByKeyword(keyword)
-    ]);
-
-    const profile = {
-      name: keyword,
-      statistics: [
-        {
-          prop: '📝 Papers',
-          number: portraitRes.portrait.count
-        },
-        {
-          prop: '📃 Citations',
-          number: portraitRes.portrait.citation
-        },
-        {
-          prop: '💻 Authors',
-          number: portraitRes.portrait.authorNum
-        }
-      ]
-    };
-    const citationTrend = portraitRes.portrait.citationTrend;
-    const publicationTrend = portraitRes.portrait.publicationTrends;
-
-    return {
-      ...query,
-      keyword,
-      profile,
-      citationTrend,
-      publicationTrend,
-      ...papersRes,
-      ...authorRankingRes,
-      ...affiliationRankingRes
-    };
+  mixins: [PaginationMaxSizeLimit],
+  asyncData({ query, redirect }) {
+    // 提高健壮性
+    if (!query.keyword) {
+      redirect('/404');
+    }
+    return fetchData((query as unknown) as KeywordPapersPayload);
   },
   data() {
     return {
+      showPortrait: true,
       page: 1,
       sortKey: 'recent' as sortKey
     } as PortraitKeywordPageComp;
+  },
+  watch: {
+    async '$route.query'(query) {
+      if (!query.keyword) {
+        this.$router.push('/404');
+      }
+      this.showPortrait = false;
+      const loading = this.$loading(loadingConfig('.portrait-wrapper'));
+      // 重新获取数据
+      const data = await fetchData(query as KeywordPapersPayload);
+      this.keyword = data.keyword;
+      this.page = data.page;
+      this.sortKey = data.sortKey;
+      this.profile = data.profile;
+      this.citationTrend = data.citationTrend; // 被引用趋势
+      this.publicationTrend = data.citationTrend; // 发论文趋势
+      this.papers = data.papers;
+      this.resultCount = data.resultCount;
+      // 加载完成后加载图表
+      this.showPortrait = true;
+      loading.close();
+      this.initCharts();
+    }
   },
   mounted() {
     this.initCharts();
@@ -268,15 +291,6 @@ export default Vue.extend({
       });
       this.papers = papersRes.papers;
       loadingInstance.close();
-    },
-    // template method pattern
-    ...mapActions('portrait', [
-      'updateIsAffiliationWordCloudLoaded',
-      'updateIsKeywordWordCloudLoaded'
-    ]),
-    updateWordCloudLoaded(loaded: boolean) {
-      this.updateIsAffiliationWordCloudLoaded(loaded);
-      this.updateIsKeywordWordCloudLoaded(loaded);
     }
   }
 });

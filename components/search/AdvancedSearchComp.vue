@@ -125,19 +125,13 @@ export default Vue.extend({
   name: 'AdvancedSearchComp',
   data() {
     return {
-      keyword: this.$route.query.keyword ? this.$route.query.keyword : '', // 泛化关键字
-      author: this.$route.query.author ? this.$route.query.author : '', // 作者
-      affiliation: this.$route.query.affiliation
-        ? this.$route.query.affiliation
-        : '', // 机构
-      publicationName: this.$route.query.publicationName
-        ? this.$route.query.publicationName
-        : '', // 会议|期刊
-      field: this.$route.query.field ? this.$route.query.field : '', // 研究关键字
-      startYear: this.$route.query.startYear
-        ? this.$route.query.startYear
-        : '1963', // 开始日期
-      endYear: this.$route.query.endYear ? this.$route.query.endYear : '2020', // 结束日期
+      keyword: this.$route.query.keyword || '', // 泛化关键字
+      author: this.$route.query.author || '', // 作者
+      affiliation: this.$route.query.affiliation || '', // 机构
+      publicationName: this.$route.query.publicationName || '', // 会议|期刊
+      field: this.$route.query.field || '', // 研究关键字
+      startYear: this.$route.query.startYear || '1963', // 开始日期
+      endYear: this.$route.query.endYear || '2020', // 结束日期
       isError: false
     };
   },

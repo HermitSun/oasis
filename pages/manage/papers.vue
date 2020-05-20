@@ -149,14 +149,14 @@ import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaper
 export default Vue.extend({
   name: 'ManagePapers',
   components: {
-    PapersUpdateDialog: () =>
-      import('~/components/manage/PapersUpdateDialog.vue'),
     [Form.name]: Form,
     [FormItem.name]: FormItem,
     [Input.name]: Input,
     [Pagination.name]: Pagination,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    PapersUpdateDialog: () =>
+      import('~/components/manage/PapersUpdateDialog.vue')
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],

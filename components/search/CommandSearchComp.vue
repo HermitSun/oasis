@@ -40,7 +40,7 @@ export default Vue.extend({
   name: 'CommandSearchComp',
   data() {
     return {
-      query: this.$route.query.query ? this.$route.query.query : '' // command search query
+      query: this.$route.query.query || '' // command search query
     };
   },
   methods: {
