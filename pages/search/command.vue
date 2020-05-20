@@ -102,9 +102,12 @@ export default Vue.extend({
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
     // 增加默认值，相当于静默失败，避免500
-    const searchRes = await commandSearch(({
-      ...query
-    } as unknown) as CommandSearchPayload);
+    console.log(query);
+    const searchRes = await commandSearch({
+      query: query.query,
+      page: Number(query.page),
+      sortKey: query.sortKey
+    } as CommandSearchPayload);
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
 
@@ -153,7 +156,7 @@ export default Vue.extend({
       this.setReadableSearchContent();
       this.requestCommandSearch({
         query: this.query,
-        // sortKey: this.sortKey,
+        sortKey: this.sortKey,
         page: this.page
       });
     },
@@ -186,7 +189,7 @@ export default Vue.extend({
       this.$router.push({
         path: '/search/command',
         query: {
-          ...query,
+          query,
           page,
           sortKey
         }
@@ -197,7 +200,7 @@ export default Vue.extend({
     // @see issue #35[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
     changeSortKey(newSortKey: sortKey) {
       this.sortKey = newSortKey;
-      this.showSpecifiedPage(this.query, 1, newSortKey);
+      this.showSpecifiedPage(this.query, '1', newSortKey);
     },
 
     // 开始另一次搜索（关键字不同）
@@ -208,8 +211,8 @@ export default Vue.extend({
         query: {
           keyword,
           page: '1',
-          startYear: String(this.startYear), // 开始日期
-          endYear: String(this.endYear), // 结束日期
+          startYear: '1963', // 开始日期
+          endYear: '2020', // 结束日期
           sortKey: defaultSortKey as sortKey
         }
       });

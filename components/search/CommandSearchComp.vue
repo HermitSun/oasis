@@ -19,8 +19,7 @@
         <!--搜索-->
         <textarea v-model="query"> </textarea>
         <div style="margin-top: 20px;line-height: 25px">
-          Operators need to be in all caps - i.e. AND/OR/NOT. <br />There is a
-          maximum of 20 search terms.
+          Operators need to be in all caps - i.e. AND/OR/NOT.
         </div>
         <button
           class="advanced-search__button"
@@ -52,8 +51,8 @@ export default Vue.extend({
         path: '/search/command',
         query: {
           query: this.query, // 泛化关键字
+          // 虽然commandSearch里用不到开始时间和结束时间 但是后续发起basicSearch可能会用到
           page: defaultPage,
-          // 需要增加sortKey
           sortKey: 'related'
         }
       });

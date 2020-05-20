@@ -42,6 +42,6 @@ export interface AdvancedSearchPayload {
 // 命令搜索
 export interface CommandSearchPayload {
   query: string;
-  // sortKey: sortKey;
   page: number;
+  sortKey: sortKey;
 }
