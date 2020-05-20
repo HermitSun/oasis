@@ -1,3 +1,24 @@
+# 3.2 (2020-05-20)
+
+### Bug Fixes
+
+- 修复排名页可能出现内存泄漏的问题
+- 修复SearchSortKeyComp的emit方法错误
+
+### Code Refactoring
+
+- 对数据导入页进行重构
+
+### Features
+
+- 增加管理端数据导入功能
+- 增加命令搜索功能
+
+### Performance Improvements
+
+- 提高SEO权重（`nofollow`）
+- 排名页采用更轻量的缓存实现
+
 # 3.1.1 (2020-05-16)
 
 ### Code Refactoring
