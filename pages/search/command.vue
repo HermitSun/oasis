@@ -64,28 +64,28 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Pagination,
-  Select,
-  Option,
+  Checkbox,
   CheckboxGroup,
-  Checkbox
+  Option,
+  Pagination,
+  Select
 } from 'element-ui';
-import { advancedSearch } from '~/api';
+import { commandSearch } from '~/api';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import {
-  AdvancedSearchPayload,
+  CommandSearchPayload,
   sortKey
 } from '~/interfaces/requests/search/SearchPayload';
-import { AdvancedSearchPageComp } from '~/interfaces/pages/search/AdvancedSearchPageComp';
 import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
 import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
+// import { CommandSearchPageComp } from '~/interfaces/pages/search/CommandSearchPageComp';
 
 const defaultSortKey = 'related';
 
 export default Vue.extend({
-  name: 'SearchAdvanced',
+  name: 'SearchCommand',
   components: {
     SearchBarComp,
     SearchResComp,
@@ -102,11 +102,12 @@ export default Vue.extend({
   // 数据根据路由在服务端进行渲染
   async asyncData({ query }) {
     // 增加默认值，相当于静默失败，避免500
-    const searchRes = await advancedSearch({
-      ...query,
-      startYear: Number(query.startYear),
-      endYear: Number(query.endYear)
-    } as AdvancedSearchPayload);
+    console.log(query);
+    const searchRes = await commandSearch({
+      query: query.query,
+      page: Number(query.page),
+      sortKey: query.sortKey
+    } as CommandSearchPayload);
     const searchData =
       searchRes && searchRes.data ? searchRes.data : { papers: [], size: 0 };
 
@@ -116,15 +117,15 @@ export default Vue.extend({
       ...query,
       page: Number(query.page),
       // 保留这个属性是为了在高级搜索时显示更精细的搜索内容
-      searchContent: query.keyword
+      searchContent: query.query
     };
   },
   data() {
     return {
       // common
       isLoading: false, // 是否正在加载
-      showAdvancedSearch: false
-    } as AdvancedSearchPageComp;
+      showCommandSearch: false
+    } as any;
   },
   // 路由发生改变后在客户端进行渲染，服务端只负责首次渲染
   // 在SSR时路由是非响应的，需要手动watch
@@ -132,13 +133,9 @@ export default Vue.extend({
     $route: {
       handler({ query }) {
         // 手动更新路由
-        this.keyword = query.keyword;
-        this.author = query.author;
-        this.affiliation = query.affiliation;
-        this.publicationName = query.publicationName;
-        this.field = query.field;
+        this.query = query.query;
         this.page = Number(query.page);
-        this.sortKey = query.sortKey;
+        this.sortKey = query.sortKey as sortKey;
         // 然后进行搜索
         this.doSearch();
       }
@@ -152,47 +149,27 @@ export default Vue.extend({
   methods: {
     // 更具有可读性的搜索内容
     setReadableSearchContent() {
-      let tmpSearchContent = '';
-      if (this.author) {
-        tmpSearchContent += this.author + ' ';
-      }
-      if (this.affiliation) {
-        tmpSearchContent += this.affiliation + ' ';
-      }
-      if (this.publicationName) {
-        tmpSearchContent += this.publicationName + ' ';
-      }
-      if (this.keyword) {
-        tmpSearchContent += this.keyword;
-      }
-      tmpSearchContent.trim();
-      this.searchContent = tmpSearchContent;
+      this.searchContent = this.query;
     },
     // 统一的搜索方法
     doSearch() {
       this.setReadableSearchContent();
-      this.requestAdvancedSearch({
-        keyword: this.keyword,
-        page: this.page,
-        author: this.author,
-        affiliation: this.affiliation,
-        publicationName: this.publicationName,
-        field: this.field,
-        startYear: Number(this.startYear),
-        endYear: Number(this.endYear),
-        sortKey: this.sortKey
+      this.requestCommandSearch({
+        query: this.query,
+        sortKey: this.sortKey,
+        page: this.page
       });
     },
-    // 高级搜索
-    async requestAdvancedSearch(args: AdvancedSearchPayload) {
+    // 组合搜索
+    async requestCommandSearch(args: CommandSearchPayload) {
       this.isLoading = true;
       try {
-        const advancedSearchRes = await advancedSearch(args);
+        const commandSearchRes = await commandSearch(args);
         // 增加默认值，相当于静默失败，避免500
         // size不变
         const searchData =
-          advancedSearchRes && advancedSearchRes.data
-            ? advancedSearchRes.data
+          commandSearchRes && commandSearchRes.data
+            ? commandSearchRes.data
             : { papers: [], size: this.resultCount };
         this.searchResponse = searchData.papers;
         this.resultCount = searchData.size;
@@ -205,40 +182,14 @@ export default Vue.extend({
     },
     // 展示下一页的搜索结果
     showNextPage(page: number) {
-      this.showSpecifiedPage(
-        this.keyword,
-        this.author,
-        this.affiliation,
-        this.publicationName,
-        this.field,
-        String(this.startYear),
-        String(this.endYear),
-        page.toString(),
-        this.sortKey
-      );
+      this.showSpecifiedPage(this.query, page.toString(), this.sortKey);
     },
     // 跳转到指定页面
-    showSpecifiedPage(
-      keyword: string,
-      author: string,
-      affiliation: string,
-      publicationName: string,
-      field: string,
-      startYear: string,
-      endYear: string,
-      page: string,
-      sortKey: sortKey
-    ) {
+    showSpecifiedPage(query: any, page: string, sortKey: sortKey) {
       this.$router.push({
-        path: '/search/advanced',
+        path: '/search/command',
         query: {
-          keyword,
-          author,
-          affiliation,
-          publicationName,
-          field,
-          startYear, // 开始日期
-          endYear, // 结束日期
+          query,
           page,
           sortKey
         }
@@ -249,18 +200,9 @@ export default Vue.extend({
     // @see issue #35[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
     changeSortKey(newSortKey: sortKey) {
       this.sortKey = newSortKey;
-      this.showSpecifiedPage(
-        this.keyword,
-        this.author,
-        this.affiliation,
-        this.publicationName,
-        this.field,
-        '1963',
-        new Date().getFullYear().toString(),
-        '1',
-        newSortKey
-      );
+      this.showSpecifiedPage(this.query, '1', newSortKey);
     },
+
     // 开始另一次搜索（关键字不同）
     // 默认为普通搜索，此时相当于返回basic search页面
     startAnotherBasicSearch(keyword: string) {
@@ -269,8 +211,8 @@ export default Vue.extend({
         query: {
           keyword,
           page: '1',
-          startYear: String(this.startYear), // 开始日期
-          endYear: String(this.endYear), // 结束日期
+          startYear: '1963', // 开始日期
+          endYear: '2020', // 结束日期
           sortKey: defaultSortKey as sortKey
         }
       });

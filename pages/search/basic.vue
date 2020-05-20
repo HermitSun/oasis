@@ -9,45 +9,17 @@
     <div v-loading="isLoading" class="searchPage-content">
       <!--结果数量-->
       <div style="margin: 10px 0">
-        <span class="searchPage-content__hint-text" style="margin-left:10px">
-          About
-        </span>
-        <span class="searchPage-content__result-text" style="margin-left:5px">
-          {{ resultCount }}
-        </span>
-        <span class="searchPage-content__hint-text" style="margin-left:5px">
-          Results
-        </span>
+        <SearchResHeaderComp :result-count="resultCount" />
       </div>
       <!--搜索结果+过滤条件-->
       <div class="flex-left-left-row">
         <!--搜索结果-->
         <div class="searchPage-content__result" style="text-align: left">
           <!--TODO 优化样式-->
-          <template>
-            <div class="flex-space-between">
-              <span
-                style="margin-right: 10px"
-                class="searchPage-content__sub-hint"
-                >Papers</span
-              >
-              <span style="float: right" class="searchPage-content__sub-hint">
-                Sort By
-                <el-select
-                  v-model="sortKey"
-                  size="mini"
-                  @change="changeSortKey"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </span>
-            </div>
-          </template>
+          <SearchSortKeyComp
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
           <!--展示搜索内容-->
           <p
             v-if="searchResponse.length === 0"
@@ -123,6 +95,8 @@ import {
   OasisSearchFilter,
   SearchFilterChangedPayload
 } from '~/interfaces/components/search/SearchFilterComp';
+import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
+import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
 
 async function requestBasicSearchFilterCondition(keyword: string) {
   const res: { filters: SearchFilterResponse } = {
@@ -151,6 +125,8 @@ export default Vue.extend({
     SearchBarComp,
     SearchFilterComp,
     SearchResComp,
+    SearchSortKeyComp,
+    SearchResHeaderComp,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     [Option.name]: Option,
@@ -301,13 +277,14 @@ export default Vue.extend({
     // 切换sortKey
     // 切换后重置日期
     // @see issue #35[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/35]]
-    changeSortKey(sortKey: sortKey) {
+    changeSortKey(newSortKey: sortKey) {
+      this.sortKey = newSortKey;
       this.showSpecifiedPage(
         this.keyword as string,
         '1963',
         new Date().getFullYear().toString(),
         '1',
-        sortKey
+        newSortKey
       );
     },
     // filter

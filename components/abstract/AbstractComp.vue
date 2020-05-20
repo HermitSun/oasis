@@ -12,7 +12,7 @@
             :href="abstract.link"
             class="title"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
           >
             {{ abstract.title }}
           </a>

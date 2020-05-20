@@ -1,9 +1,8 @@
-import globalAxios from 'axios';
 import axios from './config';
-import importBus from '~/components/manage/bus';
 import {
   AdvancedSearchPayload,
   BasicSearchPayload,
+  CommandSearchPayload,
   FilterSearchPayload
 } from '~/interfaces/requests/search/SearchPayload';
 import { BasicResponse } from '~/interfaces/responses/BasicResponse';
@@ -18,12 +17,7 @@ import {
   RankingBasicPayload
 } from '~/interfaces/requests/ranking/RankingPayload';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
-import {
-  ConferencesAndJournalsInfoResponse,
-  ConferencesAndJournalsProceedingsInfoResponse,
-  CrawlTaskResponse,
-  PaperImportResponse
-} from '~/interfaces/responses/manage/PaperImportResponse';
+import { PaperImportResponse } from '~/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
@@ -62,6 +56,7 @@ export async function basicSearch(
   });
   return data;
 }
+
 // 1.1 二次搜索（模式：关键词分词，其他精确匹配）
 export async function basicFilterSearch(
   args: FilterSearchPayload
@@ -447,23 +442,12 @@ export async function mergeAuthorInfo(
   return data;
 }
 
-// 36. 获取会议期刊列表 getConferencesAndJournalsList
-export async function getConferencesAndJournalsList(
-  keyword: string = '',
-  page: number = 1
-): Promise<BasicResponse<ConferencesAndJournalsInfoResponse>> {
-  const { data } = await axios.get('/conference/publication', {
-    params: { keyword, page }
-  });
-  return data;
-}
-
-// 37. 获取会议期刊的所有论文集 getConferencesAndJournalsProceedings
-export async function getConferencesAndJournalsProceedings(
-  titleId: string
-): Promise<BasicResponse<ConferencesAndJournalsProceedingsInfoResponse[]>> {
-  const { data } = await axios.get('/conference/proceeding', {
-    params: { titleId }
+// 35. 命令搜索
+export async function commandSearch(
+  args: CommandSearchPayload
+): Promise<BasicResponse<SearchFullResponse>> {
+  const { data } = await axios.get('/search/command', {
+    params: args
   });
   return data;
 }
@@ -498,7 +482,7 @@ export async function getAffiliationDetailRankingByKeyword(
   return data;
 }
 
-// 41. 合并关键词信息 mergeKeywords
+// 42. 合并关键词信息 mergeKeywords
 export async function mergeKeywords(
   src: string[],
   dest: string
@@ -507,49 +491,12 @@ export async function mergeKeywords(
   return data;
 }
 
-// 46. 获取爬虫任务状态 getCrawlTask
-// 这里的实现非常dirty，需要留意可能存在的bug
-const mockConfig = {
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? 'https://wensun.top/test'
-      : 'http://localhost:3000/test',
-  timeout: 5 * 1000
-};
-const mockAxios = globalAxios.create(mockConfig);
-// 利用总线判断正在进行的请求数
-// 为什么不用vuex，因为nuxt对vuex的集成非常憨批，完全没法用
-// 下次不用了
-mockAxios.interceptors.request.use((config) => {
-  ++importBus.crawlTaskReqNum;
-  return config;
-});
-mockAxios.interceptors.request.use((config) => {
-  --importBus.crawlTaskReqNum;
-  return config;
-});
-
-export async function getCrawlTask(): Promise<
-  BasicResponse<CrawlTaskResponse[]>
-> {
-  const { data } = await mockAxios.get('/crawl/info');
-  return data;
-}
-
-// 47. 运行爬虫任务 crawl
-export async function execCrawlTask(
-  proceedings: string[]
-): Promise<BasicResponse> {
-  const { data } = await globalAxios.post('http://34.102.235.205/crawl.json', {
-    request: {
-      url: 'http://34.102.235.205/prod/actuator/health',
-      meta: { proceedings },
-      callback: 'start'
-    },
-    spider_name: 'conferences'
-  });
-  return data;
-}
+// 43. 查看活跃人才库
+// export async function getActiveTalentsBase()
+//   : Promise<BasicResponse> {
+//   const { data } = await axios.put('/info/keywords');
+//   return data;
+// }
 
 // 48. 根据研究方向获取排名详情
 export async function getKeywordDetailRanking(

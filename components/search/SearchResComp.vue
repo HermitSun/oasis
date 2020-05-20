@@ -5,7 +5,7 @@
         :href="res.link"
         class="title"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
       >
         <!--高亮-->
         <div v-html="filterHTML(res.title)"></div>
@@ -108,7 +108,7 @@
             <a
               :href="ref.googleScholarLink"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               >{{ ref.title }}</a
             >
           </div>

@@ -18,7 +18,6 @@ interface AdvancedSearchLocalData {
   searchContent: string;
   isLoading: boolean; // 是否正在加载
   showAdvancedSearch: boolean;
-  options: []; // sortKey Options
 }
 
 export type AdvancedSearchPageComp = AsyncAdvancedSearchData &

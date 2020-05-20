@@ -99,7 +99,8 @@ export default Vue.extend({
         {
           path: '/manage/keywords',
           title: '研究方向管理',
-          icon: 'el-icon-position'
+          icon: 'el-icon-position',
+          disabled: true
         }
       ];
     }

@@ -36,4 +36,5 @@ export interface CrawlTaskResponse {
   endTime: number;
   isFinished: boolean;
   paperCount: number;
+  totalPaperNum: number;
 }

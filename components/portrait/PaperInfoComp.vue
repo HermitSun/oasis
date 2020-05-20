@@ -5,7 +5,7 @@
         :href="paper.link"
         class="title"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         >{{ paper.title }}</a
       >
     </div>

@@ -6,43 +6,45 @@
 import Vue from 'vue';
 import { getKeywordAdvancedRanking } from '~/api';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
+import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+
+const cache = {
+  data: [] as KeywordAdvancedRankingResponse[],
+  cached: false,
+  expires: 300 * 1000 // 300s过期
+};
+let cacheTimer: NodeJS.Timeout;
 
 export default Vue.extend({
   name: 'Keyword',
   components: { KeywordAdvancedComp },
-  async asyncData({ store }) {
-    // get load status
-    const isPageLoaded = store.getters['ranking/isKeywordPageLoaded'];
-    if (isPageLoaded) {
-      return;
+  async asyncData() {
+    if (!cache.cached) {
+      // TODO 添加可选择的sortKey和year
+      const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
+        sortKey: 'acceptanceCount',
+        startYear: 2019,
+        endYear: 2019
+      });
+      cache.data =
+        keywordAdvancedRankingRes && keywordAdvancedRankingRes.data
+          ? keywordAdvancedRankingRes.data
+          : [];
+      cache.cached = true;
     }
 
-    // TODO 添加可选择的sortKey和year
-    const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
-      sortKey: 'acceptanceCount',
-      startYear: 2019,
-      endYear: 2019
-    });
-    const keywordAdvancedRankingData =
-      keywordAdvancedRankingRes && keywordAdvancedRankingRes.data
-        ? keywordAdvancedRankingRes.data
-        : [];
-
-    // mark as loaded
-    store.dispatch('ranking/updateIsKeywordPageLoaded', true);
-
     return {
-      rankings: keywordAdvancedRankingData
+      rankings: cache.data
     };
   },
-  data() {
-    return {
-      bar: 'foo'
-    };
+  activated() {
+    clearTimeout(cacheTimer);
   },
-  activated() {},
-  methods: {
-    foo() {}
+  deactivated() {
+    cacheTimer = setTimeout(() => {
+      cache.data = [];
+      cache.cached = false;
+    }, cache.expires);
   }
 });
 </script>

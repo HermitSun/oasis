@@ -38,3 +38,10 @@ export interface AdvancedSearchPayload {
   endYear?: number; // 结束日期
   sortKey: sortKey;
 }
+
+// 命令搜索
+export interface CommandSearchPayload {
+  query: string;
+  page: number;
+  sortKey: sortKey;
+}
