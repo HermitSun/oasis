@@ -44,6 +44,15 @@
           + 创建第一个任务
         </el-button>
       </div>
+      <!--只有当天才会显示创建任务-->
+      <el-button
+        v-if="runningTasks.length > 0 && selectedDate === getFormattedNow()"
+        type="primary"
+        size="medium"
+        @click="showImportSelectionDialog = true"
+      >
+        + 创建新任务
+      </el-button>
     </div>
     <!--选择需要导入的论文-->
     <el-drawer
@@ -241,7 +250,7 @@ export default Vue.extend({
   }
 
   .progress-bar {
-    min-height: 375px;
+    min-height: 350px;
     text-align: left;
     margin-top: 5px;
   }

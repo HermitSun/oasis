@@ -62,13 +62,6 @@ export async function getCrawlTask(
 export async function execCrawlTask(
   proceedings: string[]
 ): Promise<BasicResponse> {
-  const { data } = await crawlAxios.post('/crawl/crawl.json', {
-    request: {
-      url: 'http://34.102.235.205/prod/actuator/health',
-      meta: { proceedings },
-      callback: 'start'
-    },
-    spider_name: 'conferences'
-  });
+  const { data } = await crawlAxios.post('/crawl/crawl', { proceedings });
   return data;
 }
