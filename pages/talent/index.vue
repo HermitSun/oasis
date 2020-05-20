@@ -6,9 +6,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Message } from 'element-ui';
 import { getTalentsListByTalentBase } from '~/api';
 import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
-import { Message } from '~/node_modules/element-ui';
+
 async function requestTalentsListByTalentBase(field: string) {
   const res: {
     talentsList: TalentsListResponse[];
@@ -23,10 +24,11 @@ async function requestTalentsListByTalentBase(field: string) {
   }
   return res;
 }
+
 export default Vue.extend({
   name: 'Index',
   async asyncData({ query }) {
-    const field = query.field;
+    const field = query.field as string;
     const talentsListRes = await requestTalentsListByTalentBase(field);
     return {
       ...query,
