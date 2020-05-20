@@ -22,7 +22,6 @@
             alt="icon-search"
           />
         </button>
-
         <button
           class="advanced-search__button"
           @click="showAdvancedSearch = true"
@@ -44,6 +43,9 @@
           v-if="showCommandSearch"
           @close="showCommandSearch = false"
         />
+      </div>
+      <div v-for="(talent, index) in talents" :key="index">
+        <TalentBaseBasicComp :talent="talent" />
       </div>
     </div>
     <div class="homepage-content">
@@ -112,6 +114,7 @@ import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
+import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -252,6 +255,7 @@ export default Vue.extend({
   components: {
     AbstractComp,
     TalentBaseComp,
+    TalentBaseBasicComp,
     AdvancedSearchComp,
     CommandSearchComp,
     AuthorBasicRanking,
@@ -326,8 +330,6 @@ export default Vue.extend({
   .flex-center-column;
   background: @background-blue;
   height: @homepage-header-height;
-  min-height: 220px;
-  .mobile-height(100vh);
   @media @max-mobile-width {
     padding-bottom: 20vh;
   }

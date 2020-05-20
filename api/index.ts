@@ -506,7 +506,7 @@ export async function getTalentsListByTalentBase(
   field: string,
   page: number
 ): Promise<BasicResponse<TalentsListResponse[]>> {
-  const { data } = await axios.get('/talents/active', {
+  const { data } = await axios.get('/talents/list', {
     params: { field, page }
   });
   return data;
