@@ -130,8 +130,8 @@ const END_YEAR = new Date().getFullYear().toString();
 export default Vue.extend({
   name: 'SearchFilterComp',
   components: {
-    [CheckboxGroup.name]: CheckboxGroup,
-    [Checkbox.name]: Checkbox
+    [Checkbox.name]: Checkbox,
+    [CheckboxGroup.name]: CheckboxGroup
   },
   props: {
     keyword: {

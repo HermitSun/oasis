@@ -31,8 +31,8 @@ import paperSortKeyOptions from '~/components/public/PaperSortKeyOptions';
 export default Vue.extend({
   name: 'PapersSubtitle',
   components: {
-    [Select.name]: Select,
-    [Option.name]: Option
+    [Option.name]: Option,
+    [Select.name]: Select
   },
   props: {
     title: {

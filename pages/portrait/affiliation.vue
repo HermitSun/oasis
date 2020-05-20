@@ -139,12 +139,12 @@ async function requestAuthorDetailRanking(affiliation: string) {
 export default Vue.extend({
   name: 'Affiliation',
   components: {
+    [Pagination.name]: Pagination,
     AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    Subtitle,
-    [Pagination.name]: Pagination
+    Subtitle
   },
   mixins: [PaginationMaxSizeLimit],
   async asyncData({ query }) {

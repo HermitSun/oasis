@@ -218,11 +218,11 @@ async function fetchData(query: AuthorPapersPayload) {
 export default Vue.extend({
   name: 'Author',
   components: {
+    [Pagination.name]: Pagination,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,
-    Subtitle,
-    [Pagination.name]: Pagination
+    Subtitle
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
