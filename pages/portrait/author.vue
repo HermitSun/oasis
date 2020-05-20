@@ -182,7 +182,7 @@ async function requestAcademicRelation(authorId: string) {
 async function fetchData(query: AuthorPapersPayload) {
   const authorId = query.authorId as string;
   // 增加默认值
-  const sortKey = query.sortKey ? (query.sortKey as sortKey) : 'recent';
+  const sortKey = query.sortKey || 'recent';
   const page = query.page ? Number(query.page) : 1;
 
   const [portraitRes, papersRes] = await Promise.all([
