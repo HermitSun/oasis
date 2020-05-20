@@ -11,5 +11,5 @@ export interface ActiveTalentsBaseResponse {
   experts: {
     authorId: string;
     authorName: string;
-  }[]; //学者名 5个
+  }[]; // 学者名 5个
 }

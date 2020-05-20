@@ -44,8 +44,10 @@
           @close="showCommandSearch = false"
         />
       </div>
-      <div v-for="(talent, index) in talents" :key="index">
-        <TalentBaseBasicComp :talent="talent" />
+      <div class="homepage-header__talents">
+        <div v-for="(talent, index) in talents" :key="index">
+          <TalentBaseBasicComp :talent="talent" />
+        </div>
       </div>
     </div>
     <div class="homepage-content">
@@ -341,6 +343,15 @@ export default Vue.extend({
 
   .homepage-header__input {
     .mobile-width(90vw);
+  }
+
+  .homepage-header__talents {
+    .pc-width__mobile(0.8 * @search-input-width__pc);
+    .mobile-width(0.8 * @search-input-width__mobile);
+    .flex-space-between;
+    flex-flow: row wrap;
+    margin-top: 30px;
+    padding: 10px;
   }
 }
 
