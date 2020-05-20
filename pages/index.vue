@@ -57,6 +57,7 @@
           <AbstractComp :abstract="abstract" />
         </div>
       </div>
+      <Subtitle title="🎓  TALENTS BASE" />
 
       <div class="homepage-content__ranking">
         <Subtitle title="🏆 OASIS RANKINGS" />
@@ -77,6 +78,7 @@ import Vue from 'vue';
 import { Message } from 'element-ui';
 import {
   getActivePaperAbstract,
+  getActiveTalentsBase,
   getAffiliationBasicRanking,
   getAuthorBasicRanking,
   getConferenceBasicRanking,
@@ -97,6 +99,7 @@ import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.
 import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
 import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
+import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -215,6 +218,23 @@ async function requestKeywordBasicRanking() {
   return res;
 }
 
+async function requestActiveTalentsBase() {
+  const res: { talents: ActiveTalentsBaseResponse[] } = {
+    talents: []
+  };
+  try {
+    const activeTalentsBaseRes = await getActiveTalentsBase();
+    if (activeTalentsBaseRes.code === 200) {
+      res.talents = activeTalentsBaseRes.data;
+    } else {
+      Message.error(activeTalentsBaseRes.msg);
+    }
+  } catch (e) {
+    Message.error('网络异常');
+  }
+  return res;
+}
+
 export default Vue.extend({
   name: 'HomePage',
   components: {
@@ -236,14 +256,16 @@ export default Vue.extend({
       authorRankingRes,
       conferenceRankingRes,
       journalRankingRes,
-      keywordRankingRes
+      keywordRankingRes,
+      activeTalentsBaseRes
     ] = await Promise.all([
       requestActivePaperAbstract(),
       requestAffiliationBasicRanking(),
       requestAuthorBasicRanking(),
       requestConferenceBasicRanking(),
       requestJournalBasicRanking(),
-      requestKeywordBasicRanking()
+      requestKeywordBasicRanking(),
+      requestActiveTalentsBase()
     ]);
 
     return {
@@ -252,7 +274,8 @@ export default Vue.extend({
       ...authorRankingRes,
       ...conferenceRankingRes,
       ...journalRankingRes,
-      ...keywordRankingRes
+      ...keywordRankingRes,
+      ...activeTalentsBaseRes
     };
   },
   data() {
