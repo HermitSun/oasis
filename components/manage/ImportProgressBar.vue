@@ -3,7 +3,7 @@
     <div
       v-for="(task, index) of tasks"
       :key="'task' + index"
-      style="margin-bottom: 5px"
+      style="margin-bottom: 10px"
     >
       <!--进度条-->
       <el-progress

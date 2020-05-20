@@ -33,7 +33,7 @@ export async function getConferencesAndJournalsProceedings(
 // 46. 获取爬虫任务状态 getCrawlTask
 // 这里的实现非常dirty，需要留意可能存在的bug
 const crawlConfig = {
-  baseURL: 'https://wensun.top/api',
+  baseURL: 'https://wensun.top',
   timeout: 5 * 1000
 };
 const crawlAxios = globalAxios.create(crawlConfig);
@@ -52,7 +52,7 @@ export async function getCrawlTask(
   filterKey: FilterKey,
   date: string
 ): Promise<BasicResponse<CrawlTaskResponse[]>> {
-  const { data } = await crawlAxios.get('/task/state', {
+  const { data } = await crawlAxios.get('/api/task/state', {
     params: { filterKey, date }
   });
   return data;
@@ -62,7 +62,7 @@ export async function getCrawlTask(
 export async function execCrawlTask(
   proceedings: string[]
 ): Promise<BasicResponse> {
-  const { data } = await globalAxios.post('http://34.102.235.205/crawl.json', {
+  const { data } = await crawlAxios.post('/crawl/crawl.json', {
     request: {
       url: 'http://34.102.235.205/prod/actuator/health',
       meta: { proceedings },

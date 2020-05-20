@@ -1,100 +1,64 @@
 <template>
   <div class="manage-import-wrapper">
-    <el-timeline>
-      <!--选择会议或期刊-->
-      <el-timeline-item
-        v-if="step >= 1"
-        timestamp="选择会议或期刊"
-        placement="top"
-        :type="step === 1 ? 'primary' : 'success'"
+    <el-divider>已有任务</el-divider>
+    <div class="manage-import-body">
+      <!--筛选标准-->
+      <el-date-picker
+        v-model="selectedDate"
+        type="date"
+        placeholder="选择日期"
+        value-format="yyyy-MM-dd"
+        @change="setDate"
+      />
+      <el-select
+        v-model="selectedTasksFilterKey"
+        placeholder="请选择筛选标准"
+        style="margin-bottom: 5px"
+        @change="setFilterKey"
       >
-        <el-select
-          v-model="selectedTitleId"
-          filterable
-          remote
-          :remote-method="getConferencesAndJournalsList"
-          placeholder="请输入会议或期刊名"
-          style="display:block; width: 100%"
-        >
-          <el-option
-            v-for="conferenceOrJournal of conferencesAndJournalsList"
-            :key="conferenceOrJournal.titleId"
-            :label="conferenceOrJournal.publicationTitle"
-            :value="conferenceOrJournal.titleId"
-          />
-        </el-select>
-      </el-timeline-item>
-      <!--选择具体的年份-->
-      <el-timeline-item
-        v-if="step >= 2"
-        timestamp="选择年份"
-        placement="top"
-        :type="step === 2 ? 'primary' : 'success'"
-      >
-        <el-select
-          v-model="selectedProceedingIds"
-          multiple
-          filterable
-          placeholder="请输入年份"
-          style="display:block; width: 100%"
-        >
-          <el-option
-            v-for="proceeding of proceedings"
-            :key="proceeding.proceedingId"
-            :label="proceeding.proceedingTitle"
-            :value="proceeding.proceedingId"
-          />
-        </el-select>
-      </el-timeline-item>
-      <!--确认开始-->
-      <el-timeline-item
-        v-if="step >= 3"
-        timestamp="确认开始"
-        placement="top"
-        :type="step === 3 ? 'primary' : 'success'"
-      >
-        <p style="text-align: center">
-          提示：只会导入符合格式的论文，可能会小于论文总数
+        <el-option
+          v-for="sortKey in tasksFilterKeys"
+          :key="sortKey.value"
+          :label="sortKey.label"
+          :value="sortKey.value"
+        />
+      </el-select>
+      <!--进度条-->
+      <ImportProgressBar
+        v-if="runningTasks.length > 0"
+        :tasks="runningTasks"
+        class="progress-bar"
+      />
+      <!--无数据的提示-->
+      <div v-else class="no-data-hint">
+        <p style="margin-bottom: 20px; color: #909399">
+          暂时还没有任务
         </p>
+        <!--只有当天才会显示创建任务-->
         <el-button
+          v-if="selectedDate === getFormattedNow()"
           type="primary"
           size="medium"
-          round
-          style="display: block; margin: 0 auto"
-          @click="execCrawlTask"
+          @click="showImportSelectionDialog = true"
         >
-          确认开始
+          + 创建第一个任务
         </el-button>
-      </el-timeline-item>
-      <!--正在运行的导入任务-->
-      <el-timeline-item timestamp="已有任务" placement="top" type="primary">
-        <!--筛选标准-->
-        <template v-if="runningTasks.length > 0">
-          <el-date-picker
-            v-model="selectedDate"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-            @change="setDate"
-          />
-          <el-select
-            v-model="selectedTasksFilterKey"
-            placeholder="请选择筛选标准"
-            style="margin-bottom: 5px"
-            @change="setFilterKey"
-          >
-            <el-option
-              v-for="sortKey in tasksFilterKeys"
-              :key="sortKey.value"
-              :label="sortKey.label"
-              :value="sortKey.value"
-            />
-          </el-select>
-        </template>
-        <!--进度条-->
-        <ImportProgressBar :tasks="runningTasks" />
-      </el-timeline-item>
-    </el-timeline>
+      </div>
+    </div>
+    <!--选择需要导入的论文-->
+    <el-drawer
+      title="导入论文"
+      direction="ltr"
+      size="50%"
+      :visible.sync="showImportSelectionDialog"
+      :before-close="closeImportSelectionDialog"
+    >
+      <ImportSelectionDialog
+        style="margin-right: 15px"
+        @close="showImportSelectionDialog = false"
+      />
+    </el-drawer>
+    <!--旧版功能-->
     <!--导入数据文件-->
     <el-divider>旧版功能</el-divider>
     <el-button
@@ -118,23 +82,13 @@ import Vue from 'vue';
 import {
   DatePicker,
   Divider,
+  Drawer,
   Option,
   Progress,
-  Select,
-  Timeline,
-  TimelineItem
+  Select
 } from 'element-ui';
-import {
-  execCrawlTask,
-  getConferencesAndJournalsList,
-  getConferencesAndJournalsProceedings,
-  getCrawlTask
-} from '~/api/manage';
-import {
-  ConferencesAndJournalsInfo,
-  ConferencesAndJournalsProceedingsInfoResponse,
-  CrawlTaskResponse
-} from '~/interfaces/responses/manage/PaperImportResponse';
+import { getCrawlTask } from '~/api/manage';
+import { CrawlTaskResponse } from '~/interfaces/responses/manage/PaperImportResponse';
 import ImportProgressBar from '~/components/manage/ImportProgressBar.vue';
 import importBus from '~/components/manage/bus';
 import { FilterKey } from '~/interfaces/pages/manage/ManageImportPageComp';
@@ -151,22 +105,19 @@ export default Vue.extend({
   components: {
     [DatePicker.name]: DatePicker,
     [Divider.name]: Divider,
+    [Drawer.name]: Drawer,
     ImportProgressBar,
+    ImportSelectionDialog: () =>
+      import('~/components/manage/ImportSelectionDialog.vue'),
     ImportUploadDialog: () =>
       import('~/components/manage/ImportUploadDialog.vue'),
     [Option.name]: Option,
     [Progress.name]: Progress,
-    [Select.name]: Select,
-    [Timeline.name]: Timeline,
-    [TimelineItem.name]: TimelineItem
+    [Select.name]: Select
   },
   data() {
     return {
-      // 导入数据
-      selectedTitleId: '',
-      conferencesAndJournalsList: [] as ConferencesAndJournalsInfo[],
-      selectedProceedingIds: [] as string[],
-      proceedings: [] as ConferencesAndJournalsProceedingsInfoResponse[],
+      showImportSelectionDialog: false,
       // 正在运行的爬虫任务
       tasksFilterKeys: [
         {
@@ -192,28 +143,16 @@ export default Vue.extend({
       showUploadDialog: false
     };
   },
-  computed: {
-    step(): number {
-      if (this.selectedTitleId) {
-        if (this.selectedProceedingIds.length > 0) {
-          return 3;
-        } else {
-          return 2;
-        }
-      } else {
-        return 1;
-      }
-    }
-  },
+  // 查询条件变化时立即发起查询
+  // 因为有PV操作，所以不会出问题
   watch: {
-    selectedTitleId(titleId: string) {
-      if (titleId) {
-        this.getConferencesAndJournalsProceedings(titleId);
-      }
+    '$route.query'() {
+      this.getCrawlTasks();
     }
   },
   mounted() {
     // 每秒更新一次结果
+    // 如果有可能，可以换成socket
     pollingTask = setInterval(() => {
       this.getCrawlTasks();
     }, 1000);
@@ -234,48 +173,16 @@ export default Vue.extend({
       fontElement.crossOrigin = 'anonymous';
       document.head.appendChild(fontElement);
     },
-    // 获取会议和期刊列表
-    async getConferencesAndJournalsList(keyword: string) {
-      if (keyword) {
-        const listRes = await getConferencesAndJournalsList(keyword);
-        this.conferencesAndJournalsList = listRes.data.list;
-      } else {
-        this.conferencesAndJournalsList = [];
-      }
-    },
-    // 获取已选择年份对应的论文
-    async getConferencesAndJournalsProceedings(titleId: string) {
-      const proceedingRes = await getConferencesAndJournalsProceedings(titleId);
-      this.proceedings = proceedingRes.data;
-    },
-    // 运行爬虫任务
-    async execCrawlTask() {
-      try {
-        await this.$confirm('是否导入选中的论文集?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        });
-        const execRes = await execCrawlTask(this.selectedProceedingIds);
-        console.log(execRes);
-        // clear
-        this.selectedTitleId = '';
-        this.selectedProceedingIds = [];
-      } catch (e) {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        });
-      }
-    },
     // 获取正在运行的任务
     async getCrawlTasks() {
       // 没有正在运行的请求时再发起请求
       if (importBus.crawlTaskReqNum === 0) {
         try {
+          // 如果没有指定date，默认为今天
+          const queryDate = this.selectedDate || this.getFormattedNow();
           const tasksRes = await getCrawlTask(
             this.selectedTasksFilterKey,
-            this.selectedDate
+            queryDate
           );
           const tasks = tasksRes && tasksRes.data ? tasksRes.data : [];
           this.runningTasks = tasks.map((task) => {
@@ -312,6 +219,13 @@ export default Vue.extend({
           date
         }
       });
+    },
+    // 辅助函数
+    getFormattedNow() {
+      return getFormattedDate(new Date());
+    },
+    closeImportSelectionDialog() {
+      this.showImportSelectionDialog = false;
     }
   }
 });
@@ -320,5 +234,24 @@ export default Vue.extend({
 <style scoped lang="less">
 .manage-import-wrapper {
   margin-top: 6vh;
+
+  .manage-import-body {
+    min-height: 375px;
+    text-align: center;
+  }
+
+  .progress-bar {
+    min-height: 375px;
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .no-data-hint {
+    min-height: 375px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>
