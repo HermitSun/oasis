@@ -195,6 +195,8 @@ export default Vue.extend({
           );
           const tasks = tasksRes && tasksRes.data ? tasksRes.data : [];
           this.runningTasks = tasks.map((task) => {
+            // 可能存在 0/0的情况，此时会出现NaN
+            // @see issue #63[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/63]]
             const currentPercentage = task.isFinished
               ? 100
               : Number(
@@ -202,7 +204,9 @@ export default Vue.extend({
                 );
             return {
               ...task,
-              percentage: currentPercentage
+              percentage: Number.isNaN(currentPercentage)
+                ? 0
+                : currentPercentage
             };
           });
         } catch (e) {
