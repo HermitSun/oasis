@@ -46,6 +46,8 @@ import {
   KeywordAdvancedRankingResponse,
   KeywordDetailRankingResponse
 } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
+import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -492,11 +494,23 @@ export async function mergeKeywords(
 }
 
 // 43. 查看活跃人才库
-// export async function getActiveTalentsBase()
-//   : Promise<BasicResponse> {
-//   const { data } = await axios.put('/info/keywords');
-//   return data;
-// }
+export async function getActiveTalentsBase(): Promise<
+  BasicResponse<ActiveTalentsBaseResponse[]>
+> {
+  const { data } = await axios.get('/talents/active');
+  return data;
+}
+
+// 44. 查看某人才库的人才列表
+export async function getTalentsListByTalentBase(
+  field: string,
+  page: number
+): Promise<BasicResponse<TalentsListResponse[]>> {
+  const { data } = await axios.get('/talents/list', {
+    params: { field, page }
+  });
+  return data;
+}
 
 // 48. 根据研究方向获取排名详情
 export async function getKeywordDetailRanking(

@@ -56,6 +56,23 @@
   }
 }
 
+.mobile-border-radius(@value) {
+  @media @max-mobile-width {
+    border-radius: @value;
+  }
+}
+.pc-border-radius__mobile(@value) {
+  @media @min-mobile-width {
+    border-radius: @value;
+  }
+}
+
+.pc-border-radius__pad(@value) {
+  @media @min-pad-width {
+    border-radius: @value;
+  }
+}
+
 // 手机端隐藏
 .mobile-hidden {
   @media @max-mobile-width {
@@ -64,8 +81,8 @@
 }
 
 // PC端隐藏
-.pc-hidden_mobile{
-  @media @min-mobile-width{
+.pc-hidden_mobile {
+  @media @min-mobile-width {
     display: none;
   }
 }
