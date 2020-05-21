@@ -34,7 +34,7 @@
         <p style="margin-bottom: 20px; color: #909399">
           暂时还没有任务
         </p>
-        <!--只有当天才会显示创建任务-->
+        <!--当天无数据时显示-->
         <el-button
           v-if="selectedDate === getFormattedNow()"
           type="primary"
@@ -44,9 +44,9 @@
           + 创建第一个任务
         </el-button>
       </div>
-      <!--只有当天才会显示创建任务-->
+      <!--只要不是当天且没有数据，则显示-->
       <el-button
-        v-if="runningTasks.length > 0 && selectedDate === getFormattedNow()"
+        v-if="runningTasks.length > 0 || selectedDate !== getFormattedNow()"
         type="primary"
         size="medium"
         @click="showImportSelectionDialog = true"
