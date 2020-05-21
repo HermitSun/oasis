@@ -160,6 +160,8 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // 先立即执行一次，减少闪屏
+    this.getCrawlTasks();
     // 每秒更新一次结果
     // 如果有可能，可以换成socket
     pollingTask = setInterval(() => {
