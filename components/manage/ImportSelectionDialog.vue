@@ -141,15 +141,14 @@ export default Vue.extend({
           type: 'warning'
         });
         const execRes = await execCrawlTask(this.selectedProceedingIds);
-        console.log(execRes);
+        if (execRes) {
+          this.$message.success('任务已启动');
+        }
         // clear
         this.selectedTitleId = '';
         this.selectedProceedingIds = [];
       } catch (e) {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        });
+        this.$message.info('任务已取消');
       } finally {
         this.$emit('close');
       }
