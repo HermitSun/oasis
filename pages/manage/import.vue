@@ -225,11 +225,13 @@ export default Vue.extend({
       });
     },
     setDate(date: string) {
+      // 当date为空时，移除URL里的date
+      // @see issue #64[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/64]]
       this.$router.push({
         path: this.$route.path,
         query: {
           ...this.$route.query,
-          date
+          date: date || undefined
         }
       });
     },
