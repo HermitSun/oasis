@@ -23,36 +23,38 @@
           :value="sortKey.value"
         />
       </el-select>
-      <!--进度条-->
-      <ImportProgressBar
-        v-if="runningTasks.length > 0"
-        :tasks="runningTasks"
-        class="progress-bar"
-      />
-      <!--无数据的提示-->
-      <div v-else class="no-data-hint">
-        <p style="margin-bottom: 20px; color: #909399">
-          暂时还没有任务
-        </p>
-        <!--当天无数据时显示-->
+      <template v-if="isTasksLoaded">
+        <!--进度条-->
+        <ImportProgressBar
+          v-if="runningTasks.length > 0"
+          :tasks="runningTasks"
+          class="progress-bar"
+        />
+        <!--无数据的提示-->
+        <div v-else class="no-data-hint">
+          <p style="margin-bottom: 20px; color: #909399">
+            暂时还没有任务
+          </p>
+          <!--当天无数据时显示-->
+          <el-button
+            v-if="selectedDate === getFormattedNow()"
+            type="primary"
+            size="medium"
+            @click="showImportSelectionDialog = true"
+          >
+            + 创建第一个任务
+          </el-button>
+        </div>
+        <!--只要不是当天且没有数据，则显示-->
         <el-button
-          v-if="selectedDate === getFormattedNow()"
+          v-if="runningTasks.length > 0 || selectedDate !== getFormattedNow()"
           type="primary"
           size="medium"
           @click="showImportSelectionDialog = true"
         >
-          + 创建第一个任务
+          + 创建新任务
         </el-button>
-      </div>
-      <!--只要不是当天且没有数据，则显示-->
-      <el-button
-        v-if="runningTasks.length > 0 || selectedDate !== getFormattedNow()"
-        type="primary"
-        size="medium"
-        @click="showImportSelectionDialog = true"
-      >
-        + 创建新任务
-      </el-button>
+      </template>
     </div>
     <!--选择需要导入的论文-->
     <el-drawer
@@ -126,6 +128,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      isTasksLoaded: false,
       showImportSelectionDialog: false,
       // 正在运行的爬虫任务
       tasksFilterKeys: [
@@ -160,8 +163,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    // 先立即执行一次，减少闪屏
-    this.getCrawlTasks();
+    // 先立即执行一次，得到数据后再展示body，减少闪屏
+    this.getCrawlTasks().finally(() => {
+      this.isTasksLoaded = true;
+    });
     // 每秒更新一次结果
     // 如果有可能，可以换成socket
     pollingTask = setInterval(() => {
