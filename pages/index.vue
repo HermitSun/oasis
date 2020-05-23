@@ -45,7 +45,11 @@
         />
       </div>
       <div class="homepage-header__talents">
-        <div v-for="(talent, index) in talents" :key="index">
+        <div
+          v-for="(talent, index) in talents"
+          :key="index"
+          class="homepage-header__talent"
+        >
           <TalentBaseBasicComp :talent="talent" />
         </div>
       </div>
@@ -55,7 +59,7 @@
         <div class="homepage-content__talents">
           <Subtitle title="🎓  TALENTS BASE" />
           <div v-for="(talent, index) in talents" :key="index">
-            <TalentBaseComp :talent="talent" />
+            <TalentBaseComp :talent="talent" style="width: 15%" />
           </div>
         </div>
         <div class="homepage-content__abstract">
@@ -348,10 +352,15 @@ export default Vue.extend({
   .homepage-header__talents {
     .pc-width__mobile(0.8 * @search-input-width__pc);
     .mobile-width(0.8 * @search-input-width__mobile);
-    .flex-space-between;
-    flex-flow: row wrap;
+    /* TODO 优化移动端适配 */
+    min-width: 300px;
     margin-top: 30px;
     padding: 10px;
+    .homepage-header__talent {
+      width: 20%;
+      min-width: @talent-base-basic-width__pc;
+      float: left;
+    }
   }
 }
 
