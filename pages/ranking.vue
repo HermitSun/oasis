@@ -51,3 +51,7 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped lang="less">
+@import '../stylesheets/index.less';
+</style>
