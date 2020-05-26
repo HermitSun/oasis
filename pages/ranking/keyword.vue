@@ -1,12 +1,19 @@
 <template>
-  <KeywordAdvancedComp :rankings="rankings" />
+  <div class="divide">
+    <KeywordAdvancedComp :rankings="rankings" class="advanced-ranking-list" />
+    <div id="webgl" class="advanced-ranking-3D-charts mobile-hidden"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { getKeywordAdvancedRanking } from '~/api';
+import { getKeyword3DTrend, getKeywordAdvancedRanking } from '~/api';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
 import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
+import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendResponse';
+import { Message } from '~/node_modules/element-ui';
+import AsyncLoadEcharts from '~/components/mixins/AsyncLoadEcharts';
+import { Echarts3DBarOption } from '~/components/charts/echarts';
 
 const cache = {
   data: [] as KeywordAdvancedRankingResponse[],
@@ -18,6 +25,7 @@ let cacheTimer: NodeJS.Timeout;
 export default Vue.extend({
   name: 'Keyword',
   components: { KeywordAdvancedComp },
+  mixins: [AsyncLoadEcharts],
   async asyncData() {
     if (!cache.cached) {
       // TODO 添加可选择的sortKey和year
@@ -32,9 +40,25 @@ export default Vue.extend({
           : [];
       cache.cached = true;
     }
+    const keyword3DTrendRes: {
+      keyword3DTrend: Keyword3DTrendResponse;
+    } = {
+      keyword3DTrend: {
+        keywords: [],
+        years: [],
+        value: [[]]
+      }
+    };
+    try {
+      const keyword3DTrendResponse = await getKeyword3DTrend();
+      keyword3DTrendRes.keyword3DTrend = keyword3DTrendResponse.data;
+    } catch (e) {
+      Message.error(e.toString());
+    }
 
     return {
-      rankings: cache.data
+      rankings: cache.data,
+      keyword3DTrend: keyword3DTrendRes.keyword3DTrend
     };
   },
   activated() {
@@ -45,6 +69,19 @@ export default Vue.extend({
       cache.data = [];
       cache.cached = false;
     }, cache.expires);
+  },
+  methods: {
+    onEchartsLoad() {
+      echarts
+        .init(document.getElementById('webgl') as HTMLDivElement)
+        .setOption(
+          Echarts3DBarOption(
+            this.keyword3DTrend.keywords,
+            this.keyword3DTrend.years,
+            this.keyword3DTrend.value
+          )
+        );
+    }
   }
 });
 </script>
