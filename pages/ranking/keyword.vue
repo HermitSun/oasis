@@ -61,6 +61,9 @@ export default Vue.extend({
       keyword3DTrend: keyword3DTrendRes.keyword3DTrend
     };
   },
+  data() {
+    return {} as any;
+  },
   activated() {
     clearTimeout(cacheTimer);
   },
