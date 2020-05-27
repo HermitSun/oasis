@@ -1,0 +1,114 @@
+.banner {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-figures {
+  position: absolute;
+  width: 3174px;
+  height: 2624px;
+  left: 50%;
+  margin-left: -1587px;
+  top: 50%;
+  margin-top: -940px;
+  z-index: -100;
+}
+
+.banner .shape {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.banner .shape1 {
+  width: 800px;
+  height: 800px;
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(to bottom right, #183de7, #48cffe 80%);
+  clip-path: inset(0 0 0 0 round 100px);
+  z-index: 1;
+}
+
+.banner .shape2 {
+  width: 1200px;
+  height: 1200px;
+  left: 215px;
+  top: 190px;
+  clip-path: inset(0 0 0 0 round 100px);
+  background-image: linear-gradient(to bottom right, #183de7, #48cffe 80%);
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+.banner .shape3 {
+  width: 960px;
+  height: 960px;
+  left: 1060px;
+  top: 450px;
+  border-radius: 50%/100% 0;
+  background: #00ffff;
+  z-index: 3;
+}
+
+.banner .shape4,
+.banner .shape5 {
+  width: 880px;
+  height: 880px;
+  right: 478px;
+  top: 336px;
+  clip-path: circle();
+  background-image: linear-gradient(to right, #0db54c, #00697b 40%);
+  z-index: 4;
+}
+
+.banner .shape5 {
+  width: 1600px;
+  height: 1600px;
+  right: 820px;
+  top: 960px;
+  z-index: 5;
+}
+
+.banner .shape6 {
+  width: 1374px;
+  height: 1184px;
+  right: 0px;
+  bottom: 445px;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  background-image: linear-gradient(to right, #f76b71, #a41058 60%);
+  z-index: 6;
+}
+
+.ani1 {
+  animation: spin2 202s linear infinite;
+}
+
+.ani2 {
+  animation: spin1 481s linear infinite;
+}
+
+.ani3 {
+  animation: spin1 502s linear infinite;
+}
+
+.ani4 {
+  animation: spin1 824s linear infinite;
+}
+
+@keyframes spin1 {
+  100% {
+    transform: rotate(360deg);
+    transform-origin: 50% 50%;
+  }
+}
+
+@keyframes spin2 {
+  100% {
+    transform: rotate(-360deg);
+    transform-origin: 50% 50%;
+  }
+}

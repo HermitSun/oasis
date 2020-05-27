@@ -58,8 +58,10 @@
       <div class="homepage-content__left">
         <div class="homepage-content__talents">
           <Subtitle title="🎓  TALENTS BASE" />
-          <div v-for="(talent, index) in talents" :key="index">
-            <TalentBaseComp :talent="talent" style="width: 15%" />
+          <div class="talents">
+            <div v-for="(talent, index) in talents" :key="index" class="talent">
+              <TalentBaseComp :talent="talent" />
+            </div>
           </div>
         </div>
         <div class="homepage-content__abstract">
@@ -87,6 +89,16 @@
             <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="banner-figures">
+        <div class="shape shape1 ani1"></div>
+        <div class="shape shape2 ani2"></div>
+        <div class="shape shape3 ani3"></div>
+        <div class="shape shape4"></div>
+        <div class="shape shape5 ani3"></div>
+        <div class="shape shape6 ani4"></div>
       </div>
     </div>
   </div>
@@ -333,6 +345,7 @@ export default Vue.extend({
 @import '../stylesheets/index.less';
 
 .homepage-header {
+  z-index: 100;
   .flex-center-column;
   background: @background-blue;
   height: @homepage-header-height;
@@ -353,13 +366,17 @@ export default Vue.extend({
     .pc-width__mobile(0.8 * @search-input-width__pc);
     .mobile-width(0.8 * @search-input-width__mobile);
     /* TODO 优化移动端适配 */
-    min-width: 300px;
+    min-width: 400px;
     margin-top: 30px;
     padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+
     .homepage-header__talent {
       width: 20%;
       min-width: @talent-base-basic-width__pc;
-      float: left;
     }
   }
 }
@@ -382,6 +399,19 @@ export default Vue.extend({
 
   .homepage-content__talents {
     .gray-background;
+
+    .talents {
+      display: flex;
+      flex-flow: row wrap;
+      align-content: flex-start;
+      padding: 10px;
+    }
+    .talent {
+      box-sizing: border-box;
+      flex: 0 0 24%;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
   }
 
   .homepage-content__ranking {
