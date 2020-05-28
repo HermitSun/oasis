@@ -15,6 +15,11 @@
 @talent-base-author-font-size: @small-font;
 @talent-base-count-font-size: @sub-middle-font;
 
+// talent-detail
+@talent-detail-height: 100px;
+@talent-detail-affiliation-font-size: @sub-middle-font;
+@talent-detail-author-font-size: @middle-font;
+
 .talent-base {
   height: @talent-base-size;
   padding: 5px;
@@ -96,6 +101,10 @@
   //.pc-width__mobile(@talent-base-basic-width__pc);
   .flex-center-column;
 
+  &:hover {
+    background-color: @background-blue-normal-light;
+  }
+
   .count {
     background-color: @background-blue-dark;
     color: @background-blue-normal;
@@ -116,6 +125,42 @@
   }
 }
 
-.talent-base-basic:hover {
-  background-color: @background-blue-normal-light;
+.talent-detail {
+  border-radius: 20px;
+  //height: @talent-detail-height;
+  padding: 20px 20px;
+  border: 1px solid @border-gray;
+  text-align: left;
+  margin-bottom: 8px;
+  .name {
+    font-weight: 500;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: @talent-detail-author-font-size;
+  }
+  .affiliation {
+    font-size: @talent-detail-affiliation-font-size;
+    color: @font-gray-dark;
+    margin-bottom: 5px;
+  }
+  .papers {
+    line-height: 21px;
+    .title {
+      color: @background-blue;
+      font-weight: 500;
+    }
+    .citation {
+      color: @font-gray-light;
+    }
+  }
+}
+
+.tag {
+  color: @font-gray;
+  border: 1px solid @border-gray;
+  border-radius: 5px;
+  padding: 3px 5px;
+  width: 120px;
+  margin-right: 10px;
+  line-height: 30px;
 }
