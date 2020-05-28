@@ -9,15 +9,85 @@
 @talent-base-basic-count-size__mobile: 30px;
 
 @talent-base-basic-field-font-size: @sub-small-font;
-
 // talent-base
+@talent-base-size: 260px;
+@talent-base-field-font-size: @middle-font;
+@talent-base-author-font-size: @small-font;
+@talent-base-count-font-size: @sub-middle-font;
+
+// talent-detail
+@talent-detail-height: 100px;
+@talent-detail-affiliation-font-size: @sub-middle-font;
+@talent-detail-author-font-size: @middle-font;
 
 .talent-base {
+  height: @talent-base-size;
+  padding: 5px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 20px) 0%,
+    100% 20px,
+    100% calc(100% - 20px),
+    calc(100% - 20px) 100%,
+    0 100%
+  );
+  background: whitesmoke;
+  &:hover {
+    background: @background-blue-light;
+  }
+  .title {
+    min-height: 150px;
+    .flex-center-column;
+    &:hover {
+      cursor: pointer;
+    }
+    .field {
+      text-align: center;
+      background: @font-dark;
+      font-size: @talent-base-field-font-size;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
+      font-style: italic;
+    }
+    .count {
+      margin-top: 10px;
+      color: @font-gray-middle;
+      font-size: @talent-base-count-font-size;
+    }
+  }
+
   .author {
     cursor: pointer;
-  }
-  .authorName:hover {
-    color: @bright-yellow;
+    font-size: @talent-base-author-font-size;
+    color: @font-gray-dark;
+
+    padding: 5px 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    justify-content: center;
+
+    .authorName {
+      text-align: center;
+      box-sizing: border-box;
+      flex: 0 0 30%;
+
+      border: 1px solid @background-blue;
+      border-radius: 20px;
+      padding: 2px 3px;
+      margin: 3px 3px;
+      line-height: 22px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        border: 0;
+        background: @background-blue;
+        color: white;
+      }
+    }
   }
 }
 
@@ -28,8 +98,12 @@
   .mobile-height(@talent-base-basic-height__mobile);
   .mobile-width(@talent-base-basic-width__mobile);
   .pc-height__mobile(@talent-base-basic-height__pc);
-  .pc-width__mobile(@talent-base-basic-width__pc);
+  //.pc-width__mobile(@talent-base-basic-width__pc);
   .flex-center-column;
+
+  &:hover {
+    background-color: @background-blue-normal-light;
+  }
 
   .count {
     background-color: @background-blue-dark;
@@ -42,6 +116,7 @@
     .pc-border-radius__mobile(@talent-base-basic-count-size__pc);
     .mobile-border-radius(@talent-base-basic-count-size__mobile);
   }
+
   .field {
     margin-top: 20px;
     color: ghostwhite;
@@ -50,6 +125,42 @@
   }
 }
 
-.talent-base-basic:hover {
-  background-color: @background-blue-normal-light;
+.talent-detail {
+  border-radius: 20px;
+  //height: @talent-detail-height;
+  padding: 20px 20px;
+  border: 1px solid @border-gray;
+  text-align: left;
+  margin-bottom: 8px;
+  .name {
+    font-weight: 500;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: @talent-detail-author-font-size;
+  }
+  .affiliation {
+    font-size: @talent-detail-affiliation-font-size;
+    color: @font-gray-dark;
+    margin-bottom: 5px;
+  }
+  .papers {
+    line-height: 21px;
+    .title {
+      color: @background-blue;
+      font-weight: 500;
+    }
+    .citation {
+      color: @font-gray-light;
+    }
+  }
+}
+
+.tag {
+  color: @font-gray;
+  border: 1px solid @border-gray;
+  border-radius: 5px;
+  padding: 3px 5px;
+  width: 120px;
+  margin-right: 10px;
+  line-height: 30px;
 }

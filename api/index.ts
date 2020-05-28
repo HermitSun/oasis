@@ -48,6 +48,7 @@ import {
 } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
+import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -512,6 +513,16 @@ export async function getTalentsListByTalentBase(
   return data;
 }
 
+// 45. 获取某学者的相关学者推荐
+export async function getSimilarAuthorByAuthorId(
+  authorId: string
+): Promise<BasicResponse<TalentsListResponse[]>> {
+  const { data } = await axios.get('/talents/list', {
+    params: { authorId }
+  });
+  return data;
+}
+
 // 48. 根据研究方向获取排名详情
 export async function getKeywordDetailRanking(
   keyword: string
@@ -519,5 +530,13 @@ export async function getKeywordDetailRanking(
   const { data } = await axios.get('/rank/detail/keyword', {
     params: { keyword }
   });
+  return data;
+}
+
+// 49. 查看研究方向的排名3D趋势
+export async function getKeyword3DTrend(): Promise<
+  BasicResponse<Keyword3DTrendResponse>
+> {
+  const { data } = await axios.get('/keyword/trend');
   return data;
 }
