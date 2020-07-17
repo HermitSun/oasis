@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="homepage-header">
+      <SearchBarComp />
       <img src="~/assets/logo.png" class="homepage-header__logo" alt="oasis" />
       <!--搜索框，增加一个aria属性来提高accessibility-->
       <input
@@ -91,16 +92,16 @@
         </div>
       </div>
     </div>
-    <div class="banner">
-      <div class="banner-figures">
-        <div class="shape shape1 ani1"></div>
-        <div class="shape shape2 ani2"></div>
-        <div class="shape shape3 ani3"></div>
-        <div class="shape shape4"></div>
-        <div class="shape shape5 ani3"></div>
-        <div class="shape shape6 ani4"></div>
-      </div>
-    </div>
+    <!--<div class="banner">-->
+    <!--<div class="banner-figures">-->
+    <!--<div class="shape shape1 ani1"></div>-->
+    <!--<div class="shape shape2 ani2"></div>-->
+    <!--<div class="shape shape3 ani3"></div>-->
+    <!--<div class="shape shape4"></div>-->
+    <!--<div class="shape shape5 ani3"></div>-->
+    <!--<div class="shape shape6 ani4"></div>-->
+    <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -133,6 +134,7 @@ import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
 import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -269,7 +271,7 @@ async function requestActiveTalentsBase() {
 }
 
 export default Vue.extend({
-  name: 'HomePage',
+  name: 'Index',
   components: {
     AbstractComp,
     TalentBaseComp,
@@ -281,7 +283,8 @@ export default Vue.extend({
     ConferenceBasicRanking,
     KeywordBasicRanking,
     JournalBasicRanking,
-    Subtitle
+    Subtitle,
+    SearchBarComp
   },
   // 渲染初始数据
   async asyncData() {
@@ -320,6 +323,10 @@ export default Vue.extend({
       showCommandSearch: false
     } as HomePageComp;
   },
+  async mounted() {
+    // const res = await getActivePaperAbstract();
+    // console.log(res.data);
+  },
   methods: {
     async sendBasicSearch() {
       const defaultPage = '1';
@@ -347,7 +354,6 @@ export default Vue.extend({
 .homepage-header {
   z-index: 100;
   .flex-center-column;
-  background: @background-blue;
   height: @homepage-header-height;
   @media @max-mobile-width {
     padding-bottom: 20vh;
@@ -406,6 +412,7 @@ export default Vue.extend({
       align-content: flex-start;
       padding: 10px;
     }
+
     .talent {
       box-sizing: border-box;
       flex: 0 0 24%;

@@ -21,10 +21,12 @@
 // 搜索页Header
 .searchPage-header {
   .flex-left-center-row;
+  position: fixed;
+  top: 0;
+  z-index: 10000;
   text-align: left;
+  width: 100vw;
   background: @background-blue;
-  .mobile-height(@searchPage-header-height__mobile);
-  .pc-height__mobile(@searchPage-header-height__pc);
 }
 
 .searchPage-header__logo {
@@ -35,12 +37,14 @@
 .searchPage-content {
   padding: 0 10px;
 }
+
 .searchPage-content__result {
   //width: 75%;
   padding: 10px;
 
   .pc-width__mobile(75%);
 }
+
 .searchPage-content__filter {
   // TODO 添加移动端布局
   @media @max-mobile-width {
@@ -50,23 +54,28 @@
   // PC
   width: 25%;
   padding: 10px;
+
   .filter {
     background: @background-gray;
     padding: 20px 10px;
     width: 100%;
     .flex-left-left-column;
+
     .filter-wrapper {
       width: 100%;
+
       .hint {
         margin: 10px 0;
         color: @background-blue;
         font-size: @sub-middle-font;
       }
+
       .divider {
         background-color: @background-blue-light;
         height: 1.5px;
         margin: 10px 0;
       }
+
       .options {
         /deep/ .option {
           display: inline-grid;
@@ -110,6 +119,7 @@
     font-size: @sub-middle-font;
     line-height: @middle-font;
   }
+
   .error {
     margin-left: 5px;
     margin-top: 3px;
@@ -129,6 +139,7 @@
     font-weight: 500;
     margin-bottom: 5px;
     letter-spacing: 1px;
+
     a {
       font-size: @search-item-title-font-size;
       text-decoration: none;
@@ -157,6 +168,7 @@
     color: @background-blue;
     margin-right: 5px;
     cursor: pointer;
+
     .name:hover {
       color: @bright-yellow;
     }
@@ -165,8 +177,10 @@
   .info {
     color: @font-gray;
     font-size: @search-item-author-font-size;
+
     .publicationName {
       cursor: pointer;
+
       &:hover {
         color: @bright-yellow;
       }
@@ -202,11 +216,13 @@
 
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
+
       .keyword {
         border: @background-blue-light 1px solid;
         padding: 1px;
         font-size: @search-item-keyword-font-size;
         cursor: pointer;
+
         &:hover {
           color: @bright-yellow;
         }
@@ -334,6 +350,7 @@
     .basic-search__button-active;
   }
 }
+
 .basic-search__button_small {
   width: 35px;
   height: 30px;
@@ -342,6 +359,7 @@
   background: linear-gradient(145deg, #2e6c8b, #275b75);
   box-shadow: 2px 2px 0 @background-blue-dark, -2px -2px 0 #4199c4;
   color: @search-button-font-color;
+
   &:active {
     .basic-search__button-active;
   }
@@ -350,6 +368,7 @@
     .basic-search__button-active;
   }
 }
+
 // 高级搜索按钮
 // active状态
 .advanced-search__button-active {
