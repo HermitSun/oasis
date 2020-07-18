@@ -1,59 +1,65 @@
 <template>
   <div>
-    <div class="homepage-header">
+    <div>
       <SearchBarComp />
-      <img src="~/assets/logo.png" class="homepage-header__logo" alt="oasis" />
-      <!--搜索框，增加一个aria属性来提高accessibility-->
-      <input
-        v-model="keyword"
-        class="homepage-header__input basic-search__input"
-        type="text"
-        style="margin-top: 25px;"
-        aria-label="search"
-        @keyup.enter="sendBasicSearch"
-      />
-      <div class="flex-center-row" style="margin-top: 15px">
-        <button
-          class="basic-search__button_small pc-hidden_mobile"
-          @click="sendBasicSearch"
-        >
-          <img
-            src="../assets/icon/icon-search.png"
-            style="height: 28px"
-            alt="icon-search"
+      <div class="homepage-header">
+        <img
+          src="~/assets/logo.png"
+          class="homepage-header__logo"
+          alt="oasis"
+        />
+        <!--搜索框，增加一个aria属性来提高accessibility-->
+        <input
+          v-model="keyword"
+          class="homepage-header__input basic-search__input"
+          type="text"
+          style="margin-top: 25px;"
+          aria-label="search"
+          @keyup.enter="sendBasicSearch"
+        />
+        <div class="flex-center-row" style="margin-top: 15px">
+          <button
+            class="basic-search__button_small pc-hidden_mobile"
+            @click="sendBasicSearch"
+          >
+            <img
+              src="../assets/icon/icon-search.png"
+              style="height: 28px"
+              alt="icon-search"
+            />
+          </button>
+          <button
+            class="advanced-search__button"
+            @click="showAdvancedSearch = true"
+          >
+            Advanced Search
+          </button>
+          <AdvancedSearchComp
+            v-if="showAdvancedSearch"
+            @close="showAdvancedSearch = false"
           />
-        </button>
-        <button
-          class="advanced-search__button"
-          @click="showAdvancedSearch = true"
-        >
-          Advanced Search
-        </button>
-        <AdvancedSearchComp
-          v-if="showAdvancedSearch"
-          @close="showAdvancedSearch = false"
-        />
-        <div style="width: 15px"></div>
-        <button
-          class="basic-search__button mobile-hidden"
-          @click="showCommandSearch = true"
-        >
-          Command Search
-        </button>
-        <CommandSearchComp
-          v-if="showCommandSearch"
-          @close="showCommandSearch = false"
-        />
-      </div>
-      <div class="homepage-header__talents">
-        <div
-          v-for="(talent, index) in talents"
-          :key="index"
-          class="homepage-header__talent"
-        >
-          <TalentBaseBasicComp :talent="talent" />
+          <div style="width: 15px"></div>
+          <button
+            class="basic-search__button mobile-hidden"
+            @click="showCommandSearch = true"
+          >
+            Command Search
+          </button>
+          <CommandSearchComp
+            v-if="showCommandSearch"
+            @close="showCommandSearch = false"
+          />
         </div>
       </div>
+      <!--<div class="homepage-header__talents">-->
+      <!--<div-->
+      <!--v-for="(talent, index) in talents"-->
+      <!--:key="index"-->
+      <!--class="homepage-header__talent"-->
+      <!--&gt;-->
+      <!--<TalentBaseBasicComp :talent="talent" />-->
+      <!--</div>-->
+      <!--</div>-->
     </div>
     <div class="homepage-content">
       <div class="homepage-content__left">
@@ -133,7 +139,6 @@ import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
-import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 
 // SSR需要的方法，无状态
@@ -275,7 +280,6 @@ export default Vue.extend({
   components: {
     AbstractComp,
     TalentBaseComp,
-    TalentBaseBasicComp,
     AdvancedSearchComp,
     AffiliationBasicRanking,
     AuthorBasicRanking,

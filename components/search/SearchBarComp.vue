@@ -10,6 +10,27 @@
           style="cursor: pointer"
           @click="$router.push('/')"
         />
+        <!--菜单-->
+        <el-menu
+          background-color="transparent"
+          active-text-color="#fff"
+          text-color="#000"
+          :default-active="currentRoute"
+          mode="horizontal"
+          router
+          style="height: 100%"
+        >
+          <el-menu-item
+            v-for="(item, index) in navItems"
+            :key="index"
+            :index="item.path"
+          >
+            <i :class="item.icon"></i>
+            <template #title>
+              <span>{{ item.title }}</span>
+            </template>
+          </el-menu-item>
+        </el-menu>
         <!--普通搜索-->
         <input
           v-model="searchContent"
@@ -35,23 +56,6 @@
           Command Search
         </button>
       </template>
-      <el-menu
-        :default-active="currentRoute"
-        mode="horizontal"
-        router
-        style="height: 100%"
-      >
-        <el-menu-item
-          v-for="(item, index) in navItems"
-          :key="index"
-          :index="item.path"
-        >
-          <i :class="item.icon"></i>
-          <template #title>
-            <span>{{ item.title }}</span>
-          </template>
-        </el-menu-item>
-      </el-menu>
       <template>
         <AdvancedSearchComp
           v-if="showAdvancedSearch"

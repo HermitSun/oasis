@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <SearchBarComp
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
