@@ -8,7 +8,7 @@
         <!--class="homepage-header__logo"-->
         <!--alt="oasis"-->
         <!--/>-->
-        <h1 style="font-size: 5rem;letter-spacing:10px">
+        <h1 style="font-size: 5.5rem;letter-spacing:10px">
           OASIS
         </h1>
         <p style="font-size: 1.4rem;width: 45vw;margin-top:25px">

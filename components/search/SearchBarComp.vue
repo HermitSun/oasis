@@ -1,11 +1,11 @@
 <template>
   <el-container>
     <div class="searchPage-header">
-      <template>
+      <div class="flex-left-center-row">
         <!--LOGO-->
         <img
           src="~/assets/logo.png"
-          style="cursor: pointer;margin:0 5px;"
+          style="cursor: pointer;margin-right: 35px;"
           class="searchPage-header__logo"
           alt="oasis"
           @click="$router.push('/')"
@@ -31,45 +31,54 @@
             </template>
           </el-menu-item>
         </el-menu>
-      </template>
-      <template v-if="$route.path !== '/'">
-        <!--普通搜索-->
-        <input
-          v-model="searchContent"
-          class="basic-search__input"
-          style="margin-left: 10px;height: 40px"
-          type="text"
-          aria-label="search input"
-          @keyup.enter="startAnotherBasicSearch(searchContent)"
-        />
-        <!--高级搜索-->
-        <button
-          class="mobile-hidden advanced-search__button"
-          style="margin-left: 20px"
-          @click="showAdvancedSearch = true"
-        >
-          Advanced Search
-        </button>
-        <!-- 命令搜索-->
-        <button
-          class="mobile-hidden basic-search__button"
-          style="margin-left: 20px"
-          @click="showCommandSearch = true"
-        >
-          Command Search
-        </button>
-        <template>
-          <AdvancedSearchComp
-            v-if="showAdvancedSearch"
-            @close="showAdvancedSearch = false"
+      </div>
+      <div v-if="$route.path !== '/'">
+        <div>
+          <!--普通搜索-->
+          <input
+            v-model="searchContent"
+            class="basic-search__input"
+            style="margin-left: 10px;height: 40px"
+            type="text"
+            aria-label="search input"
+            @keyup.enter="startAnotherBasicSearch(searchContent)"
           />
-          <CommandSearchComp
-            v-if="showCommandSearch"
-            @close="showCommandSearch = false"
-          />
-        </template>
-      </template>
+          <!--高级搜索-->
+          <el-button
+            class="mobile-hidden"
+            type="primary"
+            plain
+            round
+            size="small"
+            style="margin-left: 20px"
+            @click="showAdvancedSearch = true"
+          >
+            Advanced Search
+          </el-button>
+          <!-- 命令搜索-->
+          <el-button
+            class="mobile-hidden"
+            type="primary"
+            round
+            size="small"
+            style="margin-left: 20px"
+            @click="showCommandSearch = true"
+          >
+            Command Search
+          </el-button>
+        </div>
+      </div>
     </div>
+    <template>
+      <AdvancedSearchComp
+        v-if="showAdvancedSearch"
+        @close="showAdvancedSearch = false"
+      />
+      <CommandSearchComp
+        v-if="showCommandSearch"
+        @close="showCommandSearch = false"
+      />
+    </template>
   </el-container>
 </template>
 
@@ -82,7 +91,8 @@ import {
   Header,
   Main,
   Menu,
-  MenuItem
+  MenuItem,
+  Button
 } from 'element-ui';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
@@ -93,6 +103,7 @@ export default Vue.extend({
     AdvancedSearchComp,
     CommandSearchComp,
     [Aside.name]: Aside,
+    [Button.name]: Button,
     [Container.name]: Container,
     [Footer.name]: Footer,
     [Header.name]: Header,
@@ -130,7 +141,7 @@ export default Vue.extend({
       return [
         {
           path: '/',
-          title: 'Search'
+          title: 'Home'
         },
         {
           path: '/ranking',

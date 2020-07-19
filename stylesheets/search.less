@@ -3,7 +3,7 @@
 @search-input-border: 0;
 @search-input-border-radius: @middle-border-radius;
 @search-input-background: @background-gray;
-@search-input-background-active: @background-gray-dark;
+@search-input-background-active: white;
 
 @search-button-border-radius: 10px;
 @search-button-font-color: white;
@@ -20,7 +20,10 @@
 
 // 搜索页Header
 .searchPage-header {
-  .flex-left-center-row;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background: rgba(255, 255, 255, 0.81);
   position: fixed;
   top: 0;
@@ -29,6 +32,7 @@
   width: 100vw;
   height: @searchPage-header-height__pc;
   box-shadow: 0 8px 25px rgba(22, 19, 55, 0.45);
+  padding: 0 20px;
 }
 
 .searchPage-header__logo {
@@ -307,6 +311,7 @@
   .pc-height__mobile(@search-input-height__pc);
   .mobile-width(@search-input-width__mobile);
   .pc-width__mobile(@search-input-width__pc);
+  border: 2px @background-blue-light solid;
 
   &:focus {
     border: @search-input-border;
