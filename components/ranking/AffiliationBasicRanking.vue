@@ -20,7 +20,9 @@
       ></span>
       <span class="sortKey">
         {{
-          sortKey === 'acceptanceCount' ? 'sort by count' : 'sort by citation'
+          sortKey === 'acceptanceCount'
+            ? 'sort by acceptance count'
+            : 'sort by citation'
         }}
         <svg
           class="icon"

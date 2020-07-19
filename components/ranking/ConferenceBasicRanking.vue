@@ -4,7 +4,9 @@
       Top Conference
       <span class="sortKey">
         {{
-          sortKey === 'acceptanceCount' ? 'sort by count' : 'sort by citation'
+          sortKey === 'acceptanceCount'
+            ? 'sort by acceptance'
+            : 'sort by citation'
         }}
         <svg
           class="icon"

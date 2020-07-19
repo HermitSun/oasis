@@ -3,17 +3,24 @@
     <div>
       <SearchBarComp />
       <div class="homepage-header">
-        <img
-          src="~/assets/logo.png"
-          class="homepage-header__logo"
-          alt="oasis"
-        />
+        <!--<img-->
+        <!--src="~/assets/logo.png"-->
+        <!--class="homepage-header__logo"-->
+        <!--alt="oasis"-->
+        <!--/>-->
+        <h1 style="font-size: 5rem;letter-spacing:10px">
+          OASIS
+        </h1>
+        <p style="font-size: 1.4rem;width: 45vw;margin-top:25px">
+          Provide Comprehensive Search and Mining Services for Researcher Social
+          Networks
+        </p>
         <!--搜索框，增加一个aria属性来提高accessibility-->
         <input
           v-model="keyword"
           class="homepage-header__input basic-search__input"
           type="text"
-          style="margin-top: 25px;"
+          style="margin-top: 80px;"
           aria-label="search"
           @keyup.enter="sendBasicSearch"
         />
@@ -30,7 +37,6 @@
           </button>
           <el-button
             type="primary"
-            size="small"
             plain
             round
             @click="showAdvancedSearch = true"
@@ -42,12 +48,7 @@
             @close="showAdvancedSearch = false"
           />
           <div style="width: 20px"></div>
-          <el-button
-            type="primary"
-            size="small"
-            round
-            @click="showCommandSearch = true"
-          >
+          <el-button type="primary" round @click="showCommandSearch = true">
             Command Search
           </el-button>
           `
@@ -393,12 +394,14 @@ export default Vue.extend({
 
 .homepage-header {
   z-index: 100;
-  .flex-center-column;
-
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  background: url(../assets/background.jpg) no-repeat;
+  background-size: 100%;
   height: @homepage-header-height;
-  @media @max-mobile-width {
-    padding-bottom: 20vh;
-  }
+  padding: 0 150px;
 
   .homepage-header__logo {
     .mobile-width(70vw);
@@ -407,6 +410,7 @@ export default Vue.extend({
 
   .homepage-header__input {
     .mobile-width(90vw);
+    .pc-width__mobile(40vw);
   }
 
   .homepage-header__talents {
@@ -429,7 +433,7 @@ export default Vue.extend({
 }
 
 .homepage-content {
-  padding: 0 70px;
+  padding: 0 100px;
   /**
   @media @min-pc-width {
     .flex-left-left-row;
