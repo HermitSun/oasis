@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <!--搜索框-->
     <SearchBarComp
       v-model="searchContent"
