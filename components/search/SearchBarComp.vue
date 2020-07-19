@@ -18,7 +18,7 @@
           :default-active="currentRoute"
           mode="horizontal"
           router
-          style="height: 100%"
+          style="height: 100%; margin-left: 20px"
         >
           <el-menu-item
             v-for="(item, index) in navItems"

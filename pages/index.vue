@@ -106,17 +106,19 @@
           </el-button>
         </div>
       </div>
-      <div class="homepage-content__left">
+      <template>
+        <Subtitle title="TALENTS BASE" />
         <div class="homepage-content__talents">
-          <Subtitle title="🎓  TALENTS BASE" />
           <div class="talents">
             <div v-for="(talent, index) in talents" :key="index" class="talent">
               <TalentBaseComp :talent="talent" />
             </div>
           </div>
         </div>
+      </template>
+      <template>
+        <Subtitle title="OASIS NEWS" />
         <div class="homepage-content__abstract">
-          <Subtitle title="📄 OASIS NEWS" />
           <div
             v-for="abstract in abstractResponse"
             :key="abstract.id"
@@ -125,23 +127,23 @@
             <AbstractComp :abstract="abstract" />
           </div>
         </div>
-      </div>
-      <div class="homepage-content__right">
-        <div class="homepage-content__ranking">
-          <Subtitle title="🏆 OASIS RANKINGS" />
-          <div class="homepage-content__rankings">
-            <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-            <AffiliationBasicRanking
-              :ranking="affiliationRanking"
-              class="rank"
-            />
-            <JournalBasicRanking :ranking="journalRanking" class="rank" />
-            <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-            <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
+    <!--<div class="homepage-content__right">-->
+    <!--<div class="homepage-content__ranking">-->
+    <!--<Subtitle title="🏆 OASIS RANKINGS" />-->
+    <!--<div class="homepage-content__rankings">-->
+    <!--<AuthorBasicRanking :ranking="authorRanking" class="rank" />-->
+    <!--<AffiliationBasicRanking-->
+    <!--:ranking="affiliationRanking"-->
+    <!--class="rank"-->
+    <!--/>-->
+    <!--<JournalBasicRanking :ranking="journalRanking" class="rank" />-->
+    <!--<ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />-->
+    <!--<KeywordBasicRanking :ranking="keywordRanking" class="rank" />-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -433,7 +435,7 @@ export default Vue.extend({
 }
 
 .homepage-content {
-  padding: 0 100px;
+  padding: 20px 100px;
   /**
   @media @min-pc-width {
     .flex-left-left-row;
