@@ -17,7 +17,7 @@
           aria-label="search"
           @keyup.enter="sendBasicSearch"
         />
-        <div class="flex-center-row" style="margin-top: 15px">
+        <div class="flex-center-row" style="margin-top: 30px">
           <button
             class="basic-search__button_small pc-hidden_mobile"
             @click="sendBasicSearch"
@@ -364,8 +364,8 @@ export default Vue.extend({
   }
 
   .homepage-header__logo {
-    .pc-width__mobile(30vw);
     .mobile-width(70vw);
+    .pc-height__mobile(33vh);
   }
 
   .homepage-header__input {

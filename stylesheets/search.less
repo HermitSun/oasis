@@ -26,7 +26,8 @@
   z-index: 10000;
   text-align: left;
   width: 100vw;
-  background: @background-blue;
+  height: @searchPage-header-height__pc;
+  box-shadow: 0 8px 25px rgba(22, 19, 55, 0.45);
 }
 
 .searchPage-header__logo {
@@ -309,9 +310,10 @@
   &:focus {
     border: @search-input-border;
     background-color: @search-input-background;
-    -webkit-box-shadow: 0 0 10px #e9e9e9;
-    -moz-box-shadow: 0 0 10px #e9e9e9;
-    box-shadow: 0 0 10px #e9e9e9;
+    border: 2px @background-blue solid;
+    //-webkit-box-shadow: 0 0 10px #e9e9e9;
+    //-moz-box-shadow: 0 0 10px #e9e9e9;
+    //box-shadow: 0 0 10px #e9e9e9;
     background-image: url(../assets/icon/icon-search-dark.png);
     background-repeat: no-repeat; /*设置图片不重复*/
     background-position: right;

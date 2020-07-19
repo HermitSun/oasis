@@ -1,13 +1,13 @@
 <template>
   <el-container>
-    <el-header class="searchPage-header">
+    <div class="searchPage-header" :style="opacityStyle">
       <template>
         <!--LOGO-->
         <img
           src="~/assets/logo.png"
+          style="cursor: pointer;margin:0 5px;"
           class="searchPage-header__logo"
           alt="oasis"
-          style="cursor: pointer"
           @click="$router.push('/')"
         />
         <!--菜单-->
@@ -31,10 +31,13 @@
             </template>
           </el-menu-item>
         </el-menu>
+      </template>
+      <template v-if="$route.path !== '/'">
         <!--普通搜索-->
         <input
           v-model="searchContent"
           class="basic-search__input"
+          style="margin-left: 10px;height: 40px"
           type="text"
           aria-label="search input"
           @keyup.enter="startAnotherBasicSearch(searchContent)"
@@ -55,18 +58,18 @@
         >
           Command Search
         </button>
+        <template>
+          <AdvancedSearchComp
+            v-if="showAdvancedSearch"
+            @close="showAdvancedSearch = false"
+          />
+          <CommandSearchComp
+            v-if="showCommandSearch"
+            @close="showCommandSearch = false"
+          />
+        </template>
       </template>
-      <template>
-        <AdvancedSearchComp
-          v-if="showAdvancedSearch"
-          @close="showAdvancedSearch = false"
-        />
-        <CommandSearchComp
-          v-if="showCommandSearch"
-          @close="showCommandSearch = false"
-        />
-      </template>
-    </el-header>
+    </div>
   </el-container>
 </template>
 
@@ -111,12 +114,15 @@ export default Vue.extend({
     return {
       searchContent: this.keyword,
       showAdvancedSearch: false,
-      showCommandSearch: false
-    };
+      showCommandSearch: false,
+      opacityStyle: {
+        background: 'rgba(62,134,169,0.4)'
+      }
+    } as any;
   },
   computed: {
     // 当前导航
-    currentRoute() {
+    currentRoute(): string {
       return this.$route.path;
     },
     // 所有的导航项，暂时硬编码了
@@ -138,14 +144,31 @@ export default Vue.extend({
     }
   },
   watch: {
-    keyword(val: string) {
+    keyword(val: string): void {
       this.searchContent = val;
     }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll, true);
+  },
+
+  destroyed() {
+    // 离开该页面需要移除这个监听的事件，不然会报错
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     // 开始另一次搜索（关键字不同）回车时默认为普通搜索
     startAnotherBasicSearch(keyword: string) {
       this.$emit('keyword-change', keyword);
+    },
+    handleScroll(): void {
+      const top = document.documentElement.scrollTop;
+      if (top > 45 && top <= 150) {
+        const opacity = top / 150;
+        this.opacityStyle = {
+          background: 'rgba(62,134,169,' + opacity + ')'
+        };
+      }
     }
   }
 });

@@ -32,10 +32,10 @@
 @homepage-header-height: 100vh;
 
 @searchPage-header-height__mobile: 60px;
-@searchPage-header-height__pc: 80px;
+@searchPage-header-height__pc: 65px;
 
 @searchPage-logo-height__mobile: 20px;
-@searchPage-logo-height__pc: 40px;
+@searchPage-logo-height__pc: 50px;
 
 @search-input-width__mobile: 70vw;
 @search-input-width__pc: 50vw;
@@ -134,14 +134,15 @@
 .subtitle {
   height: @subtitle-height;
   font-size: @middle-font;
-  color: @background-blue;
+  color: @font-dark;
   text-align: left;
   font-weight: 500;
+  margin: 10px 0;
 }
 .subtitle-divider {
-  background: @background-blue;
-  height: @subtitle-divider-height;
-  margin: 10px 0;
+  //background: @background-blue;
+  //height: @subtitle-divider-height;
+  //margin: 10px 0;
 }
 .gray-background {
   background: @background-gray;
@@ -188,5 +189,8 @@ button {
 
 // -----------页面------------
 .page {
-  margin-top: 60px; // 为了去除顶部的bar
+  margin-top: @searchPage-header-height__pc; // 为了去除顶部的bar
+  background: @background-gray;
+  width: 100vw;
+  height: calc(100vh - @searchPage-header-height__pc);
 }
