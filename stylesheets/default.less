@@ -1,6 +1,6 @@
 @import 'responsive.less';
 // ----------default-----------
-@background-blue: #3e86a9; // 背景蓝色
+@background-blue: #6c63ff; // 背景蓝色
 @background-blue-dark: #1d4357;
 @background-blue-light: rgba(44, 95, 119, 0.15);
 @background-blue-normal: #b5d4e3;
@@ -190,7 +190,16 @@ button {
 // -----------页面------------
 .page {
   margin-top: @searchPage-header-height__pc; // 为了去除顶部的bar
-  background: @background-gray;
   width: 100vw;
   height: calc(100vh - @searchPage-header-height__pc);
+}
+
+// -----------标签页------------
+.tab {
+  .title {
+    color: @font-dark;
+    font-size: 30px;
+    margin: 3px 0;
+  }
+  margin-bottom: 50px;
 }

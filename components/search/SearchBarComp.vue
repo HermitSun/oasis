@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <div class="searchPage-header" :style="opacityStyle">
+    <div class="searchPage-header">
       <template>
         <!--LOGO-->
         <img
@@ -13,7 +13,7 @@
         <!--菜单-->
         <el-menu
           background-color="transparent"
-          active-text-color="#fff"
+          active-text-color="#6C63FF"
           text-color="#000"
           :default-active="currentRoute"
           mode="horizontal"
@@ -116,7 +116,7 @@ export default Vue.extend({
       showAdvancedSearch: false,
       showCommandSearch: false,
       opacityStyle: {
-        background: 'rgba(62,134,169,0.4)'
+        background: 'rgba(255,255,255,0)'
       }
     } as any;
   },
@@ -166,7 +166,7 @@ export default Vue.extend({
       if (top > 45 && top <= 150) {
         const opacity = top / 150;
         this.opacityStyle = {
-          background: 'rgba(62,134,169,' + opacity + ')'
+          background: 'rgba(255,255,255,' + opacity + ')'
         };
       }
     }

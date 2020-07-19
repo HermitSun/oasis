@@ -28,23 +28,29 @@
               alt="icon-search"
             />
           </button>
-          <button
-            class="advanced-search__button"
+          <el-button
+            type="primary"
+            size="small"
+            plain
+            round
             @click="showAdvancedSearch = true"
           >
             Advanced Search
-          </button>
+          </el-button>
           <AdvancedSearchComp
             v-if="showAdvancedSearch"
             @close="showAdvancedSearch = false"
           />
-          <div style="width: 15px"></div>
-          <button
-            class="basic-search__button mobile-hidden"
+          <div style="width: 20px"></div>
+          <el-button
+            type="primary"
+            size="small"
+            round
             @click="showCommandSearch = true"
           >
             Command Search
-          </button>
+          </el-button>
+          `
           <CommandSearchComp
             v-if="showCommandSearch"
             @close="showCommandSearch = false"
@@ -62,6 +68,43 @@
       <!--</div>-->
     </div>
     <div class="homepage-content">
+      <div class="tab">
+        <span class="title">OASIS RANKING</span>
+        <div style="margin: 30px 0">
+          <el-tabs tab-position="right">
+            <el-tab-pane label="Author">
+              <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+            </el-tab-pane>
+            <el-tab-pane label="Affiliation">
+              <AffiliationBasicRanking
+                :ranking="affiliationRanking"
+                class="rank"
+              />
+            </el-tab-pane>
+            <el-tab-pane label="Journal">
+              <JournalBasicRanking :ranking="journalRanking" class="rank" />
+            </el-tab-pane>
+            <el-tab-pane label="Conference">
+              <ConferenceBasicRanking
+                :ranking="conferenceRanking"
+                class="rank"
+              />
+            </el-tab-pane>
+            <el-tab-pane label="Keyword">
+              <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div style="width: 100%;text-align: center;margin-top: 20px">
+          <el-button
+            type="primary"
+            plain
+            @click="$router.push('/ranking/author')"
+          >
+            See Ranking Details
+          </el-button>
+        </div>
+      </div>
       <div class="homepage-content__left">
         <div class="homepage-content__talents">
           <Subtitle title="🎓  TALENTS BASE" />
@@ -98,22 +141,12 @@
         </div>
       </div>
     </div>
-    <!--<div class="banner">-->
-    <!--<div class="banner-figures">-->
-    <!--<div class="shape shape1 ani1"></div>-->
-    <!--<div class="shape shape2 ani2"></div>-->
-    <!--<div class="shape shape3 ani3"></div>-->
-    <!--<div class="shape shape4"></div>-->
-    <!--<div class="shape shape5 ani3"></div>-->
-    <!--<div class="shape shape6 ani4"></div>-->
-    <!--</div>-->
-    <!--</div>-->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Message } from 'element-ui';
+import { Message, Button, Tabs, TabPane } from 'element-ui';
 import {
   getActivePaperAbstract,
   getActiveTalentsBase,
@@ -288,7 +321,10 @@ export default Vue.extend({
     KeywordBasicRanking,
     JournalBasicRanking,
     Subtitle,
-    SearchBarComp
+    SearchBarComp,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
+    [Button.name]: Button
   },
   // 渲染初始数据
   async asyncData() {
@@ -358,6 +394,7 @@ export default Vue.extend({
 .homepage-header {
   z-index: 100;
   .flex-center-column;
+
   height: @homepage-header-height;
   @media @max-mobile-width {
     padding-bottom: 20vh;
@@ -392,6 +429,8 @@ export default Vue.extend({
 }
 
 .homepage-content {
+  padding: 0 70px;
+  /**
   @media @min-pc-width {
     .flex-left-left-row;
     .homepage-content__left {
@@ -402,6 +441,7 @@ export default Vue.extend({
       width: 25%;
     }
   }
+**/
 
   .homepage-content__abstract {
     .gray-background;
