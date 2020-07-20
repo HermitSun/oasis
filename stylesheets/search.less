@@ -236,22 +236,11 @@
   }
 
   .keyword-wrapper {
+    .flex-left-left-row;
     word-wrap: break-word;
     line-height: calc(@search-item-keyword-font-size + 20px);
-    .flex-left-left-row;
-
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
-      .keyword {
-        border: @background-blue-light 1px solid;
-        padding: 1px;
-        font-size: @search-item-keyword-font-size;
-        cursor: pointer;
-
-        &:hover {
-          color: @bright-yellow;
-        }
-      }
     }
   }
 

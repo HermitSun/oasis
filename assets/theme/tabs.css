@@ -106,9 +106,10 @@
 .el-tabs__item {
   padding: 0 20px;
   height: 60px;
-  line-height: 60px;
-  display: flex;
-  align-items: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 40px;
+  display: inline-block;
   list-style: none;
   font-size: 20px;
   font-weight: 500;
@@ -419,7 +420,7 @@
 .el-tabs--left .el-tabs__item.is-right,
 .el-tabs--right .el-tabs__item.is-left,
 .el-tabs--right .el-tabs__item.is-right {
-  /*display: block;*/
+  display: block;
 }
 .el-tabs--left .el-tabs__header.is-left {
   float: left;
