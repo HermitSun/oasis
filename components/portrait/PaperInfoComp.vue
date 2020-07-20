@@ -38,34 +38,36 @@
         {{ paper._abstract }}
       </div>
     </div>
-
-    <div class="divider"></div>
-    <!--关键词-->
-    <div
-      style="min-height: 15px"
-      :class="
-        paper.keywords && paper.keywords.length > 0 ? 'flex-space-between' : ''
-      "
-    >
-      <!--没有关键词的时候不显示-->
-      <span
-        v-if="paper.keywords && paper.keywords.length > 0"
-        class="keyword-wrapper"
+    <template v-if="paper.keywords && paper.keywords.length > 0">
+      <!--关键词-->
+      <div
+        style="min-height: 15px"
+        :class="
+          paper.keywords && paper.keywords.length > 0
+            ? 'flex-space-between'
+            : ''
+        "
       >
-        <div style="margin-right: 10px" class="hint">keywords:</div>
-        <el-row class="keyword-inner-wrapper">
-          <el-button
-            v-for="(keyword, index) in paper.keywords"
-            :key="index"
-            size="mini"
-            plain
-            @click="jumpToKeywordPortrait(keyword)"
-          >
-            {{ keyword }}
-          </el-button>
-        </el-row>
-      </span>
-    </div>
+        <!--没有关键词的时候不显示-->
+        <span
+          v-if="paper.keywords && paper.keywords.length > 0"
+          class="keyword-wrapper"
+        >
+          <div style="margin-right: 10px" class="hint">keywords:</div>
+          <el-row class="keyword-inner-wrapper">
+            <el-button
+              v-for="(keyword, index) in paper.keywords"
+              :key="index"
+              size="mini"
+              plain
+              @click="jumpToKeywordPortrait(keyword)"
+            >
+              {{ keyword }}
+            </el-button>
+          </el-row>
+        </span>
+      </div>
+    </template>
   </div>
 </template>
 

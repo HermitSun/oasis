@@ -1,69 +1,75 @@
 <template>
   <div class="author-portrait-wrapper">
-    <div v-if="showPortrait" class="portrait-wrapper">
-      <div class="portrait">
-        <div class="profile-module">
-          <div class="module">
-            <PortraitProfileComp id="portrait" :profile="profile" />
-          </div>
-          <div class="module">
-            <Subtitle title="📉 Citation Trend" />
-            <div
-              id="citation-bar"
-              class="content"
-              style="min-height: 150px"
-            ></div>
-          </div>
-          <div class="module">
-            <Subtitle title="📈 Publication Trends" />
-            <div
-              id="publication-bar"
-              class="content"
-              style="min-height: 150px"
-            ></div>
-          </div>
-        </div>
-        <div class="profile-module">
-          <div class="module" style="margin-right: 10px">
-            <Subtitle title="🌥 Keywords" />
-            <div
-              id="pie"
-              v-loading="isInterestLoading"
-              class="chart content"
-            ></div>
-          </div>
-          <div class="module">
-            <Subtitle title="🎓 Scholar Network" />
-            <div id="force" class="chart"></div>
-          </div>
-        </div>
+    <div v-if="showPortrait" class="portrait-module">
+      <div class="profile">
+        <PortraitProfileComp id="portrait" :profile="profile" />
       </div>
-      <div v-if="showPortrait" class="portrait-module">
-        <PapersSubtitle
-          title="📝 All Papers"
-          :sort-key="sortKey"
-          @changeSortKey="changeSortKey"
-        />
-        <div id="papers">
-          <div
-            v-for="paper in papers"
-            :key="paper.id"
-            style="margin-bottom: 20px"
-          >
-            <PaperInfoComp :paper="paper" />
-          </div>
-        </div>
-        <!--分页-->
-        <el-pagination
-          layout="prev, pager, next"
-          :current-page="page"
-          :total="totalRecords"
-          :pager-count="pagerSize"
-          hide-on-single-page
-          small
-          style="text-align: center; margin-bottom: 10px"
-          @current-change="showNextPage"
-        />
+      <div class="detail">
+        <el-tabs tab-position="top">
+          <el-tab-pane label="Basic">
+            <template>
+              <div class="module">
+                <Subtitle title="📉 Citation Trend" />
+                <div
+                  id="citation-bar"
+                  class="content"
+                  style="min-height: 150px"
+                ></div>
+              </div>
+              <div class="module">
+                <Subtitle title="📈 Publication Trends" />
+                <div
+                  id="publication-bar"
+                  class="content"
+                  style="min-height: 150px"
+                ></div>
+              </div>
+              <div class="module" style="margin-right: 10px">
+                <!--<Subtitle title="🌥 Keywords" />-->
+                <div
+                  id="pie"
+                  v-loading="isInterestLoading"
+                  class="chart content"
+                ></div>
+              </div>
+            </template>
+          </el-tab-pane>
+          <el-tab-pane label="Network">
+            <div class="module">
+              <!--<Subtitle title="🎓 Scholar Network" />-->
+              <div id="force" class="chart"></div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Paper" class="module">
+            <div v-if="showPortrait">
+              <PapersSubtitle
+                title="📝 All Papers"
+                :sort-key="sortKey"
+                @changeSortKey="changeSortKey"
+              />
+              <div id="papers">
+                <div
+                  v-for="paper in papers"
+                  :key="paper.id"
+                  style="margin-bottom: 20px"
+                >
+                  <PaperInfoComp :paper="paper" />
+                </div>
+              </div>
+              <!--分页-->
+              <el-pagination
+                layout="prev, pager, next"
+                :current-page="page"
+                :total="totalRecords"
+                :pager-count="pagerSize"
+                hide-on-single-page
+                small
+                style="text-align: center; margin-bottom: 10px"
+                @current-change="showNextPage"
+              />
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
@@ -71,7 +77,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading, Message } from 'element-ui';
+import { Pagination, Loading, Message, Tabs, TabPane } from 'element-ui';
 import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
@@ -219,6 +225,8 @@ export default Vue.extend({
   name: 'Author',
   components: {
     [Pagination.name]: Pagination,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
     PaperInfoComp,
     PapersSubtitle,
     PortraitProfileComp,

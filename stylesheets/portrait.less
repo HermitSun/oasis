@@ -20,8 +20,22 @@
   @media @max-pad-width {
     padding-bottom: 5px;
   }
-
+}
+.portrait-module {
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: row;
+  .profile {
+    width: 30%;
+  }
+  .detail {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+  }
   .module {
+    padding: @card-padding;
+
     @media @min-pad-width {
       flex: 1;
       margin-right: 10px;
@@ -48,17 +62,9 @@
     }
   }
 }
-.portrait-module {
-  padding: 15px 10px;
-}
 
 .portrait-profile {
-  @media @min-pad-width {
-    width: @portrait-profile-width-pc;
-  }
-  @media @max-pad-width {
-    width: @portrait-profile-width-mobile;
-  }
+  width: 100%;
   .name {
     //background-image: linear-gradient(
     //  135deg,
