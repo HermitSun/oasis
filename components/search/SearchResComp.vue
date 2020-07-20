@@ -11,8 +11,8 @@
         <div v-html="filterHTML(res.title)"></div>
       </a>
     </div>
-    <div>
-      <!--跳转到学者画像-->
+    <div class="info">
+      <!--作者 跳转到学者画像-->
       <!--高亮-->
       <span v-for="(author, index) in res.authors" :key="index" class="author">
         <span
@@ -22,18 +22,16 @@
         ></span>
         <span v-if="index !== res.authors.length - 1">,</span>
       </span>
-      <span class="info">
-        <el-button
-          plain
-          size="mini"
-          style="margin-left: 5px"
-          @click="jumpToContentPortrait(res.contentType, res.publicationName)"
-          ><span>{{ res.publicationName }} </span
-          ><span style="margin-left: 1px">
-            {{ res.publicationYear }}</span
-          ></el-button
-        >
-      </span>
+      <!--发布时间、机构-->
+      <el-button
+        plain
+        size="mini"
+        style="margin-left: 5px"
+        @click="jumpToContentPortrait(res.contentType, res.publicationName)"
+      >
+        <span>{{ res.publicationName }} </span>
+        <span style="margin-left: 1px"> {{ res.publicationYear }}</span>
+      </el-button>
     </div>
     <template>
       <div class="bookmark">
