@@ -2,7 +2,6 @@
 @portrait-profile-width-pc: 40vw;
 @portrait-profile-width-mobile: 95vw;
 @portrait-profile-name-font-size: @largest-font;
-@portrait-paper-title-font-size: @small-font;
 @portrait-paper-info-font-size: @sub-small-font;
 
 .profile-module:first-child {
@@ -112,17 +111,12 @@
 }
 
 .portrait-paper {
-  text-align: left;
-  padding: 10px 10px;
-  border-radius: 20px;
-  border: 1px solid @border-gray;
-
+  .card;
+  //border: 1px solid @border-gray;
   .title {
-    font-weight: 500;
-    margin-bottom: 2px;
+    .card-title;
 
     a {
-      font-size: @portrait-paper-title-font-size;
       text-decoration: none;
     }
 
@@ -165,10 +159,7 @@
   }
 
   .abstract {
-    color: @font-gray;
-    margin: 10px 0;
-    font-size: @portrait-paper-info-font-size;
-    .overflow-hidden-height(3);
+    .card-abstract__margin;
   }
 
   .divider {
@@ -185,6 +176,8 @@
     font-size: @portrait-paper-info-font-size;
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
+      line-height: @content-line-height;
+
       .keyword {
         border: @border-gray 1px solid;
         padding: 1px;

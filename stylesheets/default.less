@@ -12,7 +12,7 @@
 
 @font-dark: #2c3e50;
 @font-gray-light: #bebbbb;
-@font-gray: #959393; // 字体灰色
+@font-gray: #606266; // 字体灰色
 @font-gray-middle: #716f6f;
 @font-gray-dark: #666;
 @border-gray: rgba(112, 112, 112, 0.22);
@@ -42,6 +42,8 @@
 
 @search-input-height__mobile: @searchPage-logo-height__mobile+15px;
 @search-input-height__pc: @searchPage-logo-height__pc;
+
+@content-line-height: 22px;
 
 // ----------flex垂直水平居中-----------
 .flex-center-column {
@@ -116,6 +118,9 @@
 }
 
 // -----------灰色阴影-------------
+.shadow {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
 .gray-shadow {
   -webkit-box-shadow: 0 0 10px @background-gray-dark;
   -moz-box-shadow: 0 0 10px @background-gray-dark;
@@ -201,4 +206,36 @@ button {
     margin: 3px 0;
   }
   margin-bottom: 50px;
+}
+
+// -----------card------------
+@card-padding: 20px 25px;
+@card-border-radius: 10px;
+@card-title-font: @middle-font;
+@card-abstract-font: @small-font;
+@card-abstract-max-height: 250px;
+.card {
+  padding: @card-padding;
+  border-radius: @card-border-radius;
+  .shadow;
+  margin-bottom: 30px;
+  text-align: left;
+}
+.card-title {
+  font-size: @card-title-font;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.card-abstract {
+  color: @font-gray;
+  font-size: @card-abstract-font;
+  line-height: @content-line-height;
+  max-height: @card-abstract-max-height;
+  .overflow-hidden-height(3);
+}
+.card-abstract__margin {
+  margin: 20px 0;
+  .card-abstract;
 }

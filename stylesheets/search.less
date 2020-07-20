@@ -12,11 +12,9 @@
 @search-item-title-font-size: @middle-font;
 @search-item-author-font-size: @sub-middle-font;
 @search-item-keyword-font-size: @small-font;
-@search-item-reference-font-size: @sub-small-font;
-@search-item-abstract-font-size: @small-font;
-@search-item-abstract-max-height: 200px;
+@search-item-reference-font-size: @small-font;
 
-@search-advanced-input-font-size: @small-font;
+@search-advanced-input-font-size: @sub-middle-font;
 
 // 搜索页Header
 .searchPage-header {
@@ -47,11 +45,11 @@
 .searchPage-content__result {
   //width: 75%;
   padding: 10px;
-
   .pc-width__mobile(75%);
 }
 
 .searchPage-content__filter {
+  padding: 10px;
   // TODO 添加移动端布局
   @media @max-mobile-width {
     display: none;
@@ -59,21 +57,21 @@
 
   // PC
   width: 25%;
-  padding: 10px;
 
   .filter {
-    background: @background-gray;
-    padding: 20px 10px;
+    .card;
     width: 100%;
+    margin-top: 15px;
     .flex-left-left-column;
 
     .filter-wrapper {
       width: 100%;
 
       .hint {
-        margin: 10px 0;
-        color: @background-blue;
+        margin: 15px 0;
+        color: @font-dark;
         font-size: @sub-middle-font;
+        font-weight: 500;
       }
 
       .divider {
@@ -89,6 +87,9 @@
           word-wrap: break-word;
           margin-bottom: 2px;
           font-weight: 400;
+          font-size: @card-abstract-font;
+          color: @font-gray;
+          line-height: @content-line-height;
         }
       }
     }
@@ -97,19 +98,20 @@
 
 // 搜索页内容
 .searchPage-content__sub-hint {
-  font-size: @small-font;
-  color: @font-gray;
+  font-size: @middle-font;
+  color: @font-gray-dark;
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
 .searchPage-content__hint-text {
-  font-size: @middle-font;
+  font-size: @sub-large-font;
   color: @background-blue;
   font-weight: 400;
 }
 
 .searchPage-content__result-text {
-  font-size: @large-font;
+  font-size: @largest-font;
   color: @bright-yellow;
   font-weight: 500;
 }
@@ -137,17 +139,13 @@
 
 // 搜索结果条目
 .searchPage-item {
-  background: @background-gray;
-  text-align: left;
-  padding: 10px 5px;
-
+  .card;
+  position: relative;
   .title {
-    font-weight: 500;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
+    .card-title;
+    width: calc(100% - 200px);
 
     a {
-      font-size: @search-item-title-font-size;
       text-decoration: none;
     }
 
@@ -180,6 +178,39 @@
     }
   }
 
+  .bookmark:before {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    right: 0;
+    content: '';
+    padding-right: 10px;
+    border: 15px solid @background-blue-light;
+    border-left-color: transparent;
+    box-shadow: 0 5px 5px -5px #000;
+    width: 180px;
+  }
+
+  .bookmark {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 150px;
+    text-align: left;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    .hint {
+      font-size: @small-font;
+      color: @font-gray;
+      width: 90px;
+    }
+    .count {
+      color: @background-blue;
+      font-weight: 500;
+    }
+  }
+
   .info {
     color: @font-gray;
     font-size: @search-item-author-font-size;
@@ -193,13 +224,14 @@
     }
   }
 
-  .abstract {
-    color: @font-gray;
-    margin: 10px 0;
-    font-size: @search-item-abstract-font-size;
-    max-height: @search-item-abstract-max-height;
-    .overflow-hidden-height(3);
+  .abstract-wrapper{
+    margin: 20px 0;
+    .flex-left-left-row;
+    .abstract {
+      .card-abstract;
+    }
   }
+
 
   .divider {
     width: 100%;
@@ -214,15 +246,14 @@
     color: @font-dark;
   }
 
+
   .keyword-wrapper {
     word-wrap: break-word;
-    line-height: calc(@search-item-keyword-font-size + 15px);
-    color: @font-gray-dark;
+    line-height: calc(@search-item-keyword-font-size + 20px);
     .flex-left-left-row;
 
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
-
       .keyword {
         border: @background-blue-light 1px solid;
         padding: 1px;
@@ -254,7 +285,7 @@
   .reference-wrapper {
     .flex-left-left-row;
     word-wrap: break-word;
-
+    line-height: @content-line-height;
     .reference {
       a {
         font-size: @search-item-reference-font-size;
@@ -265,8 +296,7 @@
 
   .citation-wrapper {
     .flex-left-left-row;
-    margin: 5px 0;
-    line-height: calc(@search-item-keyword-font-size + 15px);
+    margin: 10px 0;
 
     .citation-inner-wrapper {
       @media @max-pad-width {
@@ -312,7 +342,7 @@
   .mobile-width(@search-input-width__mobile);
   .pc-width__mobile(@search-input-width__pc);
   border: 2px @background-blue-light solid;
-  font-size: @sub-middle-font;
+  font-size: @search-advanced-input-font-size;
   color: #333;
 
   &:focus {

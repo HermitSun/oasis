@@ -23,22 +23,39 @@
         <span v-if="index !== res.authors.length - 1">,</span>
       </span>
       <span class="info">
-        <span
-          class="publicationName"
+        <el-button
+          plain
+          size="mini"
+          style="margin-left: 5px"
           @click="jumpToContentPortrait(res.contentType, res.publicationName)"
-          >{{ res.publicationName }}</span
+          ><span>{{ res.publicationName }} </span
+          ><span style="margin-left: 1px">
+            {{ res.publicationYear }}</span
+          ></el-button
         >
-        <span style="margin-left: 1px">{{ res.publicationYear }}</span>
       </span>
     </div>
-    <div class="abstract">
+    <template>
+      <div class="bookmark">
+        <span class="hint">Citation:</span>
+        <span class="count">{{ res.metrics.citationCountPaper }}</span>
+      </div>
+      <div class="bookmark" style="margin-top:40px">
+        <span class="hint">Downloads:</span>
+        <span class="count">{{ res.metrics.totalDownloads }}</span>
+      </div>
+    </template>
+    <div class="abstract-wrapper">
+      <div class="hint" style="margin-right: 16px">
+        abstract:
+      </div>
       <!--高亮-->
-      <div v-html="filterHTML(res._abstract)"></div>
+      <div class="abstract" v-html="filterHTML(res._abstract)"></div>
     </div>
     <div class="divider"></div>
     <!--关键词-->
     <div
-      style="min-height: 15px"
+      style="min-height: 25px"
       :class="
         res.keywords && res.keywords.length > 0 ? 'flex-space-between' : ''
       "
@@ -49,49 +66,48 @@
         class="keyword-wrapper"
       >
         <div style="margin-right: 10px" class="hint">keywords:</div>
-        <div class="keyword-inner-wrapper">
-          <span
+        <el-row class="keyword-inner-wrapper">
+          <el-button
             v-for="(keyword, index) in res.keywords"
             :key="index"
-            class="keyword"
-            style="margin-right: 5px"
+            size="mini"
+            plain
             @click="jumpToKeywordPortrait(keyword)"
           >
             {{ keyword }}
-          </span>
-        </div>
+          </el-button>
+        </el-row>
       </span>
       <!--展示参考文献-->
-      <span
-        style=" cursor: pointer"
-        class="detail-hint"
-        @click="showReferences"
-      >
-        show more
+      <span style=" cursor: pointer" class="detail-hint"
+        ><el-button type="text" @click="showReferences">
+          {{ showReference ? 'hide reference' : 'show reference' }}
+        </el-button>
       </span>
     </div>
+    <!--引用情况-->
+    <!--<div class="citation-wrapper">-->
+    <!--<div style="margin-right: 24px" class="hint">-->
+    <!--citation:-->
+    <!--</div>-->
+    <!--<div class="citation-inner-wrapper">-->
+    <!--<div class="citation">-->
+    <!--By Paper:-->
+    <!--<span class="number">{{ res.metrics.citationCountPaper }}</span>-->
+    <!--</div>-->
+    <!--<div class="citation">-->
+    <!--By Patent:-->
+    <!--<span class="number">{{ res.metrics.citationCountPatent }}</span>-->
+    <!--</div>-->
+    <!--<div class="citation">-->
+    <!--By Download:<span class="number">{{-->
+    <!--res.metrics.totalDownloads-->
+    <!--}}</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
     <!--参考文献内容-->
     <div v-if="showReference" style="margin-top:5px">
-      <div class="citation-wrapper">
-        <div style="margin-right: 24px" class="hint">
-          citation:
-        </div>
-        <div class="citation-inner-wrapper">
-          <div class="citation">
-            By Paper:
-            <span class="number">{{ res.metrics.citationCountPaper }}</span>
-          </div>
-          <div class="citation">
-            By Patent:
-            <span class="number">{{ res.metrics.citationCountPatent }}</span>
-          </div>
-          <div class="citation">
-            By Download:<span class="number">{{
-              res.metrics.totalDownloads
-            }}</span>
-          </div>
-        </div>
-      </div>
       <div v-if="references.length !== 0" class="reference-wrapper">
         <div style="margin-right: 5px" class="hint">
           references:
@@ -120,6 +136,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Row, Tag } from 'element-ui';
 import { filterXSS } from 'xss';
 import { getReferenceById } from '~/api';
 import { SearchReference } from '~/interfaces/responses/search/SearchResponse';
@@ -127,6 +144,11 @@ import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 export default Vue.extend({
   name: 'SearchResComp',
+  components: {
+    [Button.name]: Button,
+    [Row.name]: Row,
+    [Tag.name]: Tag
+  },
   mixins: [LinkToAuthor],
   props: {
     res: {

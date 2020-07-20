@@ -48,33 +48,33 @@
         class="keyword-wrapper"
       >
         <div style="margin-right: 10px">keywords:</div>
-        <div class="keyword-inner-wrapper">
-          <span
+        <el-row class="keyword-inner-wrapper">
+          <el-button
             v-for="(keyword, index) in paper.keywords"
             :key="index"
-            class="keyword"
-            style="margin-right: 5px"
+            size="mini"
+            plain
             @click="jumpToKeywordPortrait(keyword)"
           >
             {{ keyword }}
-          </span>
-        </div>
+          </el-button>
+        </el-row>
       </span>
-      <!--&lt;!&ndash;引用信息&ndash;&gt;-->
-      <!--<span class="detail-hint">-->
-      <!--show more-->
-      <!--&lt;!&ndash;TODO 修改为引用情况&ndash;&gt;-->
-      <!--</span>-->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Row } from 'element-ui';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 export default Vue.extend({
   name: 'PaperInfoComp',
+  components: {
+    [Button.name]: Button,
+    [Row.name]: Row
+  },
   mixins: [LinkToAuthor],
   props: {
     paper: {
