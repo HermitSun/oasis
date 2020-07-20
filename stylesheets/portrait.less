@@ -2,7 +2,7 @@
 @portrait-profile-width-pc: 40vw;
 @portrait-profile-width-mobile: 95vw;
 @portrait-profile-name-font-size: @largest-font;
-@portrait-paper-info-font-size: @sub-small-font;
+@portrait-paper-info-font-size: @sub-middle-font;
 
 .profile-module:first-child {
   padding-top: 20px;
@@ -140,6 +140,7 @@
   .author {
     font-size: @portrait-paper-info-font-size;
     color: @background-blue;
+    margin-right: 5px;
     cursor: pointer;
   }
 
@@ -158,8 +159,15 @@
     }
   }
 
-  .abstract {
-    .card-abstract__margin;
+  .abstract-wrapper {
+    margin: 20px 0;
+    .flex-left-left-row;
+    .abstract {
+      .card-abstract;
+    }
+  }
+  .hint {
+    .card-hint;
   }
 
   .divider {

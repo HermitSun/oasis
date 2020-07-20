@@ -15,25 +15,30 @@
         v-for="(author, index) in paper.authors"
         :key="index"
         class="author"
-        style="margin-right: 5px"
+        style="margin-right: 8px"
         @click="linkToAuthor(author)"
       >
         {{ author.name }}
       </span>
-      <span class="info">
-        <span
-          class="publicationName"
-          @click="
-            jumpToContentPortrait(paper.contentType, paper.publicationName)
-          "
-          >{{ paper.publicationName }}</span
-        >
-        <span style="margin-left: 1px">{{ paper.publicationYear }}</span>
-      </span>
+      <el-button
+        plain
+        size="mini"
+        style="margin-left: 5px"
+        @click="jumpToContentPortrait(paper.contentType, paper.publicationName)"
+      >
+        <span>{{ paper.publicationName }} </span>
+        <span style="margin-left: 1px"> {{ paper.publicationYear }}</span>
+      </el-button>
     </div>
-    <div class="abstract">
-      {{ paper._abstract }}
+    <div class="abstract-wrapper">
+      <div class="hint" style="margin-right: 16px">
+        abstract:
+      </div>
+      <div class="abstract">
+        {{ paper._abstract }}
+      </div>
     </div>
+
     <div class="divider"></div>
     <!--关键词-->
     <div
@@ -47,7 +52,7 @@
         v-if="paper.keywords && paper.keywords.length > 0"
         class="keyword-wrapper"
       >
-        <div style="margin-right: 10px">keywords:</div>
+        <div style="margin-right: 10px" class="hint">keywords:</div>
         <el-row class="keyword-inner-wrapper">
           <el-button
             v-for="(keyword, index) in paper.keywords"

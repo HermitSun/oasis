@@ -17,10 +17,10 @@
       <span v-for="(author, index) in res.authors" :key="index" class="author">
         <span
           class="name"
+          style="margin-right: 8px"
           @click="linkToAuthor(author)"
           v-html="filterHTML(author.name)"
         ></span>
-        <span v-if="index !== res.authors.length - 1">,</span>
       </span>
       <!--发布时间、机构-->
       <el-button
