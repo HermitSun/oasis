@@ -5,8 +5,8 @@
         <PortraitProfileComp id="portrait" :profile="profile" />
       </div>
       <div class="detail">
-        <el-tabs tab-position="top">
-          <el-tab-pane label="Basic">
+        <el-tabs tab-position="top" class="tabs">
+          <el-tab-pane label="Basic Information" class="tab">
             <template>
               <div class="module">
                 <Subtitle title="📉 Citation Trend" />
@@ -34,14 +34,14 @@
               </div>
             </template>
           </el-tab-pane>
-          <el-tab-pane label="Network">
+          <el-tab-pane label="Scholar Network" class="tab">
             <div class="module">
               <!--<Subtitle title="🎓 Scholar Network" />-->
               <div id="force" class="chart"></div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Paper" class="module">
-            <div v-if="showPortrait">
+          <el-tab-pane label="Related Papers" class="tab">
+            <div v-if="showPortrait" class="module">
               <PapersSubtitle
                 title="📝 All Papers"
                 :sort-key="sortKey"

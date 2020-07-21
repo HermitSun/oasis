@@ -22,7 +22,8 @@
   }
 }
 .portrait-module {
-  padding: 15px 10px;
+  .page-padding;
+  position: fixed;
   display: flex;
   flex-direction: row;
   .profile {
@@ -32,6 +33,13 @@
     width: 70%;
     display: flex;
     flex-direction: column;
+    .tabs {
+      margin-top: 30px;
+      .tab {
+        height: calc(100vh - 200px);
+        overflow: scroll;
+      }
+    }
   }
   .module {
     padding: @card-padding;
@@ -66,33 +74,15 @@
 .portrait-profile {
   width: 100%;
   .name {
-    //background-image: linear-gradient(
-    //  135deg,
-    //  @bright-yellow 10%,
-    //  #3684ab 100%
-    //);
+    height: @subtitle-height;
+    text-align: left;
     overflow-wrap: break-word;
-    background: @background-blue;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 4px 4px 5px rgba(138, 136, 136, 0.6);
-    font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
-
-    font-style: italic;
     font-weight: bold;
-
     font-size: @portrait-profile-name-font-size;
-    margin: 5px 10px 30px;
+    margin: 40px 10px 40px;
   }
   .info {
-    background-image: linear-gradient(
-      135deg,
-      @background-blue-light 10%,
-      @background-blue 100%
-    );
-    border-radius: 20px;
-    padding: 25px;
-    line-height: 40px;
+    .card;
     .wrapper {
       .flex-left-left-row;
       .prop {
@@ -110,7 +100,6 @@
     }
     .number {
       font-size: @large-font;
-      color: whitesmoke;
       font-weight: lighter;
     }
   }
@@ -191,5 +180,4 @@
       .overflow-hidden-height(2);
     }
   }
-
 }

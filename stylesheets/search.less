@@ -39,7 +39,7 @@
 }
 
 .searchPage-content {
-  padding: 0 10px;
+  .page-padding;
 }
 
 .searchPage-content__result {
@@ -407,20 +407,19 @@
 
 // 高级搜索页
 .advanced-search__mask-box-size {
-  .mobile-height(520px);
   .mobile-width(300px);
-  .pc-height__mobile(380px);
   .pc-width__mobile(600px);
 }
 
 .advanced-search__mask-box-divider {
   width: 100%;
   height: 1.8px;
-  background: #9dc2d6;
+  margin: 10px 0;
+  background: @background-blue;
 }
 
 .advanced-search__mask-content {
-  padding: 20px 20px 0;
+  padding: 20px 0;
 
   label {
     /*左对齐*/
@@ -433,28 +432,37 @@
   input {
     outline: 0;
     border: 0;
-    height: 25px;
-    padding-left: 4px;
-    border-radius: 10px;
-    background: rgba(245, 245, 245, 0.56);
-    color: #474747;
+    height: 30px;
+    padding: 2px 4px;
+    border-radius: 8px;
+    background: @search-input-background-active;
+    color: @font-dark;
     font-weight: 500;
     font-size: @search-advanced-input-font-size;
+    &:focus {
+      border: @search-input-border;
+      background-color: @search-input-background;
+      border: 2px @background-blue solid;
+    }
   }
 
   textarea {
     outline: 0;
-    border: 0;
     resize: none;
     width: 100%;
-    height: 200px;
-    padding-left: 4px;
+    height: 230px;
     border-radius: 10px;
-    background: rgba(245, 245, 245, 0.56);
-    color: #474747;
+    color: @font-dark;
     font-weight: 500;
     font-size: @search-advanced-input-font-size;
     line-height: 30px;
+    background-color: @search-input-background-active;
+    border: 2px @background-blue-light solid;
+    padding: 10px 20px;
+    &:focus {
+      background-color: @search-input-background;
+      border: 2px @background-blue solid;
+    }
   }
 
   .item {

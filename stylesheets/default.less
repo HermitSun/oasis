@@ -27,7 +27,7 @@
 @small-font: 0.9rem;
 @sub-small-font: 0.7rem;
 
-@subtitle-height: 31px;
+@subtitle-height: 50px;
 @subtitle-divider-height: 1.5px;
 @homepage-header-height: 100vh;
 
@@ -166,36 +166,38 @@
 
 // -----------提示框------------
 .mask-box {
+  .card;
+  background: whitesmoke;
   text-align: left;
-  border-radius: 20px;
   backdrop-filter: blur(0.5rem);
   transform: translate(-50%, -50%);
   box-sizing: border-box;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: @font-dark;
   .background-shadow;
 }
 .mask-box-header {
   .flex-space-between;
   align-items: center;
-  color: floralwhite;
   font-weight: 500;
   font-size: @middle-font;
+  .title {
+    .card-title;
+  }
 }
 
 button {
   outline: none;
 }
 
-.mask-box-content {
-  color: floralwhite;
-}
 
 // -----------页面------------
 .page {
   margin-top: calc(@searchPage-header-height__pc + 10px); // 为了去除顶部的bar
   width: 100vw;
   height: calc(100vh - @searchPage-header-height__pc);
+}
+.page-padding {
+  padding: 10px 20px;
 }
 
 // -----------标签页------------
@@ -228,7 +230,7 @@ button {
   font-weight: 500;
   letter-spacing: 1px;
 }
-.card-hint{
+.card-hint {
   font-weight: 500;
   font-size: @small-font;
   color: @font-dark;
