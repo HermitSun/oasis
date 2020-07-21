@@ -51,7 +51,6 @@
           <el-button type="primary" round @click="showCommandSearch = true">
             Command Search
           </el-button>
-          `
           <CommandSearchComp
             v-if="showCommandSearch"
             @close="showCommandSearch = false"
