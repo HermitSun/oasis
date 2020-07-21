@@ -2,26 +2,41 @@
   <div class="ranking-basic">
     <div class="title">
       Top Journal
-      <span class="sortKey">
-        {{
-          sortKey === 'acceptanceCount'
-            ? 'sort by acceptance count'
-            : 'sort by citation'
-        }}
-        <svg
-          class="icon"
-          width="20px"
-          height="20px"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          @click="changeSortKey"
-        >
-          <path
-            d="M832 592c0 10.752-3.968 20.096-11.904 28.096l-280 280C532.096 908.096 522.752 912 512 912c-10.816 0-20.16-3.904-28.096-11.904L203.904 620.096C195.904 612.096 192 602.752 192 592s3.904-20.096 11.904-28.096C211.84 555.904 221.184 552 232 552l560 0c10.752 0 20.096 3.904 28.096 11.904C828.032 571.904 832 581.248 832 592zM832 384c0 10.752-3.968 20.096-11.904 28.096-8 8-17.344 11.904-28.096 11.904l-560 0c-10.816 0-20.16-3.904-28.096-11.904C195.904 404.096 192 394.752 192 384s3.904-20.096 11.904-28.096l280-280C491.84 67.968 501.184 64 512 64c10.752 0 20.096 3.968 28.096 11.904l280 280C828.032 363.904 832 373.248 832 384z"
-            fill="#581BFF"
-          />
-        </svg>
+      <span class="flex-center-row">
+        <span class="label">
+          <span class="hint">Year</span>
+          <el-select
+            v-model="year"
+            size="small"
+            :value="year"
+            style="width:90px"
+            @change="requestJournalBasicRanking"
+          >
+            <el-option
+              v-for="item in timeRange"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </span>
+        <span class="label" style="margin-left: 10px">
+          <span class="hint">Sort By</span>
+          <el-select
+            v-model="sortKey"
+            size="small"
+            value="sortKey"
+            style="width: 160px"
+            @change="requestJournalBasicRanking"
+          >
+            <el-option
+              v-for="item in sortKeys"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </span>
       </span>
     </div>
     <!--无数据时的提示-->
@@ -52,14 +67,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Select, Option } from 'element-ui';
 import { getRankingIcon } from '~/components/ranking/ranking';
 import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
 import { getJournalBasicRanking } from '~/api';
 import NoDataPrompt from '~/components/mixins/NoDataPrompt';
+import RankingTimeRange from '~/components/ranking/rankingOpt';
 
 export default Vue.extend({
   name: 'JournalBasicRanking',
-  mixins: [NoDataPrompt],
+  components: {
+    [Select.name]: Select,
+    [Option.name]: Option
+  },
+  mixins: [NoDataPrompt, RankingTimeRange],
   props: {
     ranking: {
       type: Array,
@@ -69,6 +90,7 @@ export default Vue.extend({
   data() {
     return {
       sortKey: 'acceptanceCount' as sortKey,
+      year: new Date().getFullYear(),
       journalBasicRankingResponse: this.ranking
     };
   },
@@ -77,7 +99,7 @@ export default Vue.extend({
       try {
         const journalBasicRankingRes = await getJournalBasicRanking({
           sortKey: this.sortKey,
-          year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+          year: this.year
         });
         this.journalBasicRankingResponse = journalBasicRankingRes.data;
       } catch (e) {
@@ -92,11 +114,6 @@ export default Vue.extend({
         path: '/portrait/journal',
         query: { journal }
       });
-    },
-    changeSortKey() {
-      this.sortKey =
-        this.sortKey === 'citationCount' ? 'acceptanceCount' : 'citationCount';
-      this.requestJournalBasicRanking();
     }
   }
 });

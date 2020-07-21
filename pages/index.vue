@@ -191,7 +191,7 @@ async function requestAffiliationBasicRanking() {
   try {
     const affiliationBasicRankingRes = await getAffiliationBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (affiliationBasicRankingRes.code === 200) {
       res.affiliationRanking = affiliationBasicRankingRes.data;
@@ -211,7 +211,7 @@ async function requestAuthorBasicRanking() {
   try {
     const authorBasicRankingRes = await getAuthorBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (authorBasicRankingRes.code === 200) {
       res.authorRanking = authorBasicRankingRes.data;
@@ -231,7 +231,7 @@ async function requestConferenceBasicRanking() {
   try {
     const conferenceBasicRankingRes = await getConferenceBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (conferenceBasicRankingRes.code === 200) {
       res.conferenceRanking = conferenceBasicRankingRes.data;
@@ -251,7 +251,7 @@ async function requestJournalBasicRanking() {
   try {
     const journalBasicRankingRes = await getJournalBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (journalBasicRankingRes.code === 200) {
       res.journalRanking = journalBasicRankingRes.data;
@@ -270,7 +270,7 @@ async function requestKeywordBasicRanking() {
   };
   try {
     const keywordBasicRankingRes = await getKeywordBasicRanking(
-      Number(new Date().getFullYear() - 1)
+      Number(new Date().getFullYear())
     ); // TODO 去掉 - 1);
     if (keywordBasicRankingRes.code === 200) {
       res.keywordRanking = keywordBasicRankingRes.data;

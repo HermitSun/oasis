@@ -24,7 +24,7 @@
           <el-select
             v-model="year"
             size="small"
-            value="year"
+            :value="year"
             style="width:90px"
             @change="requestAffiliationBasicRanking"
           >
@@ -106,7 +106,7 @@ export default Vue.extend({
   data() {
     return {
       sortKey: 'acceptanceCount' as sortKey,
-      year: new Date().getFullYear() - 1, // TODO 去掉 - 1
+      year: new Date().getFullYear(),
       affiliationBasicRankingResponse: this.ranking
     };
   },
