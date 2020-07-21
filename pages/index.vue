@@ -25,16 +25,6 @@
           @keyup.enter="sendBasicSearch"
         />
         <div class="flex-center-row" style="margin-top: 30px">
-          <button
-            class="basic-search__button_small pc-hidden_mobile"
-            @click="sendBasicSearch"
-          >
-            <img
-              src="../assets/icon/icon-search.png"
-              style="height: 28px"
-              alt="icon-search"
-            />
-          </button>
           <el-button
             type="primary"
             plain

@@ -2,7 +2,7 @@
 
 // basic
 @ranking-title-font-size: @sub-large-font;
-@ranking-sortKey-font-size: @sub-middle-font;
+@ranking-sortKey-font-size: @small-font;
 @ranking-name-font-size: @sub-middle-font;
 @ranking-count-font-size: @sub-middle-font;
 @ranking-line-height: 35px;
@@ -193,18 +193,14 @@
 
 // basic-ranking
 .ranking-basic {
-  text-align: left;
-  border-radius: 4px;
-  border: 1px solid #ebeef5;
-  padding: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  background: @background-gray;
+  .card;
+  margin: 5px;
   .title {
     font-size: @ranking-title-font-size;
     color: @font-gray-dark;
     font-weight: 500;
     margin: 12px 0 20px 25px;
-
+    .flex-space-between;
     .main {
       cursor: pointer;
 
@@ -213,13 +209,15 @@
       }
     }
 
-    .sortKey {
+    .label {
       .flex-center-row;
-      float: right;
       font-size: @ranking-sortKey-font-size;
-      color: @background-blue;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
+      color: #C0C4CC;
+      .hint{
+        margin-right: 5px;
+      }
     }
   }
 
