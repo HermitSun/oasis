@@ -17,7 +17,9 @@ let cacheTimer: NodeJS.Timeout;
 
 export default Vue.extend({
   name: 'Affiliation',
-  components: { AffiliationAdvancedComp },
+  components: {
+    AffiliationAdvancedComp
+  },
   props: {
     /**
      * advancedRankOpt: 包含sortKey,startYear, endYear

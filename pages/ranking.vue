@@ -33,7 +33,6 @@ export default Vue.extend({
     currentSubject(): string {
       const regExpMatchArray = this.$route.path.match(/^\/ranking\/(.*)/);
       const subject = regExpMatchArray ? regExpMatchArray[1] : '';
-      console.log(subject);
       return subject || '';
     }
   },
