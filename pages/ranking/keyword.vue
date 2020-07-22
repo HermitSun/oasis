@@ -1,7 +1,7 @@
 <template>
   <div class="divide">
-    <KeywordAdvancedComp :rankings="rankings" class="advanced-ranking-list" />
-    <div id="webgl" class="advanced-ranking-3D-charts mobile-hidden"></div>
+    <KeywordAdvancedComp :rankings="rankings" />
+    <!--<div id="webgl" class="advanced-ranking-3D-charts mobile-hidden"></div>-->
   </div>
 </template>
 
@@ -13,7 +13,6 @@ import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/a
 import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendResponse';
 import { Message } from '~/node_modules/element-ui';
 import AsyncLoadEcharts from '~/components/mixins/AsyncLoadEcharts';
-import { Echarts3DBarOption } from '~/components/charts/echarts';
 
 const cache = {
   data: [] as KeywordAdvancedRankingResponse[],
@@ -64,6 +63,13 @@ export default Vue.extend({
   data() {
     return {} as any;
   },
+  watch: {
+    $route: {
+      handler() {
+        this.requestKeywordAdvancedRanking();
+      }
+    }
+  },
   activated() {
     clearTimeout(cacheTimer);
   },
@@ -74,16 +80,30 @@ export default Vue.extend({
     }, cache.expires);
   },
   methods: {
-    onEchartsLoad() {
-      echarts
-        .init(document.getElementById('webgl') as HTMLDivElement)
-        .setOption(
-          Echarts3DBarOption(
-            this.keyword3DTrend.keywords,
-            this.keyword3DTrend.years,
-            this.keyword3DTrend.value
-          )
-        );
+    // onEchartsLoad() {
+    //   echarts
+    //     .init(document.getElementById('webgl') as HTMLDivElement)
+    //     .setOption(
+    //       Echarts3DBarOption(
+    //         this.keyword3DTrend.keywords,
+    //         this.keyword3DTrend.years,
+    //         this.keyword3DTrend.value
+    //       )
+    //     );
+    // }
+    async requestKeywordAdvancedRanking() {
+      try {
+        const sortKey = this.$route.query.sortKey as any; // TODO 奇怪呢 没法导入sortKey类型
+        const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
+          sortKey,
+          startYear: Number(this.$route.query.startYear),
+          endYear: Number(this.$route.query.endYear)
+        });
+        // TODO 为了不报错这么写的 到底该咋写呢
+        (this as any).rankings = keywordAdvancedRankingRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
     }
   }
 });

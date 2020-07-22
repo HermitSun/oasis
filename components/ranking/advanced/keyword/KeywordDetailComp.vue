@@ -2,37 +2,37 @@
   <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
-        <span class="index"
-          >{{ index }}
-          <span class="icon">
-            <img
-              v-if="!showDetail"
-              src="~/assets/icon/icon-arrow-right.svg"
-              width="30"
-              alt="icon-arrow-right"
-              :style="dropdownDisabledStyle"
-              @click="requestShowDetail"
-            />
-            <img
-              v-if="showDetail"
-              src="~/assets/icon/icon-arrow-top.svg"
-              width="30"
-              alt="icon-arrow-top"
-              @click="requestShowDetail"
-            />
-          </span>
-        </span>
-        <span class="name" @click="jumpToPortrait"
-          >{{ rank.keyword }}
-          <img
-            src="~/assets/icon/icon-share.svg"
-            class="icon"
-            alt="icon-share"
+        <span class="index">
+          <span class="number">{{ index }}</span>
+          <el-button
+            v-if="!showDetail"
+            type="primary"
+            circle
+            plain
+            size="mini"
+            icon="el-icon-arrow-right"
+            :style="dropdownDisabledStyle"
+            @click="requestShowDetail"
+          />
+          <el-button
+            v-if="showDetail"
+            type="primary"
+            circle
+            size="mini"
+            icon="el-icon-arrow-up"
+            @click="requestShowDetail"
           />
         </span>
+        <el-tooltip
+          trigger="hover"
+          placement="top-start"
+          :content="rank.keyword"
+        >
+          <span class="name" @click="jumpToPortrait">{{ rank.keyword }} </span>
+        </el-tooltip>
       </span>
-      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
+      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.authorNum }}</span>
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
@@ -71,6 +71,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Tooltip } from 'element-ui';
 import { mapGetters } from 'vuex';
 import PaperInfoComp from '../PaperInfoComp.vue';
 import { getKeywordDetailRanking } from '~/api';
@@ -80,7 +81,9 @@ import { createBarChart } from '@/components/charts/bar';
 export default Vue.extend({
   name: 'KeywordDetailComp',
   components: {
-    PaperInfoComp
+    PaperInfoComp,
+    [Button.name]: Button,
+    [Tooltip.name]: Tooltip
   },
   props: {
     rank: {

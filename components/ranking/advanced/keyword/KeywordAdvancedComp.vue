@@ -2,16 +2,12 @@
   <div class="ranking-advanced">
     <div class="header">
       <span class="prop">Keyword</span>
-      <span class="prop">Count</span>
       <span class="prop">Citation</span>
+      <span class="prop">Acceptance</span>
       <span class="prop">Author</span>
     </div>
     <div class="body">
-      <div
-        v-for="(rank, index) in rankings"
-        :key="index"
-        style="margin-bottom: 5px"
-      >
+      <div v-for="(rank, index) in rankings" :key="index">
         <KeywordDetailComp :rank="rank" :index="index + 1" />
       </div>
     </div>

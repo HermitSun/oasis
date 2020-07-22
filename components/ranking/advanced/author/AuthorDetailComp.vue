@@ -2,37 +2,39 @@
   <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
-        <span class="index"
-          >{{ index }}
-          <span class="icon">
-            <img
-              v-if="!showDetail"
-              src="~/assets/icon/icon-arrow-right.svg"
-              width="30"
-              alt="icon-arrow-right"
-              :style="dropdownDisabledStyle"
-              @click="requestShowDetail"
-            />
-            <img
-              v-if="showDetail"
-              src="~/assets/icon/icon-arrow-top.svg"
-              width="30"
-              alt="icon-arrow-top"
-              @click="requestShowDetail"
-            />
-          </span>
-        </span>
-        <span class="name" @click="jumpToPortrait"
-          >{{ rank.authorName }}
-          <img
-            src="~/assets/icon/icon-share.svg"
-            class="icon"
-            alt="icon-share"
+        <span class="index">
+          <span class="number">{{ index }}</span>
+          <el-button
+            v-if="!showDetail"
+            type="primary"
+            circle
+            plain
+            size="mini"
+            icon="el-icon-arrow-right"
+            :style="dropdownDisabledStyle"
+            @click="requestShowDetail"
+          />
+          <el-button
+            v-if="showDetail"
+            type="primary"
+            circle
+            size="mini"
+            icon="el-icon-arrow-up"
+            @click="requestShowDetail"
           />
         </span>
+        <el-tooltip
+          trigger="hover"
+          placement="top-start"
+          :content="rank.authorName"
+        >
+          <span class="name" @click="jumpToPortrait"
+            >{{ rank.authorName }}
+          </span>
+        </el-tooltip>
       </span>
-      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
+      <span class="value">{{ rank.count }}</span>
       <span class="value">
         <!--提前设定宽和高，避免重排-->
         <div
