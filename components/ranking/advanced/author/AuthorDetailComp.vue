@@ -94,6 +94,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Tooltip } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
@@ -105,7 +106,9 @@ export default Vue.extend({
   name: 'AuthorDetailComp',
   components: {
     PaperInfoComp,
-    InterestWordCloud
+    InterestWordCloud,
+    [Button.name]: Button,
+    [Tooltip.name]: Tooltip
   },
   props: {
     rank: {
