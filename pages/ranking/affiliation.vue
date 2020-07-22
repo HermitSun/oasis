@@ -71,12 +71,20 @@ export default Vue.extend({
   methods: {
     async requestAffiliationAdvancedRanking() {
       try {
-        const sortKey = this.$route.query.sortKey as any; // TODO 奇怪呢 没法导入sortKey类型
+        const sortKey = this.$route.query.sortKey
+          ? (this.$route.query.sortKey as any)
+          : 'acceptanceCount'; // TODO 奇怪呢 没法导入sortKey类型
+        const startYear = this.$route.query.startYear
+          ? Number(this.$route.query.startYear)
+          : 2015;
+        const endYear = this.$route.query.endYear
+          ? Number(this.$route.query.endYear)
+          : 2020;
         const affiliationAdvancedRankingRes = await getAffiliationAdvancedRanking(
           {
             sortKey,
-            startYear: Number(this.$route.query.startYear),
-            endYear: Number(this.$route.query.endYear)
+            startYear,
+            endYear
           }
         );
         // TODO 为了不报错这么写的 到底该咋写呢

@@ -426,26 +426,12 @@ export default Vue.extend({
 
 .homepage-content {
   padding: 20px 100px;
-  /**
-  @media @min-pc-width {
-    .flex-left-left-row;
-    .homepage-content__left {
-      width: 75%;
-    }
-
-    .homepage-content__right {
-      width: 25%;
-    }
-  }
-**/
 
   .homepage-content__abstract {
     .gray-background;
   }
 
   .homepage-content__talents {
-    .gray-background;
-
     .talents {
       display: flex;
       flex-flow: row wrap;
