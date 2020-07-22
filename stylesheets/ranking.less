@@ -9,6 +9,7 @@
 
 // advanced
 @ranking-advanced-height: 50px;
+@ranking-advanced-detail-height: 400px;
 @ranking-advanced-header-font-size: @middle-font;
 @ranking-advanced-body-font-size: @small-font;
 @ranking-advanced-body-title-font-size: @sub-middle-font;
@@ -101,6 +102,8 @@
 
   .detail {
     padding: 30px 10px 0 10px;
+    width: 100%;
+    height: @ranking-advanced-detail-height;
 
     @media @min-mobile-width {
       display: flex;
@@ -110,6 +113,7 @@
       .card;
       @media @min-mobile-width {
         flex: 1;
+        flex-basis: 20px;
       }
       text-align: left;
       .title {

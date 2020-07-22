@@ -123,19 +123,8 @@ export default Vue.extend({
   methods: {
     initChart() {
       setTimeout(() => {
-        const selector = '#' + this.rank.keyword.replace(/[^a-zA-Z]/g, '');
-        // 这一块目前还没看到有统一抽取的必要性，也许后面会需要抽出来做一个单独的初始化图表的函数
-        const chartWidth = 500;
-        const chartHeight = 400;
-        const maxHeight = Math.max(...this.rankingDetail.publicationTrend);
-        createBarChart(selector, this.rankingDetail.publicationTrend, {
-          width: chartWidth,
-          height: chartHeight,
-          barHeight: (d: number) =>
-            maxHeight === 0 ? 0 : (d / maxHeight) * (chartHeight - 20),
-          barMargin: 20,
-          tooltipThreshold: maxHeight
-        });
+        const selector = this.rank.keyword.replace(/[^a-zA-Z]/g, '');
+        createBarChart(selector, this.rankingDetail.publicationTrend);
       }, 0);
     },
     requestShowDetail() {

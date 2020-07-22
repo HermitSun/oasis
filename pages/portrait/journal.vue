@@ -31,7 +31,6 @@ import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
-import portraitBarConfig from '~/components/portrait/barConfig';
 import { PortraitJournalPageComp } from '~/interfaces/pages/portrait/PortraitJournalPageComp';
 
 async function requestPortrait(journal: string) {
@@ -109,22 +108,8 @@ export default Vue.extend({
   methods: {
     initCharts() {
       setTimeout(() => {
-        createBarChart(
-          '#citation-bar',
-          this.citationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as HTMLElement,
-            Math.max(...this.citationTrend)
-          )
-        );
-        createBarChart(
-          '#publication-bar',
-          this.publicationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as HTMLElement,
-            Math.max(...this.publicationTrend)
-          )
-        );
+        createBarChart('citation-bar', this.citationTrend);
+        createBarChart('publication-bar', this.publicationTrend);
       }, 0);
       setTimeout(() => {
         createPieChart(

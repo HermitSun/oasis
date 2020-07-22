@@ -128,14 +128,8 @@ export default Vue.extend({
   methods: {
     initChart() {
       setTimeout(() => {
-        const selector =
-          '#' + this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
-        createBarChart(selector, this.rankingDetail.publicationTrend, {
-          width: 500,
-          height: 400,
-          barMargin: 20,
-          tooltipThreshold: 15
-        });
+        const selector = this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
+        createBarChart(selector, this.rankingDetail.publicationTrend);
       }, 0);
     },
     requestShowDetail() {
@@ -167,15 +161,6 @@ export default Vue.extend({
         this.cachedRankingDetail = this.rankingDetail;
 
         this.initChart();
-        // TODO 控制word-cloud高度
-        // const elementWordCloud = document.getElementById('wordCloud') as any;
-        // const elementPublicationTrend = document.getElementById(
-        //   this.rank.affiliationName.replace(/[^a-zA-Z]/g, '')
-        // ) as HTMLElement;
-        // elementWordCloud.style.height =
-        //   elementPublicationTrend.offsetHeight - 60 + 'px';
-        // console.log(elementPublicationTrend.offsetHeight);
-        // console.log(elementWordCloud.offsetHeight);
         this.showWordCloud = true;
         this.isLoading = false;
       } catch (e) {

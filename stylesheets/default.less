@@ -139,39 +139,6 @@
     inset -8rem -8rem 8rem rgba(255, 255, 255, 0.05);
 }
 
-// -----------小标题-------------
-.subtitle {
-  height: @subtitle-height;
-  font-size: @largest-font;
-  color: @font-dark;
-  text-align: left;
-  margin: 50px 0;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  .option {
-    float: right;
-    .label {
-      color: #c0c4cc;
-      font-size: @sub-middle-font;
-      font-weight: 500;
-      .hint {
-      }
-    }
-  }
-}
-
-.subtitle-divider {
-  //background: @background-blue;
-  //height: @subtitle-divider-height;
-  //margin: 10px 0;
-}
-
-.gray-background {
-  background: @background-gray;
-  padding: 20px 10px;
-}
-
 // -----------遮罩层------------
 .mask {
   position: fixed;
@@ -222,10 +189,43 @@ button {
 .tab {
   margin-bottom: 50px;
 }
-.title {
+.intro-title {
   color: @font-dark;
   font-size: @largest-font;
   margin: 30px 0;
+}
+
+// -----------小标题-------------
+.subtitle {
+  height: @subtitle-height;
+  font-size: @largest-font;
+  color: @font-dark;
+  text-align: left;
+  margin: 50px 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  .option {
+    float: right;
+    .label {
+      color: #c0c4cc;
+      font-size: @sub-middle-font;
+      font-weight: 500;
+      .hint {
+      }
+    }
+  }
+}
+
+.subtitle-divider {
+  //background: @background-blue;
+  //height: @subtitle-divider-height;
+  //margin: 10px 0;
+}
+
+.gray-background {
+  background: @background-gray;
+  padding: 20px 10px;
 }
 
 // -----------card------------
@@ -238,7 +238,7 @@ button {
   padding: @card-padding;
   border-radius: @card-border-radius;
   .shadow;
-  margin-bottom: 30px;
+  margin: 0 30px 30px 30px;
   text-align: left;
 }
 

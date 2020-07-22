@@ -59,7 +59,7 @@
     </div>
     <div class="homepage-content">
       <div class="tab">
-        <span class="title">OASIS RANKING</span>
+        <span class="intro-title">OASIS RANKING</span>
         <div style="margin: 30px 0">
           <el-tabs tab-position="right">
             <el-tab-pane label="Author">
@@ -96,7 +96,7 @@
         </div>
       </div>
       <template>
-        <div class="title">
+        <div class="intro-title">
           TALENTS BASE
         </div>
         <div class="homepage-content__talents">
@@ -108,7 +108,7 @@
         </div>
       </template>
       <template>
-        <div class="title">
+        <div class="intro-title">
           OASIS NEWS
         </div>
         <div class="homepage-content__abstract">
@@ -124,7 +124,7 @@
     </div>
     <!--<div class="homepage-content__right">-->
     <!--<div class="homepage-content__ranking">-->
-    <!--<Subtitle title="🏆 OASIS RANKINGS" />-->
+    <!--<Subintro-title intro-title="🏆 OASIS RANKINGS" />-->
     <!--<div class="homepage-content__rankings">-->
     <!--<AuthorBasicRanking :ranking="authorRanking" class="rank" />-->
     <!--<AffiliationBasicRanking-->

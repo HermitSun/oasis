@@ -7,7 +7,7 @@
  */
 
 import * as d3 from 'd3-selection';
-
+import * as echarts from 'echarts';
 type D3CallbackFn<T, R = string | number> = (data: T, index?: number) => R;
 type BarChartDatum = number;
 export interface BarChartConfig {
@@ -25,8 +25,61 @@ export interface BarChartConfig {
     mouseOverColor: string | D3CallbackFn<BarChartDatum>;
   };
 }
-
 export function createBarChart(
+  selectorOrDOM: string | HTMLElement,
+  data: BarChartDatum[]
+) {
+  const bar = echarts.init(
+    document.getElementById(selectorOrDOM as string) as any
+  );
+  const option: any = {
+    xAxis: {
+      data: Array.from(new Array(2021).keys()).slice(2010),
+      axisLabel: {
+        textStyle: {
+          color: '#ccc'
+        }
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      z: 10
+    },
+    yAxis: { show: false },
+    series: [
+      {
+        type: 'bar',
+        label: {
+          show: true,
+          position: 'top',
+          color: '#c4c1ff',
+          formatter: (params: any) => (params.data === 0 ? '' : params.data)
+        },
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: '#5239ff' },
+            { offset: 1, color: '#ab8dff' }
+          ]),
+          barBorderRadius: 10
+        },
+        emphasis: {
+          itemStyle: {
+            color: '#f0efff'
+          }
+        },
+        barCategoryGap: '40%',
+        barMaxWidth: '15',
+        data
+      }
+    ]
+  };
+
+  bar.setOption(option);
+}
+export function createBarChartD3(
   selectorOrDOM: string | HTMLElement,
   data: BarChartDatum[],
   {

@@ -161,14 +161,8 @@ export default Vue.extend({
     initChart() {
       setTimeout(() => {
         const selector =
-          '#' +
-          this.rank.authorName.replace(/[^a-zA-Z]/g, '') +
-          this.rank.authorId;
-        createBarChart(selector, this.rank.publicationTrend, {
-          width: 150,
-          height: 80,
-          tooltipThreshold: 15
-        });
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
+        createBarChart(selector, this.rank.publicationTrend);
       }, 0);
     },
     requestShowDetail() {

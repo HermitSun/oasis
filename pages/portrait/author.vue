@@ -101,7 +101,6 @@ import {
 } from '~/components/charts/force';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
-import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import ForceChartClear from '~/components/mixins/ForceChartClear';
@@ -283,22 +282,8 @@ export default Vue.extend({
     initCharts() {
       // 柱状图的开销较小，但是仍然不打算让他阻塞渲染
       setTimeout(() => {
-        createBarChart(
-          '#citation-bar',
-          this.citationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as any,
-            Math.max(...this.citationTrend)
-          )
-        );
-        createBarChart(
-          '#publication-bar',
-          this.publicationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as any,
-            Math.max(...this.publicationTrend)
-          )
-        );
+        createBarChart('citation-bar', this.citationTrend);
+        createBarChart('publication-bar', this.publicationTrend);
       }, 0);
       // 暂时使用这种方式避免渲染时的阻塞
       // 可能需要重构为组件
