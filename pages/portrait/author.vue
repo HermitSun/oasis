@@ -1,11 +1,11 @@
 <template>
   <div class="author-portrait-wrapper">
-    <div v-if="showPortrait" class="portrait-module">
+    <div v-if="showPortrait" class="portrait">
       <div class="profile">
         <PortraitProfileComp id="portrait" :profile="profile" />
       </div>
       <div class="detail">
-        <el-tabs tab-position="top" class="tabs">
+        <el-tabs tab-position="top" type="card" class="tabs">
           <el-tab-pane label="Basic Information" class="tab">
             <template>
               <div class="module">
@@ -41,7 +41,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="Related Papers" class="tab">
-            <div v-if="showPortrait" class="module">
+            <div v-if="showPortrait">
               <PapersSubtitle
                 title="📝 All Papers"
                 :sort-key="sortKey"

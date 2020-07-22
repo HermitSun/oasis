@@ -4,25 +4,9 @@
 @portrait-profile-name-font-size: @largest-font;
 @portrait-paper-info-font-size: @sub-middle-font;
 
-.profile-module:first-child {
-  padding-top: 20px;
-}
-
-.profile-module {
-  padding-left: 10px;
-  padding-right: 10px;
-
-  @media @min-pad-width {
-    padding-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  @media @max-pad-width {
-    padding-bottom: 5px;
-  }
-}
-.portrait-module {
+.portrait {
   .page-padding;
+  width: 100%;
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -34,7 +18,6 @@
     display: flex;
     flex-direction: column;
     .tabs {
-      margin-top: 30px;
       .tab {
         height: calc(100vh - 200px);
         overflow: scroll;
@@ -42,8 +25,8 @@
     }
   }
   .module {
-    padding: @card-padding;
-
+    .card;
+    margin: 10px;
     @media @min-pad-width {
       flex: 1;
       margin-right: 10px;
@@ -73,16 +56,17 @@
 
 .portrait-profile {
   width: 100%;
+  .card;
   .name {
     height: @subtitle-height;
+    .overflow-hidden-width(100%);
     text-align: left;
-    overflow-wrap: break-word;
+    //overflow-wrap: break-word;
     font-weight: bold;
     font-size: @portrait-profile-name-font-size;
-    margin: 40px 10px 40px;
+    margin: 10px 10px 40px;
   }
   .info {
-    .card;
     .wrapper {
       .flex-left-left-row;
       .prop {
@@ -179,5 +163,23 @@
     .keyword-inner-wrapper {
       .overflow-hidden-height(2);
     }
+  }
+}
+
+.profile-module:first-child {
+  padding-top: 20px;
+}
+
+.profile-module {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  @media @min-pad-width {
+    padding-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  @media @max-pad-width {
+    padding-bottom: 5px;
   }
 }
