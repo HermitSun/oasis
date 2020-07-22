@@ -30,7 +30,7 @@ export default Vue.extend({
       // TODO 添加可选择的sortKey和year
       const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
         sortKey: 'acceptanceCount',
-        startYear: 2019,
+        startYear: 2015,
         endYear: 2019
       });
       cache.data =
