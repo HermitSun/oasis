@@ -55,6 +55,7 @@
           <div class="content">
             <div
               :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
+              style="width: 100%; min-height: 400px;min-width: 400px"
             ></div>
           </div>
         </div>
@@ -159,13 +160,10 @@ export default Vue.extend({
   methods: {
     initChart() {
       setTimeout(() => {
-        const selector = this.rank.authorName.replace(/[^a-zA-Z]/g, '');
         createBarChart(
-          selector + this.rank.authorId,
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId,
           this.rank.publicationTrend
         );
-        console.log(selector);
-        createWordCloud(selector + 'wordcloud', this.rankingDetail.keywords);
       }, 0);
     },
     requestShowDetail() {
@@ -194,6 +192,10 @@ export default Vue.extend({
           this.rank.authorId
         );
         this.rankingDetail = rankingDetailRes.data;
+        createWordCloud(
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud',
+          this.rankingDetail.keywords
+        );
         this.cachedRankingDetail = this.rankingDetail;
         this.showWordCloud = true;
         this.isLoading = false;

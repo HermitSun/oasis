@@ -11,8 +11,8 @@
 @ranking-advanced-height: 50px;
 @ranking-advanced-detail-height: 400px;
 @ranking-advanced-header-font-size: @middle-font;
-@ranking-advanced-body-font-size: @small-font;
-@ranking-advanced-body-title-font-size: @sub-middle-font;
+@ranking-advanced-body-font-size: @sub-middle-font;
+@ranking-advanced-body-title-font-size: @middle-font;
 
 // advanced-ranking page
 .advanced-ranking-list {
@@ -118,7 +118,7 @@
         flex-basis: 20px;
       }
       .title {
-        color: @font-gray-dark;
+        color: @font-dark;
         font-size: @ranking-advanced-body-title-font-size;
         margin: 10px 0 25px 0;
         .icon {
@@ -142,17 +142,12 @@
 
     .publication {
       width: 20%;
-      color: @font-gray-middle;
-      font-size: @sub-small-font;
-      background: @background-blue-light;
-      border-radius: 20px;
-      text-align: center;
-      padding: 3px 0;
       margin-right: 10px;
     }
 
     .name {
       width: 80%;
+      color: @font-dark;
       font-size: @ranking-advanced-body-font-size;
       .overflow-hidden-height(4);
       //  TODO 调整样式 画像页的排名字体不宜过大且几个模块不能并排展示
