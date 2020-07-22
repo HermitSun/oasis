@@ -103,7 +103,7 @@
   .detail {
     padding: 30px 10px 0 10px;
     width: 100%;
-    height: @ranking-advanced-detail-height;
+    min-height: @ranking-advanced-detail-height;
 
     @media @min-mobile-width {
       display: flex;
@@ -111,18 +111,22 @@
 
     .info {
       .card;
+      margin: 0 10px 30px 10px;
+      text-align: left;
       @media @min-mobile-width {
         flex: 1;
         flex-basis: 20px;
       }
-      text-align: left;
       .title {
-        color: @background-blue;
-        font-weight: 500;
+        color: @font-gray-dark;
         font-size: @ranking-advanced-body-title-font-size;
-        margin-bottom: 10px;
+        margin: 10px 0 25px 0;
+        .icon {
+          color: @background-blue;
+          font-size: @middle-font;
+          font-weight: 500;
+        }
       }
-
       .content {
         color: @font-gray;
         padding-right: 10px;

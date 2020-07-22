@@ -50,18 +50,17 @@
       <div class="detail">
         <div class="info">
           <div class="title">
-            📃 Keywords
+            <i class="el-icon-magic-stick icon"></i> Keywords
           </div>
           <div class="content">
-            <InterestWordCloud
-              v-if="showWordCloud"
-              :interests="rankingDetail.keywords"
-            />
+            <div
+              :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
+            ></div>
           </div>
         </div>
         <div class="info">
           <div class="title">
-            📜 Most Influential Papers
+            <i class="el-icon-document icon"></i> Most Influential Papers
           </div>
           <div class="content">
             <div
@@ -75,7 +74,7 @@
         </div>
         <div class="info">
           <div class="title">
-            📝 Most Recent Papers
+            <i class="el-icon-notebook-1 icon"></i> Most Recent Papers
           </div>
           <div class="content">
             <div
@@ -94,21 +93,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip } from 'element-ui';
+import { Button, Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
 import PaperInfoComp from '@/components/ranking/advanced/PaperInfoComp.vue';
-import InterestWordCloud from '@/components/interest/InterestWordCloud.vue';
 import { createBarChart } from '@/components/charts/bar';
+import { createWordCloud } from '~/components/charts/wordcloud';
 
 export default Vue.extend({
   name: 'AuthorDetailComp',
   components: {
     PaperInfoComp,
-    InterestWordCloud,
     [Button.name]: Button,
-    [Tooltip.name]: Tooltip
+    [Tooltip.name]: Tooltip,
+    [Icon.name]: Icon
   },
   props: {
     rank: {
@@ -160,9 +159,13 @@ export default Vue.extend({
   methods: {
     initChart() {
       setTimeout(() => {
-        const selector =
-          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId;
-        createBarChart(selector, this.rank.publicationTrend);
+        const selector = this.rank.authorName.replace(/[^a-zA-Z]/g, '');
+        createBarChart(
+          selector + this.rank.authorId,
+          this.rank.publicationTrend
+        );
+        console.log(selector);
+        createWordCloud(selector + 'wordcloud', this.rankingDetail.keywords);
       }, 0);
     },
     requestShowDetail() {
