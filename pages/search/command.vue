@@ -1,12 +1,12 @@
 <template>
-  <div class="page">
+  <div>
     <!--搜索框-->
     <SearchBarComp
       v-model="searchContent"
       @keyword-change="startAnotherBasicSearch"
     />
     <!--搜索内容-->
-    <div v-loading="isLoading" class="searchPage-content">
+    <div v-loading="isLoading" class="page">
       <!--About 3190 Results-->
       <div>
         <SearchResHeaderComp :result-count="resultCount" />

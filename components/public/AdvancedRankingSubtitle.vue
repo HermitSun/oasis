@@ -1,21 +1,56 @@
 <template>
   <div>
-    <div class="subtitle">
-      {{ title }}
-      <span style="float: right">
-        <span v-for="(item, index) in subjects" :key="index">
-          <!--忽略大小写进行比较-->
-          <span
-            :class="
-              item.toLowerCase() === subject.toLowerCase()
-                ? 'selected_subject'
-                : 'not_selected_subject'
-            "
-            class="subject"
-            @click="jumpToRanking(item)"
-            >{{ item }}</span
+    <div class="subtitle flex-space-between">
+      <span>{{ title }}</span>
+      <span class="option">
+        <span v-if="subject !== 'keyword'" class="label">
+          <span class="hint">Sort By</span>
+          <el-select
+            v-model="sortKey"
+            size="small"
+            :value="sortKey"
+            style="width: 160px"
+            @change="jumpToRanking"
           >
-          <span v-if="index !== subjects.length - 1">|</span>
+            <el-option
+              v-for="item in sortKeys"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </span>
+        <span class="label" style="margin-left: 10px">
+          <span class="hint">Time Range</span>
+          <el-select
+            v-model="startYear"
+            size="small"
+            :value="startYear"
+            style="width: 90px"
+            @change="jumpToRanking"
+          >
+            <el-option
+              v-for="item in generateArray(2015, endYear)"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+          <span style="margin: 0 3px">~</span>
+          <el-select
+            v-model="endYear"
+            size="small"
+            :value="endYear"
+            style="width: 90px"
+            @change="jumpToRanking"
+          >
+            <el-option
+              v-for="item in generateArray(startYear, 2020)"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </span>
       </span>
     </div>
@@ -25,9 +60,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
+import { Select, Option } from 'element-ui';
+import RankingOption from '../ranking/rankingOpt';
+import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
 export default Vue.extend({
   name: 'AdvancedRankingSubtitle',
+  components: {
+    [Select.name]: Select,
+    [Option.name]: Option
+  },
+  mixins: [RankingOption],
   props: {
     title: {
       type: String,
@@ -40,12 +82,27 @@ export default Vue.extend({
   },
   data() {
     return {
-      subjects: ['Author', 'Affiliation', 'Keyword']
+      selectedSubject: this.subject,
+      sortKey: 'acceptanceCount' as sortKey,
+      startYear: 2015,
+      endYear: new Date().getFullYear()
     };
   },
   methods: {
-    jumpToRanking(subject: string) {
-      this.$router.push({ path: '/ranking/' + subject.toLowerCase() });
+    jumpToRanking() {
+      this.$router.push({
+        path: '/ranking/' + this.subject,
+        query: {
+          sortKey: this.sortKey,
+          startYear: this.startYear.toString(),
+          endYear: this.endYear.toString()
+        }
+      });
+    },
+    generateArray(start: number, end: number) {
+      return Array.from(new Array(end + 1).keys())
+        .slice(start)
+        .reverse();
     }
   }
 });
@@ -53,14 +110,4 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
-.subject {
-  color: @background-blue;
-  cursor: pointer;
-}
-.selected_subject {
-  color: @bright-yellow;
-}
-.not_selected_subject:hover {
-  color: @background-blue-normal;
-}
 </style>

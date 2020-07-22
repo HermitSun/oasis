@@ -14,6 +14,20 @@ const RankingOption = Vue.extend({
           value: 'citationCount',
           label: 'citation count'
         }
+      ],
+      subjects: [
+        {
+          value: 'affiliation',
+          label: 'Affiliation'
+        },
+        {
+          value: 'author',
+          label: 'Author'
+        },
+        {
+          value: 'keyword',
+          label: 'Keyword'
+        }
       ]
     };
   }

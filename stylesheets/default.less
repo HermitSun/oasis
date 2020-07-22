@@ -75,6 +75,7 @@
   align-items: center;
   flex-direction: row;
 }
+
 // 垂直靠左
 .flex-left-left-column {
   display: flex;
@@ -82,6 +83,7 @@
   align-items: flex-start;
   flex-direction: column;
 }
+
 .flex-left-left-row {
   display: flex;
   justify-content: flex-start;
@@ -121,11 +123,13 @@
 .shadow {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
+
 .gray-shadow {
   -webkit-box-shadow: 0 0 10px @background-gray-dark;
   -moz-box-shadow: 0 0 10px @background-gray-dark;
   box-shadow: 0 0 10px @background-gray-dark;
 }
+
 .background-shadow {
   box-shadow: -0.25rem -0.25rem 0.5rem rgba(255, 255, 255, 0.07),
     0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.12),
@@ -142,12 +146,27 @@
   color: @font-dark;
   text-align: left;
   margin: 50px 0;
+
+  display: flex;
+
+  .option {
+    float: right;
+    .label {
+      color: #c0c4cc;
+      font-size: @sub-middle-font;
+      font-weight: 500;
+      .hint {
+      }
+    }
+  }
 }
+
 .subtitle-divider {
   //background: @background-blue;
   //height: @subtitle-divider-height;
   //margin: 10px 0;
 }
+
 .gray-background {
   background: @background-gray;
   padding: 20px 10px;
@@ -175,11 +194,13 @@
   color: @font-dark;
   .background-shadow;
 }
+
 .mask-box-header {
   .flex-space-between;
   align-items: center;
   font-weight: 500;
   font-size: @middle-font;
+
   .title {
     .card-title;
   }
@@ -189,14 +210,11 @@ button {
   outline: none;
 }
 
-
 // -----------页面------------
 .page {
   margin-top: calc(@searchPage-header-height__pc + 10px); // 为了去除顶部的bar
   width: 100vw;
   height: calc(100vh - @searchPage-header-height__pc);
-}
-.page-padding {
   padding: 10px 20px;
 }
 
@@ -207,6 +225,7 @@ button {
     font-size: @largest-font;
     margin: 3px 0;
   }
+
   margin-bottom: 50px;
 }
 
@@ -223,6 +242,7 @@ button {
   margin-bottom: 30px;
   text-align: left;
 }
+
 .card-title {
   font-size: @card-title-font;
   margin-top: 15px;
@@ -230,11 +250,13 @@ button {
   font-weight: 500;
   letter-spacing: 1px;
 }
+
 .card-hint {
   font-weight: 500;
   font-size: @small-font;
   color: @font-dark;
 }
+
 .card-abstract {
   color: @font-gray;
   font-size: @card-abstract-font;
@@ -242,6 +264,7 @@ button {
   max-height: @card-abstract-max-height;
   .overflow-hidden-height(3);
 }
+
 .card-abstract__margin {
   margin: 20px 0;
   .card-abstract;

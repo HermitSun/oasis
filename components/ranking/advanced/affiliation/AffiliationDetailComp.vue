@@ -2,44 +2,44 @@
   <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
-        <span class="index"
-          >{{ index }}
-          <span class="icon">
-            <img
-              v-if="!showDetail"
-              src="~/assets/icon/icon-arrow-right.svg"
-              alt="icon-arrow-right"
-              width="30"
-              :style="dropdownDisabledStyle"
-              @click="requestShowDetail"
-            />
-            <img
-              v-if="showDetail"
-              src="~/assets/icon/icon-arrow-top.svg"
-              alt="icon-arrow-top"
-              width="30"
-              @click="requestShowDetail"
-            />
-          </span>
-        </span>
-        <span class="name" style="padding-left: 10px;" @click="jumpToPortrait"
-          >{{ rank.affiliationName }}
-          <img
-            src="~/assets/icon/icon-share.svg"
-            width="20"
-            class="icon"
-            alt="icon-share"
+        <span class="index">
+          <span class="number">{{ index }}</span>
+          <el-button
+            v-if="!showDetail"
+            type="primary"
+            circle
+            plain
+            size="mini"
+            icon="el-icon-arrow-right"
+            :style="dropdownDisabledStyle"
+            @click="requestShowDetail"
+          />
+          <el-button
+            v-if="showDetail"
+            type="primary"
+            circle
+            size="mini"
+            icon="el-icon-arrow-up"
+            @click="requestShowDetail"
           />
         </span>
+        <el-tooltip
+          trigger="hover"
+          placement="top-start"
+          :content="rank.affiliationName"
+        >
+          <span class="name" @click="jumpToPortrait"
+            >{{ rank.affiliationName }}
+          </span>
+        </el-tooltip>
       </span>
-      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
+      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.authorNum }}</span>
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
     <div v-show="showDetail">
-      <div class="divider"></div>
       <div class="detail">
         <div class="info">
           <div class="title">
@@ -68,6 +68,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Tooltip } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AffiliationDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '@/api/index.ts';
@@ -77,7 +78,9 @@ import InterestWordCloud from '@/components/interest/InterestWordCloud.vue';
 export default Vue.extend({
   name: 'AffiliationDetailComp',
   components: {
-    InterestWordCloud
+    InterestWordCloud,
+    [Button.name]: Button,
+    [Tooltip.name]: Tooltip
   },
   props: {
     rank: {

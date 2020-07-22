@@ -1,6 +1,6 @@
 <template>
   <div class="portrait-profile">
-    <el-tooltip trigger="hover" placement="top-start" :content="profile.name">
+    <el-tooltip trigger="hover" placement="top" :content="profile.name">
       <div class="name">
         {{ profile.name }}
       </div>

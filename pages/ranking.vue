@@ -1,12 +1,12 @@
 <template>
-  <div class="page">
+  <div>
     <SearchBarComp
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
     />
-    <div class="advanced-ranking-page">
+    <div class="page">
       <AdvancedRankingSubtitle
-        title="🏆 OASIS RANKING"
+        title="OASIS RANKING"
         :subject="currentSubject"
       />
       <nuxt-child keep-alive />
