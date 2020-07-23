@@ -45,16 +45,19 @@
         <div class="title">
           <i class="el-icon-data-line icon"></i> Publication Trend
         </div>
-        <div class="content">
-          <div :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"></div>
+        <div class="detail-content">
+          <div
+            :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"
+            style="height: 250px; width:100%"
+          ></div>
         </div>
       </div>
       <div class="info">
         <div class="title">
           <i class="el-icon-magic-stick icon"></i> Keywords
         </div>
-        <div class="content">
-          <div :id="'wordcloud'" style="height: 250px; width:500px"></div>
+        <div class="detail-content">
+          <div :id="'wordcloud'" style="height: 250px; width:100%"></div>
         </div>
       </div>
     </div>

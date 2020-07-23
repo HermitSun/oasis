@@ -24,7 +24,7 @@
 }
 
 .ranking-advanced {
-  padding: 60px 10px;
+  padding: 10px 10px;
   .header {
     margin-bottom: 15px;
     padding: 10px 0;
@@ -103,9 +103,9 @@
   .detail {
     padding: 30px 10px 0 10px;
     width: 100%;
-    min-height: @ranking-advanced-detail-height;
     @media @min-pad-width {
       display: flex;
+      min-height: @ranking-advanced-detail-height;
     }
     .info {
       .card;
@@ -124,8 +124,9 @@
           font-weight: 500;
         }
       }
-      .content {
+      .detail-content {
         color: @font-gray;
+        .flex-left-left-column;
       }
     }
   }

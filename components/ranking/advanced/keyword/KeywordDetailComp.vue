@@ -42,20 +42,18 @@
         <div class="title">
           <i class="el-icon-data-line icon"></i> Publication Trend
         </div>
-        <div class="content">
-          <span class="value">
-            <div
-              :id="rank.keyword.replace(/[^a-zA-Z]/g, '')"
-              style="height: 250px"
-            ></div>
-          </span>
+        <div class="detail-content">
+          <div
+            :id="rank.keyword.replace(/[^a-zA-Z]/g, '')"
+            style="height: 250px;width: 100%"
+          ></div>
         </div>
       </div>
       <div class="info">
         <div class="title">
           <i class="el-icon-document icon"></i> Most Influential Papers
         </div>
-        <div class="content">
+        <div class="detail-content">
           <div
             v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
             :key="i"

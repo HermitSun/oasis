@@ -7,7 +7,7 @@
         <el-menu
           background-color="transparent"
           active-text-color="#6C63FF"
-          text-color="#2c3e50"
+          text-color="#c0c4cc"
           :default-active="currentRoute"
           mode="horizontal"
           router

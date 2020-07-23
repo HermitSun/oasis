@@ -50,7 +50,7 @@
         <div class="title">
           <i class="el-icon-magic-stick icon"></i> Keywords
         </div>
-        <div class="content">
+        <div class="detail-content">
           <div
             :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
             style="height: 250px; width:100%"
@@ -61,7 +61,7 @@
         <div class="title">
           <i class="el-icon-document icon"></i> Most Influential Papers
         </div>
-        <div class="content">
+        <div class="detail-content">
           <div
             v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
             :key="i"
@@ -75,7 +75,7 @@
         <div class="title">
           <i class="el-icon-notebook-1 icon"></i> Most Recent Papers
         </div>
-        <div class="content">
+        <div class="detail-content">
           <div
             v-for="(paper, i) in rankingDetail.mostRecentPapers"
             :key="i"
