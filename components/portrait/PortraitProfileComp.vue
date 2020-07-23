@@ -11,7 +11,9 @@
     <div class="info">
       <div v-for="(info, index) in profile.statistics" :key="index">
         <div v-if="info.number !== ''" class="wrapper">
-          <span class="prop"> <i :class="info.icon"></i> {{ info.prop }} </span>
+          <span class="prop" style="min-width: 125px">
+            <i :class="info.icon" class="icon"></i> {{ info.prop }}
+          </span>
           <span class="number">
             {{ info.number }}
           </span>
