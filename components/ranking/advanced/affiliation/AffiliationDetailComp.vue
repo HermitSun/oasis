@@ -47,7 +47,7 @@
         </div>
         <div class="detail-content">
           <div
-            :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"
+            :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '') + 'bar'"
             style="height: 250px; width:100%"
           ></div>
         </div>
@@ -57,7 +57,10 @@
           <i class="el-icon-magic-stick icon"></i> Keywords
         </div>
         <div class="detail-content">
-          <div :id="'wordcloud'" style="height: 250px; width:100%"></div>
+          <div
+            :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
+            style="height: 250px; width:100%"
+          ></div>
         </div>
       </div>
     </div>
@@ -127,8 +130,8 @@ export default Vue.extend({
     initChart() {
       setTimeout(() => {
         const selector = this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
-        createBarChart(selector, this.rankingDetail.publicationTrend);
-        createWordCloud('wordcloud', this.rankingDetail.keywords);
+        createBarChart(selector + 'bar', this.rankingDetail.publicationTrend);
+        createWordCloud(selector + 'wordcloud', this.rankingDetail.keywords);
       }, 0);
     },
     requestShowDetail() {

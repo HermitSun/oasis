@@ -78,9 +78,9 @@ export function createBarChart(
   };
 
   bar.setOption(option);
-  window.onresize = function() {
+  window.addEventListener('resize', function() {
     bar.resize();
-  };
+  });
 }
 export function createBarChartD3(
   selectorOrDOM: string | HTMLElement,

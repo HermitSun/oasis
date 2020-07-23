@@ -59,7 +59,7 @@ export function createPieChart(
     ]
   };
   pie.setOption(option);
-  window.onresize = function() {
+  window.addEventListener('resize', function() {
     pie.resize();
-  };
+  });
 }

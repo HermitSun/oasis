@@ -15,6 +15,8 @@ export function createWordCloud(
   const wordcloud = echarts.init(
     document.getElementById(selectorOrDOM as string) as any
   );
+  console.log(document.getElementById(selectorOrDOM as string), data);
+
   const option: any = {
     series: [
       {
@@ -86,7 +88,7 @@ export function createWordCloud(
     ]
   };
   wordcloud.setOption(option);
-  window.onresize = function() {
+  window.addEventListener('resize', function() {
     wordcloud.resize();
-  };
+  });
 }
