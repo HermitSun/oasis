@@ -2,15 +2,16 @@
   <div class="portrait-profile">
     <el-tooltip trigger="hover" placement="top" :content="profile.name">
       <div class="name">
-        {{ profile.name }}
+        <span class="text">{{ profile.name }}</span>
+        <el-tag class="icon" size="medium" style="width: 100px">
+          <i :class="icon"></i> {{ type }}
+        </el-tag>
       </div>
     </el-tooltip>
     <div class="info">
       <div v-for="(info, index) in profile.statistics" :key="index">
         <div v-if="info.number !== ''" class="wrapper">
-          <span class="prop">
-            {{ info.prop }}
-          </span>
+          <span class="prop"> <i :class="info.icon"></i> {{ info.prop }} </span>
           <span class="number">
             {{ info.number }}
           </span>
@@ -22,12 +23,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Tooltip } from 'element-ui';
+import { Tooltip, Tag } from 'element-ui';
 
 export default Vue.extend({
   name: 'PortraitProfileComp',
   components: {
-    [Tooltip.name]: Tooltip
+    [Tooltip.name]: Tooltip,
+    [Tag.name]: Tag
   },
   props: {
     profile: {
@@ -39,6 +41,14 @@ export default Vue.extend({
        */
       type: Object,
       default: () => ({})
+    },
+    type: {
+      type: String,
+      default: ''
+    },
+    icon: {
+      type: String,
+      default: ''
     }
   }
 });

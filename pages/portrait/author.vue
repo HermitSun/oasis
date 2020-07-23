@@ -2,7 +2,12 @@
   <div class="author-portrait-wrapper">
     <div v-if="showPortrait" class="portrait">
       <div class="profile">
-        <PortraitProfileComp id="portrait" :profile="profile" />
+        <PortraitProfileComp
+          id="portrait"
+          :profile="profile"
+          type="Author"
+          icon="el-icon-user"
+        />
       </div>
       <div class="detail">
         <el-tabs tab-position="top" class="tabs">
@@ -98,7 +103,6 @@ import {
   ForceChartLink,
   ForceChartNode
 } from '~/components/charts/force';
-import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
@@ -191,15 +195,18 @@ async function fetchData(query: AuthorPapersPayload) {
     name: portraitRes.portrait.name,
     statistics: [
       {
-        prop: '💻 Affiliation',
+        icon: 'el-icon-school',
+        prop: 'Affiliation',
         number: portraitRes.portrait.affiliation
       },
       {
-        prop: '📝 Papers',
+        icon: 'el-icon-document',
+        prop: 'Papers',
         number: portraitRes.portrait.count
       },
       {
-        prop: '📃 Citations',
+        icon: 'el-icon-data-analysis',
+        prop: 'Citations',
         number: portraitRes.portrait.citation
       }
     ]
@@ -302,24 +309,24 @@ export default Vue.extend({
       this.interests = interestsRes.interests;
       // 渲染图表
       createPieChart(
-        '#pie',
+        'pie',
         this.interests
           .map((i) => ({ label: i.name, value: i.value }))
           .sort((a, b) => b.value - a.value)
-          .slice(0, 20),
-        {
-          width: getSizeById('pie').width,
-          height: getSizeById('pie').height,
-          // 点击后跳转到对应的研究方向画像
-          segmentClick: ({ data }) => {
-            this.$router.push({
-              path: '/portrait/keyword',
-              query: {
-                keyword: data.label
-              }
-            });
-          }
-        }
+          .slice(0, 20)
+        // {
+        //   width: getSizeById('pie').width,
+        //   height: getSizeById('pie').height,
+        //   // 点击后跳转到对应的研究方向画像
+        //   segmentClick: ({ data }) => {
+        //     this.$router.push({
+        //       path: '/portrait/keyword',
+        //       query: {
+        //         keyword: data.label
+        //       }
+        //     });
+        //   }
+        // }
       );
       // 加载完毕
       this.isInterestLoading = false;

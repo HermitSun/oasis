@@ -57,13 +57,20 @@
   width: 100%;
   .card;
   .name {
-    height: @subtitle-height;
-    .overflow-hidden-width(100%);
     text-align: left;
     //overflow-wrap: break-word;
-    font-weight: bold;
-    font-size: @portrait-profile-name-font-size;
     margin: 10px 10px 40px;
+    display: flex;
+    flex-direction: column;
+    .text {
+      .overflow-hidden-height(2);
+      font-weight: bold;
+      font-size: @portrait-profile-name-font-size;
+    }
+    .icon {
+      margin-top: 15px;
+      font-weight: 500;
+    }
   }
   .info {
     .wrapper {
@@ -78,8 +85,11 @@
     }
 
     .prop {
-      font-size: @middle-font;
-      color: @font-gray-dark;
+      .card-title;
+      color: @font-dark;
+      .icon {
+        color: @background-blue;
+      }
     }
     .number {
       font-size: @large-font;

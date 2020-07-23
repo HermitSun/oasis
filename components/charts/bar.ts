@@ -1,7 +1,7 @@
 /**
  * 柱状图
  * 从目前的实现看，也许叫条形图更合适
- * @author Alexcchanchic, WenSun
+ * @author Alexchanchic, WenSun
  * @date 2020.03.29
  * @update 2020.04.03
  */
@@ -32,8 +32,6 @@ export function createBarChart(
   const bar = echarts.init(
     document.getElementById(selectorOrDOM as string) as any
   );
-  console.log(document.getElementById(selectorOrDOM as string) as any);
-  console.log(data);
   const option: any = {
     xAxis: {
       data: Array.from(new Array(2021).keys()).slice(2010),

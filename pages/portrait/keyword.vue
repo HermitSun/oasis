@@ -1,7 +1,12 @@
 <template>
   <div v-if="showPortrait" class="portrait">
     <div class="profile">
-      <PortraitProfileComp id="portrait" :profile="profile" />
+      <PortraitProfileComp
+        id="portrait"
+        :profile="profile"
+        type="Keyword"
+        icon="el-icon-magic-stick"
+      />
     </div>
     <div class="detail">
       <el-tabs tab-position="top" class="tabs">
@@ -174,15 +179,18 @@ async function fetchData(query: KeywordPapersPayload) {
     name: keyword,
     statistics: [
       {
-        prop: '📝 Papers',
+        icon: 'el-icon-document',
+        prop: 'Papers',
         number: portraitRes.portrait.count
       },
       {
-        prop: '📃 Citations',
+        icon: 'el-icon-data-analysis',
+        prop: 'Citations',
         number: portraitRes.portrait.citation
       },
       {
-        prop: '💻 Authors',
+        icon: 'el-icon-user',
+        prop: 'Authors',
         number: portraitRes.portrait.authorNum
       }
     ]
