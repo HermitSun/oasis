@@ -45,46 +45,43 @@
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
-    <div v-show="showDetail">
-      <div class="divider"></div>
-      <div class="detail">
-        <div class="info">
-          <div class="title">
-            <i class="el-icon-magic-stick icon"></i> Keywords
-          </div>
-          <div class="content">
-            <div
-              :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
-              style="width: 100%; min-height: 400px;min-width: 400px"
-            ></div>
+    <div v-show="showDetail" class="detail">
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-magic-stick icon"></i> Keywords
+        </div>
+        <div class="content">
+          <div
+            :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
+            style="height: 250px; width:350px"
+          ></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-document icon"></i> Most Influential Papers
+        </div>
+        <div class="content">
+          <div
+            v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
+            :key="i"
+            style="margin-bottom: 10px"
+          >
+            <PaperInfoComp :paper="paper" />
           </div>
         </div>
-        <div class="info">
-          <div class="title">
-            <i class="el-icon-document icon"></i> Most Influential Papers
-          </div>
-          <div class="content">
-            <div
-              v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
-              :key="i"
-              style="margin-bottom: 10px"
-            >
-              <PaperInfoComp :paper="paper" />
-            </div>
-          </div>
+      </div>
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-notebook-1 icon"></i> Most Recent Papers
         </div>
-        <div class="info">
-          <div class="title">
-            <i class="el-icon-notebook-1 icon"></i> Most Recent Papers
-          </div>
-          <div class="content">
-            <div
-              v-for="(paper, i) in rankingDetail.mostRecentPapers"
-              :key="i"
-              style="margin-bottom: 10px"
-            >
-              <PaperInfoComp :paper="paper" />
-            </div>
+        <div class="content">
+          <div
+            v-for="(paper, i) in rankingDetail.mostRecentPapers"
+            :key="i"
+            style="margin-bottom: 10px"
+          >
+            <PaperInfoComp :paper="paper" />
           </div>
         </div>
       </div>

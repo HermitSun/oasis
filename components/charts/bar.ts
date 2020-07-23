@@ -32,6 +32,8 @@ export function createBarChart(
   const bar = echarts.init(
     document.getElementById(selectorOrDOM as string) as any
   );
+  console.log(document.getElementById(selectorOrDOM as string) as any);
+  console.log(data);
   const option: any = {
     xAxis: {
       data: Array.from(new Array(2021).keys()).slice(2010),

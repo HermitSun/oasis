@@ -58,12 +58,12 @@
   color: @font-dark;
   font-size: @ranking-advanced-body-font-size;
   width: 100%;
-  min-height: @ranking-advanced-height;
   .flex-center-column;
   .basic {
     display: flex;
     align-items: center;
     width: 100%;
+    min-height: @ranking-advanced-height;
 
     .name-wrapper {
       flex: 1;
@@ -104,18 +104,15 @@
     padding: 30px 10px 0 10px;
     width: 100%;
     min-height: @ranking-advanced-detail-height;
-
-    @media @min-mobile-width {
+    @media @min-pad-width {
       display: flex;
     }
-
     .info {
       .card;
       margin: 0 10px 30px 10px;
       text-align: left;
-      @media @min-mobile-width {
+      @media @min-pad-width {
         flex: 1;
-        flex-basis: 20px;
       }
       .title {
         color: @font-dark;
@@ -129,7 +126,6 @@
       }
       .content {
         color: @font-gray;
-        padding-right: 10px;
       }
     }
   }
@@ -141,15 +137,16 @@
     .flex-left-left-row;
 
     .publication {
-      width: 20%;
+      width: 80px;
+      .overflow-hidden-width('80px');
       margin-right: 10px;
     }
 
     .name {
-      width: 80%;
+      width: calc(100% - 80px);
       color: @font-dark;
       font-size: @ranking-advanced-body-font-size;
-      .overflow-hidden-height(4);
+      .overflow-hidden-height(2);
       //  TODO 调整样式 画像页的排名字体不宜过大且几个模块不能并排展示
     }
 
