@@ -39,27 +39,22 @@
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
-    <div v-show="showDetail">
-      <div class="detail">
-        <div class="info">
-          <div class="title">
-            📉 Publication Trend
-          </div>
-          <div class="content">
-            <div :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"></div>
-          </div>
+
+    <div v-show="showDetail" class="detail">
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-data-line icon"></i> Publication Trend
         </div>
-        <div class="info">
-          <div class="title">
-            📃 Keywords
-          </div>
-          <div class="content">
-            <InterestWordCloud
-              v-if="showWordCloud"
-              id="wordCloud"
-              :interests="rankingDetail.keywords"
-            />
-          </div>
+        <div class="content">
+          <div :id="rank.affiliationName.replace(/[^a-zA-Z]/g, '')"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-magic-stick icon"></i> Keywords
+        </div>
+        <div class="content">
+          <div :id="'wordcloud'" style="height: 250px; width:500px"></div>
         </div>
       </div>
     </div>
@@ -68,19 +63,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip } from 'element-ui';
+import { Button, Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AffiliationDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '@/api/index.ts';
 import { createBarChart } from '@/components/charts/bar';
-import InterestWordCloud from '@/components/interest/InterestWordCloud.vue';
+import { createWordCloud } from '~/components/charts/wordcloud';
 
 export default Vue.extend({
   name: 'AffiliationDetailComp',
   components: {
-    InterestWordCloud,
     [Button.name]: Button,
-    [Tooltip.name]: Tooltip
+    [Tooltip.name]: Tooltip,
+    [Icon.name]: Icon
   },
   props: {
     rank: {
@@ -130,6 +125,7 @@ export default Vue.extend({
       setTimeout(() => {
         const selector = this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
         createBarChart(selector, this.rankingDetail.publicationTrend);
+        createWordCloud('wordcloud', this.rankingDetail.keywords);
       }, 0);
     },
     requestShowDetail() {
