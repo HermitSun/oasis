@@ -9,7 +9,9 @@
         title="OASIS RANKING"
         :subject="currentSubject"
       />
-      <nuxt-child keep-alive />
+      <div style="padding-top:50px">
+        <nuxt-child keep-alive />
+      </div>
     </div>
   </div>
 </template>

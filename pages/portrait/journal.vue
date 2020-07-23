@@ -1,19 +1,31 @@
 <template>
   <div class="portrait">
-    <div class="profile-module">
-      <PortraitProfileComp id="portrait" :profile="profile" />
+    <div class="profile">
+      <PortraitProfileComp
+        id="portrait"
+        :profile="profile"
+        type="Journal"
+        icon="el-icon-collection"
+      />
+    </div>
+    <div class="detail-no_tabs">
       <div class="module">
-        <Subtitle title="📉 Citation Trend" />
+        <div class="card-title">
+          <i class="el-icon-data-analysis icon"></i> Citation Amount Statistics
+        </div>
         <div id="citation-bar" class="content"></div>
       </div>
       <div class="module">
-        <Subtitle title="📈 Publication Trends" />
+        <div class="card-title">
+          <i class="el-icon-data-analysis icon"></i> Publication Amount
+          Statistics
+        </div>
         <div id="publication-bar" class="content"></div>
       </div>
-    </div>
-    <div class="profile-module">
       <div class="module">
-        <Subtitle title="🌥 Keywords" />
+        <div class="card-title">
+          <i class="el-icon-pie-chart icon"></i> Paper Category
+        </div>
         <div id="pie" class="chart content"></div>
       </div>
     </div>
@@ -26,11 +38,9 @@ import { Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getJournalInterest, getJournalPortrait } from '~/api';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import Subtitle from '~/components/public/Subtitle.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import { createPieChart } from '~/components/charts/pie';
-import getSizeById from '~/utils/charts/getSizeById';
 import { PortraitJournalPageComp } from '~/interfaces/pages/portrait/PortraitJournalPageComp';
 
 async function requestPortrait(journal: string) {
@@ -59,8 +69,7 @@ async function requestInterests(journal: string) {
 export default Vue.extend({
   name: 'Journal',
   components: {
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   async asyncData({ query }) {
     const journal = query.journal as string;
@@ -74,15 +83,18 @@ export default Vue.extend({
       name: journal,
       statistics: [
         {
-          prop: '📝 Papers',
+          icon: 'el-icon-document',
+          prop: 'Papers',
           number: portraitRes.portrait.count
         },
         {
-          prop: '📃 Citations',
+          icon: 'el-icon-data-analysis',
+          prop: 'Citations',
           number: portraitRes.portrait.citation
         },
         {
-          prop: '💻 Authors',
+          icon: 'el-icon-user',
+          prop: 'Authors',
           number: portraitRes.portrait.authorNum
         }
       ]
@@ -113,24 +125,24 @@ export default Vue.extend({
       }, 0);
       setTimeout(() => {
         createPieChart(
-          '#pie',
+          'pie',
           this.interests
             .map((i) => ({ label: i.name, value: i.value }))
             .sort((a, b) => b.value - a.value)
-            .slice(0, 20),
-          {
-            width: getSizeById('pie').width,
-            height: getSizeById('pie').height,
-            // 点击后跳转到对应的研究方向画像
-            segmentClick: ({ data }) => {
-              this.$router.push({
-                path: '/portrait/keyword',
-                query: {
-                  keyword: data.label
-                }
-              });
-            }
-          }
+            .slice(0, 20)
+          // {
+          //   width: getSizeById('pie').width,
+          //   height: getSizeById('pie').height,
+          //   // 点击后跳转到对应的研究方向画像
+          //   segmentClick: ({ data }) => {
+          //     this.$router.push({
+          //       path: '/portrait/keyword',
+          //       query: {
+          //         keyword: data.label
+          //       }
+          //     });
+          //   }
+          // }
         );
       });
     }

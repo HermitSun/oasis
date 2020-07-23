@@ -2,30 +2,35 @@
   <div class="author-portrait-wrapper">
     <div v-if="showPortrait" class="portrait">
       <div class="profile">
-        <PortraitProfileComp id="portrait" :profile="profile" />
+        <PortraitProfileComp
+          id="portrait"
+          :profile="profile"
+          type="Author"
+          icon="el-icon-user"
+        />
       </div>
       <div class="detail">
-        <el-tabs tab-position="top" type="card" class="tabs">
-          <el-tab-pane label="Basic Information" class="tab">
+        <el-tabs tab-position="top" class="tabs">
+          <el-tab-pane label="Statistics" class="tab">
             <template>
               <div class="module">
-                <Subtitle title="📉 Citation Trend" />
-                <div
-                  id="citation-bar"
-                  class="content"
-                  style="min-height: 150px"
-                ></div>
+                <div class="card-title">
+                  <i class="el-icon-data-analysis icon"></i> Citation Amount
+                  Statistics
+                </div>
+                <div id="citation-bar" class="content"></div>
               </div>
               <div class="module">
-                <Subtitle title="📈 Publication Trends" />
-                <div
-                  id="publication-bar"
-                  class="content"
-                  style="min-height: 150px"
-                ></div>
+                <div class="card-title">
+                  <i class="el-icon-data-analysis icon"></i> Publication Amount
+                  Statistics
+                </div>
+                <div id="publication-bar" class="content"></div>
               </div>
-              <div class="module" style="margin-right: 10px">
-                <!--<Subtitle title="🌥 Keywords" />-->
+              <div class="module">
+                <div class="card-title">
+                  <i class="el-icon-pie-chart icon"></i> Paper Category
+                </div>
                 <div
                   id="pie"
                   v-loading="isInterestLoading"
@@ -77,8 +82,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading, Message, Tabs, TabPane } from 'element-ui';
-import Subtitle from '~/components/public/Subtitle.vue';
+import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
@@ -99,7 +103,6 @@ import {
   ForceChartLink,
   ForceChartNode
 } from '~/components/charts/force';
-import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
@@ -192,15 +195,18 @@ async function fetchData(query: AuthorPapersPayload) {
     name: portraitRes.portrait.name,
     statistics: [
       {
-        prop: '💻 Affiliation',
+        icon: 'el-icon-school',
+        prop: 'Affiliation',
         number: portraitRes.portrait.affiliation
       },
       {
-        prop: '📝 Papers',
+        icon: 'el-icon-document',
+        prop: 'Papers',
         number: portraitRes.portrait.count
       },
       {
-        prop: '📃 Citations',
+        icon: 'el-icon-data-analysis',
+        prop: 'Citations',
         number: portraitRes.portrait.citation
       }
     ]
@@ -226,10 +232,10 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
+    [Icon.name]: Icon,
     PaperInfoComp,
     PapersSubtitle,
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
@@ -303,24 +309,24 @@ export default Vue.extend({
       this.interests = interestsRes.interests;
       // 渲染图表
       createPieChart(
-        '#pie',
+        'pie',
         this.interests
           .map((i) => ({ label: i.name, value: i.value }))
           .sort((a, b) => b.value - a.value)
-          .slice(0, 20),
-        {
-          width: getSizeById('pie').width,
-          height: getSizeById('pie').height,
-          // 点击后跳转到对应的研究方向画像
-          segmentClick: ({ data }) => {
-            this.$router.push({
-              path: '/portrait/keyword',
-              query: {
-                keyword: data.label
-              }
-            });
-          }
-        }
+          .slice(0, 20)
+        // {
+        //   width: getSizeById('pie').width,
+        //   height: getSizeById('pie').height,
+        //   // 点击后跳转到对应的研究方向画像
+        //   segmentClick: ({ data }) => {
+        //     this.$router.push({
+        //       path: '/portrait/keyword',
+        //       query: {
+        //         keyword: data.label
+        //       }
+        //     });
+        //   }
+        // }
       );
       // 加载完毕
       this.isInterestLoading = false;

@@ -37,31 +37,29 @@
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
-    <div v-show="showDetail">
-      <div class="divider"></div>
-      <div class="detail">
-        <div class="info">
-          <div class="title">
-            📈 Publication Trend
-          </div>
-          <div class="content">
-            <span class="value">
-              <div :id="rank.keyword.replace(/[^a-zA-Z]/g, '')"></div>
-            </span>
-          </div>
+    <div v-show="showDetail" class="detail">
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-data-line icon"></i> Publication Trend
         </div>
-        <div class="info">
-          <div class="title">
-            📜 Most Influential Papers
-          </div>
-          <div class="content">
-            <div
-              v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
-              :key="i"
-              style="margin-bottom: 10px"
-            >
-              <PaperInfoComp :paper="paper" />
-            </div>
+        <div class="detail-content">
+          <div
+            :id="rank.keyword.replace(/[^a-zA-Z]/g, '')"
+            style="height: 250px;width: 100%"
+          ></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="title">
+          <i class="el-icon-document icon"></i> Most Influential Papers
+        </div>
+        <div class="detail-content">
+          <div
+            v-for="(paper, i) in rankingDetail.mostInfluentialPapers"
+            :key="i"
+            style="margin-bottom: 10px"
+          >
+            <PaperInfoComp :paper="paper" />
           </div>
         </div>
       </div>
@@ -71,7 +69,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip } from 'element-ui';
+import { Button, Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import PaperInfoComp from '../PaperInfoComp.vue';
 import { getKeywordDetailRanking } from '~/api';
@@ -83,6 +81,7 @@ export default Vue.extend({
   components: {
     PaperInfoComp,
     [Button.name]: Button,
+    [Icon.name]: Icon,
     [Tooltip.name]: Tooltip
   },
   props: {
@@ -149,7 +148,6 @@ export default Vue.extend({
     async requestRankingDetail() {
       this.isLoading = true;
       try {
-        console.log(this.rank);
         const rankingDetailRes = await getKeywordDetailRanking(
           this.rank.keyword
         );

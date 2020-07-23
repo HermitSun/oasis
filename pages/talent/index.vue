@@ -1,10 +1,10 @@
 <template>
-  <div class="page">
+  <div>
     <SearchBarComp
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
     />
-    <div class="talent-page-content">
+    <div class="page">
       <Subtitle :title="'🎓  TALENTS BASE - ' + field" />
       <div class="talent-page-content__talents-list">
         <div v-for="(talent, index) in talentsList" :key="index">
@@ -62,10 +62,4 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
-.talent-page-content {
-  .gray-background;
-  .talent-page-content__talents-list {
-    padding: 5px;
-  }
-}
 </style>
