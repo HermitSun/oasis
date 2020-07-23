@@ -1,6 +1,7 @@
 @import 'default.less';
 @portrait-profile-width-pc: 40vw;
 @portrait-profile-width-mobile: 95vw;
+@portrait-chart-min-height: 350px;
 @portrait-profile-name-font-size: @largest-font;
 @portrait-paper-info-font-size: @sub-middle-font;
 
@@ -8,24 +9,27 @@
   width: 100%;
   position: fixed;
   display: flex;
-  flex-direction: row;
   .profile {
     width: 30%;
   }
   .detail {
-    width: 70%;
+    width: 68%;
     display: flex;
     flex-direction: column;
     .tabs {
       .tab {
         height: calc(100vh - 200px);
         overflow: scroll;
+        padding: 0 10px;
       }
     }
   }
   .module {
     .card;
     margin: 10px;
+    .icon {
+      color: @background-blue;
+    }
     @media @min-pad-width {
       flex: 1;
       margin-right: 10px;
@@ -44,6 +48,8 @@
     .content {
       padding: 0 10px;
       .flex-center-row;
+      min-height: @portrait-chart-min-height;
+      width: 100%;
     }
   }
   .module:last-child {

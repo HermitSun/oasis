@@ -5,27 +5,27 @@
         <PortraitProfileComp id="portrait" :profile="profile" />
       </div>
       <div class="detail">
-        <el-tabs tab-position="top" type="card" class="tabs">
-          <el-tab-pane label="Basic Information" class="tab">
+        <el-tabs tab-position="top" class="tabs">
+          <el-tab-pane label="Statistics" class="tab">
             <template>
-              <div class="module">
-                <Subtitle title="📉 Citation Trend" />
-                <div
-                  id="citation-bar"
-                  class="content"
-                  style="min-height: 150px"
-                ></div>
+              <div class="module" style="flex:1">
+                <div class="card-title">
+                  <i class="el-icon-data-analysis icon"></i> Citation Amount
+                  Statistics
+                </div>
+                <div id="citation-bar" class="content"></div>
               </div>
-              <div class="module">
-                <Subtitle title="📈 Publication Trends" />
-                <div
-                  id="publication-bar"
-                  class="content"
-                  style="min-height: 150px"
-                ></div>
+              <div class="module" style="flex:1">
+                <div class="card-title">
+                  <i class="el-icon-data-analysis icon"></i> Publication Amount
+                  Statistics
+                </div>
+                <div id="publication-bar" class="content"></div>
               </div>
               <div class="module" style="margin-right: 10px">
-                <!--<Subtitle title="🌥 Keywords" />-->
+                <div class="card-title">
+                  <i class="el-icon-pie-chart icon"></i> Paper Category
+                </div>
                 <div
                   id="pie"
                   v-loading="isInterestLoading"
@@ -77,8 +77,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading, Message, Tabs, TabPane } from 'element-ui';
-import Subtitle from '~/components/public/Subtitle.vue';
+import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
@@ -226,10 +225,10 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
+    [Icon.name]: Icon,
     PaperInfoComp,
     PapersSubtitle,
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
