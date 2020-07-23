@@ -48,7 +48,6 @@
           <el-tab-pane label="Related Papers" class="tab">
             <div v-if="showPortrait">
               <PapersSubtitle
-                title="📝 All Papers"
                 :sort-key="sortKey"
                 @changeSortKey="changeSortKey"
               />

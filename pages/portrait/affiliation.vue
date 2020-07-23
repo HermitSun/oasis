@@ -36,11 +36,7 @@
           <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
         </el-tab-pane>
         <el-tab-pane label="Related Papers" class="tab">
-          <PapersSubtitle
-            title="📝 All Papers"
-            :sort-key="sortKey"
-            @changeSortKey="changeSortKey"
-          />
+          <PapersSubtitle :sort-key="sortKey" @changeSortKey="changeSortKey" />
           <div id="papers">
             <div
               v-for="paper in papers"
