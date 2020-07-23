@@ -86,4 +86,7 @@ export function createWordCloud(
     ]
   };
   wordcloud.setOption(option);
+  window.onresize = function() {
+    wordcloud.resize();
+  };
 }

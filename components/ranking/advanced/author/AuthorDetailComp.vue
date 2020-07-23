@@ -53,7 +53,7 @@
         <div class="content">
           <div
             :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
-            style="height: 250px; width:350px"
+            style="height: 250px; width:100%"
           ></div>
         </div>
       </div>

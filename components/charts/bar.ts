@@ -80,6 +80,9 @@ export function createBarChart(
   };
 
   bar.setOption(option);
+  window.onresize = function() {
+    bar.resize();
+  };
 }
 export function createBarChartD3(
   selectorOrDOM: string | HTMLElement,
