@@ -1,60 +1,70 @@
 <template>
-  <div v-if="showPortrait" class="portrait-wrapper">
-    <div class="portrait">
-      <div class="profile-module">
-        <PortraitProfileComp id="portrait" :profile="profile" />
-        <div class="module">
-          <Subtitle title="📉 Citation Trend" />
-          <div id="citation-bar" class="content"></div>
-        </div>
-        <div class="module">
-          <Subtitle title="📈 Publication Trends" />
-          <div id="publication-bar" class="content"></div>
-        </div>
-      </div>
-      <div class="keyword-main">
-        <div class="keyword-main__authors portrait-module">
-          <Subtitle title="🏆 Top Authors" />
-          <AuthorAdvancedComp :rankings="authorRanking" />
-        </div>
-        <div class="keyword-main__affiliations portrait-module">
-          <Subtitle title="🏆 Top Affiliations" />
-          <AffiliationAdvancedComp :rankings="affiliationRanking" />
-        </div>
-      </div>
-      <div class="portrait-module">
-        <PapersSubtitle
-          title="📝 All Papers"
-          :sort-key="sortKey"
-          @changeSortKey="changeSortKey"
-        />
-        <div id="papers">
-          <div
-            v-for="paper in papers"
-            :key="paper.id"
-            style="margin-bottom: 20px"
-          >
-            <PaperInfoComp :paper="paper" />
+  <div v-if="showPortrait" class="portrait">
+    <div class="profile">
+      <PortraitProfileComp id="portrait" :profile="profile" />
+    </div>
+    <div class="detail">
+      <el-tabs tab-position="top" class="tabs">
+        <el-tab-pane label="Statistics" class="tab">
+          <div class="module">
+            <div class="card-title">
+              <i class="el-icon-data-analysis icon"></i> Citation Amount
+              Statistics
+            </div>
+            <div id="citation-bar" class="content"></div>
           </div>
-        </div>
-        <el-pagination
-          layout="prev, pager, next"
-          :current-page="page"
-          :total="totalRecords"
-          :pager-count="pagerSize"
-          hide-on-single-page
-          small
-          style="text-align: center; margin-bottom: 10px"
-          @current-change="showNextPage"
-        />
-      </div>
+          <div class="module">
+            <div class="card-title">
+              <i class="el-icon-data-analysis icon"></i> Publication Amount
+              Statistics
+            </div>
+            <div id="publication-bar" class="content"></div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="Top Authors" class="tab">
+          <div class="module">
+            <AuthorAdvancedComp :rankings="authorRanking" />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="Top Affiliations" class="tab">
+          <div class="module">
+            <AffiliationAdvancedComp :rankings="affiliationRanking" />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="Related Papers" class="tab">
+          <PapersSubtitle
+            title="📝 All Papers"
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
+          <div id="papers">
+            <div
+              v-for="paper in papers"
+              :key="paper.id"
+              style="margin-bottom: 20px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
+          </div>
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="totalRecords"
+            :pager-count="pagerSize"
+            hide-on-single-page
+            small
+            style="text-align: center; margin-bottom: 10px"
+            @current-change="showNextPage"
+          />
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading, Message } from 'element-ui';
+import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import {
   getAffiliationDetailRankingByKeyword,
@@ -64,7 +74,6 @@ import {
 } from '~/api';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
-import Subtitle from '~/components/public/Subtitle.vue';
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
@@ -196,13 +205,15 @@ async function fetchData(query: KeywordPapersPayload) {
 export default Vue.extend({
   name: 'Keyword',
   components: {
+    [Icon.name]: Icon,
     [Pagination.name]: Pagination,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
     AffiliationAdvancedComp,
     AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   mixins: [PaginationMaxSizeLimit],
   asyncData({ query, redirect }) {

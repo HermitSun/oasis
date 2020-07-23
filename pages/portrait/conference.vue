@@ -1,19 +1,26 @@
 <template>
   <div class="portrait">
-    <div class="profile-module">
+    <div class="profile">
       <PortraitProfileComp id="portrait" :profile="profile" />
+    </div>
+    <div class="detail-no_tabs">
       <div class="module">
-        <Subtitle title="📉 Citation Trend" />
+        <div class="card-title">
+          <i class="el-icon-data-analysis icon"></i> Citation Amount Statistics
+        </div>
         <div id="citation-bar" class="content"></div>
       </div>
       <div class="module">
-        <Subtitle title="📈 Publication Trends" />
+        <div class="card-title">
+          <i class="el-icon-data-analysis icon"></i> Publication Amount
+          Statistics
+        </div>
         <div id="publication-bar" class="content"></div>
       </div>
-    </div>
-    <div class="profile-module">
       <div class="module">
-        <Subtitle title="🌥 Keywords" />
+        <div class="card-title">
+          <i class="el-icon-pie-chart icon"></i> Paper Category
+        </div>
         <div id="pie" class="chart content"></div>
       </div>
     </div>
@@ -26,7 +33,6 @@ import { Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getConferenceInterest, getConferencePortrait } from '~/api';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import Subtitle from '~/components/public/Subtitle.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import getSizeById from '~/utils/charts/getSizeById';
@@ -59,8 +65,7 @@ async function requestInterests(conference: string) {
 export default Vue.extend({
   name: 'Conference',
   components: {
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   async asyncData({ query }) {
     const conference = query.conference as string;
