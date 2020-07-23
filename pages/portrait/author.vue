@@ -8,21 +8,21 @@
         <el-tabs tab-position="top" class="tabs">
           <el-tab-pane label="Statistics" class="tab">
             <template>
-              <div class="module" style="flex:1">
+              <div class="module">
                 <div class="card-title">
                   <i class="el-icon-data-analysis icon"></i> Citation Amount
                   Statistics
                 </div>
                 <div id="citation-bar" class="content"></div>
               </div>
-              <div class="module" style="flex:1">
+              <div class="module">
                 <div class="card-title">
                   <i class="el-icon-data-analysis icon"></i> Publication Amount
                   Statistics
                 </div>
                 <div id="publication-bar" class="content"></div>
               </div>
-              <div class="module" style="margin-right: 10px">
+              <div class="module">
                 <div class="card-title">
                   <i class="el-icon-pie-chart icon"></i> Paper Category
                 </div>
