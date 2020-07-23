@@ -1,71 +1,117 @@
 <template>
   <div>
-    <div class="homepage-header">
-      <img src="~/assets/logo.png" class="homepage-header__logo" alt="oasis" />
-      <!--搜索框，增加一个aria属性来提高accessibility-->
-      <input
-        v-model="keyword"
-        class="homepage-header__input basic-search__input"
-        type="text"
-        style="margin-top: 25px;"
-        aria-label="search"
-        @keyup.enter="sendBasicSearch"
-      />
-      <div class="flex-center-row" style="margin-top: 15px">
-        <button
-          class="basic-search__button_small pc-hidden_mobile"
-          @click="sendBasicSearch"
-        >
-          <img
-            src="../assets/icon/icon-search.png"
-            style="height: 28px"
-            alt="icon-search"
+    <div>
+      <SearchBarComp />
+      <div class="homepage-header">
+        <!--<img-->
+        <!--src="~/assets/logo.png"-->
+        <!--class="homepage-header__logo"-->
+        <!--alt="oasis"-->
+        <!--/>-->
+        <h1 style="font-size: 5.5rem;letter-spacing:10px">
+          OASIS
+        </h1>
+        <p style="font-size: 1.4rem;width: 45vw;margin-top:25px">
+          Provide Comprehensive Search and Mining Services for Researcher Social
+          Networks
+        </p>
+        <!--搜索框，增加一个aria属性来提高accessibility-->
+        <input
+          v-model="keyword"
+          class="homepage-header__input basic-search__input"
+          type="text"
+          style="margin-top: 80px;"
+          aria-label="search"
+          @keyup.enter="sendBasicSearch"
+        />
+        <div class="flex-center-row" style="margin-top: 30px">
+          <el-button
+            type="primary"
+            plain
+            round
+            @click="showAdvancedSearch = true"
+          >
+            Advanced Search
+          </el-button>
+          <AdvancedSearchComp
+            v-if="showAdvancedSearch"
+            @close="showAdvancedSearch = false"
           />
-        </button>
-        <button
-          class="advanced-search__button"
-          @click="showAdvancedSearch = true"
-        >
-          Advanced Search
-        </button>
-        <AdvancedSearchComp
-          v-if="showAdvancedSearch"
-          @close="showAdvancedSearch = false"
-        />
-        <div style="width: 15px"></div>
-        <button
-          class="basic-search__button mobile-hidden"
-          @click="showCommandSearch = true"
-        >
-          Command Search
-        </button>
-        <CommandSearchComp
-          v-if="showCommandSearch"
-          @close="showCommandSearch = false"
-        />
-      </div>
-      <div class="homepage-header__talents">
-        <div
-          v-for="(talent, index) in talents"
-          :key="index"
-          class="homepage-header__talent"
-        >
-          <TalentBaseBasicComp :talent="talent" />
+          <div style="width: 20px"></div>
+          <el-button type="primary" round @click="showCommandSearch = true">
+            Command Search
+          </el-button>
+          <CommandSearchComp
+            v-if="showCommandSearch"
+            @close="showCommandSearch = false"
+          />
         </div>
       </div>
+      <!--<div class="homepage-header__talents">-->
+      <!--<div-->
+      <!--v-for="(talent, index) in talents"-->
+      <!--:key="index"-->
+      <!--class="homepage-header__talent"-->
+      <!--&gt;-->
+      <!--<TalentBaseBasicComp :talent="talent" />-->
+      <!--</div>-->
+      <!--</div>-->
     </div>
     <div class="homepage-content">
-      <div class="homepage-content__left">
+      <div class="tab">
+        <span class="intro-title">OASIS RANKING</span>
+        <div style="margin: 30px 0">
+          <el-tabs tab-position="right">
+            <el-tab-pane label="Author">
+              <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+            </el-tab-pane>
+            <el-tab-pane label="Affiliation">
+              <AffiliationBasicRanking
+                :ranking="affiliationRanking"
+                class="rank"
+              />
+            </el-tab-pane>
+            <el-tab-pane label="Journal">
+              <JournalBasicRanking :ranking="journalRanking" class="rank" />
+            </el-tab-pane>
+            <el-tab-pane label="Conference">
+              <ConferenceBasicRanking
+                :ranking="conferenceRanking"
+                class="rank"
+              />
+            </el-tab-pane>
+            <el-tab-pane label="Keyword">
+              <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div style="width: 100%;text-align: center;margin-top: 20px">
+          <el-button
+            type="primary"
+            plain
+            @click="$router.push('/ranking/author')"
+          >
+            See Ranking Details
+          </el-button>
+        </div>
+      </div>
+      <template>
+        <div class="intro-title">
+          TALENTS BASE
+        </div>
         <div class="homepage-content__talents">
-          <Subtitle title="🎓  TALENTS BASE" />
           <div class="talents">
             <div v-for="(talent, index) in talents" :key="index" class="talent">
               <TalentBaseComp :talent="talent" />
             </div>
           </div>
         </div>
+      </template>
+      <template>
+        <div class="intro-title">
+          OASIS NEWS
+        </div>
         <div class="homepage-content__abstract">
-          <Subtitle title="📄 OASIS NEWS" />
           <div
             v-for="abstract in abstractResponse"
             :key="abstract.id"
@@ -74,39 +120,29 @@
             <AbstractComp :abstract="abstract" />
           </div>
         </div>
-      </div>
-      <div class="homepage-content__right">
-        <div class="homepage-content__ranking">
-          <Subtitle title="🏆 OASIS RANKINGS" />
-          <div class="homepage-content__rankings">
-            <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-            <AffiliationBasicRanking
-              :ranking="affiliationRanking"
-              class="rank"
-            />
-            <JournalBasicRanking :ranking="journalRanking" class="rank" />
-            <ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />
-            <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
-    <div class="banner">
-      <div class="banner-figures">
-        <div class="shape shape1 ani1"></div>
-        <div class="shape shape2 ani2"></div>
-        <div class="shape shape3 ani3"></div>
-        <div class="shape shape4"></div>
-        <div class="shape shape5 ani3"></div>
-        <div class="shape shape6 ani4"></div>
-      </div>
-    </div>
+    <!--<div class="homepage-content__right">-->
+    <!--<div class="homepage-content__ranking">-->
+    <!--<Subintro-title intro-title="🏆 OASIS RANKINGS" />-->
+    <!--<div class="homepage-content__rankings">-->
+    <!--<AuthorBasicRanking :ranking="authorRanking" class="rank" />-->
+    <!--<AffiliationBasicRanking-->
+    <!--:ranking="affiliationRanking"-->
+    <!--class="rank"-->
+    <!--/>-->
+    <!--<JournalBasicRanking :ranking="journalRanking" class="rank" />-->
+    <!--<ConferenceBasicRanking :ranking="conferenceRanking" class="rank" />-->
+    <!--<KeywordBasicRanking :ranking="keywordRanking" class="rank" />-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Message } from 'element-ui';
+import { Message, Button, Tabs, TabPane } from 'element-ui';
 import {
   getActivePaperAbstract,
   getActiveTalentsBase,
@@ -120,19 +156,17 @@ import AbstractComp from '~/components/abstract/AbstractComp.vue';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
 import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
-
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
-import Subtitle from '~/components/public/Subtitle.vue';
 import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
 import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
 import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
-import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
 
 // SSR需要的方法，无状态
 async function requestActivePaperAbstract() {
@@ -159,7 +193,7 @@ async function requestAffiliationBasicRanking() {
   try {
     const affiliationBasicRankingRes = await getAffiliationBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (affiliationBasicRankingRes.code === 200) {
       res.affiliationRanking = affiliationBasicRankingRes.data;
@@ -179,7 +213,7 @@ async function requestAuthorBasicRanking() {
   try {
     const authorBasicRankingRes = await getAuthorBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (authorBasicRankingRes.code === 200) {
       res.authorRanking = authorBasicRankingRes.data;
@@ -199,7 +233,7 @@ async function requestConferenceBasicRanking() {
   try {
     const conferenceBasicRankingRes = await getConferenceBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (conferenceBasicRankingRes.code === 200) {
       res.conferenceRanking = conferenceBasicRankingRes.data;
@@ -219,7 +253,7 @@ async function requestJournalBasicRanking() {
   try {
     const journalBasicRankingRes = await getJournalBasicRanking({
       sortKey: 'acceptanceCount',
-      year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+      year: new Date().getFullYear()
     });
     if (journalBasicRankingRes.code === 200) {
       res.journalRanking = journalBasicRankingRes.data;
@@ -238,7 +272,7 @@ async function requestKeywordBasicRanking() {
   };
   try {
     const keywordBasicRankingRes = await getKeywordBasicRanking(
-      Number(new Date().getFullYear() - 1)
+      Number(new Date().getFullYear())
     ); // TODO 去掉 - 1);
     if (keywordBasicRankingRes.code === 200) {
       res.keywordRanking = keywordBasicRankingRes.data;
@@ -269,11 +303,10 @@ async function requestActiveTalentsBase() {
 }
 
 export default Vue.extend({
-  name: 'HomePage',
+  name: 'Index',
   components: {
     AbstractComp,
     TalentBaseComp,
-    TalentBaseBasicComp,
     AdvancedSearchComp,
     AffiliationBasicRanking,
     AuthorBasicRanking,
@@ -281,7 +314,10 @@ export default Vue.extend({
     ConferenceBasicRanking,
     KeywordBasicRanking,
     JournalBasicRanking,
-    Subtitle
+    SearchBarComp,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
+    [Button.name]: Button
   },
   // 渲染初始数据
   async asyncData() {
@@ -320,6 +356,10 @@ export default Vue.extend({
       showCommandSearch: false
     } as HomePageComp;
   },
+  async mounted() {
+    // const res = await getActivePaperAbstract();
+    // console.log(res.data);
+  },
   methods: {
     async sendBasicSearch() {
       const defaultPage = '1';
@@ -346,20 +386,23 @@ export default Vue.extend({
 
 .homepage-header {
   z-index: 100;
-  .flex-center-column;
-  background: @background-blue;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  background: url(../assets/background.jpg) no-repeat;
+  background-size: 100%;
   height: @homepage-header-height;
-  @media @max-mobile-width {
-    padding-bottom: 20vh;
-  }
+  padding: 0 150px;
 
   .homepage-header__logo {
-    .pc-width__mobile(30vw);
     .mobile-width(70vw);
+    .pc-height__mobile(33vh);
   }
 
   .homepage-header__input {
     .mobile-width(90vw);
+    .pc-width__mobile(40vw);
   }
 
   .homepage-header__talents {
@@ -382,30 +425,20 @@ export default Vue.extend({
 }
 
 .homepage-content {
-  @media @min-pc-width {
-    .flex-left-left-row;
-    .homepage-content__left {
-      width: 75%;
-    }
-
-    .homepage-content__right {
-      width: 25%;
-    }
-  }
+  padding: 20px 100px;
 
   .homepage-content__abstract {
     .gray-background;
   }
 
   .homepage-content__talents {
-    .gray-background;
-
     .talents {
       display: flex;
       flex-flow: row wrap;
       align-content: flex-start;
       padding: 10px;
     }
+
     .talent {
       box-sizing: border-box;
       flex: 0 0 24%;

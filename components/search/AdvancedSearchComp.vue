@@ -3,19 +3,18 @@
     <div class="mask-box absolute-center advanced-search__mask-box-size">
       <!--关闭-->
       <div class="mask-box-header">
-        Advanced Search
-        <span>
-          <img
-            style="cursor: pointer"
-            src="~/assets/icon/icon-close.png"
-            alt="close"
-            @click="closeAdvancedSearch"
-          />
-        </span>
+        <span class="title">Advanced Search</span>
+        <el-button
+          circle
+          icon="el-icon-close"
+          size="mini"
+          type="text"
+          @click="closeAdvancedSearch"
+        />
       </div>
       <div class="advanced-search__mask-box-divider"></div>
       <!--搜索框-->
-      <div class="advanced-search__mask-content mask-box-content">
+      <div class="advanced-search__mask-content">
         <!--关键词 (title + abstract)-->
         <div class="item">
           <label>with all of the words </label>
@@ -105,15 +104,17 @@
             </div>
           </div>
         </div>
+        <!--搜索-->
+        <el-button
+          type="primary"
+          plain
+          circle
+          size="small"
+          icon="el-icon-search"
+          style="float: right"
+          @click="sendAdvancedSearch"
+        />
       </div>
-      <!--搜索-->
-      <button
-        class="advanced-search__button"
-        style="width:50px;float: right"
-        @click="sendAdvancedSearch"
-      >
-        <img src="~/assets/icon/icon-search.png" width="20" alt="search" />
-      </button>
     </div>
   </div>
 </template>

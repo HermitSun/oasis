@@ -69,7 +69,6 @@ import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
-import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
@@ -249,22 +248,8 @@ export default Vue.extend({
   methods: {
     initCharts() {
       setTimeout(() => {
-        createBarChart(
-          '#citation-bar',
-          this.citationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as any,
-            Math.max(...this.citationTrend)
-          )
-        );
-        createBarChart(
-          '#publication-bar',
-          this.publicationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as any,
-            Math.max(...this.publicationTrend)
-          )
-        );
+        createBarChart('citation-bar', this.citationTrend);
+        createBarChart('publication-bar', this.publicationTrend);
       }, 0);
     },
     // 展示**指定页码**的内容

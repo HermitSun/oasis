@@ -15,25 +15,44 @@
         >
           <path
             d="M534.656 534.656a32 32 0 1 1-45.312-45.312L850.752 128H672a32 32 0 1 1 0-64h192A96 96 0 0 1 960 160v192a32 32 0 1 1-64 0V173.248L534.656 534.656zM896 640a32 32 0 1 1 64 0v160a160 160 0 0 1-160 160h-576A160 160 0 0 1 64 800v-576A160 160 0 0 1 224 64H384a32 32 0 0 1 0 64H224A96 96 0 0 0 128 224v576A96 96 0 0 0 224 896h576a96 96 0 0 0 96-96V640z"
-            p-id="4244"
+            fill="#581BFF"
           /></svg
       ></span>
-      <span class="sortKey">
-        {{ sortKey === 'acceptanceCount' ? 'count' : 'citation' }}
-        <svg
-          class="icon"
-          width="20px"
-          height="20px"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          @click="changeSortKey"
-        >
-          <path
-            d="M832 592c0 10.752-3.968 20.096-11.904 28.096l-280 280C532.096 908.096 522.752 912 512 912c-10.816 0-20.16-3.904-28.096-11.904L203.904 620.096C195.904 612.096 192 602.752 192 592s3.904-20.096 11.904-28.096C211.84 555.904 221.184 552 232 552l560 0c10.752 0 20.096 3.904 28.096 11.904C828.032 571.904 832 581.248 832 592zM832 384c0 10.752-3.968 20.096-11.904 28.096-8 8-17.344 11.904-28.096 11.904l-560 0c-10.816 0-20.16-3.904-28.096-11.904C195.904 404.096 192 394.752 192 384s3.904-20.096 11.904-28.096l280-280C491.84 67.968 501.184 64 512 64c10.752 0 20.096 3.968 28.096 11.904l280 280C828.032 363.904 832 373.248 832 384z"
-            fill="#418BAF"
-          />
-        </svg>
+      <span class="flex-center-row">
+        <span class="label">
+          <span class="hint">Year</span>
+          <el-select
+            v-model="year"
+            size="small"
+            :value="year"
+            style="width:90px"
+            @change="requestAuthorBasicRanking"
+          >
+            <el-option
+              v-for="item in timeRange"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </span>
+        <span class="label" style="margin-left: 10px">
+          <span class="hint">Sort By</span>
+          <el-select
+            v-model="sortKey"
+            size="small"
+            value="sortKey"
+            style="width: 160px"
+            @change="requestAuthorBasicRanking"
+          >
+            <el-option
+              v-for="item in sortKeys"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </span>
       </span>
     </div>
     <!--无数据时的提示-->
@@ -55,37 +74,6 @@
         <span class="name" @click="jumpToPortrait(rank.authorId)">{{
           rank.name
         }}</span>
-        <!--只在客户端渲染词云-->
-        <!--<client-only>-->
-        <!--服务端渲染的占位符-->
-        <!--<span-->
-        <!--slot="placeholder"-->
-        <!--class="name"-->
-        <!--@click="jumpToPortrait(rank.authorId)"-->
-        <!--&gt;-->
-        <!--{{ rank.name }}-->
-        <!--</span>-->
-        <!--真正的词云-->
-        <!--<el-popover-->
-        <!--trigger="click"-->
-        <!--@show="showInterest = true"-->
-        <!--@hide="showInterest = false"-->
-        <!--@click.native="showSpecifiedInterest"-->
-        <!--&gt;-->
-        <!--&lt;!&ndash;双等号可以不用强制类型转换&ndash;&gt;-->
-        <!--&lt;!&ndash;加锁以避免额外的渲染&ndash;&gt;-->
-        <!--&lt;!&ndash;此处判断authorId是为了应对低网速情况，低网速环境下可能会返回null&ndash;&gt;-->
-        <!--<ResearcherInterest-->
-        <!--v-if="-->
-        <!--rank.authorId && showInterest && index == whichInterestToShow-->
-        <!--"-->
-        <!--:author-id="rank.authorId"-->
-        <!--/>-->
-        <!--<span slot="reference" class="name" :interest-index="index">-->
-        <!--{{ rank.name }}-->
-        <!--</span>-->
-        <!--</el-popover>-->
-        <!--</client-only>-->
       </div>
       <div class="count">
         {{ rank.count }}
@@ -96,18 +84,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Popover } from 'element-ui';
+import { Select, Option } from 'element-ui';
 import { getRankingIcon } from './ranking';
 import { getAuthorBasicRanking } from '~/api';
 import { sortKey } from '~/interfaces/requests/ranking/RankingPayload';
 import NoDataPrompt from '~/components/mixins/NoDataPrompt';
+import RankingTimeRange from '~/components/ranking/rankingOpt';
 
 export default Vue.extend({
   name: 'AuthorBasicRanking',
   components: {
-    [Popover.name]: Popover
+    [Select.name]: Select,
+    [Option.name]: Option
   },
-  mixins: [NoDataPrompt],
+  mixins: [NoDataPrompt, RankingTimeRange],
   props: {
     ranking: {
       type: Array,
@@ -118,6 +108,7 @@ export default Vue.extend({
     return {
       authorBasicRankingResponse: this.ranking,
       sortKey: 'acceptanceCount' as sortKey,
+      year: new Date().getFullYear(),
       showInterest: false, // 是否显示interest
       whichInterestToShow: '' // 显示哪个interest
     };
@@ -127,7 +118,7 @@ export default Vue.extend({
       try {
         const authorBasicRankingRes = await getAuthorBasicRanking({
           sortKey: this.sortKey,
-          year: new Date().getFullYear() - 1 // TODO 去掉 - 1
+          year: this.year
         });
         this.authorBasicRankingResponse = authorBasicRankingRes.data;
       } catch (e) {
@@ -142,11 +133,6 @@ export default Vue.extend({
         path: '/portrait/author',
         query: { authorId, sortKey: 'recent', page: '1' }
       });
-    },
-    changeSortKey() {
-      this.sortKey =
-        this.sortKey === 'citationCount' ? 'acceptanceCount' : 'citationCount';
-      this.requestAuthorBasicRanking();
     },
     // 只展示特定的研究兴趣
     showSpecifiedInterest(event: Event) {

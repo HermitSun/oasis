@@ -1,9 +1,9 @@
 <template>
   <div class="ranking-advanced-detail__paper">
     <div class="sub-title">
-      <span class="publication"
-        >{{ paper.publicationYear }} {{ paper.publicationName }}</span
-      >
+      <el-tag size="mini" class="publication">
+        {{ paper.publicationYear }} {{ paper.publicationName }}
+      </el-tag>
       <a
         :href="paper.link"
         class="name"
@@ -16,8 +16,12 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
+import { Tag } from 'element-ui';
 export default Vue.extend({
   name: 'PaperInfoComp',
+  components: {
+    [Tag.name]: Tag
+  },
   props: {
     paper: {
       type: Object,

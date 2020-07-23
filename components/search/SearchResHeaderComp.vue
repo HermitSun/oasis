@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 30px 0">
     <span class="searchPage-content__hint-text" style="margin-left:10px">
       About
     </span>

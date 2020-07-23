@@ -75,7 +75,6 @@ import { getClientWidth } from '~/utils/breakpoint';
 import { createPieChart } from '~/components/charts/pie';
 import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
-import portraitBarConfig from '~/components/portrait/barConfig';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
@@ -213,22 +212,8 @@ export default Vue.extend({
   methods: {
     initCharts() {
       setTimeout(() => {
-        createBarChart(
-          '#citation-bar',
-          this.citationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as HTMLElement,
-            Math.max(...this.citationTrend)
-          )
-        );
-        createBarChart(
-          '#publication-bar',
-          this.publicationTrend,
-          portraitBarConfig(
-            document.getElementById('portrait') as HTMLElement,
-            Math.max(...this.publicationTrend)
-          )
-        );
+        createBarChart('citation-bar', this.citationTrend);
+        createBarChart('publication-bar', this.publicationTrend);
       }, 0);
       setTimeout(() => {
         createPieChart(

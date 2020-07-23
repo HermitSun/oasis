@@ -2,37 +2,39 @@
   <div v-loading="isLoading" class="ranking-advanced-detail">
     <div class="basic">
       <span class="name-wrapper">
-        <span class="index"
-          >{{ index }}
-          <span class="icon">
-            <img
-              v-if="!showDetail"
-              src="~/assets/icon/icon-arrow-right.svg"
-              width="30"
-              alt="icon-arrow-right"
-              :style="dropdownDisabledStyle"
-              @click="requestShowDetail"
-            />
-            <img
-              v-if="showDetail"
-              src="~/assets/icon/icon-arrow-top.svg"
-              width="30"
-              alt="icon-arrow-top"
-              @click="requestShowDetail"
-            />
-          </span>
-        </span>
-        <span class="name" @click="jumpToPortrait"
-          >{{ rank.authorName }}
-          <img
-            src="~/assets/icon/icon-share.svg"
-            class="icon"
-            alt="icon-share"
+        <span class="index">
+          <span class="number">{{ index }}</span>
+          <el-button
+            v-if="!showDetail"
+            type="primary"
+            circle
+            plain
+            size="mini"
+            icon="el-icon-arrow-right"
+            :style="dropdownDisabledStyle"
+            @click="requestShowDetail"
+          />
+          <el-button
+            v-if="showDetail"
+            type="primary"
+            circle
+            size="mini"
+            icon="el-icon-arrow-up"
+            @click="requestShowDetail"
           />
         </span>
+        <el-tooltip
+          trigger="hover"
+          placement="top-start"
+          :content="rank.authorName"
+        >
+          <span class="name" @click="jumpToPortrait"
+            >{{ rank.authorName }}
+          </span>
+        </el-tooltip>
       </span>
-      <span class="value">{{ rank.count }}</span>
       <span class="value">{{ rank.citation }}</span>
+      <span class="value">{{ rank.count }}</span>
       <span class="value">
         <!--提前设定宽和高，避免重排-->
         <div
@@ -48,18 +50,18 @@
       <div class="detail">
         <div class="info">
           <div class="title">
-            📃 Keywords
+            <i class="el-icon-magic-stick icon"></i> Keywords
           </div>
           <div class="content">
-            <InterestWordCloud
-              v-if="showWordCloud"
-              :interests="rankingDetail.keywords"
-            />
+            <div
+              :id="rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud'"
+              style="width: 100%; min-height: 400px;min-width: 400px"
+            ></div>
           </div>
         </div>
         <div class="info">
           <div class="title">
-            📜 Most Influential Papers
+            <i class="el-icon-document icon"></i> Most Influential Papers
           </div>
           <div class="content">
             <div
@@ -73,7 +75,7 @@
         </div>
         <div class="info">
           <div class="title">
-            📝 Most Recent Papers
+            <i class="el-icon-notebook-1 icon"></i> Most Recent Papers
           </div>
           <div class="content">
             <div
@@ -92,18 +94,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
 import PaperInfoComp from '@/components/ranking/advanced/PaperInfoComp.vue';
-import InterestWordCloud from '@/components/interest/InterestWordCloud.vue';
 import { createBarChart } from '@/components/charts/bar';
+import { createWordCloud } from '~/components/charts/wordcloud';
 
 export default Vue.extend({
   name: 'AuthorDetailComp',
   components: {
     PaperInfoComp,
-    InterestWordCloud
+    [Button.name]: Button,
+    [Tooltip.name]: Tooltip,
+    [Icon.name]: Icon
   },
   props: {
     rank: {
@@ -155,15 +160,10 @@ export default Vue.extend({
   methods: {
     initChart() {
       setTimeout(() => {
-        const selector =
-          '#' +
-          this.rank.authorName.replace(/[^a-zA-Z]/g, '') +
-          this.rank.authorId;
-        createBarChart(selector, this.rank.publicationTrend, {
-          width: 150,
-          height: 80,
-          tooltipThreshold: 15
-        });
+        createBarChart(
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId,
+          this.rank.publicationTrend
+        );
       }, 0);
     },
     requestShowDetail() {
@@ -192,6 +192,10 @@ export default Vue.extend({
           this.rank.authorId
         );
         this.rankingDetail = rankingDetailRes.data;
+        createWordCloud(
+          this.rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud',
+          this.rankingDetail.keywords
+        );
         this.cachedRankingDetail = this.rankingDetail;
         this.showWordCloud = true;
         this.isLoading = false;

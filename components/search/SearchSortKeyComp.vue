@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-space-between">
+  <div class="flex-space-between" style="margin-bottom: 6px">
     <span style="margin-right: 10px" class="searchPage-content__sub-hint"
       >Papers</span
     >

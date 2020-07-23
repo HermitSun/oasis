@@ -17,15 +17,28 @@ let cacheTimer: NodeJS.Timeout;
 
 export default Vue.extend({
   name: 'Affiliation',
-  components: { AffiliationAdvancedComp },
-  async asyncData() {
+  components: {
+    AffiliationAdvancedComp
+  },
+  props: {
+    /**
+     * advancedRankOpt: 包含sortKey,startYear, endYear
+     */
+    advancedRankOpt: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  async asyncData({ query }) {
     if (!cache.cached) {
-      // TODO 添加可选择的sortKey和year
+      const sortKey = query.sortKey
+        ? (query.sortKey as any)
+        : 'acceptanceCount';
       const affiliationAdvancedRankingRes = await getAffiliationAdvancedRanking(
         {
-          sortKey: 'acceptanceCount',
-          startYear: 2019,
-          endYear: 2019
+          sortKey,
+          startYear: query.startYear ? Number(query.startYear) : 2015,
+          endYear: query.endYear ? Number(query.endYear) : 2020
         }
       );
       cache.data =
@@ -39,6 +52,13 @@ export default Vue.extend({
       rankings: cache.data
     };
   },
+  watch: {
+    $route: {
+      handler() {
+        this.requestAffiliationAdvancedRanking();
+      }
+    }
+  },
   activated() {
     clearTimeout(cacheTimer);
   },
@@ -47,6 +67,32 @@ export default Vue.extend({
       cache.data = [];
       cache.cached = false;
     }, cache.expires);
+  },
+  methods: {
+    async requestAffiliationAdvancedRanking() {
+      try {
+        const sortKey = this.$route.query.sortKey
+          ? (this.$route.query.sortKey as any)
+          : 'acceptanceCount'; // TODO 奇怪呢 没法导入sortKey类型
+        const startYear = this.$route.query.startYear
+          ? Number(this.$route.query.startYear)
+          : 2015;
+        const endYear = this.$route.query.endYear
+          ? Number(this.$route.query.endYear)
+          : 2020;
+        const affiliationAdvancedRankingRes = await getAffiliationAdvancedRanking(
+          {
+            sortKey,
+            startYear,
+            endYear
+          }
+        );
+        // TODO 为了不报错这么写的 到底该咋写呢
+        (this as any).rankings = affiliationAdvancedRankingRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
+    }
   }
 });
 </script>

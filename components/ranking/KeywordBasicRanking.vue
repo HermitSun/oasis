@@ -19,13 +19,39 @@
           />
         </svg>
       </span>
+      <span class="flex-center-row">
+        <span class="label">
+          <span class="hint">Year</span>
+          <el-select
+            v-model="year"
+            size="small"
+            :value="year"
+            style="width:90px"
+            @change="requestKeywordBasicRanking"
+          >
+            <el-option
+              v-for="item in timeRange"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </span>
+      </span>
     </div>
     <!--无数据时的提示-->
-    <div v-if="ranking.length === 0" :style="noDataPromptStyle">
+    <div
+      v-if="keywordBasicRankingResponse.length === 0"
+      :style="noDataPromptStyle"
+    >
       暂无数据...
     </div>
     <!--排名内容-->
-    <div v-for="(rank, index) in ranking" :key="index" class="info">
+    <div
+      v-for="(rank, index) in keywordBasicRankingResponse"
+      :key="index"
+      class="info"
+    >
       <div class="name-wrapper">
         <span class="icon">{{ requestRankingIcon(index) }}</span>
         <span class="name" @click="jumpToPortrait(rank.name)">{{
@@ -41,19 +67,40 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Select, Option } from 'element-ui';
 import { getRankingIcon } from '~/components/ranking/ranking';
 import NoDataPrompt from '~/components/mixins/NoDataPrompt';
+import RankingTimeRange from '~/components/ranking/rankingOpt';
+import { getKeywordBasicRanking } from '~/api';
 
 export default Vue.extend({
   name: 'KeywordBasicRanking',
-  mixins: [NoDataPrompt],
+  components: {
+    [Select.name]: Select,
+    [Option.name]: Option
+  },
+  mixins: [NoDataPrompt, RankingTimeRange],
   props: {
     ranking: {
       type: Array,
       default: () => []
     }
   },
+  data() {
+    return {
+      year: new Date().getFullYear(),
+      keywordBasicRankingResponse: this.ranking
+    };
+  },
   methods: {
+    async requestKeywordBasicRanking() {
+      try {
+        const keywordBasicRankingRes = await getKeywordBasicRanking(this.year);
+        this.keywordBasicRankingResponse = keywordBasicRankingRes.data;
+      } catch (e) {
+        this.$message(e.toString());
+      }
+    },
     requestRankingIcon(rank: number): string {
       return getRankingIcon(rank);
     },

@@ -24,9 +24,6 @@ import { sortKey } from '~/interfaces/requests/search/SearchPayload';
 
 export default Vue.extend({
   name: 'InterestWordCloud',
-  components: {
-    wordcloud: () => import('vue-wordcloud')
-  },
   props: {
     interests: {
       type: Array,
@@ -34,9 +31,7 @@ export default Vue.extend({
     }
   },
   data() {
-    return {
-      wordcloudColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef']
-    };
+    return {};
   },
   methods: {
     wordClickHandler(name: string) {
@@ -55,17 +50,4 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="less">
-.wordCloud {
-  width: 100%;
-  height: 400px;
-
-  .text {
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.6;
-    }
-  }
-}
-</style>
+<style scoped lang="less"></style>

@@ -6,9 +6,9 @@
       @keyword-change="startAnotherBasicSearch"
     />
     <!--搜索内容-->
-    <div v-loading="isLoading" class="searchPage-content">
+    <div v-loading="isLoading" class="page">
       <!--结果数量-->
-      <div style="margin: 10px 0">
+      <div>
         <SearchResHeaderComp :result-count="resultCount" />
       </div>
       <!--搜索结果+过滤条件-->
@@ -27,11 +27,7 @@
           >
             暂时没有数据...
           </p>
-          <div
-            v-for="res in searchResponse"
-            :key="res.id"
-            style="margin-bottom: 20px"
-          >
+          <div v-for="res in searchResponse" :key="res.id">
             <SearchResComp :res="res" />
           </div>
           <!--分页-->

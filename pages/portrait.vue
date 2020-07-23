@@ -5,7 +5,9 @@
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
     />
-    <nuxt-child />
+    <div class="page">
+      <nuxt-child />
+    </div>
   </div>
 </template>
 

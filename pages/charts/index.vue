@@ -85,15 +85,7 @@ export default Vue.extend({
           width: 800
         }
       );
-      createBarChart('#bar', [2, 6, 4, 20, 9, 10, 11, 18, 23, 25], {
-        width: 150,
-        height: 100,
-        barColor: 'black',
-        tooltipThreshold: 15,
-        hover: {
-          mouseOverColor: (_) => 'rgb(100, 0, 0)'
-        }
-      });
+      createBarChart('#bar', [2, 6, 4, 20, 9, 10, 11, 18, 23, 25]);
     },
     onEchartsLoad() {
       const option = {

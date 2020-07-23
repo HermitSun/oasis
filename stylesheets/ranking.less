@@ -1,24 +1,20 @@
 @import 'default.less';
 
 // basic
-@ranking-title-font-size: @sub-middle-font;
+@ranking-title-font-size: @sub-large-font;
 @ranking-sortKey-font-size: @small-font;
-@ranking-name-font-size: @small-font;
-@ranking-line-height: 25px;
+@ranking-name-font-size: @sub-middle-font;
+@ranking-count-font-size: @sub-middle-font;
+@ranking-line-height: 35px;
 
 // advanced
-@ranking-advanced-header-font-size: @sub-middle-font;
-@ranking-advanced-body-font-size: @small-font;
-@ranking-advanced-body-title-font-size: @sub-middle-font;
+@ranking-advanced-height: 50px;
+@ranking-advanced-detail-height: 400px;
+@ranking-advanced-header-font-size: @middle-font;
+@ranking-advanced-body-font-size: @sub-middle-font;
+@ranking-advanced-body-title-font-size: @middle-font;
 
 // advanced-ranking page
-.advanced-ranking-page {
-  margin: 20px 20px;
-  .divide {
-    .flex-left-left-row;
-  }
-}
-
 .advanced-ranking-list {
   .pc-width__mobile(55vw);
 }
@@ -28,15 +24,14 @@
 }
 
 .ranking-advanced {
+  padding: 60px 10px;
   .header {
     margin-bottom: 15px;
     padding: 10px 0;
     display: flex;
     align-items: center;
     text-align: center;
-    background: @background-blue-normal;
-    border-radius: 20px;
-    color: @background-blue;
+    color: @font-gray-dark;
     font-size: @ranking-advanced-header-font-size;
 
     .prop {
@@ -46,7 +41,7 @@
 
     .prop:first-child {
       margin-left: 10px;
-      flex-grow: 2;
+      flex-grow: 3;
       flex-shrink: 0;
     }
   }
@@ -59,12 +54,12 @@
 .ranking-advanced-detail {
   padding: 5px 0;
   text-align: center;
-  border-radius: 20px;
-  border: 1px solid @border-gray;
+  border-bottom: 1px solid @border-gray;
   color: @font-dark;
   font-size: @ranking-advanced-body-font-size;
   width: 100%;
-
+  min-height: @ranking-advanced-height;
+  .flex-center-column;
   .basic {
     display: flex;
     align-items: center;
@@ -72,35 +67,30 @@
 
     .name-wrapper {
       flex: 1;
-      flex-grow: 2;
+      flex-grow: 3;
       flex-shrink: 0;
-      color: @background-blue;
-      font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
-      font-style: italic;
+      text-align: left;
+      .overflow-hidden-width(calc(100% - 100px));
+      color: @font-dark;
       font-weight: bold;
+      .flex-left-center-row;
       .index {
+        margin-right: 30px;
         padding-left: 10px;
         float: left;
         cursor: pointer;
-        color: @background-blue-normal;
-
+        color: @background-blue;
         .flex-left-center-row;
-
-        .icon {
-          margin-left: 5px;
+        .number {
+          width: 40px;
+          text-align: center;
         }
       }
 
       .name {
         cursor: pointer;
-        text-shadow: 4px 4px 5px rgba(138, 136, 136, 0.6);
-        .flex-center-row;
         &:hover {
           color: @bright-yellow;
-        }
-        .icon {
-          margin-left: 5px;
-          width: 20px;
         }
       }
     }
@@ -109,37 +99,38 @@
       flex: 1;
     }
   }
-}
 
-//.divider {
-//  background-color: @border-gray;
-//  height: 1.5px;
-//  margin: 10px 10px;
-//}
+  .detail {
+    padding: 30px 10px 0 10px;
+    width: 100%;
+    min-height: @ranking-advanced-detail-height;
 
-.detail {
-  padding: 5px 20px 10px;
-
-  @media @min-mobile-width {
-    display: flex;
-  }
-
-  .info {
     @media @min-mobile-width {
-      flex: 1;
-    }
-    text-align: left;
-
-    .title {
-      color: @background-blue;
-      font-weight: 500;
-      font-size: @ranking-advanced-body-title-font-size;
-      margin-bottom: 10px;
+      display: flex;
     }
 
-    .content {
-      color: @font-gray;
-      padding-right: 10px;
+    .info {
+      .card;
+      margin: 0 10px 30px 10px;
+      text-align: left;
+      @media @min-mobile-width {
+        flex: 1;
+        flex-basis: 20px;
+      }
+      .title {
+        color: @font-dark;
+        font-size: @ranking-advanced-body-title-font-size;
+        margin: 10px 0 25px 0;
+        .icon {
+          color: @background-blue;
+          font-size: @middle-font;
+          font-weight: 500;
+        }
+      }
+      .content {
+        color: @font-gray;
+        padding-right: 10px;
+      }
     }
   }
 }
@@ -151,17 +142,12 @@
 
     .publication {
       width: 20%;
-      color: @font-gray-middle;
-      font-size: @sub-small-font;
-      background: @background-blue-light;
-      border-radius: 20px;
-      text-align: center;
-      padding: 3px 0;
       margin-right: 10px;
     }
 
     .name {
       width: 80%;
+      color: @font-dark;
       font-size: @ranking-advanced-body-font-size;
       .overflow-hidden-height(4);
       //  TODO 调整样式 画像页的排名字体不宜过大且几个模块不能并排展示
@@ -192,14 +178,14 @@
 
 // basic-ranking
 .ranking-basic {
-  text-align: left;
-
+  .card;
+  margin: 5px;
   .title {
     font-size: @ranking-title-font-size;
     color: @font-gray-dark;
     font-weight: 500;
-    margin: 12px 0 12px 20px;
-
+    margin: 12px 0 20px 25px;
+    .flex-space-between;
     .main {
       cursor: pointer;
 
@@ -208,13 +194,15 @@
       }
     }
 
-    .sortKey {
+    .label {
       .flex-center-row;
-      float: right;
       font-size: @ranking-sortKey-font-size;
-      color: @background-blue;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
+      color: #c0c4cc;
+      .hint {
+        margin-right: 5px;
+      }
     }
   }
 
@@ -250,7 +238,8 @@
     }
 
     .count {
-      font-size: @ranking-name-font-size;
+      font-size: @ranking-count-font-size;
+      font-weight: 500;
     }
   }
 }
