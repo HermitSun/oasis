@@ -5,11 +5,9 @@
       @keyword-change="startAnotherBasicSearch"
     />
     <div class="page">
-      <Subtitle :title="'🎓  TALENTS BASE - ' + field" />
-      <div class="talent-page-content__talents-list">
-        <div v-for="(talent, index) in talentsList" :key="index">
-          <TalentDetailComp :talent="talent" />
-        </div>
+      <Subtitle title="TALENTS BASE" />
+      <div v-for="(talent, index) in talentsList" :key="index">
+        <TalentDetailComp :talent="talent" />
       </div>
     </div>
   </div>
