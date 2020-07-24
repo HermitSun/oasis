@@ -5,14 +5,17 @@
       <span class="count">{{ talent.count }} papers</span>
     </div>
     <div class="author">
-      <span
-        v-for="(expert, index) in talent.experts"
-        :key="index"
-        class="authorName"
-      >
-        <span @click="jumpToPortrait(expert.authorId)">{{
-          expert.authorName
-        }}</span>
+      <span v-for="(expert, index) in talent.experts" :key="index">
+        <el-tooltip placement="top" :content="expert.authorName">
+          <el-button
+            size="mini"
+            round
+            type="primary"
+            plain
+            @click="jumpToPortrait(expert.authorId)"
+            ><span class="authorName">{{ expert.authorName }}</span></el-button
+          >
+        </el-tooltip>
       </span>
     </div>
   </div>
@@ -20,9 +23,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Button, Tooltip } from 'element-ui';
 
 export default Vue.extend({
   name: 'TalentBaseComp',
+  components: {
+    [Button.name]: Button,
+    [Tooltip.name]: Tooltip
+  },
   props: {
     talent: {
       type: Object,
