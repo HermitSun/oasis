@@ -24,7 +24,7 @@
           </el-menu-item>
         </el-menu>
         <span class="option">
-          <span v-if="subject !== 'keyword'" class="label">
+          <span class="label">
             <span class="hint">Sort By</span>
             <el-select
               v-model="sortKey"
@@ -106,9 +106,9 @@ export default Vue.extend({
   data() {
     return {
       selectedSubject: this.subject,
-      sortKey: 'acceptanceCount' as sortKey,
-      startYear: 2015,
-      endYear: new Date().getFullYear()
+      sortKey: (this.$route.query.sortKey || 'acceptanceCount') as sortKey,
+      startYear: Number(this.$route.query.startYear) || 2015,
+      endYear: Number(this.$route.query.endYear) || new Date().getFullYear()
     };
   },
   computed: {
@@ -137,6 +137,16 @@ export default Vue.extend({
           title: 'Keyword'
         }
       ];
+    }
+  },
+  watch: {
+    $route: {
+      handler({ query }) {
+        // 手动更新路由
+        this.sortKey = (query.sortKey || 'acceptanceCount') as sortKey;
+        this.startYear = Number(query.startYear) || 2015;
+        this.endYear = Number(query.endYear) || new Date().getFullYear();
+      }
     }
   },
   methods: {

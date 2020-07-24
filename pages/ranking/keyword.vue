@@ -25,13 +25,24 @@ export default Vue.extend({
   name: 'Keyword',
   components: { KeywordAdvancedComp },
   mixins: [AsyncLoadEcharts],
-  async asyncData() {
+  props: {
+    /**
+     * advancedRankOpt: 包含sortKey,startYear, endYear
+     */
+    advancedRankOpt: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  async asyncData({ query }) {
     if (!cache.cached) {
-      // TODO 添加可选择的sortKey和year
+      const sortKey = query.sortKey
+        ? (query.sortKey as any)
+        : 'acceptanceCount';
       const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
-        sortKey: 'acceptanceCount',
-        startYear: 2015,
-        endYear: 2019
+        sortKey,
+        startYear: query.startYear ? Number(query.startYear) : 2015,
+        endYear: query.endYear ? Number(query.endYear) : 2020
       });
       cache.data =
         keywordAdvancedRankingRes && keywordAdvancedRankingRes.data
@@ -93,11 +104,19 @@ export default Vue.extend({
     // }
     async requestKeywordAdvancedRanking() {
       try {
-        const sortKey = this.$route.query.sortKey as any; // TODO 奇怪呢 没法导入sortKey类型
+        const sortKey = this.$route.query.sortKey
+          ? (this.$route.query.sortKey as any)
+          : 'acceptanceCount'; // TODO 奇怪呢 没法导入sortKey类型
+        const startYear = this.$route.query.startYear
+          ? Number(this.$route.query.startYear)
+          : 2015;
+        const endYear = this.$route.query.endYear
+          ? Number(this.$route.query.endYear)
+          : 2020;
         const keywordAdvancedRankingRes = await getKeywordAdvancedRanking({
           sortKey,
-          startYear: Number(this.$route.query.startYear),
-          endYear: Number(this.$route.query.endYear)
+          startYear,
+          endYear
         });
         // TODO 为了不报错这么写的 到底该咋写呢
         (this as any).rankings = keywordAdvancedRankingRes.data;
