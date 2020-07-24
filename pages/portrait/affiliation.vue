@@ -1,62 +1,71 @@
 <template>
   <div class="portrait">
-    <div class="profile-module">
-      <PortraitProfileComp id="portrait" :profile="profile" />
-      <div class="module">
-        <Subtitle title="📉 Citation Trend" />
-        <div id="citation-bar" class="content"></div>
-      </div>
-      <div class="module">
-        <Subtitle title="📈 Publication Trends" />
-        <div id="publication-bar" class="content"></div>
-      </div>
+    <div class="profile">
+      <PortraitProfileComp
+        id="portrait"
+        :profile="profile"
+        type="Affiliation"
+        icon="el-icon-s-home"
+      />
     </div>
-    <div class="profile-module">
-      <div class="module">
-        <Subtitle title="🌥 Keywords" />
-        <div id="pie" class="chart content"></div>
-      </div>
-    </div>
-    <div class="affiliation-main">
-      <div class="affiliation-main__authors portrait-module">
-        <Subtitle title="🏆 Top Authors" />
-        <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
-      </div>
-      <div class="affiliation-main__paper portrait-module">
-        <PapersSubtitle
-          title="📝 All Papers"
-          :sort-key="sortKey"
-          @changeSortKey="changeSortKey"
-        />
-        <div id="papers">
-          <div
-            v-for="paper in papers"
-            :key="paper.id"
-            style="margin-bottom: 20px"
-          >
-            <PaperInfoComp :paper="paper" />
+    <div class="detail">
+      <el-tabs tab-position="top" class="tabs">
+        <el-tab-pane label="Statistics" class="tab">
+          <div class="module">
+            <div class="card-title">
+              <i class="el-icon-data-analysis icon"></i> Citation Amount
+              Statistics
+            </div>
+            <div id="citation-bar" class="content"></div>
           </div>
-        </div>
-        <!--分页-->
-        <el-pagination
-          layout="prev, pager, next"
-          :current-page="page"
-          :total="totalRecords"
-          :pager-count="pagerSize"
-          hide-on-single-page
-          small
-          style="text-align: center; margin-bottom: 10px"
-          @current-change="showNextPage"
-        />
-      </div>
+          <div class="module">
+            <div class="card-title">
+              <i class="el-icon-data-analysis icon"></i> Publication Amount
+              Statistics
+            </div>
+            <div id="publication-bar" class="content"></div>
+          </div>
+          <div class="module">
+            <div class="card-title">
+              <i class="el-icon-pie-chart icon"></i> Paper Category
+            </div>
+            <div id="pie" class="chart content"></div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="Top Authors" class="tab">
+          <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
+        </el-tab-pane>
+        <el-tab-pane label="Related Papers" class="tab">
+          <PapersSubtitle :sort-key="sortKey" @changeSortKey="changeSortKey" />
+          <div id="papers">
+            <div
+              v-for="paper in papers"
+              :key="paper.id"
+              style="margin-bottom: 20px"
+            >
+              <PaperInfoComp :paper="paper" />
+            </div>
+          </div>
+          <!--分页-->
+          <el-pagination
+            layout="prev, pager, next"
+            :current-page="page"
+            :total="totalRecords"
+            :pager-count="pagerSize"
+            hide-on-single-page
+            small
+            style="text-align: center; margin-bottom: 10px"
+            @current-change="showNextPage"
+          />
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Pagination, Loading, Message } from 'element-ui';
-import Subtitle from '~/components/public/Subtitle.vue';
+import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import {
   getAffiliationInterest,
   getAffiliationPapers,
@@ -73,7 +82,6 @@ import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/ad
 import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import { getClientWidth } from '~/utils/breakpoint';
 import { createPieChart } from '~/components/charts/pie';
-import getSizeById from '~/utils/charts/getSizeById';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
@@ -138,12 +146,14 @@ async function requestAuthorDetailRanking(affiliation: string) {
 export default Vue.extend({
   name: 'Affiliation',
   components: {
+    [Icon.name]: Icon,
     [Pagination.name]: Pagination,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
     AuthorAdvancedComp,
     PaperInfoComp,
     PapersSubtitle,
-    PortraitProfileComp,
-    Subtitle
+    PortraitProfileComp
   },
   mixins: [PaginationMaxSizeLimit],
   async asyncData({ query }) {
@@ -167,15 +177,18 @@ export default Vue.extend({
       name: affiliation,
       statistics: [
         {
-          prop: '📝 Papers',
+          icon: 'el-icon-document',
+          prop: 'Papers',
           number: portraitRes.portrait.count
         },
         {
-          prop: '📃 Citations',
+          icon: 'el-icon-data-analysis',
+          prop: 'Citations',
           number: portraitRes.portrait.citation
         },
         {
-          prop: '💻 Authors',
+          icon: 'el-icon-user',
+          prop: 'Authors',
           number: portraitRes.portrait.authorNum
         }
       ]
@@ -217,24 +230,24 @@ export default Vue.extend({
       }, 0);
       setTimeout(() => {
         createPieChart(
-          '#pie',
+          'pie',
           this.interests
             .map((i) => ({ label: i.name, value: i.value }))
             .sort((a, b) => b.value - a.value)
-            .slice(0, 20),
-          {
-            width: getSizeById('pie').width,
-            height: getSizeById('pie').height,
-            // 点击后跳转到对应的研究方向画像
-            segmentClick: ({ data }) => {
-              this.$router.push({
-                path: '/portrait/keyword',
-                query: {
-                  keyword: data.label
-                }
-              });
-            }
-          }
+            .slice(0, 20)
+          // {
+          //   width: getSizeById('pie').width,
+          //   height: getSizeById('pie').height,
+          //   // 点击后跳转到对应的研究方向画像
+          //   segmentClick: ({ data }) => {
+          //     this.$router.push({
+          //       path: '/portrait/keyword',
+          //       query: {
+          //         keyword: data.label
+          //       }
+          //     });
+          //   }
+          // }
         );
       }, 0);
     },
@@ -269,19 +282,6 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
-
-.affiliation-main {
-  @media @min-pad-width {
-    .flex-left-left-row;
-    .affiliation-main__authors {
-      width: 50vw;
-    }
-
-    .affiliation-main__paper {
-      width: 50vw;
-    }
-  }
-}
 </style>
 
 <style lang="less">

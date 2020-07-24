@@ -1,6 +1,7 @@
 @import 'default.less';
 @portrait-profile-width-pc: 40vw;
 @portrait-profile-width-mobile: 95vw;
+@portrait-chart-min-height: 350px;
 @portrait-profile-name-font-size: @largest-font;
 @portrait-paper-info-font-size: @sub-middle-font;
 
@@ -8,47 +9,46 @@
   width: 100%;
   position: fixed;
   display: flex;
-  flex-direction: row;
   .profile {
     width: 30%;
   }
   .detail {
-    width: 70%;
+    width: 68%;
     display: flex;
     flex-direction: column;
     .tabs {
       .tab {
         height: calc(100vh - 200px);
         overflow: scroll;
+        padding: 0 10px;
       }
     }
+  }
+  .detail-no_tabs {
+    width: 68%;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    height: calc(100vh - 100px);
+    padding-bottom: 10px;
   }
   .module {
     .card;
     margin: 10px;
+    .icon {
+      color: @background-blue;
+    }
     @media @min-pad-width {
       flex: 1;
-      margin-right: 10px;
-      .chart {
-        width: 45vw;
-        height: 500px;
-      }
     }
     @media @max-pad-width {
       margin: 10px 0;
-      .chart {
-        width: 95vw;
-        height: 250px;
-      }
     }
     .content {
       padding: 0 10px;
       .flex-center-row;
-    }
-  }
-  .module:last-child {
-    @media @min-pad-width {
-      margin-right: 0;
+      min-height: @portrait-chart-min-height;
+      width: 100%;
     }
   }
 }
@@ -57,17 +57,25 @@
   width: 100%;
   .card;
   .name {
-    height: @subtitle-height;
-    .overflow-hidden-width(100%);
     text-align: left;
     //overflow-wrap: break-word;
-    font-weight: bold;
-    font-size: @portrait-profile-name-font-size;
     margin: 10px 10px 40px;
+    display: flex;
+    flex-direction: column;
+    .text {
+      .overflow-hidden-height(2);
+      font-weight: bold;
+      font-size: @portrait-profile-name-font-size;
+      color: @font-dark;
+    }
+    .icon {
+      margin-top: 15px;
+      font-weight: 500;
+    }
   }
   .info {
     .wrapper {
-      .flex-left-left-row;
+      .flex-left-center-row;
       .prop {
         width: 30%;
       }
@@ -78,11 +86,14 @@
     }
 
     .prop {
-      font-size: @middle-font;
-      color: @font-gray-dark;
+      .card-title;
+      color: @font-dark;
+      .icon {
+        color: @background-blue;
+      }
     }
     .number {
-      font-size: @large-font;
+      font-size: @sub-large-font;
       font-weight: lighter;
     }
   }

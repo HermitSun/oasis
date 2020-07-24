@@ -69,7 +69,7 @@ export default Vue.extend({
         draggable: true
       });
       createPieChart(
-        '#pie',
+        'pie',
         journalInterestMockData.data
           .map((i) => {
             return {
@@ -78,12 +78,12 @@ export default Vue.extend({
             };
           })
           .sort((a, b) => b.value - a.value)
-          .slice(0, 20),
-        {
-          title: '主要研究方向',
-          height: 600,
-          width: 800
-        }
+          .slice(0, 20)
+        // {
+        //   title: '主要研究方向',
+        //   height: 600,
+        //   width: 800
+        // }
       );
       createBarChart('#bar', [2, 6, 4, 20, 9, 10, 11, 18, 23, 25]);
     },

@@ -1,7 +1,7 @@
 /**
  * 柱状图
  * 从目前的实现看，也许叫条形图更合适
- * @author Alexcchanchic, WenSun
+ * @author Alexchanchic, WenSun
  * @date 2020.03.29
  * @update 2020.04.03
  */
@@ -78,6 +78,9 @@ export function createBarChart(
   };
 
   bar.setOption(option);
+  window.addEventListener('resize', function() {
+    bar.resize();
+  });
 }
 export function createBarChartD3(
   selectorOrDOM: string | HTMLElement,

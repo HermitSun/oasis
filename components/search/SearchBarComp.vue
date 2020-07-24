@@ -144,7 +144,7 @@ export default Vue.extend({
           title: 'Home'
         },
         {
-          path: '/ranking',
+          path: '/ranking/author',
           title: 'Ranking'
         },
         {
