@@ -1,22 +1,28 @@
 <template>
   <div>
     <div
-      style="display: flex;justify-content: flex-end;align-items: center;flex-direction: row;margin: 10px 0 20px 10px;"
+      style="display: flex;justify-content: space-between;align-items: center;flex-direction: row;margin: 10px 0 20px 10px;"
     >
-      <span style="color: #ccc;margin-right: 10px">Sort By</span>
-      <el-select
-        v-model="newSortKey"
-        placeholder="sort key"
-        size="mini"
-        @change="sendNewSortKey"
+      <span>
+        <span style="color: #6c63ff;font-size:1.4rem">{{ title }}</span
+        ><span style="color: #ccc"> papers</span></span
       >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
+      <span>
+        <span style="color: #ccc;margin-right: 10px">Sort By</span>
+        <el-select
+          v-model="newSortKey"
+          placeholder="sort key"
+          size="mini"
+          @change="sendNewSortKey"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </span>
     </div>
     <div class="subtitle-divider"></div>
   </div>
