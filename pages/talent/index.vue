@@ -5,11 +5,11 @@
       @keyword-change="startAnotherBasicSearch"
     />
     <div class="page">
-      <Subtitle title="FIELD TALENT BASE" />
+      <Subtitle title="FIELD TALENTS BASE" />
       <div class="talentPage-content">
         <div class="talentPage-content__talents">
           <div class="talentPage-subtitle">
-            Talent Base
+            Talents Base
           </div>
           <div class="talents">
             <div v-for="(talent, index) in talents" :key="index" class="talent">

@@ -25,7 +25,10 @@
     .flex-left-left-row;
   }
   .talentPage-content__talents {
-    .pc-width__mobile(60%);
+    .pc-width__mobile(58%);
+    @media @min-mobile-width {
+      margin-left: 2%;
+    }
     .talents {
       display: flex;
       flex-flow: row wrap;
@@ -34,8 +37,7 @@
 
     .talent {
       box-sizing: border-box;
-      flex: 0 0 50%;
-      margin-bottom: 4px;
+      flex: 0 0 33%;
     }
   }
   .talentPage-content__news {
@@ -56,15 +58,7 @@
   .card;
   height: @talent-base-size;
   padding: 5px;
-  margin-right: 25px;
-  //clip-path: polygon(
-  //  0 0,
-  //  calc(100% - 20px) 0%,
-  //  100% 20px,
-  //  100% calc(100% - 20px),
-  //  calc(100% - 20px) 100%,
-  //  0 100%
-  //);
+  margin-right: 15px;
   &:hover {
     background: whitesmoke;
   }
@@ -150,6 +144,9 @@
 
 .talent-detail {
   .card;
+  &:hover {
+    background: whitesmoke;
+  }
   .name {
     .card-title;
     cursor: pointer;

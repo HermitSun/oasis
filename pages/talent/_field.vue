@@ -4,8 +4,29 @@
       v-model="keyword"
       @keyword-change="startAnotherBasicSearch"
     />
+    <el-button
+      circle
+      icon="el-icon-menu"
+      type="primary"
+      style="position: fixed;top:140px;right: 40px;  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);"
+      @click="drawer = true"
+    />
+    <el-drawer title="TALENTS BASE" :visible.sync="drawer">
+      <span>我来啦!</span>
+    </el-drawer>
     <div class="page">
-      <Subtitle :title="'TALENTS BASE' + field" />
+      <span
+        class="intro-title"
+        style="margin: 50px 0;padding: 0 20px; display: flex;align-items: center"
+      >
+        {{
+          field
+            .split(' ')
+            .map((i) => i[0].toUpperCase() + i.slice(1))
+            .join(' ')
+        }}
+        <el-tag type="primary" style="margin-left: 20px">talents base</el-tag>
+      </span>
       <div class="talentPage-content">
         <div class="talentPage-content__talents">
           <div class="talentPage-subtitle">
@@ -29,14 +50,13 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import { Message } from 'element-ui';
+import { Message, Button, Drawer, Tag } from 'element-ui';
 import { TalentsListResponse } from '../../interfaces/responses/talent/TalentsListResponse';
 import {
   getTalentsActivePapersByTalentBase,
   getTalentsListByTalentBase
 } from '../../api';
 import SearchBarComp from '../../components/search/SearchBarComp.vue';
-import Subtitle from '../../components/public/Subtitle.vue';
 import TalentDetailComp from '../../components/talent/TalentDetailComp.vue';
 import { ActivePaperAbstractResponse } from '../../interfaces/responses/abstract/ActivePaperAbstractResponse';
 import AbstractComp from '../../components/abstract/AbstractComp.vue';
@@ -79,8 +99,10 @@ export default Vue.extend({
   components: {
     AbstractComp,
     SearchBarComp,
-    Subtitle,
-    TalentDetailComp
+    TalentDetailComp,
+    [Button.name]: Button,
+    [Drawer.name]: Drawer,
+    [Tag.name]: Tag
   },
   mixins: [StartAnotherBasicSearch],
   async asyncData({ params }) {
@@ -93,6 +115,11 @@ export default Vue.extend({
       field,
       ...talentsListRes,
       ...talentsActivePapersRes
+    };
+  },
+  data() {
+    return {
+      drawer: false
     };
   }
 });
