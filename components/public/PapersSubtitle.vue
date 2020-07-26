@@ -42,8 +42,8 @@ export default Vue.extend({
   },
   props: {
     title: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     },
     sortKey: {
       type: String,

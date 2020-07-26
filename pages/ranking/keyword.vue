@@ -35,6 +35,7 @@ export default Vue.extend({
     }
   },
   async asyncData({ query }) {
+    console.log(query);
     if (!cache.cached) {
       const sortKey = query.sortKey
         ? (query.sortKey as any)

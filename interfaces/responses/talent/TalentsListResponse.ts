@@ -12,5 +12,6 @@ export interface TalentsListResponse {
   papers: {
     title: string; // 论文名
     citation: number; // 引用数
+    link: string; // 文章链接
   };
 }

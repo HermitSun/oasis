@@ -8,7 +8,13 @@
     </div>
     <div class="papers">
       <div v-for="(paper, index) in talent.papers" :key="index">
-        <span class="title">{{ paper.title }}</span>
+        <a
+          :href="paper.link"
+          class="title"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          >{{ paper.title }}</a
+        >
         <span class="citation">【citation: {{ paper.citation }}】</span>
       </div>
     </div>

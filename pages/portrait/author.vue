@@ -45,11 +45,6 @@
               <div id="force" class="chart"></div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Similar Authors" class="tab">
-            <div v-for="(scholar, index) in similarAuthors" :key="index">
-              <TalentDetailComp :talent="scholar" />
-            </div>
-          </el-tab-pane>
           <el-tab-pane label="Related Papers" class="tab">
             <div v-if="showPortrait">
               <PapersSubtitle
@@ -95,8 +90,7 @@ import {
   getAcademicRelationByAuthorId,
   getAuthorPapersById,
   getAuthorPortraitById,
-  getResearcherInterest,
-  getSimilarAuthorByAuthorId
+  getResearcherInterest
 } from '~/api';
 import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
@@ -116,8 +110,6 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import TalentDetailComp from '~/components/talent/TalentDetailComp.vue';
-import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
 
 interface AuthorNode extends ForceChartNode {
   name: string;
@@ -187,20 +179,6 @@ async function requestAcademicRelation(authorId: string) {
   return res;
 }
 
-async function requestSimilarAuthorByAuthorId(authorId: string) {
-  const res: { similarAuthors: TalentsListResponse[] } = {
-    similarAuthors: []
-  };
-  try {
-    const similarAuthorsResponse = await getSimilarAuthorByAuthorId(authorId);
-    res.similarAuthors = similarAuthorsResponse.data;
-    console.log(similarAuthorsResponse);
-  } catch (e) {
-    Message.error(e.toString());
-  }
-  return res;
-}
-
 // 获取数据
 async function fetchData(query: AuthorPapersPayload) {
   const authorId = query.authorId as string;
@@ -208,10 +186,9 @@ async function fetchData(query: AuthorPapersPayload) {
   const sortKey = query.sortKey || 'recent';
   const page = query.page ? Number(query.page) : 1;
 
-  const [portraitRes, papersRes, similarAuthorsRes] = await Promise.all([
+  const [portraitRes, papersRes] = await Promise.all([
     requestPortrait(authorId),
-    requestPapers({ authorId, page, sortKey }),
-    requestSimilarAuthorByAuthorId(authorId)
+    requestPapers({ authorId, page, sortKey })
   ]);
   const profile = {
     name: portraitRes.portrait.name,
@@ -244,8 +221,7 @@ async function fetchData(query: AuthorPapersPayload) {
     citationTrend,
     publicationTrend,
     papers: papersRes.papers,
-    resultCount: papersRes.size,
-    similarAuthors: similarAuthorsRes.similarAuthors
+    resultCount: papersRes.size
   };
 }
 
@@ -258,8 +234,7 @@ export default Vue.extend({
     [Icon.name]: Icon,
     PaperInfoComp,
     PapersSubtitle,
-    PortraitProfileComp,
-    TalentDetailComp
+    PortraitProfileComp
   },
   // 注入一个清理图表的方法
   mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],

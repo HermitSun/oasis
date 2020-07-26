@@ -53,8 +53,7 @@ export default Vue.extend({
 
     jumpToTalent(field: string) {
       this.$router.push({
-        path: '/talent',
-        query: { field }
+        path: '/talent/' + field
       });
     }
   }
