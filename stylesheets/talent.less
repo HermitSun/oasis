@@ -1,14 +1,6 @@
 @import 'default.less';
 // talent-base-basic
-@talent-base-basic-height__pc: 120px;
-@talent-base-basic-width__pc: 100px;
-@talent-base-basic-height__mobile: 100px;
-@talent-base-basic-width__mobile: 50px;
-
-@talent-base-basic-count-size__pc: 50px;
-@talent-base-basic-count-size__mobile: 30px;
-
-@talent-base-basic-field-font-size: @sub-small-font;
+@talent-base-basic-field-font-size: @sub-middle-font;
 // talent-base
 @talent-base-size: 260px;
 @talent-base-field-font-size: @middle-font;
@@ -53,6 +45,9 @@
   color: @font-gray;
   margin-bottom: 10px;
   padding-bottom: 10px;
+}
+.talent-drawer-title {
+  .card-title;
 }
 .talent-base {
   .card;
@@ -110,35 +105,29 @@
 
 .talent-base-basic {
   cursor: pointer;
-  border-radius: 10px;
-  padding: 10px;
-  .mobile-height(@talent-base-basic-height__mobile);
-  .mobile-width(@talent-base-basic-width__mobile);
-  .pc-height__mobile(@talent-base-basic-height__pc);
-  //.pc-width__mobile(@talent-base-basic-width__pc);
-  .flex-center-column;
+  padding: 10px 10px;
+  .flex-space-between;
+  align-items: center;
+  border-bottom: 1px solid #dcdfe6;
 
   &:hover {
     background-color: @background-blue-normal-light;
   }
 
-  .count {
-    background-color: @background-blue-dark;
-    color: @background-blue-normal;
-    .flex-center-column;
-    .mobile-height(@talent-base-basic-count-size__mobile);
-    .mobile-width(@talent-base-basic-count-size__mobile);
-    .pc-height__mobile(@talent-base-basic-count-size__pc);
-    .pc-width__mobile(@talent-base-basic-count-size__pc);
-    .pc-border-radius__mobile(@talent-base-basic-count-size__pc);
-    .mobile-border-radius(@talent-base-basic-count-size__mobile);
+  .field {
+    font-size: @talent-base-basic-field-font-size;
+    color: @font-dark;
   }
 
-  .field {
-    margin-top: 20px;
-    color: ghostwhite;
-    font-size: @talent-base-basic-field-font-size;
-    .overflow-hidden-width(@talent-base-basic-width__pc);
+  .count {
+    color: @background-blue;
+    .flex-center-column;
+    font-size: @large-font;
+    font-weight: lighter;
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    float: right;
   }
 }
 

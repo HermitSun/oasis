@@ -102,11 +102,7 @@
           TALENTS BASE
         </div>
         <div class="homepage-content__talents">
-          <div class="talents">
-            <div v-for="(talent, index) in talents" :key="index" class="talent">
-              <TalentBaseComp :talent="talent" />
-            </div>
-          </div>
+          123
         </div>
       </div>
     </div>
@@ -343,23 +339,8 @@ export default Vue.extend({
     .mobile-width(90vw);
     .pc-width__mobile(40vw);
   }
-
-  .homepage-header__talents {
-    .pc-width__mobile(0.8 * @search-input-width__pc);
-    .mobile-width(0.8 * @search-input-width__mobile);
-    /* TODO 优化移动端适配 */
-    min-width: 400px;
-    margin-top: 30px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: row wrap;
-
-    .homepage-header__talent {
-      width: 20%;
-      min-width: @talent-base-basic-width__pc;
-    }
-  }
+}
+.homepage-content {
+  padding: 20px 100px;
 }
 </style>

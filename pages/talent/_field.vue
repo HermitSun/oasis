@@ -11,8 +11,22 @@
       style="position: fixed;top:140px;right: 40px;  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);"
       @click="drawer = true"
     />
-    <el-drawer title="TALENTS BASE" :visible.sync="drawer">
-      <span>我来啦!</span>
+    <el-drawer :visible.sync="drawer">
+      <div slot="title" class="talent-drawer-title">
+        TALENTS BASE
+      </div>
+      <div style="padding: 0 20px">
+        <div
+          class="flex-space-between"
+          style="color: #666;font-size: 1rem;font-weight:500;margin-bottom: 20px"
+        >
+          <span style="margin-left: 12px;">Field</span>
+          <span style="margin-right: 20px;">Papers</span>
+        </div>
+        <div v-for="(talent, index) in talents" :key="index">
+          <TalentBaseBasicComp :talent="talent" />
+        </div>
+      </div>
     </el-drawer>
     <div class="page">
       <span
@@ -50,9 +64,10 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import { Message, Button, Drawer, Tag } from 'element-ui';
+import { Message, Button, Drawer, Tag, Divider } from 'element-ui';
 import { TalentsListResponse } from '../../interfaces/responses/talent/TalentsListResponse';
 import {
+  getActiveTalentsBase,
   getTalentsActivePapersByTalentBase,
   getTalentsListByTalentBase
 } from '../../api';
@@ -61,6 +76,25 @@ import TalentDetailComp from '../../components/talent/TalentDetailComp.vue';
 import { ActivePaperAbstractResponse } from '../../interfaces/responses/abstract/ActivePaperAbstractResponse';
 import AbstractComp from '../../components/abstract/AbstractComp.vue';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
+import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
+import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
+
+async function requestActiveTalentsBase() {
+  const res: { talents: ActiveTalentsBaseResponse[] } = {
+    talents: []
+  };
+  try {
+    const activeTalentsBaseRes = await getActiveTalentsBase();
+    if (activeTalentsBaseRes.code === 200) {
+      res.talents = activeTalentsBaseRes.data;
+    } else {
+      Message.error(activeTalentsBaseRes.msg);
+    }
+  } catch (e) {
+    Message.error('网络异常');
+  }
+  return res;
+}
 
 async function requestTalentsListByTalentBase(field: string) {
   const res: {
@@ -100,9 +134,11 @@ export default Vue.extend({
     AbstractComp,
     SearchBarComp,
     TalentDetailComp,
+    TalentBaseBasicComp,
     [Button.name]: Button,
     [Drawer.name]: Drawer,
-    [Tag.name]: Tag
+    [Tag.name]: Tag,
+    [Divider.name]: Divider
   },
   mixins: [StartAnotherBasicSearch],
   async asyncData({ params }) {
@@ -111,10 +147,12 @@ export default Vue.extend({
     const talentsActivePapersRes = await requestTalentsActivePapersByTalentBase(
       field
     );
+    const activeTalentsBaseRes = await requestActiveTalentsBase();
     return {
       field,
       ...talentsListRes,
-      ...talentsActivePapersRes
+      ...talentsActivePapersRes,
+      ...activeTalentsBaseRes
     };
   },
   data() {
