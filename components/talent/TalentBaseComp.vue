@@ -4,8 +4,12 @@
       <span class="field">{{ getUpperTitle(talent.field) }}</span>
       <span class="count">{{ talent.count }} papers</span>
     </div>
-    <div class="author">
-      <span v-for="(expert, index) in talent.experts" :key="index">
+    <div class="authors">
+      <span
+        v-for="(expert, index) in talent.experts"
+        :key="index"
+        class="author"
+      >
         <el-tooltip placement="top" :content="expert.authorName">
           <el-button
             size="mini"

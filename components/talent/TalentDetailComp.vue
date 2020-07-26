@@ -12,11 +12,7 @@
     <div class="papers flex-left-left-row">
       <span class="card-hint" style="flex: 1">hot paper: </span>
       <div style="flex: 1;flex-grow: 6">
-        <div
-          v-for="(paper, index) in talent.papers"
-          :key="index"
-          class="flex-left-left-row"
-        >
+        <div v-for="(paper, index) in talent.papers" :key="index">
           <a
             :href="paper.link"
             class="title"
@@ -28,13 +24,11 @@
             >
               {{ index + 1 }}.</span
             >
-            {{ paper.title }}</a
-          >
-          <span class="citation">
             <el-tag size="mini" type="warning"
               >citation: {{ paper.citation }}</el-tag
             >
-          </span>
+            {{ paper.title }}</a
+          >
         </div>
       </div>
     </div>
