@@ -142,14 +142,14 @@
   }
   .affiliation {
     font-size: @talent-detail-affiliation-font-size;
-    color: @font-gray-dark;
+    font-weight: 500;
     margin-bottom: 5px;
+    .card-abstract(@background-blue);
   }
   .papers {
     line-height: 21px;
     .title {
-      color: @background-blue;
-      font-weight: 500;
+      .card-abstract;
     }
     a {
       text-decoration: none;

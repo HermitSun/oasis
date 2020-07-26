@@ -3,19 +3,39 @@
     <div class="name" @click="jumpToPortrait(talent.authorId)">
       {{ talent.name }}
     </div>
-    <div class="affiliation">
-      <span class="tag">🏫 affiliation</span>{{ talent.affiliation }}
+    <div class="flex-left-left-row" style="width: 100%">
+      <span class="card-hint" style="flex: 1">affiliation: </span>
+      <span class="affiliation" style="flex: 1;flex-grow: 6">{{
+        talent.affiliation
+      }}</span>
     </div>
-    <div class="papers">
-      <div v-for="(paper, index) in talent.papers" :key="index">
-        <a
-          :href="paper.link"
-          class="title"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          >{{ paper.title }}</a
+    <div class="papers flex-left-left-row">
+      <span class="card-hint" style="flex: 1">hot paper: </span>
+      <div style="flex: 1;flex-grow: 6">
+        <div
+          v-for="(paper, index) in talent.papers"
+          :key="index"
+          class="flex-left-left-row"
         >
-        <span class="citation">【citation: {{ paper.citation }}】</span>
+          <a
+            :href="paper.link"
+            class="title"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            ><span
+              v-if="talent.papers.length > 1"
+              style="font-weight: 500;color: #2c3e50; "
+            >
+              {{ index + 1 }}.</span
+            >
+            {{ paper.title }}</a
+          >
+          <span class="citation">
+            <el-tag size="mini" type="warning"
+              >citation: {{ paper.citation }}</el-tag
+            >
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -23,9 +43,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Tag } from 'element-ui';
 
 export default Vue.extend({
   name: 'TalentDetailComp',
+  components: {
+    [Tag.name]: Tag
+  },
   props: {
     talent: {
       type: Object,
