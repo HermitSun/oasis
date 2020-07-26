@@ -20,6 +20,38 @@
 @talent-detail-affiliation-font-size: @sub-middle-font;
 @talent-detail-author-font-size: @middle-font;
 
+.talentPage-content {
+  @media @min-mobile-width {
+    .flex-left-left-row;
+  }
+  .talentPage-content__talents {
+    .pc-width__mobile(60%);
+    .talents {
+      display: flex;
+      flex-flow: row wrap;
+      align-content: space-between;
+    }
+
+    .talent {
+      box-sizing: border-box;
+      flex: 0 0 50%;
+      margin-bottom: 4px;
+    }
+  }
+  .talentPage-content__news {
+    .pc-width__mobile(36%);
+    @media @min-mobile-width {
+      margin: 0 2%;
+    }
+  }
+}
+
+.talentPage-subtitle {
+  font-size: @sub-large-font;
+  color: @font-gray;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
 .talent-base {
   .card;
   height: @talent-base-size;
@@ -43,9 +75,8 @@
       cursor: pointer;
     }
     .field {
+      .card-title;
       text-align: center;
-      color: @font-dark;
-      font-size: @talent-base-field-font-size;
     }
     .count {
       margin-top: 10px;
@@ -118,17 +149,10 @@
 }
 
 .talent-detail {
-  border-radius: 20px;
-  //height: @talent-detail-height;
-  padding: 20px 20px;
-  border: 1px solid @border-gray;
-  text-align: left;
-  margin-bottom: 8px;
+  .card;
   .name {
-    font-weight: 500;
-    margin-bottom: 10px;
+    .card-title;
     cursor: pointer;
-    font-size: @talent-detail-author-font-size;
   }
   .affiliation {
     font-size: @talent-detail-affiliation-font-size;

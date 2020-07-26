@@ -6,35 +6,37 @@
 @abstract-item-info-max-height: 200px;
 
 .abstract-item {
-  text-align: left;
-  padding: 15px 5px;
+  .card;
   .flex-left-left-row;
 
   .year {
     font-size: @abstract-item-title-font-size;
     width: 50px;
+    .card-title;
   }
 
   .title {
+    .card-title;
+
     a {
       font-size: @abstract-item-title-font-size;
       text-decoration: none;
     }
 
     a:link {
-      color: @font-dark
+      color: @font-dark;
     }
 
     a:visited {
-      color: @font-dark
+      color: @font-dark;
     }
 
     a:hover {
-      color: @bright-yellow
+      color: @bright-yellow;
     }
 
     a:active {
-      color: @font-dark
+      color: @font-dark;
     }
   }
 
@@ -43,7 +45,7 @@
     color: @background-blue;
     font-size: @abstract-item-author-font-size;
     cursor: pointer;
-
+    margin-top: 10px;
     @media @min-pc-width {
       display: block;
       margin-top: 2px;
@@ -59,11 +61,6 @@
   }
 
   .abstract {
-    font-size: @abstract-item-info-font-size;
-    line-height: calc(@abstract-item-author-font-size + 5px);
-    color: @font-gray;
-    margin-top: 10px;
-    max-height: @abstract-item-info-max-height;
-    .overflow-hidden-height(2);
+    .card-abstract__margin;
   }
 }

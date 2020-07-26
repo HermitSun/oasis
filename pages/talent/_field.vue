@@ -6,11 +6,23 @@
     />
     <div class="page">
       <Subtitle :title="'TALENTS BASE' + field" />
-      <div v-for="(talent, index) in talentsList" :key="index">
-        <TalentDetailComp :talent="talent" />
-      </div>
-      <div v-for="(papers, index) in talentsActivePapers" :key="index">
-        {{ papers }}
+      <div class="talentPage-content">
+        <div class="talentPage-content__talents">
+          <div class="talentPage-subtitle">
+            Scholars
+          </div>
+          <div v-for="(talent, index) in talentsList" :key="index">
+            <TalentDetailComp :talent="talent" />
+          </div>
+        </div>
+        <div class="talentPage-content__news">
+          <div class="talentPage-subtitle">
+            Field Must Read
+          </div>
+          <div v-for="(papers, index) in talentsActivePapers" :key="index">
+            <AbstractComp :abstract="papers" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -27,6 +39,7 @@ import SearchBarComp from '../../components/search/SearchBarComp.vue';
 import Subtitle from '../../components/public/Subtitle.vue';
 import TalentDetailComp from '../../components/talent/TalentDetailComp.vue';
 import { ActivePaperAbstractResponse } from '../../interfaces/responses/abstract/ActivePaperAbstractResponse';
+import AbstractComp from '../../components/abstract/AbstractComp.vue';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 async function requestTalentsListByTalentBase(field: string) {
@@ -64,6 +77,7 @@ async function requestTalentsActivePapersByTalentBase(field: string) {
 export default Vue.extend({
   name: 'Field',
   components: {
+    AbstractComp,
     SearchBarComp,
     Subtitle,
     TalentDetailComp
