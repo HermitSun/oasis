@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import PaperInfoComp from '../PaperInfoComp.vue';
 import { getKeywordDetailRanking } from '~/api';
@@ -80,7 +80,6 @@ export default Vue.extend({
   name: 'KeywordDetailComp',
   components: {
     PaperInfoComp,
-    [Button.name]: Button,
     [Icon.name]: Icon,
     [Tooltip.name]: Tooltip
   },

@@ -21,8 +21,8 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import AdvancedRankingSubtitle from '~/components/public/AdvancedRankingSubtitle.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
-import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
+import AsyncLoadEcharts from '~/components/mixins/AsyncLoadEcharts';
 
 export default Vue.extend({
   name: 'Ranking',
@@ -30,7 +30,12 @@ export default Vue.extend({
     AdvancedRankingSubtitle,
     SearchBarComp
   },
-  mixins: [AsyncLoadWordCloud, StartAnotherBasicSearch],
+  mixins: [AsyncLoadEcharts, StartAnotherBasicSearch],
+  data() {
+    return {
+      isWordCloudRequired: true
+    };
+  },
   computed: {
     currentSubject(): string {
       const regExpMatchArray = this.$route.path.match(/^\/ranking\/(.*)/);
@@ -38,8 +43,18 @@ export default Vue.extend({
       return subject || '';
     }
   },
+  // 销毁时清空store
+  beforeDestroy() {
+    this.updateIsEchartsLoaded(false);
+    this.updateWordCloudLoaded(false);
+  },
   methods: {
+    onEchartsLoad() {
+      this.updateIsEchartsLoaded(true);
+      this.updateWordCloudLoaded(true);
+    },
     ...mapActions('ranking', {
+      updateIsEchartsLoaded: 'updateIsEchartsLoaded',
       isRankingAffiliationWordCloudLoaded: 'updateIsAffiliationWordCloudLoaded',
       isRankingAuthorWordCloudLoaded: 'updateIsAuthorWordCloudLoaded',
       isRankingKeywordWordCloudLoaded: 'updateIsKeywordWordCloudLoaded'

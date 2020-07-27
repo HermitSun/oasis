@@ -15,15 +15,32 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
-import AsyncLoadWordCloud from '~/components/mixins/AsyncLoadWordCloud';
+import AsyncLoadEcharts from '~/components/mixins/AsyncLoadEcharts';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 
 export default Vue.extend({
   name: 'Portrait',
   components: { SearchBarComp },
-  mixins: [AsyncLoadWordCloud, StartAnotherBasicSearch],
+  // 这里只加载图表的依赖
+  // 声明需要词云
+  mixins: [AsyncLoadEcharts, StartAnotherBasicSearch],
+  data() {
+    return {
+      isWordCloudRequired: true
+    };
+  },
+  // 销毁时清空store
+  beforeDestroy() {
+    this.updateIsEchartsLoaded(false);
+    this.updateWordCloudLoaded(false);
+  },
   methods: {
+    onEchartsLoad() {
+      this.updateIsEchartsLoaded(true);
+      this.updateWordCloudLoaded(true);
+    },
     ...mapActions('portrait', {
+      updateIsEchartsLoaded: 'updateIsEchartsLoaded',
       updateIsPortraitAffiliationWordCloudLoaded:
         'updateIsAffiliationWordCloudLoaded',
       updateIsPortraitKeywordWordCloudLoaded: 'updateIsKeywordWordCloudLoaded'

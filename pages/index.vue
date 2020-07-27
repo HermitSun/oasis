@@ -59,28 +59,30 @@
     </div>
     <div class="homepage-content">
       <div class="tab">
-        <span class="intro-title">OASIS RANKING</span>
+        <div class="intro-title">
+          OASIS RANKING
+        </div>
         <div style="margin: 30px 0">
           <el-tabs tab-position="right">
-            <el-tab-pane label="Author">
+            <el-tab-pane label="Author" lazy>
               <AuthorBasicRanking :ranking="authorRanking" class="rank" />
             </el-tab-pane>
-            <el-tab-pane label="Affiliation">
+            <el-tab-pane label="Affiliation" lazy>
               <AffiliationBasicRanking
                 :ranking="affiliationRanking"
                 class="rank"
               />
             </el-tab-pane>
-            <el-tab-pane label="Journal">
+            <el-tab-pane label="Journal" lazy>
               <JournalBasicRanking :ranking="journalRanking" class="rank" />
             </el-tab-pane>
-            <el-tab-pane label="Conference">
+            <el-tab-pane label="Conference" lazy>
               <ConferenceBasicRanking
                 :ranking="conferenceRanking"
                 class="rank"
               />
             </el-tab-pane>
-            <el-tab-pane label="Keyword">
+            <el-tab-pane label="Keyword" lazy>
               <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
             </el-tab-pane>
           </el-tabs>
@@ -95,32 +97,14 @@
           </el-button>
         </div>
       </div>
-      <template>
+      <div class="tab">
         <div class="intro-title">
           TALENTS BASE
         </div>
         <div class="homepage-content__talents">
-          <div class="talents">
-            <div v-for="(talent, index) in talents" :key="index" class="talent">
-              <TalentBaseComp :talent="talent" />
-            </div>
-          </div>
+          123
         </div>
-      </template>
-      <template>
-        <div class="intro-title">
-          OASIS NEWS
-        </div>
-        <div class="homepage-content__abstract">
-          <div
-            v-for="abstract in abstractResponse"
-            :key="abstract.id"
-            style="margin-bottom: 5px"
-          >
-            <AbstractComp :abstract="abstract" />
-          </div>
-        </div>
-      </template>
+      </div>
     </div>
     <!--<div class="homepage-content__right">-->
     <!--<div class="homepage-content__ranking">-->
@@ -142,49 +126,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Message, Button, Tabs, TabPane } from 'element-ui';
+import { Message, Tabs, TabPane } from 'element-ui';
 import {
-  getActivePaperAbstract,
-  getActiveTalentsBase,
   getAffiliationBasicRanking,
   getAuthorBasicRanking,
   getConferenceBasicRanking,
   getJournalBasicRanking,
   getKeywordBasicRanking
 } from '~/api';
-import AbstractComp from '~/components/abstract/AbstractComp.vue';
-import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
-import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
-import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
-import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
-import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
-import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
-import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
-import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
-import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
-import TalentBaseComp from '~/components/talent/TalentBaseComp.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
-
-// SSR需要的方法，无状态
-async function requestActivePaperAbstract() {
-  const res: { abstractResponse: ActivePaperAbstractResponse[] } = {
-    abstractResponse: []
-  };
-  try {
-    const activePaperAbstractRes = await getActivePaperAbstract();
-    if (activePaperAbstractRes.code === 200) {
-      res.abstractResponse = activePaperAbstractRes.data;
-    } else {
-      Message.error(activePaperAbstractRes.msg);
-    }
-  } catch (e) {
-    Message.error('网络异常');
-  }
-  return res;
-}
 
 async function requestAffiliationBasicRanking() {
   const res: { affiliationRanking: BasicRankingResponse[] } = {
@@ -285,68 +238,49 @@ async function requestKeywordBasicRanking() {
   return res;
 }
 
-async function requestActiveTalentsBase() {
-  const res: { talents: ActiveTalentsBaseResponse[] } = {
-    talents: []
-  };
-  try {
-    const activeTalentsBaseRes = await getActiveTalentsBase();
-    if (activeTalentsBaseRes.code === 200) {
-      res.talents = activeTalentsBaseRes.data;
-    } else {
-      Message.error(activeTalentsBaseRes.msg);
-    }
-  } catch (e) {
-    Message.error('网络异常');
-  }
-  return res;
-}
-
 export default Vue.extend({
   name: 'Index',
   components: {
-    AbstractComp,
-    TalentBaseComp,
-    AdvancedSearchComp,
-    AffiliationBasicRanking,
-    AuthorBasicRanking,
-    CommandSearchComp,
-    ConferenceBasicRanking,
-    KeywordBasicRanking,
-    JournalBasicRanking,
-    SearchBarComp,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
-    [Button.name]: Button
+    AdvancedSearchComp: () =>
+      import('~/components/search/AdvancedSearchComp.vue'),
+    AffiliationBasicRanking: () =>
+      import('~/components/ranking/AffiliationBasicRanking.vue'),
+    AuthorBasicRanking: () =>
+      import('~/components/ranking/AuthorBasicRanking.vue'),
+    CommandSearchComp: () =>
+      import('~/components/search/CommandSearchComp.vue'),
+    ConferenceBasicRanking: () =>
+      import('~/components/ranking/ConferenceBasicRanking.vue'),
+    KeywordBasicRanking: () =>
+      import('~/components/ranking/KeywordBasicRanking.vue'),
+    JournalBasicRanking: () =>
+      import('~/components/ranking/JournalBasicRanking.vue'),
+    SearchBarComp
   },
   // 渲染初始数据
   async asyncData() {
     const [
-      abstractRes,
       affiliationRankingRes,
       authorRankingRes,
       conferenceRankingRes,
       journalRankingRes,
-      keywordRankingRes,
-      activeTalentsBaseRes
+      keywordRankingRes
     ] = await Promise.all([
-      requestActivePaperAbstract(),
       requestAffiliationBasicRanking(),
       requestAuthorBasicRanking(),
       requestConferenceBasicRanking(),
       requestJournalBasicRanking(),
-      requestKeywordBasicRanking(),
-      requestActiveTalentsBase()
+      requestKeywordBasicRanking()
     ]);
 
     return {
-      ...abstractRes,
       ...affiliationRankingRes,
       ...authorRankingRes,
       ...conferenceRankingRes,
       ...journalRankingRes,
-      ...keywordRankingRes,
-      ...activeTalentsBaseRes
+      ...keywordRankingRes
     };
   },
   data() {
@@ -355,10 +289,6 @@ export default Vue.extend({
       showAdvancedSearch: false,
       showCommandSearch: false
     } as HomePageComp;
-  },
-  async mounted() {
-    // const res = await getActivePaperAbstract();
-    // console.log(res.data);
   },
   methods: {
     async sendBasicSearch() {
@@ -404,74 +334,8 @@ export default Vue.extend({
     .mobile-width(90vw);
     .pc-width__mobile(40vw);
   }
-
-  .homepage-header__talents {
-    .pc-width__mobile(0.8 * @search-input-width__pc);
-    .mobile-width(0.8 * @search-input-width__mobile);
-    /* TODO 优化移动端适配 */
-    min-width: 400px;
-    margin-top: 30px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: row wrap;
-
-    .homepage-header__talent {
-      width: 20%;
-      min-width: @talent-base-basic-width__pc;
-    }
-  }
 }
-
 .homepage-content {
   padding: 20px 100px;
-
-  .homepage-content__abstract {
-    .gray-background;
-  }
-
-  .homepage-content__talents {
-    .talents {
-      display: flex;
-      flex-flow: row wrap;
-      align-content: flex-start;
-      padding: 10px;
-    }
-
-    .talent {
-      box-sizing: border-box;
-      flex: 0 0 24%;
-      margin-right: 4px;
-      margin-bottom: 4px;
-    }
-  }
-
-  .homepage-content__ranking {
-    .gray-background;
-
-    .homepage-content__rankings {
-      /*<!--@media @min-pc-width {-->*/
-      /*<!--.flex-space-between;-->*/
-      /*<!--.rank {-->*/
-      /*<!--margin: 0 10px;-->*/
-      /*<!--width: 20%;-->*/
-      /*<!--}-->*/
-      /*<!--}-->*/
-    }
-  }
-
-  /*
-  @media @min-pc-width {
-    .flex-left-left-row;
-    .homepage-content__abstract {
-      width: 75vw;
-    }
-
-    .homepage-content__ranking {
-      width: 25vw;
-    }
-  }
-  */
 }
 </style>

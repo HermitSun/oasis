@@ -32,15 +32,19 @@
             <div id="pie" class="chart content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab">
+        <el-tab-pane label="Top Authors" class="tab" lazy>
           <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
         </el-tab-pane>
-        <el-tab-pane label="Related Papers" class="tab">
-          <PapersSubtitle :sort-key="sortKey" @changeSortKey="changeSortKey" />
+        <el-tab-pane label="Related Papers" class="tab" lazy>
+          <PapersSubtitle
+            :title="resultCount"
+            :sort-key="sortKey"
+            @changeSortKey="changeSortKey"
+          />
           <div id="papers">
             <div
               v-for="paper in papers"
-              :key="paper.id"
+              :key="'paper' + paper.id"
               style="margin-bottom: 20px"
             >
               <PaperInfoComp :paper="paper" />
@@ -65,6 +69,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import {
   getAffiliationInterest,
@@ -72,21 +77,17 @@ import {
   getAffiliationPortrait,
   getAuthorDetailRanking
 } from '~/api';
-import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
-import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import { getClientWidth } from '~/utils/breakpoint';
 import { createPieChart } from '~/components/charts/pie';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
 import { PortraitAffiliationPageComp } from '~/interfaces/pages/portrait/PortraitAffiliationPageComp';
 
 async function requestPortrait(affiliation: string) {
@@ -150,9 +151,10 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
-    AuthorAdvancedComp,
-    PaperInfoComp,
-    PapersSubtitle,
+    AuthorAdvancedComp: () =>
+      import('~/components/ranking/advanced/author/AuthorAdvancedComp.vue'),
+    PaperInfoComp: () => import('~/components/portrait/PaperInfoComp.vue'),
+    PapersSubtitle: () => import('~/components/public/PapersSubtitle.vue'),
     PortraitProfileComp
   },
   mixins: [PaginationMaxSizeLimit],
@@ -213,14 +215,15 @@ export default Vue.extend({
       sortKey: 'recent' as sortKey
     } as PortraitAffiliationPageComp;
   },
-  mounted() {
-    // 本人垃圾前端
-    if (getClientWidth() > 768) {
-      const elementAuthors = document.getElementById('authors') as HTMLElement;
-      const elementPapers = document.getElementById('papers') as HTMLElement;
-      elementAuthors.style.height = elementPapers.offsetHeight - 60 + 'px';
+  computed: {
+    ...mapGetters('portrait', ['isEchartsLoaded'])
+  },
+  watch: {
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initCharts();
+      }
     }
-    this.initCharts();
   },
   methods: {
     initCharts() {

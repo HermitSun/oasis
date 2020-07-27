@@ -39,7 +39,6 @@
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
-
     <div v-show="showDetail" class="detail">
       <div class="info">
         <div class="title">
@@ -69,7 +68,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AffiliationDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '@/api/index.ts';
@@ -79,7 +78,6 @@ import { createWordCloud } from '~/components/charts/wordcloud';
 export default Vue.extend({
   name: 'AffiliationDetailComp',
   components: {
-    [Button.name]: Button,
     [Tooltip.name]: Tooltip,
     [Icon.name]: Icon
   },
@@ -105,13 +103,18 @@ export default Vue.extend({
   // 用来处理异步脚本的加载效果
   computed: {
     ...mapGetters('ranking', {
+      isRankingEchartsLoaded: 'isEchartsLoaded',
       isRankingAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isRankingAuthorWordCloudLoaded: 'isAuthorWordCloudLoaded'
     }),
     ...mapGetters('portrait', {
+      isPortraitEchartsLoaded: 'isEchartsLoaded',
       isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isPortraitKeywordWordCloudLoaded: 'isKeywordWordCloudLoaded'
     }),
+    isEchartsLoaded(): boolean {
+      return this.isRankingEchartsLoaded || this.isPortraitEchartsLoaded;
+    },
     isWordCloudLoaded(): boolean {
       return (
         this.isRankingAffiliationWordCloudLoaded ||
@@ -124,6 +127,13 @@ export default Vue.extend({
       return this.isWordCloudLoaded
         ? {}
         : { opacity: 0.6, cursor: 'not-allowed' };
+    }
+  },
+  watch: {
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initChart();
+      }
     }
   },
   methods: {

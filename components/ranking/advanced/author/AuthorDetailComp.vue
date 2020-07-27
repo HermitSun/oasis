@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
@@ -103,7 +103,6 @@ export default Vue.extend({
   name: 'AuthorDetailComp',
   components: {
     PaperInfoComp,
-    [Button.name]: Button,
     [Tooltip.name]: Tooltip,
     [Icon.name]: Icon
   },
@@ -130,13 +129,18 @@ export default Vue.extend({
   // 此处会与store紧耦合
   computed: {
     ...mapGetters('ranking', {
+      isRankingEchartsLoaded: 'isEchartsLoaded',
       isRankingAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isRankingAuthorWordCloudLoaded: 'isAuthorWordCloudLoaded'
     }),
     ...mapGetters('portrait', {
+      isPortraitEchartsLoaded: 'isEchartsLoaded',
       isPortraitAffiliationWordCloudLoaded: 'isAffiliationWordCloudLoaded',
       isPortraitKeywordWordCloudLoaded: 'isKeywordWordCloudLoaded'
     }),
+    isEchartsLoaded(): boolean {
+      return this.isRankingEchartsLoaded || this.isPortraitEchartsLoaded;
+    },
     isWordCloudLoaded(): boolean {
       return (
         this.isRankingAffiliationWordCloudLoaded ||
@@ -151,8 +155,12 @@ export default Vue.extend({
         : { opacity: 0.6, cursor: 'not-allowed' };
     }
   },
-  mounted() {
-    this.initChart();
+  watch: {
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initChart();
+      }
+    }
   },
   methods: {
     initChart() {

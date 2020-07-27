@@ -17,17 +17,11 @@ import {
   RankingBasicPayload
 } from '~/interfaces/requests/ranking/RankingPayload';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
-import { PaperImportResponse } from '~/interfaces/responses/manage/PaperImportResponse';
 import { ResearcherInterestPayload } from '~/interfaces/requests/interest/ResearcherInterestPayload';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
 import { SearchFilterPayload } from '~/interfaces/requests/search/SearchFilterPayload';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
-import { AffiliationInfoResponse } from '~/interfaces/responses/manage/AffiliationInfoResponse';
-import { ConferenceInfoResponse } from '~/interfaces/responses/manage/ConferenceInfoResponse';
-import { JournalInfoResponse } from '~/interfaces/responses/manage/JournalInfoResponse';
-import { AuthorInfoResponse } from '~/interfaces/responses/manage/AuthorInfoResponse';
-import { UpdatePaperInfoPayload } from '~/interfaces/requests/manage/UpdatePaperInfoPayload';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { AffiliationPapersPayload } from '~/interfaces/requests/portrait/affiliation/AffiliationPaperPayload';
 import {
@@ -54,7 +48,7 @@ import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendRes
 export async function basicSearch(
   args: BasicSearchPayload
 ): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/es', {
+  const { data } = await axios.get('/search/basic/es/highlight', {
     params: args
   });
   return data;
@@ -145,14 +139,6 @@ export async function getActivePaperAbstract(): Promise<
   BasicResponse<ActivePaperAbstractResponse[]>
 > {
   const { data } = await axios.get('/paper/abstract');
-  return data;
-}
-
-// 6. 导入论文数据
-export async function importPaperData(
-  paperData: FormData
-): Promise<BasicResponse<PaperImportResponse>> {
-  const { data } = await axios.post('/import/paper', paperData);
   return data;
 }
 
@@ -347,103 +333,6 @@ export async function getJournalInterest(
 }
 
 // 以下为管理员端
-// 26. 获取机构信息 getAffiliationInfo
-export async function getAffiliationInfo(
-  page: number = 1,
-  name: string = ''
-): Promise<BasicResponse<AffiliationInfoResponse>> {
-  const { data } = await axios.get('/info/affiliation', {
-    params: { name, page }
-  });
-  return data;
-}
-
-// 27. 合并机构信息 mergeAffiliationInfo
-export async function mergeAffiliationInfo(
-  src: string[],
-  dest: string
-): Promise<BasicResponse> {
-  const { data } = await axios.put('/info/affiliation', { src, dest });
-  return data;
-}
-
-// 28. 获取会议信息 getConferenceInfo
-export async function getConferenceInfo(
-  page: number = 1,
-  name: string = ''
-): Promise<BasicResponse<ConferenceInfoResponse>> {
-  const { data } = await axios.get('/info/conference', {
-    params: { name, page }
-  });
-  return data;
-}
-
-// 29. 修改会议信息 updateConferenceInfo
-export async function updateConferenceInfo(
-  src: string,
-  dest: string
-): Promise<BasicResponse> {
-  const { data } = await axios.put('/info/conference', { src, dest });
-  return data;
-}
-
-// 30. 获取期刊信息 getJournalInfo
-export async function getJournalInfo(
-  page: number = 1,
-  name: string = ''
-): Promise<BasicResponse<JournalInfoResponse>> {
-  const { data } = await axios.get('/info/journal', {
-    params: { name, page }
-  });
-  return data;
-}
-
-// 31. 修改期刊信息 updateJournalInfo
-export async function updateJournalInfo(
-  src: string,
-  dest: string
-): Promise<BasicResponse> {
-  const { data } = await axios.put('/info/journal', { src, dest });
-  return data;
-}
-
-// 获取论文信息 getPaperInfo
-export async function getPaperInfo(
-  args: BasicSearchPayload
-): Promise<BasicResponse<SearchFullResponse>> {
-  const { data } = await axios.get('/search/basic/es', {
-    params: args
-  });
-  return data;
-}
-
-// 32. 修改论文信息 updatePaperInfo
-export async function updatePaperInfo(
-  args: UpdatePaperInfoPayload
-): Promise<BasicResponse> {
-  const { data } = await axios.put('/info/paper', args);
-  return data;
-}
-
-// 33. 获取作者信息 getAuthorInfo
-export async function getAuthorInfo(
-  page: number = 1,
-  name: string = ''
-): Promise<BasicResponse<AuthorInfoResponse>> {
-  const { data } = await axios.get('/info/author', {
-    params: { name, page }
-  });
-  return data;
-}
-
-// 34. 合并作者信息 mergeAuthorInfo
-export async function mergeAuthorInfo(
-  src: string[],
-  dest: string
-): Promise<BasicResponse> {
-  const { data } = await axios.put('/info/author', { src, dest });
-  return data;
-}
 
 // 35. 命令搜索
 export async function commandSearch(
@@ -502,13 +391,23 @@ export async function getActiveTalentsBase(): Promise<
   return data;
 }
 
-// 44. 查看某人才库的人才列表
+// 44. 1 查看某人才库的人才列表
 export async function getTalentsListByTalentBase(
   field: string,
   page: number
 ): Promise<BasicResponse<TalentsListResponse[]>> {
   const { data } = await axios.get('/talents/list', {
     params: { field, page }
+  });
+  return data;
+}
+
+// 44.2 查看某人才库的
+export async function getTalentsActivePapersByTalentBase(
+  field: string
+): Promise<BasicResponse<ActivePaperAbstractResponse[]>> {
+  const { data } = await axios.get('/talents/recommend', {
+    params: { field }
   });
   return data;
 }

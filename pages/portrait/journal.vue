@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { Message } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import { getJournalInterest, getJournalPortrait } from '~/api';
@@ -114,8 +115,15 @@ export default Vue.extend({
   data() {
     return {} as PortraitJournalPageComp;
   },
-  mounted() {
-    this.initCharts();
+  computed: {
+    ...mapGetters('portrait', ['isEchartsLoaded'])
+  },
+  watch: {
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initCharts();
+      }
+    }
   },
   methods: {
     initCharts() {

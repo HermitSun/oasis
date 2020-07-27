@@ -73,13 +73,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Row } from 'element-ui';
+import { Row } from 'element-ui';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 
 export default Vue.extend({
   name: 'PaperInfoComp',
   components: {
-    [Button.name]: Button,
     [Row.name]: Row
   },
   mixins: [LinkToAuthor],
