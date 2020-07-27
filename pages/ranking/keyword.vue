@@ -7,11 +7,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Message } from 'element-ui';
 import { getKeyword3DTrend, getKeywordAdvancedRanking } from '~/api';
 import KeywordAdvancedComp from '@/components/ranking/advanced/keyword/KeywordAdvancedComp.vue';
 import { KeywordAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
 import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendResponse';
-import { Message } from '~/node_modules/element-ui';
 import AsyncLoadEcharts from '~/components/mixins/AsyncLoadEcharts';
 
 const cache = {

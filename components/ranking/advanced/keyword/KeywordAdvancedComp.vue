@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import KeywordDetailComp from './KeywordDetailComp.vue';
+import KeywordDetailComp from '~/components/ranking/advanced/keyword/KeywordDetailComp.vue';
 
 export default Vue.extend({
   name: 'KeywordAdvancedComp',

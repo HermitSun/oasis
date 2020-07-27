@@ -71,10 +71,10 @@
 import Vue from 'vue';
 import { Tooltip, Icon } from 'element-ui';
 import { mapGetters } from 'vuex';
-import PaperInfoComp from '../PaperInfoComp.vue';
+import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 import { getKeywordDetailRanking } from '~/api';
 import { KeywordDetailRankingResponse } from '~/interfaces/responses/ranking/advanced/KeywordAdvancedRankingResponse';
-import { createBarChart } from '@/components/charts/bar';
+import { createBarChart } from '~/components/charts/bar';
 
 export default Vue.extend({
   name: 'KeywordDetailComp',
