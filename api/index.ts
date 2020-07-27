@@ -391,13 +391,23 @@ export async function getActiveTalentsBase(): Promise<
   return data;
 }
 
-// 44. 查看某人才库的人才列表
+// 44. 1 查看某人才库的人才列表
 export async function getTalentsListByTalentBase(
   field: string,
   page: number
 ): Promise<BasicResponse<TalentsListResponse[]>> {
   const { data } = await axios.get('/talents/list', {
     params: { field, page }
+  });
+  return data;
+}
+
+// 44.2 查看某人才库的
+export async function getTalentsActivePapersByTalentBase(
+  field: string
+): Promise<BasicResponse<ActivePaperAbstractResponse[]>> {
+  const { data } = await axios.get('/talents/recommend', {
+    params: { field }
   });
   return data;
 }

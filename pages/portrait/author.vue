@@ -48,6 +48,7 @@
           <el-tab-pane label="Related Papers" class="tab">
             <div v-if="showPortrait">
               <PapersSubtitle
+                :title="resultCount"
                 :sort-key="sortKey"
                 @changeSortKey="changeSortKey"
               />
@@ -189,7 +190,6 @@ async function fetchData(query: AuthorPapersPayload) {
     requestPortrait(authorId),
     requestPapers({ authorId, page, sortKey })
   ]);
-
   const profile = {
     name: portraitRes.portrait.name,
     statistics: [

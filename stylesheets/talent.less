@@ -1,14 +1,6 @@
 @import 'default.less';
 // talent-base-basic
-@talent-base-basic-height__pc: 120px;
-@talent-base-basic-width__pc: 100px;
-@talent-base-basic-height__mobile: 100px;
-@talent-base-basic-width__mobile: 50px;
-
-@talent-base-basic-count-size__pc: 50px;
-@talent-base-basic-count-size__mobile: 30px;
-
-@talent-base-basic-field-font-size: @sub-small-font;
+@talent-base-basic-field-font-size: @sub-middle-font;
 // talent-base
 @talent-base-size: 260px;
 @talent-base-field-font-size: @middle-font;
@@ -20,35 +12,60 @@
 @talent-detail-affiliation-font-size: @sub-middle-font;
 @talent-detail-author-font-size: @middle-font;
 
+.talentPage-content {
+  @media @min-mobile-width {
+    .flex-left-left-row;
+  }
+  .talentPage-content__talents {
+    .pc-width__mobile(58%);
+    @media @min-mobile-width {
+      margin-left: 2%;
+    }
+    .talents {
+      display: flex;
+      flex-flow: row wrap;
+      align-content: space-between;
+    }
+
+    .talent {
+      box-sizing: border-box;
+      flex: 0 0 33%;
+    }
+  }
+  .talentPage-content__news {
+    .pc-width__mobile(36%);
+    @media @min-mobile-width {
+      margin: 0 2%;
+    }
+  }
+}
+
+.talentPage-subtitle {
+  font-size: @sub-large-font;
+  color: @font-gray;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+.talent-drawer-title {
+  .card-title;
+}
 .talent-base {
-  height: @talent-base-size;
+  .card;
+  min-height: @talent-base-size;
   padding: 5px;
-  clip-path: polygon(
-    0 0,
-    calc(100% - 20px) 0%,
-    100% 20px,
-    100% calc(100% - 20px),
-    calc(100% - 20px) 100%,
-    0 100%
-  );
-  background: whitesmoke;
+  margin-right: 15px;
   &:hover {
-    background: @background-blue-light;
+    background: whitesmoke;
   }
   .title {
-    min-height: 100px;
+    min-height: 150px;
     .flex-center-column;
     &:hover {
       cursor: pointer;
     }
     .field {
+      .card-title;
       text-align: center;
-      background: @font-dark;
-      font-size: @talent-base-field-font-size;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: brandon, tahoma, arial, 'Hiragino Sans GB', sans-serif;
-      font-style: italic;
     }
     .count {
       margin-top: 10px;
@@ -57,97 +74,82 @@
     }
   }
 
-  .author {
-    cursor: pointer;
-    font-size: @talent-base-author-font-size;
-    color: @font-gray-dark;
-
-    padding: 5px 0;
+  .authors {
     display: flex;
     flex-flow: row wrap;
     align-content: center;
     justify-content: center;
 
+    .author {
+      margin-right: 2px;
+      margin-bottom: 2px;
+    }
     .authorName {
-      text-align: center;
-      box-sizing: border-box;
-      flex: 0 0 30%;
-
-      border: 1px solid @background-blue;
-      border-radius: 20px;
-      padding: 2px 3px;
-      margin: 3px 3px;
-      line-height: 22px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      &:hover {
-        border: 0;
-        background: @background-blue;
-        color: white;
-      }
+      //text-align: center;
+      //box-sizing: border-box;
+      display: inline-block;
+      .overflow-hidden-width(100px);
+      //border: 1px solid @background-blue;
+      //border-radius: 20px;
+      //padding: 2px 3px;
+      //line-height: 22px;
     }
   }
 }
 
 .talent-base-basic {
   cursor: pointer;
-  border-radius: 10px;
-  padding: 10px;
-  .mobile-height(@talent-base-basic-height__mobile);
-  .mobile-width(@talent-base-basic-width__mobile);
-  .pc-height__mobile(@talent-base-basic-height__pc);
-  //.pc-width__mobile(@talent-base-basic-width__pc);
-  .flex-center-column;
+  padding: 10px 10px;
+  .flex-space-between;
+  align-items: center;
+  border-bottom: 1px solid #dcdfe6;
 
   &:hover {
     background-color: @background-blue-normal-light;
   }
 
-  .count {
-    background-color: @background-blue-dark;
-    color: @background-blue-normal;
-    .flex-center-column;
-    .mobile-height(@talent-base-basic-count-size__mobile);
-    .mobile-width(@talent-base-basic-count-size__mobile);
-    .pc-height__mobile(@talent-base-basic-count-size__pc);
-    .pc-width__mobile(@talent-base-basic-count-size__pc);
-    .pc-border-radius__mobile(@talent-base-basic-count-size__pc);
-    .mobile-border-radius(@talent-base-basic-count-size__mobile);
+  .field {
+    font-size: @talent-base-basic-field-font-size;
+    color: @font-dark;
   }
 
-  .field {
-    margin-top: 20px;
-    color: ghostwhite;
-    font-size: @talent-base-basic-field-font-size;
-    .overflow-hidden-width(@talent-base-basic-width__pc);
+  .count {
+    color: @background-blue;
+    .flex-center-column;
+    font-size: @large-font;
+    font-weight: lighter;
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    float: right;
   }
 }
 
 .talent-detail {
-  border-radius: 20px;
-  //height: @talent-detail-height;
-  padding: 20px 20px;
-  border: 1px solid @border-gray;
-  text-align: left;
-  margin-bottom: 8px;
+  .card;
+  &:hover {
+    background: whitesmoke;
+  }
   .name {
-    font-weight: 500;
-    margin-bottom: 10px;
+    .card-title;
     cursor: pointer;
-    font-size: @talent-detail-author-font-size;
   }
   .affiliation {
     font-size: @talent-detail-affiliation-font-size;
-    color: @font-gray-dark;
+    font-weight: 500;
     margin-bottom: 5px;
+    .card-abstract(@background-blue);
   }
   .papers {
     line-height: 21px;
     .title {
-      color: @background-blue;
-      font-weight: 500;
+      .card-abstract;
+    }
+    a {
+      text-decoration: none;
+    }
+    a:hover {
+      color: @bright-yellow;
     }
     .citation {
       color: @font-gray-light;

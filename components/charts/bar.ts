@@ -19,7 +19,7 @@ export function createBarChart(
   );
   const option: any = {
     xAxis: {
-      data: Array.from(new Array(2021).keys()).slice(2010),
+      data: Array.from(new Array(2021).keys()).slice(2011),
       axisLabel: {
         textStyle: {
           color: '#ccc'

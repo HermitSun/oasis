@@ -27,13 +27,15 @@ export default Vue.extend({
       default: () => ({})
     }
   },
-  async asyncData() {
+  async asyncData({ query }) {
     if (!cache.cached) {
-      // TODO 添加可选择的sortKey和year
+      const sortKey = query.sortKey
+        ? (query.sortKey as any)
+        : 'acceptanceCount';
       const authorAdvancedRankingRes = await getAuthorAdvancedRanking({
-        sortKey: 'acceptanceCount',
-        startYear: 2015,
-        endYear: 2019
+        sortKey,
+        startYear: query.startYear ? Number(query.startYear) : 2015,
+        endYear: query.endYear ? Number(query.endYear) : 2020
       });
       cache.data =
         authorAdvancedRankingRes && authorAdvancedRankingRes.data

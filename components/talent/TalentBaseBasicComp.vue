@@ -1,10 +1,15 @@
 <template>
   <div class="talent-base-basic" @click="jumpToTalent(talent.field)">
-    <div class="count">
-      <span>{{ talent.count }}</span>
-    </div>
     <div class="field">
-      {{ talent.field }}
+      {{
+        talent.field
+          .split(' ')
+          .map((i) => i[0].toUpperCase() + i.slice(1))
+          .join(' ')
+      }}
+    </div>
+    <div class="flex-center-row">
+      <span class="count">{{ talent.count }}</span>
     </div>
   </div>
 </template>
@@ -23,8 +28,7 @@ export default Vue.extend({
   methods: {
     jumpToTalent(field: string) {
       this.$router.push({
-        path: '/talent',
-        query: { field }
+        path: '/talent/' + field
       });
     }
   }
