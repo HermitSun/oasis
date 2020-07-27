@@ -91,8 +91,7 @@ import {
   Header,
   Main,
   Menu,
-  MenuItem,
-  Button
+  MenuItem
 } from 'element-ui';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
@@ -103,7 +102,6 @@ export default Vue.extend({
     AdvancedSearchComp,
     CommandSearchComp,
     [Aside.name]: Aside,
-    [Button.name]: Button,
     [Container.name]: Container,
     [Footer.name]: Footer,
     [Header.name]: Header,

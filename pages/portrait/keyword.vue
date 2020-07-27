@@ -26,17 +26,17 @@
             <div id="publication-bar" class="content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab">
+        <el-tab-pane label="Top Authors" class="tab" lazy>
           <div class="module">
             <AuthorAdvancedComp :rankings="authorRanking" />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Affiliations" class="tab">
+        <el-tab-pane label="Top Affiliations" class="tab" lazy>
           <div class="module">
             <AffiliationAdvancedComp :rankings="affiliationRanking" />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Related Papers" class="tab">
+        <el-tab-pane label="Related Papers" class="tab" lazy>
           <PapersSubtitle
             :title="resultCount"
             :sort-key="sortKey"
@@ -69,6 +69,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
 import { PortraitResponse } from '~/interfaces/responses/portrait/PortraitResponse';
 import {
@@ -79,17 +80,13 @@ import {
 } from '~/api';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
-import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
-import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import { AffiliationAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { AuthorAdvancedRankingResponse } from '~/interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
-import AuthorAdvancedComp from '@/components/ranking/advanced/author/AuthorAdvancedComp.vue';
-import AffiliationAdvancedComp from '@/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue';
 import { PortraitKeywordPageComp } from '~/interfaces/pages/portrait/PortraitKeywordPageComp';
 
 async function requestPortrait(keyword: string) {
@@ -217,10 +214,14 @@ export default Vue.extend({
     [Pagination.name]: Pagination,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
-    AffiliationAdvancedComp,
-    AuthorAdvancedComp,
-    PaperInfoComp,
-    PapersSubtitle,
+    AffiliationAdvancedComp: () =>
+      import(
+        '~/components/ranking/advanced/affiliation/AffiliationAdvancedComp.vue'
+      ),
+    AuthorAdvancedComp: () =>
+      import('~/components/ranking/advanced/author/AuthorAdvancedComp.vue'),
+    PaperInfoComp: () => import('~/components/portrait/PaperInfoComp.vue'),
+    PapersSubtitle: () => import('~/components/public/PapersSubtitle.vue'),
     PortraitProfileComp
   },
   mixins: [PaginationMaxSizeLimit],
@@ -237,6 +238,9 @@ export default Vue.extend({
       page: 1,
       sortKey: 'recent' as sortKey
     } as PortraitKeywordPageComp;
+  },
+  computed: {
+    ...mapGetters('portrait', ['isEchartsLoaded'])
   },
   watch: {
     async '$route.query'(query) {
@@ -259,10 +263,12 @@ export default Vue.extend({
       this.showPortrait = true;
       loading.close();
       this.initCharts();
+    },
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initCharts();
+      }
     }
-  },
-  mounted() {
-    this.initCharts();
   },
   methods: {
     initCharts() {

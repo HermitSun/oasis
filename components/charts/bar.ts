@@ -7,9 +7,6 @@
  */
 type BarChartDatum = number;
 
-const echarts = require('echarts/lib/echarts');
-require('echarts/lib/chart/bar');
-
 export function createBarChart(
   selectorOrDOM: string | HTMLElement,
   data: BarChartDatum[]

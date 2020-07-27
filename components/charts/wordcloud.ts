@@ -1,5 +1,3 @@
-const echarts = require('echarts/lib/echarts');
-
 export interface WordcloudDatum {
   name: string;
   value: number;
@@ -9,9 +7,9 @@ export function createWordCloud(
   selectorOrDOM: string | HTMLElement,
   data: WordcloudDatum[]
 ) {
-  if (typeof window !== 'undefined') {
-    require('echarts-wordcloud');
-  }
+  // if (typeof window !== 'undefined') {
+  //   require('echarts-wordcloud');
+  // }
   const wordcloud = echarts.init(
     document.getElementById(selectorOrDOM as string) as any
   );

@@ -27,12 +27,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Tooltip } from 'element-ui';
+import { Tooltip } from 'element-ui';
 
 export default Vue.extend({
   name: 'TalentBaseComp',
   components: {
-    [Button.name]: Button,
     [Tooltip.name]: Tooltip
   },
   props: {

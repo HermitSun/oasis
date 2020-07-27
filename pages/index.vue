@@ -64,25 +64,25 @@
         </div>
         <div style="margin: 30px 0">
           <el-tabs tab-position="right">
-            <el-tab-pane label="Author">
+            <el-tab-pane label="Author" lazy>
               <AuthorBasicRanking :ranking="authorRanking" class="rank" />
             </el-tab-pane>
-            <el-tab-pane label="Affiliation">
+            <el-tab-pane label="Affiliation" lazy>
               <AffiliationBasicRanking
                 :ranking="affiliationRanking"
                 class="rank"
               />
             </el-tab-pane>
-            <el-tab-pane label="Journal">
+            <el-tab-pane label="Journal" lazy>
               <JournalBasicRanking :ranking="journalRanking" class="rank" />
             </el-tab-pane>
-            <el-tab-pane label="Conference">
+            <el-tab-pane label="Conference" lazy>
               <ConferenceBasicRanking
                 :ranking="conferenceRanking"
                 class="rank"
               />
             </el-tab-pane>
-            <el-tab-pane label="Keyword">
+            <el-tab-pane label="Keyword" lazy>
               <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
             </el-tab-pane>
           </el-tabs>
@@ -126,7 +126,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Message, Button, Tabs, TabPane } from 'element-ui';
+import { Message, Tabs, TabPane } from 'element-ui';
 import {
   getAffiliationBasicRanking,
   getAuthorBasicRanking,
@@ -134,16 +134,9 @@ import {
   getJournalBasicRanking,
   getKeywordBasicRanking
 } from '~/api';
-import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
-import AuthorBasicRanking from '~/components/ranking/AuthorBasicRanking.vue';
-import AffiliationBasicRanking from '~/components/ranking/AffiliationBasicRanking.vue';
 import { BasicRankingResponse } from '~/interfaces/responses/ranking/basic/BasicRankingResponse';
 import { AuthorBasicRankingResponse } from '~/interfaces/responses/ranking/basic/AuthorBasicRankingResponse';
 import { HomePageComp } from '~/interfaces/pages/HomePageComp';
-import ConferenceBasicRanking from '~/components/ranking/ConferenceBasicRanking.vue';
-import KeywordBasicRanking from '~/components/ranking/KeywordBasicRanking.vue';
-import JournalBasicRanking from '~/components/ranking/JournalBasicRanking.vue';
-import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 
 async function requestAffiliationBasicRanking() {
@@ -248,17 +241,23 @@ async function requestKeywordBasicRanking() {
 export default Vue.extend({
   name: 'Index',
   components: {
-    AdvancedSearchComp,
-    AffiliationBasicRanking,
-    AuthorBasicRanking,
-    CommandSearchComp,
-    ConferenceBasicRanking,
-    KeywordBasicRanking,
-    JournalBasicRanking,
-    SearchBarComp,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
-    [Button.name]: Button
+    AdvancedSearchComp: () =>
+      import('~/components/search/AdvancedSearchComp.vue'),
+    AffiliationBasicRanking: () =>
+      import('~/components/ranking/AffiliationBasicRanking.vue'),
+    AuthorBasicRanking: () =>
+      import('~/components/ranking/AuthorBasicRanking.vue'),
+    CommandSearchComp: () =>
+      import('~/components/search/CommandSearchComp.vue'),
+    ConferenceBasicRanking: () =>
+      import('~/components/ranking/ConferenceBasicRanking.vue'),
+    KeywordBasicRanking: () =>
+      import('~/components/ranking/KeywordBasicRanking.vue'),
+    JournalBasicRanking: () =>
+      import('~/components/ranking/JournalBasicRanking.vue'),
+    SearchBarComp
   },
   // 渲染初始数据
   async asyncData() {
@@ -290,10 +289,6 @@ export default Vue.extend({
       showAdvancedSearch: false,
       showCommandSearch: false
     } as HomePageComp;
-  },
-  async mounted() {
-    // const res = await getActivePaperAbstract();
-    // console.log(res.data);
   },
   methods: {
     async sendBasicSearch() {

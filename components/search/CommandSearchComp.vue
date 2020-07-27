@@ -36,13 +36,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button } from 'element-ui';
 
 export default Vue.extend({
   name: 'CommandSearchComp',
-  components: {
-    [Button.name]: Button
-  },
   data() {
     return {
       query: this.$route.query.query || '' // command search query

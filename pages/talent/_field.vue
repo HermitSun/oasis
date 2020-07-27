@@ -64,17 +64,17 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import { Message, Button, Drawer, Tag, Divider } from 'element-ui';
-import { TalentsListResponse } from '../../interfaces/responses/talent/TalentsListResponse';
+import { Message, Drawer, Tag, Divider } from 'element-ui';
 import {
   getActiveTalentsBase,
   getTalentsActivePapersByTalentBase,
   getTalentsListByTalentBase
 } from '../../api';
-import SearchBarComp from '../../components/search/SearchBarComp.vue';
-import TalentDetailComp from '../../components/talent/TalentDetailComp.vue';
-import { ActivePaperAbstractResponse } from '../../interfaces/responses/abstract/ActivePaperAbstractResponse';
-import AbstractComp from '../../components/abstract/AbstractComp.vue';
+import SearchBarComp from '~/components/search/SearchBarComp.vue';
+import TalentDetailComp from '~/components/talent/TalentDetailComp.vue';
+import AbstractComp from '~/components/abstract/AbstractComp.vue';
+import { ActivePaperAbstractResponse } from '~/interfaces/responses/abstract/ActivePaperAbstractResponse';
+import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
 import StartAnotherBasicSearch from '~/components/mixins/StartAnotherBasicSearch';
 import TalentBaseBasicComp from '~/components/talent/TalentBaseBasicComp.vue';
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
@@ -135,7 +135,6 @@ export default Vue.extend({
     SearchBarComp,
     TalentDetailComp,
     TalentBaseBasicComp,
-    [Button.name]: Button,
     [Drawer.name]: Drawer,
     [Tag.name]: Tag,
     [Divider.name]: Divider

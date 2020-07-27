@@ -134,7 +134,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Button, Row, Tag } from 'element-ui';
+import { Row, Tag } from 'element-ui';
 import { filterXSS } from 'xss';
 import { getReferenceById } from '~/api';
 import { SearchReference } from '~/interfaces/responses/search/SearchResponse';
@@ -143,7 +143,6 @@ import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 export default Vue.extend({
   name: 'SearchResComp',
   components: {
-    [Button.name]: Button,
     [Row.name]: Row,
     [Tag.name]: Tag
   },

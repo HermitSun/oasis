@@ -39,13 +39,14 @@
               </div>
             </template>
           </el-tab-pane>
+          <!--学术关系图没有lazy的目的是为了和其他图表一起渲染-->
           <el-tab-pane label="Scholar Network" class="tab">
             <div class="module">
               <!--<Subtitle title="🎓 Scholar Network" />-->
               <div id="force" class="chart"></div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Related Papers" class="tab">
+          <el-tab-pane label="Related Papers" class="tab" lazy>
             <div v-if="showPortrait">
               <PapersSubtitle
                 :title="resultCount"
@@ -82,9 +83,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
-import PapersSubtitle from '~/components/public/PapersSubtitle.vue';
-import PaperInfoComp from '~/components/portrait/PaperInfoComp.vue';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import {
   getAcademicRelationByAuthorId,
@@ -232,8 +232,8 @@ export default Vue.extend({
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
     [Icon.name]: Icon,
-    PaperInfoComp,
-    PapersSubtitle,
+    PaperInfoComp: () => import('~/components/portrait/PaperInfoComp.vue'),
+    PapersSubtitle: () => import('~/components/public/PapersSubtitle.vue'),
     PortraitProfileComp
   },
   // 注入一个清理图表的方法
@@ -256,6 +256,9 @@ export default Vue.extend({
       isAcademicRelationLoading: false
     } as PortraitAuthorPageComp;
   },
+  computed: {
+    ...mapGetters('portrait', ['isEchartsLoaded'])
+  },
   watch: {
     async '$route.query'(query) {
       if (!query.authorId) {
@@ -277,10 +280,12 @@ export default Vue.extend({
       this.showPortrait = true;
       loading.close();
       this.initCharts();
+    },
+    isEchartsLoaded(val) {
+      if (val) {
+        this.initCharts();
+      }
     }
-  },
-  mounted() {
-    this.initCharts();
   },
   methods: {
     // 初始化图表
