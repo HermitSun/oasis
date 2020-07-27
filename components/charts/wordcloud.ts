@@ -1,4 +1,4 @@
-const echarts = require('echarts');
+const echarts = require('echarts/lib/echarts');
 
 export interface WordcloudDatum {
   name: string;

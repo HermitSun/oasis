@@ -1,8 +1,10 @@
 /**
  * echarts实现饼状图
  */
-import * as echarts from 'echarts';
 import { PieChartDatum } from '~/components/charts/pieD3';
+
+const echarts = require('echarts/lib/echarts');
+require('echarts/lib/chart/pie');
 
 export function createPieChart(
   selectorOrDOM: string | HTMLElement,
