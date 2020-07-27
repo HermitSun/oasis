@@ -80,7 +80,7 @@ const config: Configuration = {
     fallback: true
   },
   build: {
-    analyze: true,
+    // analyze: true,
     // 按需引入element-ui
     babel: {
       plugins: [
