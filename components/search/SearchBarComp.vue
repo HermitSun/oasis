@@ -169,15 +169,6 @@ export default Vue.extend({
     // 开始另一次搜索（关键字不同）回车时默认为普通搜索
     startAnotherBasicSearch(keyword: string) {
       this.$emit('keyword-change', keyword);
-    },
-    handleScroll(): void {
-      const top = document.documentElement.scrollTop;
-      if (top > 45 && top <= 150) {
-        const opacity = top / 150;
-        this.opacityStyle = {
-          background: 'rgba(255,255,255,' + opacity + ')'
-        };
-      }
     }
   }
 });
