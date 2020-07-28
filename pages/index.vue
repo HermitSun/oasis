@@ -304,7 +304,7 @@ async function requestKeywordBasicRanking() {
   try {
     const keywordBasicRankingRes = await getKeywordBasicRanking(
       Number(new Date().getFullYear())
-    ); // TODO 去掉 - 1);
+    );
     if (keywordBasicRankingRes.code === 200) {
       res.keywordRanking = keywordBasicRankingRes.data;
     } else {
