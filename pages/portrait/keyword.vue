@@ -10,7 +10,7 @@
     </div>
     <div class="detail">
       <el-tabs tab-position="top" class="tabs">
-        <el-tab-pane label="Statistics" class="tab">
+        <el-tab-pane label="Statistics" class="tab" lazy>
           <div class="module">
             <div class="card-title">
               <i class="el-icon-data-analysis icon"></i> Citation Amount
@@ -26,12 +26,12 @@
             <div id="publication-bar" class="content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab">
+        <el-tab-pane label="Top Authors" class="tab" lazy>
           <div class="module">
             <AuthorAdvancedComp :rankings="authorRanking" />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Affiliations" class="tab">
+        <el-tab-pane label="Top Affiliations" class="tab" lazy>
           <div class="module">
             <AffiliationAdvancedComp :rankings="affiliationRanking" />
           </div>
