@@ -55,10 +55,20 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../stylesheets/index.less';
+
 /deep/ .el-tabs__nav-wrap.is-top {
   border-radius: @card-border-radius;
   .shadow;
   margin: 0 20px;
   padding: 8px 0 0 40px;
+}
+
+/deep/ .el-tab-pane {
+  overflow-x: auto !important;
+}
+
+// 为了解决溢出问题
+.page {
+  height: auto;
 }
 </style>
