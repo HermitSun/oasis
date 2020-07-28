@@ -26,12 +26,12 @@
             <div id="publication-bar" class="content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab" lazy>
+        <el-tab-pane label="Top Authors" class="tab">
           <div class="module">
             <AuthorAdvancedComp :rankings="authorRanking" />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Affiliations" class="tab" lazy>
+        <el-tab-pane label="Top Affiliations" class="tab">
           <div class="module">
             <AffiliationAdvancedComp :rankings="affiliationRanking" />
           </div>
