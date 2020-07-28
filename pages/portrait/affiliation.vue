@@ -32,7 +32,7 @@
             <div id="pie" class="chart content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab" lazy>
+        <el-tab-pane label="Top Authors" class="tab">
           <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
         </el-tab-pane>
         <el-tab-pane label="Related Papers" class="tab" lazy>
@@ -44,7 +44,7 @@
           <div id="papers">
             <div
               v-for="paper in papers"
-              :key="'paper' + paper.id"
+              :key="paper.id"
               style="margin-bottom: 20px"
             >
               <PaperInfoComp :paper="paper" />
