@@ -15,7 +15,14 @@
             <i :class="info.icon" class="icon"></i> {{ info.prop }}
           </span>
           <span class="number">
-            {{ info.number }}
+            <!--不太明白为什么会在number里出现string-->
+            <router-link
+              v-if="typeof info.number === 'string'"
+              :to="'/portrait/affiliation?affiliation=' + info.number"
+            >
+              {{ info.number }}
+            </router-link>
+            <span v-else>{{ info.number }}</span>
           </span>
         </div>
       </div>
