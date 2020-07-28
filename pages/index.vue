@@ -66,10 +66,11 @@
           <el-carousel-item key="0">
             <div class="homepage-content__carousel_1">
               <div class="module">
-                <img
-                  src="../assets/basic-search1.png"
+                <el-image
+                  :src="require('~/assets/basic-search1.png')"
                   alt="basic-search"
                   class="pic"
+                  lazy
                 />
                 <div class="text" style="text-align: left;padding-right: 20px">
                   <span class="title"
@@ -94,27 +95,30 @@
                     complex search needs through a query with operators.</span
                   >
                 </div>
-                <img
-                  src="../assets/basic-search2.png"
+                <el-image
+                  :src="require('~/assets/basic-search2.png')"
                   alt="basic-search"
                   class="pic"
+                  lazy
                 />
               </div>
             </div>
           </el-carousel-item>
           <el-carousel-item key="1">
             <!--<div class="homepage-content__carousel_1"></div>-->
-            <img
-              src="../assets/command-search.png"
+            <el-image
+              :src="require('~/assets/command-search.png')"
               alt="command-search"
               class="homepage-content__carousel"
+              lazy
             />
           </el-carousel-item>
           <el-carousel-item key="2">
-            <img
-              src="../assets/advanced-search.png"
+            <el-image
+              :src="require('~/assets/advanced-search.png')"
               alt="advanced-search"
               class="homepage-content__carousel"
+              lazy
             />
           </el-carousel-item>
         </el-carousel>
@@ -168,11 +172,12 @@
           TALENTS BASE
         </div>
         <div class="homepage-content__talents">
-          <img
-            src="../assets/talents.png"
+          <el-image
+            :src="require('~/assets/talents.png')"
             alt="talents"
             class="mobile-hidden"
             style="width: 40%"
+            lazy
           />
           <div class="text">
             <div class="title">
@@ -198,12 +203,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Message,
   Button,
-  Tabs,
-  TabPane,
   Carousel,
-  CarouselItem
+  CarouselItem,
+  Image,
+  Message,
+  Tabs,
+  TabPane
 } from 'element-ui';
 import {
   getAffiliationBasicRanking,
@@ -319,6 +325,10 @@ async function requestKeywordBasicRanking() {
 export default Vue.extend({
   name: 'Index',
   components: {
+    [Button.name]: Button,
+    [Carousel.name]: Carousel,
+    [CarouselItem.name]: CarouselItem,
+    [Image.name]: Image,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
     AdvancedSearchComp: () =>
@@ -331,14 +341,11 @@ export default Vue.extend({
       import('~/components/search/CommandSearchComp.vue'),
     ConferenceBasicRanking: () =>
       import('~/components/ranking/ConferenceBasicRanking.vue'),
-    KeywordBasicRanking: () =>
-      import('~/components/ranking/KeywordBasicRanking.vue'),
     JournalBasicRanking: () =>
       import('~/components/ranking/JournalBasicRanking.vue'),
-    SearchBarComp,
-    [Button.name]: Button,
-    [Carousel.name]: Carousel,
-    [CarouselItem.name]: CarouselItem
+    KeywordBasicRanking: () =>
+      import('~/components/ranking/KeywordBasicRanking.vue'),
+    SearchBarComp
   },
   // 渲染初始数据
   async asyncData() {
@@ -389,7 +396,8 @@ export default Vue.extend({
       }
     },
     jumpToAnchor() {
-      (document as any).querySelector('#topAnchor').scrollIntoView(true);
+      // eslint-disable-next-line no-unused-expressions
+      document.querySelector('#topAnchor')?.scrollIntoView(true);
     }
   }
 });
