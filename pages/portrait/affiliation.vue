@@ -10,7 +10,7 @@
     </div>
     <div class="detail">
       <el-tabs tab-position="top" class="tabs">
-        <el-tab-pane label="Statistics" class="tab">
+        <el-tab-pane label="Statistics" class="tab" lazy>
           <div class="module">
             <div class="card-title">
               <i class="el-icon-data-analysis icon"></i> Citation Amount
@@ -32,7 +32,7 @@
             <div id="pie" class="chart content"></div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Top Authors" class="tab">
+        <el-tab-pane label="Top Authors" class="tab" lazy>
           <AuthorAdvancedComp id="authors" :rankings="authorDetailRanking" />
         </el-tab-pane>
         <el-tab-pane label="Related Papers" class="tab" lazy>
@@ -285,10 +285,4 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
-</style>
-
-<style lang="less">
-g[class^='p'][class$='arc'] {
-  cursor: pointer;
-}
 </style>

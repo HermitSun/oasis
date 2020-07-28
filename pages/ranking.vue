@@ -70,4 +70,8 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../stylesheets/index.less';
+
+.page {
+  width: auto;
+}
 </style>
