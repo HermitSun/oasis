@@ -1,11 +1,11 @@
 <template>
-  <el-container>
+  <div>
     <div class="searchPage-header">
       <div class="flex-left-center-row">
         <!--LOGO-->
         <img
           src="~/assets/logo.png"
-          style="cursor: pointer;margin-right: 35px;"
+          style="cursor: pointer; margin-right: 35px;"
           class="searchPage-header__logo"
           alt="oasis"
           @click="$router.push('/')"
@@ -25,13 +25,13 @@
             :key="index"
             :index="item.path"
           >
-            <i :class="item.icon"></i>
             <template #title>
               <span>{{ item.title }}</span>
             </template>
           </el-menu-item>
         </el-menu>
       </div>
+      <!--首页不显示额外的搜索框-->
       <div v-if="$route.path !== '/'">
         <div>
           <!--普通搜索-->
@@ -79,20 +79,12 @@
         @close="showCommandSearch = false"
       />
     </template>
-  </el-container>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  Aside,
-  Container,
-  Footer,
-  Header,
-  Main,
-  Menu,
-  MenuItem
-} from 'element-ui';
+import { Container, Menu, MenuItem } from 'element-ui';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 
@@ -101,11 +93,7 @@ export default Vue.extend({
   components: {
     AdvancedSearchComp,
     CommandSearchComp,
-    [Aside.name]: Aside,
     [Container.name]: Container,
-    [Footer.name]: Footer,
-    [Header.name]: Header,
-    [Main.name]: Main,
     [Menu.name]: Menu,
     [MenuItem.name]: MenuItem
   },
@@ -126,44 +114,36 @@ export default Vue.extend({
       showCommandSearch: false,
       opacityStyle: {
         background: 'rgba(255,255,255,0)'
-      }
-    } as any;
-  },
-  computed: {
-    // 当前导航
-    currentRoute(): string {
-      return this.$route.path;
-    },
-    // 所有的导航项，暂时硬编码了
-    navItems() {
-      return [
+      },
+      // 所有的导航项，暂时硬编码了
+      navItems: [
         {
           path: '/',
           title: 'Home'
         },
         {
-          path: '/ranking/author',
+          path: '/ranking',
           title: 'Ranking'
         },
         {
           path: '/talent',
           title: 'Talents'
         }
-      ];
+      ]
+    };
+  },
+  computed: {
+    // 当前导航
+    // 排名页的子页面也激活排名的导航项
+    currentRoute(): string {
+      const isInRankingPage = /ranking\/.*/.test(this.$route.path);
+      return isInRankingPage ? '/ranking' : this.$route.path;
     }
   },
   watch: {
     keyword(val: string): void {
       this.searchContent = val;
     }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll, true);
-  },
-
-  destroyed() {
-    // 离开该页面需要移除这个监听的事件，不然会报错
-    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     // 开始另一次搜索（关键字不同）回车时默认为普通搜索

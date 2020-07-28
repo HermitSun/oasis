@@ -43,6 +43,10 @@ export default Vue.extend({
       return subject || '';
     }
   },
+  // 目前只能把重定向放到这里，放到asyncData里会卡住……原因不明
+  beforeMount() {
+    this.$router.push('/ranking/author');
+  },
   // 销毁时清空store
   beforeDestroy() {
     this.updateIsEchartsLoaded(false);
