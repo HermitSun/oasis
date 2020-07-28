@@ -1,3 +1,36 @@
+# 4.1.3 (2020-07-28)
+
+### Bug Fixes
+
+- 修复画像页和排名页的滚动条溢出
+
+### Code Refactoring
+
+- 懒加载首页的轮播图
+- 懒加载标签页
+
+# hotfix/trend-cannot-display (2020-07-28)
+
+### Bug Fixes
+
+- 修复趋势图无法显示的问题
+
+# 4.1.2 (2020-07-28)
+
+### Code Refactoring
+
+- 压缩图片
+
+### Features
+
+- 完成首页
+
+# 4.1.1 (2020-07-27)
+
+### Code Refactoring
+
+- 巨幅减小打包体积
+
 # 3.3 (2020-05-28)
 
 ### Bug Fixes
