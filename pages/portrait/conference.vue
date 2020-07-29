@@ -125,6 +125,11 @@ export default Vue.extend({
       }
     }
   },
+  mounted() {
+    if (this.isEchartsLoaded) {
+      this.initCharts();
+    }
+  },
   methods: {
     initCharts() {
       setTimeout(() => {
@@ -160,4 +165,8 @@ export default Vue.extend({
 
 <style scoped lang="less">
 @import '../../stylesheets/index.less';
+
+.detail-no_tabs {
+  overflow-x: auto !important;
+}
 </style>

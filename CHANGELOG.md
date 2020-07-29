@@ -1,3 +1,56 @@
+# 4.1.4 (2020-07-29)
+
+### Bug Fixes
+
+- 修复排名页高亮显示不正确的问题(#68)
+- 修复页面重入时不显示图表的问题
+- 修复关系图中权重过低学者在图上消失的问题
+
+### Code Refactoring
+
+- 增加到机构画像的跳转方式(#69)
+- 增加近十年无数据的placeholder(#70)
+- 完善类型定义
+- 重构关系图的实现
+
+### Performance Improvements
+
+- 移除d3pie，删除一些无用或冗余的组件
+- 移除图表的resize以减少重绘
+
+# 4.1.3 (2020-07-28)
+
+### Bug Fixes
+
+- 修复画像页和排名页的滚动条溢出
+
+### Performance Improvements
+
+- 懒加载首页的轮播图
+- 懒加载标签页
+
+# hotfix/trend-cannot-display (2020-07-28)
+
+### Bug Fixes
+
+- 修复趋势图无法显示的问题
+
+# 4.1.2 (2020-07-28)
+
+### Features
+
+- 完成首页
+
+### Performance Improvements
+
+- 压缩图片
+
+# 4.1.1 (2020-07-27)
+
+### Performance Improvements
+
+- 巨幅减小打包体积
+
 # 3.3 (2020-05-28)
 
 ### Bug Fixes

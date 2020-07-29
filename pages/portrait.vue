@@ -69,6 +69,6 @@ export default Vue.extend({
 
 // 为了解决溢出问题
 .page {
-  height: auto;
+  width: auto;
 }
 </style>

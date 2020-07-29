@@ -5,16 +5,29 @@ export interface WordcloudDatum {
 
 export function createWordCloud(
   selectorOrDOM: string | HTMLElement,
-  data: WordcloudDatum[]
+  data: WordcloudDatum[],
+  placeholder: string = 'No Data in Recent Years'
 ) {
   // if (typeof window !== 'undefined') {
   //   require('echarts-wordcloud');
   // }
-  const wordcloud = echarts.init(
-    document.getElementById(selectorOrDOM as string) as any
-  );
-  console.log(document.getElementById(selectorOrDOM as string), data);
-
+  const element =
+    typeof selectorOrDOM === 'string'
+      ? document.getElementById(selectorOrDOM)
+      : selectorOrDOM;
+  // target DOM element not found
+  if (!element) {
+    throw new Error('element not found');
+  }
+  // 数据为空或全为0
+  const isDataEmpty =
+    data.length === 0 || !data.some((datum) => datum.value !== 0);
+  if (isDataEmpty) {
+    element.innerHTML = `<span style="color: #909399">${placeholder}</span>`;
+    return;
+  }
+  // render
+  const wordcloud = echarts.init(element);
   const option: any = {
     series: [
       {
@@ -86,7 +99,7 @@ export function createWordCloud(
     ]
   };
   wordcloud.setOption(option);
-  window.addEventListener('resize', function() {
-    wordcloud.resize();
-  });
+  // window.addEventListener('resize', function() {
+  //   wordcloud.resize();
+  // });
 }

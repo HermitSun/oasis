@@ -1,15 +1,34 @@
 /**
  * echarts实现饼状图
  */
-import { PieChartDatum } from '~/components/charts/pieD3';
+export interface PieChartDatum {
+  label: string;
+  value: number;
+  color?: string;
+}
 
 export function createPieChart(
   selectorOrDOM: string | HTMLElement,
-  data: PieChartDatum[]
+  data: PieChartDatum[],
+  placeholder: string = 'No Data in Recent Years'
 ) {
-  const pie = echarts.init(
-    document.getElementById(selectorOrDOM as string) as any
-  );
+  const element =
+    typeof selectorOrDOM === 'string'
+      ? document.getElementById(selectorOrDOM)
+      : selectorOrDOM;
+  // target DOM element not found
+  if (!element) {
+    throw new Error('element not found');
+  }
+  // 数据为空或全为0
+  const isDataEmpty =
+    data.length === 0 || !data.some((datum) => datum.value !== 0);
+  if (isDataEmpty) {
+    element.innerHTML = `<span style="color: #909399">${placeholder}</span>`;
+    return;
+  }
+  // render
+  const pie = echarts.init(element);
   const colorList = [
     '#9E87FF',
     '#73ACFF',
@@ -58,7 +77,7 @@ export function createPieChart(
     ]
   };
   pie.setOption(option);
-  window.addEventListener('resize', function() {
-    pie.resize();
-  });
+  // window.addEventListener('resize', function() {
+  //   pie.resize();
+  // });
 }
