@@ -1,304 +1,86 @@
-import * as d3 from 'd3-selection';
-import 'd3-transition';
-import * as force from 'd3-force';
-import { drag as d3Drag } from 'd3-drag';
-import { scaleOrdinal } from 'd3-scale';
-import { schemeCategory10 } from 'd3-scale-chromatic';
-import {
-  Selection,
-  SimulationNodeDatum,
-  SimulationLinkDatum,
-  Simulation,
-  ValueFn,
-  BaseType
-} from 'd3';
-import { getElementLocation } from '~/utils/location';
-
-// 数据类型定义
-export interface ForceChartNode extends SimulationNodeDatum {
-  id: string;
-  group?: number | string;
-}
-
-export interface ForceChartLink extends SimulationLinkDatum<ForceChartNode> {
-  [key: string]: any;
-}
-
-export interface ForceChartData {
-  nodes: ForceChartNode[];
-  links: ForceChartLink[];
-}
-
-// 用于辅助的经过改造的D3类型定义
-type D3CallbackFn<
-  T,
-  R = string | number,
-  E extends BaseType = Element
-> = ValueFn<E, T, R>;
-type D3SelectionElement<T> = T extends Selection<
-  infer _,
-  infer T1,
-  infer T2,
-  infer T3
->
-  ? Selection<Element, T1, T2, T3>
-  : T;
-type TooltipFn<T> = (data: T) => string;
-
-// 传入的选项类型
-interface ForceChartOptions {
-  width: number;
-  height: number;
-  linkColor?: string | D3CallbackFn<ForceChartLink>;
-  linkOpacity?: number | D3CallbackFn<ForceChartLink>;
-  linkWidth?: number | D3CallbackFn<ForceChartLink>;
-  linkLength?: number | D3CallbackFn<ForceChartLink>;
-  nodeBorderColor?: string | D3CallbackFn<ForceChartNode>;
-  nodeBorderWidth?: number | D3CallbackFn<ForceChartNode>;
-  nodeRadius?: number | D3CallbackFn<ForceChartNode>;
-  nodeColor?: string | D3CallbackFn<ForceChartNode>;
-  nodeClick?: D3CallbackFn<ForceChartNode, void, BaseType>;
-  tooltip?: D3CallbackFn<ForceChartNode, string>; // 目前直接返回HTML模板的实现不安全
-  draggable?: boolean;
-  noDataPrompt?: (() => string) | string; // 无数据的提示
-}
-
-type ForceChartOptionsWithDefaultWrapper = Required<
-  Omit<ForceChartOptions, 'nodeClick' | 'tooltip' | 'noDataPrompt'>
->;
-type Primitive = number | string | boolean | null | undefined | symbol | bigint;
-// 经过处理的带默认值的选项类型
-interface ForceChartOptionsWithDefault
-  extends Required<
-    {
-      [K in keyof ForceChartOptionsWithDefaultWrapper]: Extract<
-        ForceChartOptionsWithDefaultWrapper[K],
-        Primitive
-      >;
-    }
-  > {
-  noDataPrompt: NonNullable<ForceChartOptions['noDataPrompt']>;
-}
-
-interface ForceChartUtils {
-  clear(): void; // 对图表的DOM元素进行清理
-}
-
-// 给tooltip挂载一个清理方法
-export interface ForceChartTooltipElement
-  extends HTMLDivElement,
-    ForceChartUtils {}
-
-// 使用结束后，记得手动清理DOM元素
 export function createForceChart(
   selectorOrDOM: string | HTMLElement,
-  data: ForceChartData,
-  options: ForceChartOptions
-): ForceChartUtils {
-  // 默认颜色
-  const scale = scaleOrdinal(schemeCategory10);
-  const groupByColor = ({ group = Math.random() * 10 }: ForceChartNode) =>
-    scale(group.toString());
-
-  // 配置项（包括默认值）
-  const config = {
-    linkColor: '#999',
-    linkOpacity: 0.6,
-    linkWidth: ({ value = Math.random() }: ForceChartLink) => Math.sqrt(value),
-    linkLength: ({ value = Math.random() }: ForceChartLink) => value,
-    nodeBorderColor: '#fff',
-    nodeBorderWidth: 0.5,
-    nodeRadius: 5,
-    nodeColor: groupByColor,
-    draggable: false,
-    noDataPrompt: '暂无数据...',
-    ...options
-  } as ForceChartOptionsWithDefault;
-
-  const isDataValid =
-    data && data.nodes && data.links && data.nodes.length && data.links.length;
-  // 无数据时的处理
-  if (!isDataValid) {
-    const prompt =
-      typeof config.noDataPrompt === 'string'
-        ? config.noDataPrompt
-        : config.noDataPrompt();
-
-    const noDataPrompt = d3
-      .select(selectorOrDOM as HTMLElement)
-      .append('p')
-      .text(prompt)
-      .style('text-align', 'center')
-      .style('line-height', config.height - 200 + 'px');
-    // 仍然暴露一个清理方法
-    const noDataClearFn = () => {
-      noDataPrompt.remove();
-    };
-    return {
-      clear() {
-        noDataClearFn();
-      }
-    };
+  { nodes, links }: any
+) {
+  const element =
+    typeof selectorOrDOM === 'string'
+      ? document.getElementById(selectorOrDOM)
+      : selectorOrDOM;
+  // target DOM element not found
+  if (!element) {
+    throw new Error('element not found');
   }
-
-  // 拖拽逻辑
-  const drag = (simulation: Simulation<ForceChartNode, ForceChartLink>) => {
-    function dragStarted(d: ForceChartNode) {
-      if (!d3.event.active) {
-        simulation.alphaTarget(0.3).restart();
+  // render
+  const force = echarts.init(element);
+  const options = {
+    animationDurationUpdate: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    label: {
+      normal: {
+        show: true,
+        textStyle: {
+          fontSize: 10
+        }
       }
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged(d: ForceChartNode) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-
-    function dragEnded(d: ForceChartNode) {
-      if (!d3.event.active) {
-        simulation.alphaTarget(0);
+    },
+    tooltip: {},
+    series: [
+      {
+        type: 'graph',
+        layout: 'force',
+        animation: false, // 是否开启动画
+        force: {
+          gravity: 1, // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。
+          edgeLength: 100, // 边的两个节点之间的距离，这个距离也会受 repulsion。[10, 50] 。值越小则长度越长
+          repulsion: 500,
+          layoutAnimation: false
+        },
+        focusNodeAdjacency: true,
+        roam: true,
+        draggable: true,
+        symbolSize: (val: number) => {
+          return Math.min(val, 20);
+        },
+        // categories
+        edgeSymbol: ['none', 'arrow'],
+        edgeSymbolSize: [1, 10],
+        label: {
+          normal: {
+            show: true,
+            textStyle: {
+              fontSize: 10
+            }
+          },
+          position: 'right'
+        },
+        itemStyle: {
+          borderColor: '#fff', // 节点边框背景色白色
+          borderWidth: 1,
+          shadowBlur: 10,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        },
+        data: nodes,
+        links,
+        lineStyle: {
+          normal: {
+            opacity: 0.9,
+            width: 1,
+            curveness: 0.3,
+            color: 'source'
+          }
+        },
+        emphasis: {
+          // 高亮的图形样式
+          lineStyle: {
+            width: 2
+          }
+        }
       }
-      d.fx = null;
-      d.fy = null;
-    }
-
-    return d3Drag<Element, ForceChartNode>()
-      .on('start', dragStarted)
-      .on('drag', dragged)
-      .on('end', dragEnded);
+    ]
   };
-
-  // 力导向图的配置
-  // 其中大部分的断言只是为了符合D3的类型声明，并不符合逻辑
-  // 在运行时检查类型是目前的ts做不到的，这里的类型只有运行时才能确定，所以必须采用断言
-  // 辣鸡D3
-  const simulation = force
-    .forceSimulation(data.nodes)
-    .force(
-      'link',
-      force
-        .forceLink(data.links)
-        .id((d) => (d as ForceChartNode).id)
-        // 设置力导向图的线段长度
-        // @see [[https://github.com/xswei/d3-force/blob/master/README.md#link_distance]]
-        .distance(config.linkLength)
-    )
-    .force(
-      'charge',
-      force
-        .forceManyBody()
-        .distanceMin(10)
-        .distanceMax(300)
-    )
-    .force(
-      'center',
-      force.forceCenter(options.width / 2, (options.height / 5) * 2)
-    );
-
-  const svg = d3
-    .select(selectorOrDOM as HTMLElement)
-    .append('svg')
-    .attr('viewBox', `0,0,${options.width},${options.height}`);
-
-  const link = svg
-    .append('g')
-    .attr('stroke', config.linkColor)
-    .attr('stroke-opacity', config.linkOpacity)
-    .selectAll('line')
-    .data(data.links)
-    .join('line')
-    .attr('stroke-width', config.linkWidth);
-
-  const node = svg
-    .append('g')
-    .attr('stroke', config.nodeBorderColor)
-    .attr('stroke-width', config.nodeBorderWidth)
-    .selectAll('circle')
-    .data(data.nodes)
-    .join('circle')
-    .attr('r', config.nodeRadius)
-    .attr('fill', config.nodeColor);
-
-  // tooltip
-  const tooltip = d3
-    .select('body')
-    .append('div')
-    .attr('class', 'tooltip')
-    .attr('id', 'force-chart-tooltip')
-    .style('opacity', 0);
-  // 给tooltip挂载一个清理方法
-  const tooltipElement = tooltip.node() as ForceChartTooltipElement;
-  const tooltipClearFn = () => {
-    tooltip.remove();
-  };
-  tooltipElement.clear = tooltipClearFn;
-
-  // 配置tooltip内容
-  if (options.tooltip) {
-    // 显示tooltip
-    const showToolTip = (d: ForceChartNode) => {
-      // hover效果
-      node.style('opacity', (node) => (node.id === d.id ? 0.8 : 1));
-      // 也许会存在安全问题，但是这里不构成大问题，因为相当于是私有方法
-      const tooltipHTML = (options.tooltip as TooltipFn<ForceChartNode>)(d);
-      // 渐变效果
-      tooltip
-        .transition()
-        .duration(500)
-        .style('opacity', 0.9);
-      const location = getElementLocation(svg.node() as SVGSVGElement);
-      tooltip
-        .html(tooltipHTML)
-        .style('position', 'absolute')
-        // 此处似乎有误差
-        .style('left', location.x + (d.x as number) + 'px')
-        .style('top', location.y + (d.y as number) + 'px')
-        .style('cursor', 'default')
-        .style('user-select', 'none');
-    };
-    // 隐藏tooltip
-    const hideTooltip = () => {
-      // 取消hover效果
-      node.style('opacity', 1);
-      tooltip.style('opacity', 0);
-    };
-
-    node
-      .on('mouseover', showToolTip)
-      .on('mouseout', hideTooltip)
-      .on('touchstart', showToolTip)
-      .on('touchend', hideTooltip);
-  }
-
-  // 增加点击事件
-  if (options.nodeClick) {
-    node.style('cursor', 'pointer').on('click', options.nodeClick);
-  }
-
-  // 是否可拖拽
-  if (config.draggable) {
-    (node as D3SelectionElement<typeof node>).call(drag(simulation));
-  }
-
-  // 引导
-  simulation.on('tick', () => {
-    link
-      .attr('x1', (d) => (d.source as ForceChartNode).x as number)
-      .attr('y1', (d) => (d.source as ForceChartNode).y as number)
-      .attr('x2', (d) => (d.target as ForceChartNode).x as number)
-      .attr('y2', (d) => (d.target as ForceChartNode).y as number);
-
-    node.attr('cx', (d) => d.x as number).attr('cy', (d) => d.y as number);
+  force.setOption(options);
+  window.addEventListener('resize', function() {
+    force.resize();
   });
-
-  // 所有清理方法的汇总
-  // 主要是避免分散在上面难以维护
-  const allClearFn = () => {
-    tooltipClearFn();
-  };
-  return {
-    clear: allClearFn
-  };
+  return force;
 }

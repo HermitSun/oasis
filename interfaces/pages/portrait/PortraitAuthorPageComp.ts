@@ -7,7 +7,6 @@
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
-import { ForceChartData } from '~/components/charts/force';
 
 interface Statistic {
   prop: string;
@@ -34,12 +33,15 @@ export type PortraitAuthorDataFromProp = {};
 
 interface PortraitAuthorLocalData {
   showPortrait: boolean;
+  currentTab: string;
+  lastTab: string;
   // 研究兴趣
   interests: InterestResponse[];
   isInterestLoading: boolean;
   // 学术关系
-  academicRelation: ForceChartData;
+  academicRelation: unknown;
   isAcademicRelationLoading: boolean;
+  showRelation: boolean;
 }
 
 export type PortraitAuthorPageComp = AsyncPortraitAuthorData &

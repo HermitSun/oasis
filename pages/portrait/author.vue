@@ -79,20 +79,20 @@
       </div>
     </div>
     <!--展示学术关系图-->
-    <!--    <el-dialog-->
-    <!--      title="Relation"-->
-    <!--      :visible.sync="showRelation"-->
-    <!--      width="90%"-->
-    <!--      :before-close="closeRelationDialog"-->
-    <!--      @open="createAcademicRelationChart(authorId)"-->
-    <!--    >-->
-    <!--      <div id="force" class="chart" style="width: 100%; height: 800px;"></div>-->
-    <!--      <template #footer>-->
-    <!--        <el-button @click="closeRelationDialog">-->
-    <!--          确定-->
-    <!--        </el-button>-->
-    <!--      </template>-->
-    <!--    </el-dialog>-->
+    <el-dialog
+      title="Relation"
+      :visible.sync="showRelation"
+      width="90%"
+      :before-close="closeRelationDialog"
+      @open="createAcademicRelationChart(authorId)"
+    >
+      <div id="force" class="chart" style="width: 100%; height: 800px;"></div>
+      <template #footer>
+        <el-button @click="closeRelationDialog">
+          确定
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
