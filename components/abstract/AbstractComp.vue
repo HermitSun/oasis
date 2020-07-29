@@ -5,7 +5,7 @@
         {{ abstract.publicationYear }}:
       </span>
     </div>
-    <div>
+    <div class="abstract-wrapper">
       <div>
         <span class="title">
           <a
