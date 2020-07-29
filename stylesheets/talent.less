@@ -46,7 +46,12 @@
 
     .talent {
       box-sizing: border-box;
-      flex: 0 0 33%;
+      @media @min-pad-width {
+        flex: 0 0 33%;
+      }
+      @media @max-pad-width {
+        flex: 0 0 50%;
+      }
     }
   }
   .talentPage-content__news {
