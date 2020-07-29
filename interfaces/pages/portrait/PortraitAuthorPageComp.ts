@@ -40,6 +40,7 @@ interface PortraitAuthorLocalData {
   interests: InterestResponse[];
   isInterestLoading: boolean;
   // 学术关系
+  force: null | any;
   academicRelation: ForceChartData;
   isAcademicRelationLoading: boolean;
   showRelation: boolean;

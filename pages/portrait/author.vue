@@ -89,6 +89,14 @@
       @open="createAcademicRelationChart(authorId)"
       @close="closeRelationDialog"
     >
+      <el-button
+        type="primary"
+        size="small"
+        :disabled="isFirstRelationChart"
+        @click="backToPreviousRelation"
+      >
+        返回上一层
+      </el-button>
       <div id="force" class="chart" style="width: 100%; height: 800px;"></div>
       <template #footer>
         <el-button @click="showRelation = false">
@@ -123,14 +131,25 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/components/charts/pie';
-import { createForceChart } from '~/components/charts/force';
+import { createForceChart, EchartsItem } from '~/components/charts/force';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
-import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
+import {
+  ForceChartData,
+  ForceChartLink,
+  ForceChartNode
+} from '~/interfaces/components/charts/force';
+
+const academicRelationCache: { academicRelation: ForceChartData }[] = [];
+const academicRelationCacheLookup = new Map<string, number>();
+const academicRelationHistory = Vue.observable({
+  history: [] as string[],
+  size: 0
+});
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -172,10 +191,16 @@ async function requestInterests(authorId: string) {
 }
 
 async function requestAcademicRelation(authorId: string) {
+  // 有缓存去缓存拿
+  const cachedAcademicRelationIdx = academicRelationCacheLookup.get(authorId);
+  if (cachedAcademicRelationIdx) {
+    return academicRelationCache[cachedAcademicRelationIdx];
+  }
+  // 无缓存发请求
   const res = {
     academicRelation: {
-      nodes: [],
-      links: []
+      nodes: [] as ForceChartNode[],
+      links: [] as ForceChartLink[]
     }
   };
   try {
@@ -183,6 +208,12 @@ async function requestAcademicRelation(authorId: string) {
       authorId
     );
     res.academicRelation = academicRelationResponse.data;
+    // 存入缓存
+    academicRelationCache.push(res);
+    academicRelationCacheLookup.set(authorId, academicRelationCache.length - 1);
+    academicRelationHistory.history.push(authorId);
+    ++academicRelationHistory.size;
+    console.log(academicRelationHistory);
   } catch (e) {
     Message.error(e.toString());
   }
@@ -248,7 +279,7 @@ export default Vue.extend({
     PortraitProfileComp
   },
   // 注入一个清理图表的方法
-  mixins: [ForceChartClear, LinkToAuthor, PaginationMaxSizeLimit],
+  mixins: [LinkToAuthor, PaginationMaxSizeLimit],
   asyncData({ query, redirect }) {
     // 提高健壮性
     if (!query.authorId) {
@@ -266,13 +297,17 @@ export default Vue.extend({
       interests: [] as InterestResponse[],
       isInterestLoading: false,
       // 学术关系
+      force: null,
       academicRelation: {},
       isAcademicRelationLoading: false,
       showRelation: false
     } as PortraitAuthorPageComp;
   },
   computed: {
-    ...mapGetters('portrait', ['isEchartsLoaded'])
+    ...mapGetters('portrait', ['isEchartsLoaded']),
+    isFirstRelationChart() {
+      return academicRelationHistory.size <= 1;
+    }
   },
   watch: {
     async '$route.query'(query) {
@@ -346,11 +381,16 @@ export default Vue.extend({
       // 开始加载
       this.isInterestLoading = true;
       // 取数据
-      const academiaRelationReq = await requestAcademicRelation(authorId);
-      this.academicRelation = academiaRelationReq.academicRelation;
+      const academiaRelationRes = await requestAcademicRelation(authorId);
+      this.academicRelation = academiaRelationRes.academicRelation;
       // 渲染图表
-      console.log(this.academicRelation);
-      createForceChart('force', this.academicRelation);
+      this.force = createForceChart('force', this.academicRelation);
+      // 点击后更新图表
+      this.force.on('click', (item: EchartsItem<ForceChartNode>) => {
+        if (item.dataType === 'node') {
+          this.repaintRelationChart(item.data.id);
+        }
+      });
       // 加载完毕
       this.isInterestLoading = false;
     },
@@ -388,6 +428,25 @@ export default Vue.extend({
     closeRelationDialog() {
       this.currentTab = this.lastTab;
       this.showRelation = false;
+    },
+    backToPreviousRelation() {
+      academicRelationHistory.history.pop();
+      --academicRelationHistory.size;
+      this.repaintRelationChart(
+        academicRelationHistory.history[academicRelationHistory.size - 1]
+      );
+    },
+    async repaintRelationChart(id: string) {
+      const anotherAuthorRelationRes = await requestAcademicRelation(id);
+      const anotherAuthorRelation = anotherAuthorRelationRes.academicRelation;
+      this.force.setOption({
+        series: [
+          {
+            data: anotherAuthorRelation.nodes,
+            links: anotherAuthorRelation.links
+          }
+        ]
+      });
     }
   }
 });

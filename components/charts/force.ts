@@ -3,7 +3,7 @@ import {
   ForceChartNode
 } from '~/interfaces/components/charts/force';
 
-interface EchartsItem<T> {
+export interface EchartsItem<T> {
   dataType: string;
   data: T;
 }
