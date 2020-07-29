@@ -25,11 +25,14 @@ export function createForceChart(
     },
     tooltip: {
       formatter(item: any) {
-        return `
-<p>Name: ${item.data.name}</p>
-<p>Citation: ${item.data.citation}</p>
-<p>Acceptance: ${item.data.count}</p>
-`;
+        if (item.dataType === 'node') {
+          return `
+          <div>
+            <p>Name: ${item.data.name}</p>
+            <p>Citation: ${item.data.citation}</p>
+            <p>Acceptance: ${item.data.count}</p>
+          </div>`;
+        }
       }
     },
     series: [
@@ -47,7 +50,7 @@ export function createForceChart(
         roam: true,
         draggable: true,
         symbolSize: (val: number) => {
-          return Math.min(val, 20);
+          return Math.min(Math.max(val, 1), 20);
         },
         // categories
         edgeSymbol: ['none', 'arrow'],
@@ -90,5 +93,5 @@ export function createForceChart(
   // window.addEventListener('resize', function() {
   //   force.resize();
   // });
-  // return force;
+  return force;
 }
