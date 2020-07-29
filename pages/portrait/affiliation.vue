@@ -10,7 +10,7 @@
     </div>
     <div class="detail">
       <el-tabs tab-position="top" class="tabs">
-        <el-tab-pane label="Statistics" class="tab" lazy>
+        <el-tab-pane label="Statistics" class="tab">
           <div class="module">
             <div class="card-title">
               <i class="el-icon-data-analysis icon"></i> Citation Amount
@@ -223,6 +223,11 @@ export default Vue.extend({
       if (val) {
         this.initCharts();
       }
+    }
+  },
+  mounted() {
+    if (this.isEchartsLoaded) {
+      this.initCharts();
     }
   },
   methods: {

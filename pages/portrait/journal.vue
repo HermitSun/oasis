@@ -125,6 +125,11 @@ export default Vue.extend({
       }
     }
   },
+  mounted() {
+    if (this.isEchartsLoaded) {
+      this.initCharts();
+    }
+  },
   methods: {
     initCharts() {
       setTimeout(() => {

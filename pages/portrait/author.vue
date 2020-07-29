@@ -10,7 +10,12 @@
         />
       </div>
       <div class="detail">
-        <el-tabs tab-position="top" class="tabs">
+        <el-tabs
+          v-model="currentTab"
+          tab-position="top"
+          class="tabs"
+          @tab-click="openRelationDialog"
+        >
           <el-tab-pane label="Statistics" class="tab">
             <template>
               <div class="module">
@@ -39,13 +44,8 @@
               </div>
             </template>
           </el-tab-pane>
-          <!--学术关系图没有lazy的目的是为了和其他图表一起渲染-->
-          <el-tab-pane label="Scholar Network" class="tab">
-            <div class="module">
-              <!--<Subtitle title="🎓 Scholar Network" />-->
-              <div id="force" class="chart"></div>
-            </div>
-          </el-tab-pane>
+          <!--学术关系图在单独的对话框里展示，这里仅用作占位-->
+          <el-tab-pane label="Scholar Network" class="tab" />
           <el-tab-pane label="Related Papers" class="tab" lazy>
             <div v-if="showPortrait">
               <PapersSubtitle
@@ -78,13 +78,36 @@
         </el-tabs>
       </div>
     </div>
+    <!--展示学术关系图-->
+    <!--    <el-dialog-->
+    <!--      title="Relation"-->
+    <!--      :visible.sync="showRelation"-->
+    <!--      width="90%"-->
+    <!--      :before-close="closeRelationDialog"-->
+    <!--      @open="createAcademicRelationChart(authorId)"-->
+    <!--    >-->
+    <!--      <div id="force" class="chart" style="width: 100%; height: 800px;"></div>-->
+    <!--      <template #footer>-->
+    <!--        <el-button @click="closeRelationDialog">-->
+    <!--          确定-->
+    <!--        </el-button>-->
+    <!--      </template>-->
+    <!--    </el-dialog>-->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { Pagination, Loading, Message, Tabs, TabPane, Icon } from 'element-ui';
+import {
+  Pagination,
+  Loading,
+  Message,
+  Tabs,
+  TabPane,
+  Icon,
+  Dialog
+} from 'element-ui';
 import PortraitProfileComp from '~/components/portrait/PortraitProfileComp.vue';
 import {
   getAcademicRelationByAuthorId,
@@ -97,12 +120,7 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/components/charts/pie';
-import {
-  createForceChart,
-  ForceChartData,
-  ForceChartLink,
-  ForceChartNode
-} from '~/components/charts/force';
+import { createForceChart } from '~/components/charts/force';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
@@ -110,17 +128,6 @@ import ForceChartClear from '~/components/mixins/ForceChartClear';
 import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuthorPageComp';
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
-
-interface AuthorNode extends ForceChartNode {
-  name: string;
-  count: number;
-  citation: number;
-  value: number;
-}
-
-interface AuthorLink extends ForceChartLink {
-  value: number;
-}
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -162,7 +169,7 @@ async function requestInterests(authorId: string) {
 }
 
 async function requestAcademicRelation(authorId: string) {
-  const res: { academicRelation: ForceChartData } = {
+  const res = {
     academicRelation: {
       nodes: [],
       links: []
@@ -228,10 +235,11 @@ async function fetchData(query: AuthorPapersPayload) {
 export default Vue.extend({
   name: 'Author',
   components: {
+    [Dialog.name]: Dialog,
+    [Icon.name]: Icon,
     [Pagination.name]: Pagination,
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
-    [Icon.name]: Icon,
     PaperInfoComp: () => import('~/components/portrait/PaperInfoComp.vue'),
     PapersSubtitle: () => import('~/components/public/PapersSubtitle.vue'),
     PortraitProfileComp
@@ -248,12 +256,16 @@ export default Vue.extend({
   data() {
     return {
       showPortrait: true,
+      // 记录标签页
+      currentTab: '0',
+      lastTab: '0',
       // 研究兴趣
       interests: [] as InterestResponse[],
       isInterestLoading: false,
       // 学术关系
-      academicRelation: {} as ForceChartData,
-      isAcademicRelationLoading: false
+      academicRelation: {},
+      isAcademicRelationLoading: false,
+      showRelation: false
     } as PortraitAuthorPageComp;
   },
   computed: {
@@ -285,6 +297,15 @@ export default Vue.extend({
       if (val) {
         this.initCharts();
       }
+    },
+    // 记录之前的tab，用于回退
+    currentTab(_, last) {
+      this.lastTab = last;
+    }
+  },
+  mounted() {
+    if (this.isEchartsLoaded) {
+      this.initCharts();
     }
   },
   methods: {
@@ -295,13 +316,8 @@ export default Vue.extend({
         createBarChart('citation-bar', this.citationTrend);
         createBarChart('publication-bar', this.publicationTrend);
       }, 0);
-      // 暂时使用这种方式避免渲染时的阻塞
-      // 可能需要重构为组件
       setTimeout(() => {
         this.createInterestChart(this.authorId);
-      }, 0);
-      setTimeout(() => {
-        this.createAcademicRelationChart(this.authorId);
       }, 0);
     },
     // 创建研究兴趣图
@@ -318,19 +334,6 @@ export default Vue.extend({
           .map((i) => ({ label: i.name, value: i.value }))
           .sort((a, b) => b.value - a.value)
           .slice(0, 20)
-        // {
-        //   width: getSizeById('pie').width,
-        //   height: getSizeById('pie').height,
-        //   // 点击后跳转到对应的研究方向画像
-        //   segmentClick: ({ data }) => {
-        //     this.$router.push({
-        //       path: '/portrait/keyword',
-        //       query: {
-        //         keyword: data.label
-        //       }
-        //     });
-        //   }
-        // }
       );
       // 加载完毕
       this.isInterestLoading = false;
@@ -343,42 +346,8 @@ export default Vue.extend({
       const academiaRelationReq = await requestAcademicRelation(authorId);
       this.academicRelation = academiaRelationReq.academicRelation;
       // 渲染图表
-      createForceChart('#force', this.academicRelation, {
-        width: 600,
-        height: 600,
-        // nodeColor: '#666',
-        linkWidth: (_) => 1,
-        linkLength: (d) => {
-          const link = d as AuthorLink;
-          // 限制最大长度
-          return link.value * 50 > 200 ? 200 : link.value * 50;
-        },
-        nodeRadius: (d) => {
-          const node = d as AuthorNode;
-          // 根据公式计算出的权重
-          const radius = node.value;
-          return radius < 2 ? 2 : radius > 20 ? 20 : radius;
-        },
-        // 这里是没有办法的断言，因为用了mixin
-        nodeClick: (d) => {
-          (this as any).linkToAuthor(d);
-        },
-        tooltip: (d) => {
-          const node = d as AuthorNode;
-          return `
-          <div style="background-color: rgba(153, 153, 153, 0.8); border-radius: 5px">
-            <p>name: ${node.name}</p>
-            <p>citation: ${node.citation}</p>
-            <p>count: ${node.count}</p>
-          </div>
-        `;
-        },
-        draggable: true,
-        noDataPrompt() {
-          Message.error('暂无该学者的学术关系🤷🏻');
-          return '暂无数据...';
-        }
-      });
+      console.log(this.academicRelation);
+      createForceChart('force', this.academicRelation);
       // 加载完毕
       this.isInterestLoading = false;
     },
@@ -406,6 +375,16 @@ export default Vue.extend({
       });
       this.papers = papersRes.papers;
       loadingInstance.close();
+    },
+    // 展示关系图
+    openRelationDialog() {
+      if (this.currentTab === '1') {
+        this.showRelation = true;
+      }
+    },
+    closeRelationDialog() {
+      this.currentTab = this.lastTab;
+      this.showRelation = false;
     }
   }
 });
