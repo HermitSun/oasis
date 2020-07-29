@@ -387,7 +387,11 @@ export default Vue.extend({
       this.force = createForceChart('force', this.academicRelation);
       // 点击后更新图表
       this.force.on('click', (item: EchartsItem<ForceChartNode>) => {
-        if (item.dataType === 'node') {
+        // 点击与当前结点不同的结点时更新
+        const isDifferentNode =
+          item.data.id !==
+          academicRelationHistory.history[academicRelationHistory.size - 1];
+        if (item.dataType === 'node' && isDifferentNode) {
           this.repaintRelationChart(item.data.id);
         }
       });
@@ -429,6 +433,7 @@ export default Vue.extend({
       this.currentTab = this.lastTab;
       this.showRelation = false;
     },
+    // 返回上一层的学术关系图
     backToPreviousRelation() {
       academicRelationHistory.history.pop();
       --academicRelationHistory.size;
@@ -436,6 +441,7 @@ export default Vue.extend({
         academicRelationHistory.history[academicRelationHistory.size - 1]
       );
     },
+    // 重绘学术关系图
     async repaintRelationChart(id: string) {
       const anotherAuthorRelationRes = await requestAcademicRelation(id);
       const anotherAuthorRelation = anotherAuthorRelationRes.academicRelation;
