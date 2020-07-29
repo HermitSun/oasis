@@ -32,10 +32,12 @@ import {
   AffiliationAdvancedRankingResponse,
   AffiliationDetailRankingResponse
 } from '~/interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
-import { AuthorPortraitResponse } from '~/interfaces/responses/portrait/AuthorResponse';
+import {
+  AcademicRelationResponse,
+  AuthorPortraitResponse
+} from '~/interfaces/responses/portrait/AuthorResponse';
 import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/AuthorPaperPayload';
 import { KeywordPapersPayload } from '~/interfaces/requests/portrait/keyword/KeywordPaperPayload';
-import { ForceChartData } from '~/components/charts/force';
 import {
   KeywordAdvancedRankingResponse,
   KeywordDetailRankingResponse
@@ -225,7 +227,7 @@ export async function getAuthorPapersById(
 // 15. 根据作者id获取该作者的学者关系
 export async function getAcademicRelationByAuthorId(
   id: string
-): Promise<BasicResponse<ForceChartData>> {
+): Promise<BasicResponse<AcademicRelationResponse>> {
   const { data } = await axios.get('/picture/academic', {
     params: { id }
   });

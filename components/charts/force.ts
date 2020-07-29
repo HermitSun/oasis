@@ -1,6 +1,16 @@
+import {
+  ForceChartData,
+  ForceChartNode
+} from '~/interfaces/components/charts/force';
+
+interface EchartsItem<T> {
+  dataType: string;
+  data: T;
+}
+
 export function createForceChart(
   selectorOrDOM: string | HTMLElement,
-  { nodes, links }: any
+  { nodes, links }: ForceChartData
 ) {
   const element =
     typeof selectorOrDOM === 'string'
@@ -24,7 +34,7 @@ export function createForceChart(
       }
     },
     tooltip: {
-      formatter(item: any) {
+      formatter(item: EchartsItem<ForceChartNode>) {
         if (item.dataType === 'node') {
           return `
           <div>
