@@ -99,7 +99,7 @@ export function createWordCloud(
     ]
   };
   wordcloud.setOption(option);
-  window.addEventListener('resize', function() {
-    wordcloud.resize();
-  });
+  // window.addEventListener('resize', function() {
+  //   wordcloud.resize();
+  // });
 }

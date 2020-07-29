@@ -10,72 +10,75 @@
         />
       </div>
       <div class="detail">
-        <el-tabs
-          v-model="currentTab"
-          tab-position="top"
-          class="tabs"
-          @tab-click="openRelationDialog"
-        >
-          <el-tab-pane label="Statistics" class="tab">
-            <template>
-              <div class="module">
-                <div class="card-title">
-                  <i class="el-icon-data-analysis icon"></i> Citation Amount
-                  Statistics
+        <!--加个缓存-->
+        <keep-alive>
+          <el-tabs
+            v-model="currentTab"
+            tab-position="top"
+            class="tabs"
+            @tab-click="openRelationDialog"
+          >
+            <el-tab-pane label="Statistics" class="tab">
+              <template>
+                <div class="module">
+                  <div class="card-title">
+                    <i class="el-icon-data-analysis icon"></i> Citation Amount
+                    Statistics
+                  </div>
+                  <div id="citation-bar" class="content"></div>
                 </div>
-                <div id="citation-bar" class="content"></div>
-              </div>
-              <div class="module">
-                <div class="card-title">
-                  <i class="el-icon-data-analysis icon"></i> Publication Amount
-                  Statistics
+                <div class="module">
+                  <div class="card-title">
+                    <i class="el-icon-data-analysis icon"></i> Publication
+                    Amount Statistics
+                  </div>
+                  <div id="publication-bar" class="content"></div>
                 </div>
-                <div id="publication-bar" class="content"></div>
-              </div>
-              <div class="module">
-                <div class="card-title">
-                  <i class="el-icon-pie-chart icon"></i> Paper Category
+                <div class="module">
+                  <div class="card-title">
+                    <i class="el-icon-pie-chart icon"></i> Paper Category
+                  </div>
+                  <div
+                    id="pie"
+                    v-loading="isInterestLoading"
+                    class="chart content"
+                  ></div>
                 </div>
-                <div
-                  id="pie"
-                  v-loading="isInterestLoading"
-                  class="chart content"
-                ></div>
-              </div>
-            </template>
-          </el-tab-pane>
-          <!--学术关系图在单独的对话框里展示，这里仅用作占位-->
-          <el-tab-pane label="Scholar Network" class="tab" />
-          <el-tab-pane label="Related Papers" class="tab" lazy>
-            <div v-if="showPortrait">
-              <PapersSubtitle
-                :title="resultCount"
-                :sort-key="sortKey"
-                @changeSortKey="changeSortKey"
-              />
-              <div id="papers">
-                <div
-                  v-for="paper in papers"
-                  :key="paper.id"
-                  style="margin-bottom: 20px"
-                >
-                  <PaperInfoComp :paper="paper" />
+              </template>
+            </el-tab-pane>
+            <!--学术关系图在单独的对话框里展示，这里仅用作占位-->
+            <el-tab-pane label="Scholar Network" class="tab" />
+            <el-tab-pane label="Related Papers" class="tab" lazy>
+              <div v-if="showPortrait">
+                <PapersSubtitle
+                  :title="resultCount"
+                  :sort-key="sortKey"
+                  @changeSortKey="changeSortKey"
+                />
+                <div id="papers">
+                  <div
+                    v-for="paper in papers"
+                    :key="paper.id"
+                    style="margin-bottom: 20px"
+                  >
+                    <PaperInfoComp :paper="paper" />
+                  </div>
                 </div>
+                <!--分页-->
+                <el-pagination
+                  layout="prev, pager, next"
+                  :current-page="page"
+                  :total="totalRecords"
+                  :pager-count="pagerSize"
+                  hide-on-single-page
+                  small
+                  style="text-align: center; margin-bottom: 10px"
+                  @current-change="showNextPage"
+                />
               </div>
-              <!--分页-->
-              <el-pagination
-                layout="prev, pager, next"
-                :current-page="page"
-                :total="totalRecords"
-                :pager-count="pagerSize"
-                hide-on-single-page
-                small
-                style="text-align: center; margin-bottom: 10px"
-                @current-change="showNextPage"
-              />
-            </div>
-          </el-tab-pane>
-        </el-tabs>
+            </el-tab-pane>
+          </el-tabs>
+        </keep-alive>
       </div>
     </div>
     <!--展示学术关系图-->
@@ -83,12 +86,12 @@
       title="Relation"
       :visible.sync="showRelation"
       width="90%"
-      :before-close="closeRelationDialog"
       @open="createAcademicRelationChart(authorId)"
+      @close="closeRelationDialog"
     >
       <div id="force" class="chart" style="width: 100%; height: 800px;"></div>
       <template #footer>
-        <el-button @click="closeRelationDialog">
+        <el-button @click="showRelation = false">
           确定
         </el-button>
       </template>

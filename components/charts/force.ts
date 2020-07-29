@@ -23,7 +23,15 @@ export function createForceChart(
         }
       }
     },
-    tooltip: {},
+    tooltip: {
+      formatter(item: any) {
+        return `
+<p>Name: ${item.data.name}</p>
+<p>Citation: ${item.data.citation}</p>
+<p>Acceptance: ${item.data.count}</p>
+`;
+      }
+    },
     series: [
       {
         type: 'graph',
@@ -79,8 +87,8 @@ export function createForceChart(
     ]
   };
   force.setOption(options);
-  window.addEventListener('resize', function() {
-    force.resize();
-  });
-  return force;
+  // window.addEventListener('resize', function() {
+  //   force.resize();
+  // });
+  // return force;
 }

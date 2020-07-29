@@ -77,7 +77,7 @@ export function createPieChart(
     ]
   };
   pie.setOption(option);
-  window.addEventListener('resize', function() {
-    pie.resize();
-  });
+  // window.addEventListener('resize', function() {
+  //   pie.resize();
+  // });
 }

@@ -81,7 +81,7 @@ export function createBarChart(
   };
 
   bar.setOption(option);
-  window.addEventListener('resize', function() {
-    bar.resize();
-  });
+  // window.addEventListener('resize', function() {
+  //   bar.resize();
+  // });
 }
