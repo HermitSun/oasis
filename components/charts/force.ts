@@ -9,12 +9,14 @@ export interface EchartsItem<T> {
 }
 
 export function createForceChart(
-  selectorOrDOM: string | HTMLElement,
+  selectorOrDOM: string | HTMLDivElement | HTMLCanvasElement,
   { nodes, links }: ForceChartData
 ) {
   const element =
     typeof selectorOrDOM === 'string'
-      ? document.getElementById(selectorOrDOM)
+      ? (document.getElementById(selectorOrDOM) as
+          | HTMLDivElement
+          | HTMLCanvasElement)
       : selectorOrDOM;
   // target DOM element not found
   if (!element) {

@@ -87,6 +87,7 @@
       :visible.sync="showRelation"
       width="90%"
       @open="createAcademicRelationChart(authorId)"
+      @opened="addBrowserBackHandler"
       @close="closeRelationDialog"
     >
       <el-button
@@ -193,7 +194,8 @@ async function requestInterests(authorId: string) {
 async function requestAcademicRelation(authorId: string) {
   // 有缓存去缓存拿
   const cachedAcademicRelationIdx = academicRelationCacheLookup.get(authorId);
-  if (cachedAcademicRelationIdx) {
+  // 一定是和undefined判断，因为0也是falsy值
+  if (cachedAcademicRelationIdx !== undefined) {
     return academicRelationCache[cachedAcademicRelationIdx];
   }
   // 无缓存发请求
@@ -210,10 +212,10 @@ async function requestAcademicRelation(authorId: string) {
     res.academicRelation = academicRelationResponse.data;
     // 存入缓存
     academicRelationCache.push(res);
-    academicRelationCacheLookup.set(authorId, academicRelationCache.length - 1);
+    // 保存缓存中的下标
+    academicRelationCacheLookup.set(authorId, academicRelationHistory.size);
     academicRelationHistory.history.push(authorId);
     ++academicRelationHistory.size;
-    console.log(academicRelationHistory);
   } catch (e) {
     Message.error(e.toString());
   }
@@ -387,7 +389,11 @@ export default Vue.extend({
       this.force = createForceChart('force', this.academicRelation);
       // 点击后更新图表
       this.force.on('click', (item: EchartsItem<ForceChartNode>) => {
-        if (item.dataType === 'node') {
+        // 点击与当前结点不同的结点时更新
+        const isDifferentNode =
+          item.data.id !==
+          academicRelationHistory.history[academicRelationHistory.size - 1];
+        if (item.dataType === 'node' && isDifferentNode) {
           this.repaintRelationChart(item.data.id);
         }
       });
@@ -428,14 +434,34 @@ export default Vue.extend({
     closeRelationDialog() {
       this.currentTab = this.lastTab;
       this.showRelation = false;
+      this.removeBrowserBackHandler();
     },
+    addBrowserBackHandler() {
+      // 禁用浏览器后退，改为回到上一层关系图
+      // **缺陷是会多一条前进的历史记录**
+      history.pushState(null, document.title, document.URL);
+      window.addEventListener('popstate', this.browserBackHandler);
+    },
+    removeBrowserBackHandler() {
+      // 恢复正常的回退
+      window.removeEventListener('popstate', this.browserBackHandler);
+      history.go(-academicRelationHistory.size);
+    },
+    browserBackHandler() {
+      history.pushState(null, document.title, document.URL);
+      this.backToPreviousRelation();
+    },
+    // （在可以回退的情况下）返回上一层的学术关系图
     backToPreviousRelation() {
-      academicRelationHistory.history.pop();
-      --academicRelationHistory.size;
-      this.repaintRelationChart(
-        academicRelationHistory.history[academicRelationHistory.size - 1]
-      );
+      if (academicRelationHistory.size > 1) {
+        academicRelationHistory.history.pop();
+        --academicRelationHistory.size;
+        this.repaintRelationChart(
+          academicRelationHistory.history[academicRelationHistory.size - 1]
+        );
+      }
     },
+    // 重绘学术关系图
     async repaintRelationChart(id: string) {
       const anotherAuthorRelationRes = await requestAcademicRelation(id);
       const anotherAuthorRelation = anotherAuthorRelationRes.academicRelation;
