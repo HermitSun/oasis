@@ -9,14 +9,35 @@ type BarChartDatum = number;
 
 export function createBarChart(
   selectorOrDOM: string | HTMLElement,
-  data: BarChartDatum[]
+  data: BarChartDatum[],
+  endYear = new Date().getFullYear(),
+  range = 10,
+  placeholder: string = `No Data in Recent ${range} Years`
 ) {
-  const bar = echarts.init(
-    document.getElementById(selectorOrDOM as string) as any
-  );
+  const element =
+    typeof selectorOrDOM === 'string'
+      ? document.getElementById(selectorOrDOM)
+      : selectorOrDOM;
+  // target DOM element not found
+  if (!element) {
+    throw new Error('element not found');
+  }
+  // 数据为空或全为0
+  const isDataEmpty = data.length === 0 || !data.some((datum) => datum !== 0);
+  if (isDataEmpty) {
+    element.innerHTML = `<span style="color: #909399">${placeholder}</span>`;
+    return;
+  }
+  // render
+  const bar = echarts.init(element);
+  // 经评估，使用循环大致能快50-1000倍，取决于浏览器
+  const barXAxis = [];
+  for (let i = endYear - range + 1; i <= endYear; ++i) {
+    barXAxis.push(i);
+  }
   const option: any = {
     xAxis: {
-      data: Array.from(new Array(2021).keys()).slice(2011),
+      data: barXAxis,
       axisLabel: {
         textStyle: {
           color: '#ccc'
