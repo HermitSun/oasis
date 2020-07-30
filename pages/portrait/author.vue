@@ -130,7 +130,11 @@ import { AuthorPapersPayload } from '~/interfaces/requests/portrait/author/Autho
 import { SearchResponse } from '~/interfaces/responses/search/SearchResponse';
 import { InterestResponse } from '~/interfaces/responses/interest/InterestResponse';
 import { createPieChart } from '~/components/charts/pie';
-import { createForceChart, EchartsItem } from '~/components/charts/force';
+import {
+  createForceChart,
+  EchartsItem,
+  getEchartsForceOption
+} from '~/components/charts/force';
 import { createBarChart } from '~/components/charts/bar';
 import { sortKey } from '~/interfaces/requests/portrait/PortraitPublic';
 import loadingConfig from '~/components/portrait/loadingConfig';
@@ -472,14 +476,12 @@ export default Vue.extend({
     async repaintRelationChart(id: string) {
       const anotherAuthorRelationRes = await requestAcademicRelation(id);
       const anotherAuthorRelation = anotherAuthorRelationRes.academicRelation;
-      this.force.setOption({
-        series: [
-          {
-            data: anotherAuthorRelation.nodes,
-            links: anotherAuthorRelation.links
-          }
-        ]
-      });
+      this.force.setOption(
+        getEchartsForceOption({
+          nodes: anotherAuthorRelation.nodes,
+          links: anotherAuthorRelation.links
+        })
+      );
     }
   }
 });

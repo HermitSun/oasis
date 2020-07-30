@@ -9,28 +9,17 @@ export interface EchartsItem<T> {
   data: T;
 }
 
-export function createForceChart(
-  selectorOrDOM: string | HTMLDivElement | HTMLCanvasElement,
-  { nodes, links }: ForceChartData
-) {
-  const element =
-    typeof selectorOrDOM === 'string'
-      ? (document.getElementById(selectorOrDOM) as
-          | HTMLDivElement
-          | HTMLCanvasElement)
-      : selectorOrDOM;
+export function getEchartsForceOption({ nodes, links }: ForceChartData) {
   nodes.sort((nodeA, nodeB) => nodeB.citation - nodeA.citation);
-  // target DOM element not found
-  if (!element) {
-    throw new Error('element not found');
-  }
-  // render
-  const force = echarts.init(element);
-  const colorList = ['#9E87FF', '#73ACFF', '#FD866A', '#FDD56A'];
+
+  const colorList =
+    nodes.length > 10
+      ? ['#9E87FF', '#73ACFF', '#FD866A', '#FDD56A']
+      : ['#9E87FF'];
   const indexList = Array.from(new Array(colorList.length + 1).keys())
     .slice(1)
     .reverse();
-  const options = {
+  return {
     animationDurationUpdate: 1500,
     animationEasingUpdate: 'quinticInOut',
     label: {
@@ -71,7 +60,7 @@ export function createForceChart(
           const index = Math.round(
             (params.dataIndex / nodes.length) * (colorList.length - 1)
           );
-          return indexList[index] * 12;
+          return nodes.length > 10 ? indexList[index] * 12 : 40;
         },
         // categories
         edgeSymbol: ['none', 'arrow'],
@@ -105,8 +94,9 @@ export function createForceChart(
             ...node,
             label: {
               show:
-                percent !== colorList.length - 1 &&
-                percent !== colorList.length - 2,
+                (percent !== colorList.length - 1 &&
+                  percent !== colorList.length - 2) ||
+                nodes.length <= 10,
               formatter: (item: EchartsItem<EChartsNode>) =>
                 item.data.name.split(' ').join('\n')
             }
@@ -128,8 +118,25 @@ export function createForceChart(
       }
     ]
   };
-  console.log(options);
-  force.setOption(options);
+}
+export function createForceChart(
+  selectorOrDOM: string | HTMLDivElement | HTMLCanvasElement,
+  { nodes, links }: ForceChartData
+) {
+  const element =
+    typeof selectorOrDOM === 'string'
+      ? (document.getElementById(selectorOrDOM) as
+          | HTMLDivElement
+          | HTMLCanvasElement)
+      : selectorOrDOM;
+  // target DOM element not found
+  if (!element) {
+    throw new Error('element not found');
+  }
+  // render
+  const force = echarts.init(element);
+
+  force.setOption(getEchartsForceOption({ nodes, links }));
   // window.addEventListener('resize', function() {
   //   force.resize();
   // });
