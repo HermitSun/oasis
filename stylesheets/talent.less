@@ -12,6 +12,23 @@
 @talent-detail-affiliation-font-size: @sub-middle-font;
 @talent-detail-author-font-size: @middle-font;
 
+.talentPage-menu {
+  .menu-content {
+    padding: 0 20px;
+    .header {
+      .flex-space-between;
+      color: #666;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.talent-drawer-title {
+  .card-title;
+}
+
 .talentPage-content {
   @media @min-mobile-width {
     .flex-left-left-row;
@@ -29,7 +46,12 @@
 
     .talent {
       box-sizing: border-box;
-      flex: 0 0 33%;
+      @media @min-pad-width {
+        flex: 0 0 33%;
+      }
+      @media @max-pad-width {
+        flex: 0 0 50%;
+      }
     }
   }
   .talentPage-content__news {
@@ -46,9 +68,7 @@
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.talent-drawer-title {
-  .card-title;
-}
+
 .talent-base {
   .card;
   min-height: @talent-base-size;

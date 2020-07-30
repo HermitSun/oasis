@@ -243,19 +243,6 @@ export default Vue.extend({
             .map((i) => ({ label: i.name, value: i.value }))
             .sort((a, b) => b.value - a.value)
             .slice(0, 20)
-          // {
-          //   width: getSizeById('pie').width,
-          //   height: getSizeById('pie').height,
-          //   // 点击后跳转到对应的研究方向画像
-          //   segmentClick: ({ data }) => {
-          //     this.$router.push({
-          //       path: '/portrait/keyword',
-          //       query: {
-          //         keyword: data.label
-          //       }
-          //     });
-          //   }
-          // }
         );
       }, 0);
     },

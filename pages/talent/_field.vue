@@ -11,15 +11,16 @@
       style="position: fixed;top:140px;right: 40px;  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);"
       @click="drawer = true"
     />
-    <el-drawer :visible.sync="drawer">
+    <el-drawer
+      :visible.sync="drawer"
+      class="talentPage-menu"
+      :size="isMobile ? '90%' : '30%'"
+    >
       <div slot="title" class="talent-drawer-title">
         TALENTS BASE
       </div>
-      <div style="padding: 0 20px">
-        <div
-          class="flex-space-between"
-          style="color: #666;font-size: 1rem;font-weight:500;margin-bottom: 20px"
-        >
+      <div class="menu-content">
+        <div class="header">
           <span style="margin-left: 12px;">Field</span>
           <span style="margin-right: 20px;">Papers</span>
         </div>
@@ -158,6 +159,13 @@ export default Vue.extend({
     return {
       drawer: false
     };
+  },
+  computed: {
+    isMobile() {
+      return typeof window !== 'undefined'
+        ? document.body.clientWidth <= 568
+        : false;
+    }
   }
 });
 </script>

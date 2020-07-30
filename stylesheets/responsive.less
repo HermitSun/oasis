@@ -86,3 +86,27 @@
     display: none;
   }
 }
+
+// PC端flex布局
+.pc-flex__pad {
+  @media @min-pad-width {
+    display: flex;
+  }
+}
+
+.pc-flex__mobile {
+  @media @min-mobile-width {
+    display: flex;
+  }
+}
+
+.pc-position__pad(@position) {
+  @media @min-pad-width {
+    position: @position;
+  }
+}
+.pc-overflow__pad(@overflow){
+  @media @min-pad-width {
+    overflow: @overflow;
+  }
+}

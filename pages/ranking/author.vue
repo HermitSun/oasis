@@ -69,7 +69,7 @@ export default Vue.extend({
       try {
         const sortKey = this.$route.query.sortKey
           ? (this.$route.query.sortKey as any)
-          : 'acceptanceCount'; // TODO 奇怪呢 没法导入sortKey类型
+          : 'acceptanceCount';
         const startYear = this.$route.query.startYear
           ? Number(this.$route.query.startYear)
           : 2015;
@@ -81,7 +81,6 @@ export default Vue.extend({
           startYear,
           endYear
         });
-        // TODO 为了不报错这么写的 到底该咋写呢
         (this as any).rankings = authorAdvancedRankingRes.data;
       } catch (e) {
         this.$message(e.toString());
