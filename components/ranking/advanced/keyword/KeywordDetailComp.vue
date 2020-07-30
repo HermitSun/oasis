@@ -34,19 +34,21 @@
       <span class="value">
         <span class="mobile-hidden">{{ rank.citation }}</span>
         <span class="pc-hidden_mobile"
-          ><el-tag>citation: {{ rank.citation }}</el-tag></span
+          ><el-tag size="small"
+            >{{ rank.citation }}<br />citation
+          </el-tag></span
         >
       </span>
       <span class="value">
         <span class="mobile-hidden">{{ rank.count }}</span>
         <span class="pc-hidden_mobile"
-          ><el-tag>acceptance: {{ rank.count }}</el-tag></span
+          ><el-tag size="small">{{ rank.count }}<br />acceptance </el-tag></span
         >
       </span>
       <span class="value">
         <span class="mobile-hidden">{{ rank.authorNum }}</span>
         <span class="pc-hidden_mobile"
-          ><el-tag>authors: {{ rank.authorNum }}</el-tag></span
+          ><el-tag size="small">{{ rank.authorNum }}<br />authors</el-tag></span
         >
       </span>
     </div>

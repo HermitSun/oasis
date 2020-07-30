@@ -36,15 +36,18 @@
       <span class="value">
         <span class="mobile-hidden">{{ rank.citation }}</span>
         <span class="pc-hidden_mobile"
-          ><el-tag>citation: {{ rank.citation }}</el-tag></span
+          ><el-tag size="small"
+            >{{ rank.citation }}<br />citation
+          </el-tag></span
         >
       </span>
       <span class="value">
         <span class="mobile-hidden">{{ rank.count }}</span>
         <span class="pc-hidden_mobile"
-          ><el-tag>acceptance: {{ rank.count }}</el-tag></span
+          ><el-tag size="small">{{ rank.count }}<br />acceptance </el-tag></span
         >
       </span>
+
       <span class="value">
         <!--提前设定宽和高，避免重排-->
         <div
