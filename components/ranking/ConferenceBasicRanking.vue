@@ -44,7 +44,7 @@
       v-if="conferenceBasicRankingResponse.length === 0"
       :style="noDataPromptStyle"
     >
-      暂无数据...
+      No Data
     </div>
     <!--排名内容-->
     <div

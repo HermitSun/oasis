@@ -5,9 +5,9 @@
     </div>
     <div class="flex-left-left-row" style="width: 100%">
       <span class="card-hint" style="flex: 1">affiliation: </span>
-      <span class="affiliation" style="flex: 1;flex-grow: 6">{{
-        talent.affiliation
-      }}</span>
+      <span class="affiliation" style="flex: 1;flex-grow: 6">
+        {{ talent.affiliation || 'unknown' }}
+      </span>
     </div>
     <div class="papers flex-left-left-row">
       <span class="card-hint" style="flex: 1">hot paper: </span>
