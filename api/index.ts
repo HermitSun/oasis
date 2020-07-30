@@ -45,6 +45,8 @@ import {
 import { ActiveTalentsBaseResponse } from '~/interfaces/responses/talent/ActiveTalentsBaseResponse';
 import { TalentsListResponse } from '~/interfaces/responses/talent/TalentsListResponse';
 import { Keyword3DTrendResponse } from '~/interfaces/responses/charts/3DTrendResponse';
+import { SearchRecommendAuthorsResponse } from '~/interfaces/responses/search/SearchRecommendAuthorsResponse';
+import { SearchRecommendAffiliationsResponse } from '~/interfaces/responses/search/SearchRecommendAffiliationsResponse';
 
 // 1. 普通搜索
 export async function basicSearch(
@@ -324,7 +326,7 @@ export async function getJournalPortrait(
   return data;
 }
 
-//  25. 获取某期刊研究方向
+// 25. 获取某期刊研究方向
 export async function getJournalInterest(
   journal: string
 ): Promise<BasicResponse<InterestResponse[]>> {
@@ -334,7 +336,33 @@ export async function getJournalInterest(
   return data;
 }
 
-// 以下为管理员端
+// 26和33为管理端共用接口
+// 26. 获取机构信息
+export async function getAffiliationInfo(
+  name: string,
+  page = 1
+): Promise<BasicResponse<SearchRecommendAffiliationsResponse>> {
+  const { data } = await axios.get('/info/affiliation', {
+    params: {
+      name,
+      page
+    }
+  });
+  return data;
+}
+// 33. 获取作者信息
+export async function getAuthorInfo(
+  name: string,
+  page = 1
+): Promise<BasicResponse<SearchRecommendAuthorsResponse>> {
+  const { data } = await axios.get('/info/author', {
+    params: {
+      name,
+      page
+    }
+  });
+  return data;
+}
 
 // 35. 命令搜索
 export async function commandSearch(
