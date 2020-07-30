@@ -60,7 +60,7 @@
       v-if="authorBasicRankingResponse.length === 0"
       :style="noDataPromptStyle"
     >
-      暂无数据...
+      No Data
     </div>
     <!--排名内容-->
     <!--现在的解决方案不支持key的变动，所以最好不要对列表进行修改-->
