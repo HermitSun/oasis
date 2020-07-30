@@ -26,7 +26,8 @@
                   {{ author.authorName }}
                 </p>
                 <p style="color: #909399">
-                  <i style="color: black">from</i> {{ author.affiliation }}
+                  <i style="color: black">from</i>
+                  {{ author.affiliation || 'unknown' }}
                 </p>
               </li>
             </ul>
@@ -84,8 +85,10 @@ export default Vue.extend({
     };
   },
   watch: {
-    // 搜索变化时重新推荐
-    $route() {
+    // 搜索关键词变化时重新推荐
+    // 降低灵敏度，减少性能损耗
+    '$route.query.keyword'(cur, last) {
+      console.log(cur, last);
       this.getAuthors();
       this.getAffiliations();
     }

@@ -160,6 +160,7 @@ export default Vue.extend({
       this.startYear = this.$route.query.startYear as string;
       this.endYear = this.$route.query.endYear as string;
       // 路由变化时更新filter
+      // 因为不同标准下filter的内容可能发生变化，较高的灵敏度是必要的
       this.getSearchFilter();
     }
   },
