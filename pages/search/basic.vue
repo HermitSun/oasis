@@ -11,6 +11,7 @@
       <div>
         <SearchResHeaderComp
           :result-count="resultCount"
+          filter
           @open="showFilter = true"
         />
       </div>

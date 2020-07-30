@@ -11,6 +11,7 @@
     </span>
     <!--过滤器-->
     <el-button
+      v-if="filter"
       type="primary"
       size="mini"
       round
@@ -32,6 +33,10 @@ export default Vue.extend({
     resultCount: {
       type: Number,
       default: 0
+    },
+    filter: {
+      type: Boolean,
+      default: false
     }
   }
 });
