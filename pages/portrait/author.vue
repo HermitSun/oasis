@@ -98,7 +98,7 @@
         style="float: right"
         @click="backToPreviousRelation"
       >
-        返回上一层
+        return to the previous scholar
       </el-button>
       <span>Click the Scholar Node to Explore! 😄</span>
       <div id="force" class="chart" style="width: 100%; min-height: 70vh"></div>
