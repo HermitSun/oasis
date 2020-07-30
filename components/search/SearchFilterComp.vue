@@ -159,6 +159,8 @@ export default Vue.extend({
     $route() {
       this.startYear = this.$route.query.startYear as string;
       this.endYear = this.$route.query.endYear as string;
+      // 路由变化时更新filter
+      this.getSearchFilter();
     }
   },
   mounted() {
