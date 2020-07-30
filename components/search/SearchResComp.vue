@@ -33,7 +33,7 @@
         <span style="margin-left: 1px"> {{ res.publicationYear }}</span>
       </el-button>
     </div>
-    <template>
+    <div class="mobile-hidden">
       <div class="bookmark">
         <span class="hint">Citation:</span>
         <span class="count">{{ res.metrics.citationCountPaper }}</span>
@@ -42,7 +42,7 @@
         <span class="hint">Downloads:</span>
         <span class="count">{{ res.metrics.totalDownloads }}</span>
       </div>
-    </template>
+    </div>
     <div class="abstract-wrapper">
       <div class="hint" style="margin-right: 16px">
         abstract:
@@ -78,7 +78,7 @@
       </span>
       <!--展示参考文献-->
       <span style=" cursor: pointer" class="detail-hint"
-        ><el-button type="text" @click="showReferences">
+        ><el-button type="text" class="mobile-hidden" @click="showReferences">
           {{ showReference ? 'hide reference' : 'show reference' }}
         </el-button>
       </span>

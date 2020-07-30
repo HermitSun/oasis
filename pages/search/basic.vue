@@ -9,13 +9,15 @@
     <div v-loading="isLoading" class="page">
       <!--结果数量-->
       <div>
-        <SearchResHeaderComp :result-count="resultCount" />
+        <SearchResHeaderComp
+          :result-count="resultCount"
+          @open="showFilter = true"
+        />
       </div>
       <!--搜索结果+过滤条件-->
       <div class="flex-left-left-row">
         <!--搜索结果-->
         <div class="searchPage-content__result" style="text-align: left">
-          <!--TODO 优化样式-->
           <SearchSortKeyComp
             :sort-key="sortKey"
             @changeSortKey="changeSortKey"
@@ -49,14 +51,19 @@
             </p>
           </client-only>
         </div>
-        <!--过滤条件-->
-        <SearchFilterComp
-          ref="searchFilter"
-          :keyword="keyword"
-          @filter-change="doFilterSearch"
-        />
+        <!--搜索推荐-->
+        <SearchRecommendComp :keyword="keyword" />
       </div>
     </div>
+    <!--过滤条件-->
+    <el-drawer title="Filter" :visible.sync="showFilter" :with-header="false">
+      <SearchFilterComp
+        ref="searchFilter"
+        :keyword="keyword"
+        style="width: 100%"
+        @filter-change="doFilterSearch"
+      />
+    </el-drawer>
   </div>
 </template>
 
@@ -66,15 +73,11 @@ import {
   Pagination,
   Select,
   Option,
-  Message,
   CheckboxGroup,
-  Checkbox
+  Checkbox,
+  Drawer
 } from 'element-ui';
-import {
-  basicSearch,
-  getBasicSearchFilterCondition,
-  basicFilterSearch
-} from '~/api';
+import { basicSearch, basicFilterSearch } from '~/api';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
@@ -86,32 +89,13 @@ import {
 } from '~/interfaces/requests/search/SearchPayload';
 import searchSortKeyOptions from '~/components/search/SearchSortKeyOptions';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
-import SearchFilterComp from '~/components/search/SearchFilterComp.vue';
 import {
   OasisSearchFilter,
   SearchFilterChangedPayload
 } from '~/interfaces/components/search/SearchFilterComp';
 import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
 import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
-
-async function requestBasicSearchFilterCondition(keyword: string) {
-  const res: { filters: SearchFilterResponse } = {
-    // 设置默认值
-    filters: {
-      authors: [],
-      affiliations: [],
-      conferences: [],
-      journals: []
-    }
-  };
-  try {
-    const filterResponse = await getBasicSearchFilterCondition({ keyword });
-    res.filters = filterResponse.data;
-  } catch (e) {
-    Message.error(e.toString());
-  }
-  return res;
-}
+import SearchRecommendComp from '~/components/search/SearchRecommendComp.vue';
 
 const defaultSortKey: sortKey = 'related';
 
@@ -120,14 +104,16 @@ export default Vue.extend({
   components: {
     [Checkbox.name]: Checkbox,
     [CheckboxGroup.name]: CheckboxGroup,
+    [Drawer.name]: Drawer,
     [Option.name]: Option,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     SearchBarComp,
-    SearchFilterComp,
+    SearchFilterComp: () => import('~/components/search/SearchFilterComp.vue'),
+    SearchRecommendComp,
     SearchResComp,
-    SearchSortKeyComp,
-    SearchResHeaderComp
+    SearchResHeaderComp,
+    SearchSortKeyComp
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -155,6 +141,7 @@ export default Vue.extend({
       // sort
       options: searchSortKeyOptions,
       // filter
+      showFilter: false,
       filters: {} as SearchFilterResponse,
       isError: false,
       isFilter: false // 是否正在过滤状态
@@ -164,7 +151,7 @@ export default Vue.extend({
   // 在SSR时路由是非响应的，需要手动watch
   watch: {
     $route: {
-      async handler({ query }) {
+      handler({ query }) {
         // 手动更新路由
         this.keyword = query.keyword;
         this.author = query.author;
@@ -189,11 +176,6 @@ export default Vue.extend({
         } else {
           this.doSearch();
         }
-        // 这里可能成为性能瓶颈
-        const filterRes = await requestBasicSearchFilterCondition(
-          this.keyword as string
-        );
-        this.filters = filterRes.filters;
       }
     }
   },
@@ -286,6 +268,8 @@ export default Vue.extend({
     // filter
     // 使用二次筛选的条件进行搜索
     doFilterSearch(filter: SearchFilterChangedPayload) {
+      // 关闭drawer
+      this.showFilter = false;
       // 表单验证通过后再进行搜索
       if (filter.isValid) {
         this.filters = filter;

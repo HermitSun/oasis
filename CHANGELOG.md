@@ -1,3 +1,25 @@
+# 4.2.1 (2020-07-30)
+
+### Bug Fixes
+
+- 修复网络图返回上一层的行为出现错误的问题(#73)
+- 修复切换搜索关键词时filter不更新的问题
+
+### Code Refactoring
+
+- 移动端适配
+- 部分样式调整
+- 将普通搜索的filter移动到drawer中
+
+### Performance Improvements
+
+- 移除无效的依赖和组件
+- 减少推荐请求数量
+
+### Features
+
+- 增加普通搜索推荐
+
 # 4.2.0 (2020-07-30)
 
 ### Bug Fixes

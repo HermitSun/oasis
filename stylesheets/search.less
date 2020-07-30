@@ -38,8 +38,6 @@
   .pc-height__mobile(@searchPage-logo-height__pc);
 }
 
-
-
 .searchPage-content__result {
   //width: 75%;
   padding: 10px;
@@ -138,10 +136,11 @@
 // 搜索结果条目
 .searchPage-item {
   .card;
+  .mobile-width(calc(100vw - 40px));
   position: relative;
   .title {
     .card-title;
-    width: calc(100% - 200px);
+    .pc-width__mobile(calc(100% - 200px));
 
     a {
       text-decoration: none;
@@ -210,7 +209,7 @@
   }
 
   .info {
-    width: calc(100% - 200px);
+    .pc-width__mobile(calc(100% - 200px));
     line-height: 25px;
   }
 
@@ -231,6 +230,7 @@
 
   .hint {
     .card-hint;
+    .mobile-hidden;
   }
 
   .keyword-wrapper {
@@ -247,14 +247,6 @@
     color: @background-blue;
     text-align: right;
     float: right;
-    @media @max-pad-width {
-      //>=768的设备
-      min-width: 60px;
-    }
-    @media @min-pad-width {
-      //>=992的设备
-      min-width: 100px;
-    }
   }
 
   .reference-wrapper {
@@ -272,31 +264,20 @@
   .citation-wrapper {
     .flex-left-left-row;
     margin: 10px 0;
+  }
 
-    .citation-inner-wrapper {
-      @media @max-pad-width {
-        //>=768的设备
-        display: inline;
-      }
-      @media @min-pad-width {
-        //>=992的设备
-        display: flex;
-      }
-    }
+  .citation {
+    border: @background-blue 1px solid;
+    background: @background-blue;
+    color: whitesmoke;
+    padding: 1px;
+    font-size: @search-item-keyword-font-size;
+    margin-right: 5px;
 
-    .citation {
-      border: @background-blue 1px solid;
-      background: @background-blue;
-      color: whitesmoke;
-      padding: 1px;
-      font-size: @search-item-keyword-font-size;
-      margin-right: 5px;
-
-      .number {
-        color: @bright-yellow;
-        font-weight: bold;
-        margin-left: 4px;
-      }
+    .number {
+      color: @bright-yellow;
+      font-weight: bold;
+      margin-left: 4px;
     }
   }
 }
@@ -326,7 +307,6 @@
     border: 2px @background-blue solid;
   }
 }
-
 
 // 高级搜索页
 .advanced-search__mask-box-size {

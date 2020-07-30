@@ -18,7 +18,6 @@
           class="searchPage-content__result"
           style="text-align: left; width: 100%"
         >
-          <!--TODO 优化样式-->
           <SearchSortKeyComp
             :sort-key="sortKey"
             @changeSortKey="changeSortKey"

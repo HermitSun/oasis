@@ -348,6 +348,10 @@ export default Vue.extend({
       this.initCharts();
     }
   },
+  beforeDestroy() {
+    academicRelationHistory.history = [];
+    academicRelationHistory.size = 0;
+  },
   methods: {
     // 初始化图表
     initCharts() {
@@ -435,6 +439,10 @@ export default Vue.extend({
       this.currentTab = this.lastTab;
       this.showRelation = false;
       this.removeBrowserBackHandler();
+      // clear history when leaves
+      // @see issue #73[[http://212.129.149.40/rubiks-cube/frontend-oasis/issues/73]]
+      // academicRelationHistory.history = [];
+      // academicRelationHistory.size = 0;
     },
     addBrowserBackHandler() {
       // 禁用浏览器后退，改为回到上一层关系图
