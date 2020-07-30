@@ -33,20 +33,14 @@
         </el-menu>
         <!--菜单__pad版本-->
         <div class="pc-hidden_pad">
-          <el-button icon="el-icon-menu" @click="drawer = true" />
-          <el-drawer
-            :visible.sync="drawer"
-            size="90%"
-            direction="rtl"
-            style="z-index: 3000"
-          >
-            <span slot="title" class="card-title">OASIS</span>
-            <div v-for="(item, index) in navItems" :key="index">
-              <router-link :to="item.path">
-                {{ item.title }}
-              </router-link>
-            </div>
-          </el-drawer>
+          <el-button
+            icon="el-icon-menu"
+            size="mini"
+            type="primary"
+            plain
+            circle
+            @click="drawer = true"
+          />
         </div>
       </div>
       <!--首页不显示额外的搜索框-->
@@ -96,6 +90,33 @@
         @close="showCommandSearch = false"
       />
     </template>
+    <el-drawer :visible.sync="drawer" size="60%" direction="rtl">
+      <span slot="title" class="card-title">OASIS</span>
+      <div style="padding: 0 20px">
+        <div style="border-top:1px solid #dcdfe6;width: 100%"></div>
+        <div v-for="(item, index) in navItems" :key="index">
+          <div
+            style="
+             border-bottom: 1px solid #dcdfe6;
+             padding: 15px 0;
+             font-size: 1rem;"
+          >
+            <router-link
+              :to="item.path"
+              style="text-decoration: none;
+              color:#606266
+"
+            >
+              <i
+                :class="item.icon"
+                style="color: #6c63ff;margin-right: 10px"
+              ></i>
+              {{ item.title }}
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -138,15 +159,18 @@ export default Vue.extend({
       navItems: [
         {
           path: '/',
-          title: 'Home'
+          title: 'Home',
+          icon: 'el-icon-s-home'
         },
         {
           path: '/ranking',
-          title: 'Ranking'
+          title: 'Ranking',
+          icon: 'el-icon-data-analysis'
         },
         {
           path: '/talent',
-          title: 'Talents'
+          title: 'Talents',
+          icon: 'el-icon-user'
         }
       ]
     };
