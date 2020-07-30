@@ -80,9 +80,22 @@
   }
 }
 
+// pad端隐藏
+.pad-hidden {
+  @media @max-pad-width {
+    display: none;
+  }
+}
+
 // PC端隐藏
 .pc-hidden_mobile {
   @media @min-mobile-width {
+    display: none;
+  }
+}
+
+.pc-hidden_pad {
+  @media @min-pad-width {
     display: none;
   }
 }
@@ -105,7 +118,7 @@
     position: @position;
   }
 }
-.pc-overflow__pad(@overflow){
+.pc-overflow__pad(@overflow) {
   @media @min-pad-width {
     overflow: @overflow;
   }

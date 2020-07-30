@@ -5,12 +5,12 @@
         <!--LOGO-->
         <img
           src="~/assets/logo.png"
-          style="cursor: pointer; margin-right: 35px;"
+          style="cursor: pointer; margin-right: 20px;margin-left:10px"
           class="searchPage-header__logo"
           alt="oasis"
           @click="$router.push('/')"
         />
-        <!--菜单-->
+        <!--菜单__pc版-->
         <el-menu
           background-color="transparent"
           active-text-color="#6C63FF"
@@ -18,7 +18,8 @@
           :default-active="currentRoute"
           mode="horizontal"
           router
-          style="height: 100%; margin-left: 20px"
+          style="height: 100%; margin-left: 20px; min-width: 280px"
+          class="pad-hidden"
         >
           <el-menu-item
             v-for="(item, index) in navItems"
@@ -30,6 +31,23 @@
             </template>
           </el-menu-item>
         </el-menu>
+        <!--菜单__pad版本-->
+        <div class="pc-hidden_pad">
+          <el-button icon="el-icon-menu" @click="drawer = true" />
+          <el-drawer
+            :visible.sync="drawer"
+            size="90%"
+            direction="rtl"
+            style="z-index: 3000"
+          >
+            <span slot="title" class="card-title">OASIS</span>
+            <div v-for="(item, index) in navItems" :key="index">
+              <router-link :to="item.path">
+                {{ item.title }}
+              </router-link>
+            </div>
+          </el-drawer>
+        </div>
       </div>
       <!--首页不显示额外的搜索框-->
       <div v-if="$route.path !== '/'">
@@ -45,23 +63,22 @@
           />
           <!--高级搜索-->
           <el-button
-            class="mobile-hidden"
+            class="pad-hidden"
             type="primary"
             plain
             round
             size="small"
-            style="margin-left: 20px"
+            style="margin-left: 10px"
             @click="showAdvancedSearch = true"
           >
             Advanced Search
           </el-button>
           <!-- 命令搜索-->
           <el-button
-            class="mobile-hidden"
+            class="pad-hidden"
             type="primary"
             round
             size="small"
-            style="margin-left: 20px"
             @click="showCommandSearch = true"
           >
             Command Search
@@ -84,7 +101,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Container, Menu, MenuItem } from 'element-ui';
+import { Container, Menu, MenuItem, Drawer } from 'element-ui';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 
@@ -95,7 +112,8 @@ export default Vue.extend({
     CommandSearchComp,
     [Container.name]: Container,
     [Menu.name]: Menu,
-    [MenuItem.name]: MenuItem
+    [MenuItem.name]: MenuItem,
+    [Drawer.name]: Drawer
   },
   model: {
     prop: 'keyword',
@@ -115,6 +133,7 @@ export default Vue.extend({
       opacityStyle: {
         background: 'rgba(255,255,255,0)'
       },
+      drawer: false,
       // 所有的导航项，暂时硬编码了
       navItems: [
         {

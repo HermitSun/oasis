@@ -300,6 +300,9 @@
   border: 2px @background-blue-light solid;
   font-size: @search-advanced-input-font-size;
   color: #333;
+  @media @min-pad-width {
+    max-width: calc(100vw - 700px);
+  }
 
   &:focus {
     border: @search-input-border;
