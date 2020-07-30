@@ -122,7 +122,7 @@ export default Vue.extend({
     linkToAffiliation(name: string) {
       this.$router.push({
         path: '/portrait/affiliation',
-        query: { name }
+        query: { affiliation: name }
       });
     }
   }
