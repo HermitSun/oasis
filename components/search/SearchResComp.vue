@@ -227,14 +227,14 @@ export default Vue.extend({
   .title {
     em {
       font-weight: bold;
-      color: @font-highlight;
+      color: @bright-yellow;
     }
   }
 
   .name {
     em {
       font-weight: bold;
-      color: @font-highlight;
+      color: @bright-yellow;
     }
 
     &:hover {
@@ -247,7 +247,7 @@ export default Vue.extend({
   .abstract {
     em {
       font-weight: bold;
-      color: @font-highlight;
+      color: @bright-yellow;
     }
   }
 }

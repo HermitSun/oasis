@@ -56,7 +56,10 @@
       </div>
     </div>
     <!--过滤条件-->
-    <el-drawer title="Filter" :visible.sync="showFilter" :with-header="false">
+    <el-drawer :visible.sync="showFilter" size="40%">
+      <div slot="title" class="card-title">
+        Filters
+      </div>
       <SearchFilterComp
         ref="searchFilter"
         :keyword="keyword"

@@ -15,6 +15,7 @@
       size="mini"
       round
       style="line-height: 20px; float: right; margin-top: 5px"
+      class="mobile-hidden"
       @click="$emit('open')"
     >
       Show Filter

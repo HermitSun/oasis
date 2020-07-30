@@ -1,21 +1,26 @@
 <template>
-  <div class="searchPage-content__filter mobile-hidden">
+  <div class="searchPage-content__filter mobile-hidden" style="padding: 10px">
     <span class="searchPage-content__sub-hint">Recommendation</span>
-    <div class="filter">
+    <div class="filter card" style="padding: 0 20px 20px 20px;margin-top: 15px">
       <div id="filter-content" style="min-height: 400px; width:100%">
         <!--学者-->
         <div v-loading="isAuthorsLoading" class="filter-wrapper">
           <div class="hint">
             Authors
           </div>
-          <div v-if="!isAuthorsLoading && authors.length === 0">
-            No Author Recommend
+          <div v-if="!isAuthorsLoading && authors.length === 0" class="options">
+            <span class="option">No Author Recommended</span>
           </div>
           <div v-if="authors.length > 0" class="options authors">
             <ul>
-              <li v-for="(author, i) of authors" :key="'author' + i">
+              <li
+                v-for="(author, i) of authors"
+                :key="'author' + i"
+                style="margin-top:5px"
+              >
                 <p
                   class="name"
+                  style="margin-bottom: 2px"
                   @click="
                     linkToAuthor({
                       id: author.authorId,
@@ -39,14 +44,18 @@
           <div class="hint">
             Affiliations
           </div>
-          <div v-if="!isAffiliationsLoading && affiliations.length === 0">
-            No Affiliation Recommend
+          <div
+            v-if="!isAffiliationsLoading && affiliations.length === 0"
+            class="options"
+          >
+            <span class="option">No Affiliation Recommended</span>
           </div>
           <div v-if="affiliations.length > 0" class="options affiliations">
             <ul>
               <li
                 v-for="(affiliation, i) of affiliations"
                 :key="'affiliation' + i"
+                style="margin-top: 5px"
               >
                 <span class="name" @click="linkToAffiliation(affiliation.name)">
                   {{ affiliation.name }}
