@@ -1,6 +1,8 @@
 <template>
   <div class="flex-space-between" style="margin-bottom: 6px">
-    <span style="margin-right: 10px" class="searchPage-content__sub-hint"
+    <span
+      style="margin-right: 10px"
+      class="searchPage-content__sub-hint mobile-hidden"
       >Papers</span
     >
     <span style="float: right" class="searchPage-content__sub-hint">
