@@ -138,6 +138,7 @@ import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuth
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import {
+  EChartsNode,
   ForceChartData,
   ForceChartLink,
   ForceChartNode
@@ -390,7 +391,7 @@ export default Vue.extend({
       // 渲染图表
       this.force = createForceChart('force', this.academicRelation);
       // 点击后更新图表
-      this.force.on('click', (item: EchartsItem<ForceChartNode>) => {
+      this.force.on('click', (item: EchartsItem<EChartsNode>) => {
         // 点击与当前结点不同的结点时更新
         const isDifferentNode =
           item.data.id !==
