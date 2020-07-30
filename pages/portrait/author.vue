@@ -83,9 +83,10 @@
     </div>
     <!--展示学术关系图-->
     <el-dialog
-      title="Relation"
+      title="Scholar Network"
       :visible.sync="showRelation"
       width="90%"
+      top="4vh"
       @open="createAcademicRelationChart(authorId)"
       @opened="addBrowserBackHandler"
       @close="closeRelationDialog"
@@ -94,16 +95,13 @@
         type="primary"
         size="small"
         :disabled="isFirstRelationChart"
+        style="float: right"
         @click="backToPreviousRelation"
       >
         返回上一层
       </el-button>
-      <div id="force" class="chart" style="width: 100%; height: 800px;"></div>
-      <template #footer>
-        <el-button @click="showRelation = false">
-          确定
-        </el-button>
-      </template>
+      <span>Click the Scholar Node to Explore! 😄</span>
+      <div id="force" class="chart" style="width: 100%; min-height: 70vh"></div>
     </el-dialog>
   </div>
 </template>
@@ -140,6 +138,7 @@ import { PortraitAuthorPageComp } from '~/interfaces/pages/portrait/PortraitAuth
 import LinkToAuthor from '~/components/mixins/LinkToAuthor';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
 import {
+  EChartsNode,
   ForceChartData,
   ForceChartLink,
   ForceChartNode
@@ -392,7 +391,7 @@ export default Vue.extend({
       // 渲染图表
       this.force = createForceChart('force', this.academicRelation);
       // 点击后更新图表
-      this.force.on('click', (item: EchartsItem<ForceChartNode>) => {
+      this.force.on('click', (item: EchartsItem<EChartsNode>) => {
         // 点击与当前结点不同的结点时更新
         const isDifferentNode =
           item.data.id !==

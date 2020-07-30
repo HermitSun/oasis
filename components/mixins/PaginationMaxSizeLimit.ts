@@ -18,7 +18,7 @@ const limit = Vue.extend({
     // 分页的大小
     // 在移动端的客户端渲染为5个
     pagerSize(): number {
-      return process.client && isMobile() ? 5 : 7;
+      return process.client && isMobile() ? 4 : 7;
     }
   }
 });

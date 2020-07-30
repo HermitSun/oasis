@@ -1,6 +1,6 @@
 <template>
   <div class="searchPage-content__filter mobile-hidden">
-    <span class="searchPage-content__sub-hint">Filter By</span>
+    <!--<span class="searchPage-content__sub-hint">Filter By</span>-->
     <div class="filter">
       <div class="filter-wrapper">
         <div class="hint">

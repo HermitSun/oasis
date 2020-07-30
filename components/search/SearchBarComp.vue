@@ -5,12 +5,12 @@
         <!--LOGO-->
         <img
           src="~/assets/logo.png"
-          style="cursor: pointer; margin-right: 35px;"
+          style="cursor: pointer; margin-right: 20px;margin-left:10px"
           class="searchPage-header__logo"
           alt="oasis"
           @click="$router.push('/')"
         />
-        <!--菜单-->
+        <!--菜单__pc版-->
         <el-menu
           background-color="transparent"
           active-text-color="#6C63FF"
@@ -18,7 +18,8 @@
           :default-active="currentRoute"
           mode="horizontal"
           router
-          style="height: 100%; margin-left: 20px"
+          style="height: 100%; margin-left: 20px; min-width: 280px"
+          class="pad-hidden"
         >
           <el-menu-item
             v-for="(item, index) in navItems"
@@ -30,6 +31,17 @@
             </template>
           </el-menu-item>
         </el-menu>
+        <!--菜单__pad版本-->
+        <div class="pc-hidden_pad">
+          <el-button
+            icon="el-icon-menu"
+            size="mini"
+            type="primary"
+            plain
+            circle
+            @click="drawer = true"
+          />
+        </div>
       </div>
       <!--首页不显示额外的搜索框-->
       <div v-if="$route.path !== '/'">
@@ -45,23 +57,22 @@
           />
           <!--高级搜索-->
           <el-button
-            class="mobile-hidden"
+            class="pad-hidden"
             type="primary"
             plain
             round
             size="small"
-            style="margin-left: 20px"
+            style="margin-left: 10px"
             @click="showAdvancedSearch = true"
           >
             Advanced Search
           </el-button>
           <!-- 命令搜索-->
           <el-button
-            class="mobile-hidden"
+            class="pad-hidden"
             type="primary"
             round
             size="small"
-            style="margin-left: 20px"
             @click="showCommandSearch = true"
           >
             Command Search
@@ -79,12 +90,39 @@
         @close="showCommandSearch = false"
       />
     </template>
+    <el-drawer :visible.sync="drawer" size="60%" direction="rtl">
+      <span slot="title" class="card-title">OASIS</span>
+      <div style="padding: 0 20px">
+        <div style="border-top:1px solid #dcdfe6;width: 100%"></div>
+        <div v-for="(item, index) in navItems" :key="index">
+          <div
+            style="
+             border-bottom: 1px solid #dcdfe6;
+             padding: 15px 0;
+             font-size: 1rem;"
+          >
+            <router-link
+              :to="item.path"
+              style="text-decoration: none;
+              color:#606266
+"
+            >
+              <i
+                :class="item.icon"
+                style="color: #6c63ff;margin-right: 10px"
+              ></i>
+              {{ item.title }}
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Container, Menu, MenuItem } from 'element-ui';
+import { Container, Menu, MenuItem, Drawer } from 'element-ui';
 import AdvancedSearchComp from '~/components/search/AdvancedSearchComp.vue';
 import CommandSearchComp from '~/components/search/CommandSearchComp.vue';
 
@@ -95,7 +133,8 @@ export default Vue.extend({
     CommandSearchComp,
     [Container.name]: Container,
     [Menu.name]: Menu,
-    [MenuItem.name]: MenuItem
+    [MenuItem.name]: MenuItem,
+    [Drawer.name]: Drawer
   },
   model: {
     prop: 'keyword',
@@ -115,19 +154,23 @@ export default Vue.extend({
       opacityStyle: {
         background: 'rgba(255,255,255,0)'
       },
+      drawer: false,
       // 所有的导航项，暂时硬编码了
       navItems: [
         {
           path: '/',
-          title: 'Home'
+          title: 'Home',
+          icon: 'el-icon-s-home'
         },
         {
           path: '/ranking',
-          title: 'Ranking'
+          title: 'Ranking',
+          icon: 'el-icon-data-analysis'
         },
         {
           path: '/talent',
-          title: 'Talents'
+          title: 'Talents',
+          icon: 'el-icon-user'
         }
       ]
     };

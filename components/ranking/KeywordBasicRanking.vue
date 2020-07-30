@@ -19,7 +19,7 @@
           />
         </svg>
       </span>
-      <span class="flex-center-row">
+      <span class="filter">
         <span class="label">
           <span class="hint">Year</span>
           <el-select

@@ -1,3 +1,26 @@
+从3.1版本起，对每个版本的变更进行跟踪。
+
+---
+
+# 4.3 (2020-07-30)
+
+### Bug Fixes
+
+- 修复点击推荐机构时出现400的问题
+- 修复在高级搜索页面出现filter的问题
+- 修复searchBar遮挡高级搜索的问题
+- 修复高级排名Time Range存在歧义的问题
+- 修复首页轮播的箭头覆盖高级搜索框的问题(#75)
+
+### Code Refactoring
+
+- 完善移动端适配
+- 调整学者关系图样式
+
+### Features
+
+- 添加移动端的menu
+
 # 4.2.1 (2020-07-30)
 
 ### Bug Fixes
@@ -86,6 +109,50 @@
 ### Performance Improvements
 
 - 巨幅减小打包体积
+
+# 4.1 (2020-07-27)
+
+### Bug Fixes
+
+- 修复图标无法显示的问题
+- 修复搜索不高亮的问题
+- 修复bar的x轴数据问题
+- 修复ranking排序标准的bug
+- 修复因为npm run theme带来的样式问题
+- 修复CDN导入echarts顺序错误的问题
+
+### Code Refactoring
+
+- 调整echarts导入方式为CDN
+
+### Features
+
+- 添加画像页论文计数
+- 添加人才库目录
+
+### BREAKING CHANGES
+
+- 将用户端与管理端分离
+
+# 4.0.1 (2020-07-24)
+
+### Bug Fixes
+
+- 修复nav中的路径错误
+
+### Code Refactoring
+
+- 调整样式
+
+# 4.0 (2020-07-23)
+
+### Code Refactoring
+
+- 将部分图表切换为echarts
+
+### BREAKING CHANGES
+
+- 用户端样式完全重构
 
 # 3.3 (2020-05-28)
 

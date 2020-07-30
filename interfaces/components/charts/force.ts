@@ -17,6 +17,10 @@ export interface ForceChartNode {
   value: number;
 }
 
+export interface EChartsNode extends ForceChartNode {
+  label: Object;
+}
+
 export interface ForceChartLink {
   source: string;
   target: string;

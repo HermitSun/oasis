@@ -11,10 +11,12 @@
     </span>
     <!--过滤器-->
     <el-button
+      v-if="filter"
       type="primary"
       size="mini"
       round
       style="line-height: 20px; float: right; margin-top: 5px"
+      class="mobile-hidden"
       @click="$emit('open')"
     >
       Show Filter
@@ -31,6 +33,10 @@ export default Vue.extend({
     resultCount: {
       type: Number,
       default: 0
+    },
+    filter: {
+      type: Boolean,
+      default: false
     }
   }
 });

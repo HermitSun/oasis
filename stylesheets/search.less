@@ -45,8 +45,7 @@
 }
 
 .searchPage-content__filter {
-  padding: 10px;
-  // TODO 添加移动端布局
+  padding: 0 20px 20px 20px;
   @media @max-mobile-width {
     display: none;
   }
@@ -55,9 +54,7 @@
   width: 25%;
 
   .filter {
-    .card;
     width: 100%;
-    margin-top: 15px;
     .flex-left-left-column;
 
     .filter-wrapper {
@@ -300,6 +297,10 @@
   border: 2px @background-blue-light solid;
   font-size: @search-advanced-input-font-size;
   color: #333;
+  @media @min-pad-width {
+    max-width: calc(100vw - 700px);
+    min-width: 450px;
+  }
 
   &:focus {
     border: @search-input-border;
