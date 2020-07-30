@@ -12,13 +12,11 @@
             style="margin: 0 5px"
             size="4"
             aria-label="startYear"
-            @change="notifyFilterChanged"
           />～<input
             v-model="endYear"
             style="margin-left: 5px"
             size="4"
             aria-label="endYear"
-            @change="notifyFilterChanged"
           />
           <div class="error">
             {{ getYearError(startYear, endYear) }}
@@ -34,10 +32,7 @@
             Related Authors
           </div>
           <div class="options">
-            <el-checkbox-group
-              v-model="checkedAuthors"
-              @change="notifyFilterChanged('author')"
-            >
+            <el-checkbox-group v-model="checkedAuthors">
               <el-checkbox
                 v-for="(author, index) in filters.authors"
                 :key="index"
@@ -55,10 +50,7 @@
             Related Affiliations
           </div>
           <div class="options">
-            <el-checkbox-group
-              v-model="checkedAffiliations"
-              @change="notifyFilterChanged('affiliation')"
-            >
+            <el-checkbox-group v-model="checkedAffiliations">
               <el-checkbox
                 v-for="(affiliation, index) in filters.affiliations"
                 :key="index"
@@ -76,10 +68,7 @@
             Related Conferences
           </div>
           <div class="options">
-            <el-checkbox-group
-              v-model="checkedConferences"
-              @change="notifyFilterChanged('conference')"
-            >
+            <el-checkbox-group v-model="checkedConferences">
               <el-checkbox
                 v-for="(conference, index) in filters.conferences"
                 :key="'conference-checkbox' + index"
@@ -97,10 +86,7 @@
             Related Journals
           </div>
           <div class="options">
-            <el-checkbox-group
-              v-model="checkedJournals"
-              @change="notifyFilterChanged('journal')"
-            >
+            <el-checkbox-group v-model="checkedJournals">
               <el-checkbox
                 v-for="(journal, index) in filters.journals"
                 :key="'journal-checkbox' + index"
@@ -113,6 +99,16 @@
         </div>
       </div>
     </div>
+    <!--全部选完之后再进行filter-->
+    <el-button
+      type="primary"
+      size="medium"
+      round
+      style="display: block; margin: 0 auto"
+      @click="notifyFilterChanged"
+    >
+      Do Filter
+    </el-button>
   </div>
 </template>
 

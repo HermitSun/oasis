@@ -18,6 +18,7 @@ export type SearchDataFromProp = AdvancedSearchPayload;
 interface SearchLocalData {
   isLoading: boolean; // 是否正在加载
   options: []; // sortKey Options
+  showFilter: boolean;
   filters: SearchFilterResponse;
   isError: boolean; // time range
   isFilter: boolean; // 是否正在过滤状态

@@ -9,7 +9,10 @@
     <div v-loading="isLoading" class="page">
       <!--结果数量-->
       <div>
-        <SearchResHeaderComp :result-count="resultCount" />
+        <SearchResHeaderComp
+          :result-count="resultCount"
+          @open="showFilter = true"
+        />
       </div>
       <!--搜索结果+过滤条件-->
       <div class="flex-left-left-row">
@@ -48,14 +51,17 @@
             </p>
           </client-only>
         </div>
-        <!--过滤条件-->
-        <SearchFilterComp
-          ref="searchFilter"
-          :keyword="keyword"
-          @filter-change="doFilterSearch"
-        />
       </div>
     </div>
+    <!--过滤条件-->
+    <el-drawer title="Filter" :visible.sync="showFilter" :with-header="false">
+      <SearchFilterComp
+        ref="searchFilter"
+        :keyword="keyword"
+        style="width: 100%"
+        @filter-change="doFilterSearch"
+      />
+    </el-drawer>
   </div>
 </template>
 
@@ -67,7 +73,8 @@ import {
   Option,
   Message,
   CheckboxGroup,
-  Checkbox
+  Checkbox,
+  Drawer
 } from 'element-ui';
 import {
   basicSearch,
@@ -85,7 +92,6 @@ import {
 } from '~/interfaces/requests/search/SearchPayload';
 import searchSortKeyOptions from '~/components/search/SearchSortKeyOptions';
 import { SearchFilterResponse } from '~/interfaces/responses/search/SearchFilterResponse';
-import SearchFilterComp from '~/components/search/SearchFilterComp.vue';
 import {
   OasisSearchFilter,
   SearchFilterChangedPayload
@@ -119,14 +125,15 @@ export default Vue.extend({
   components: {
     [Checkbox.name]: Checkbox,
     [CheckboxGroup.name]: CheckboxGroup,
+    [Drawer.name]: Drawer,
     [Option.name]: Option,
     [Pagination.name]: Pagination,
     [Select.name]: Select,
     SearchBarComp,
-    SearchFilterComp,
+    SearchFilterComp: () => import('~/components/search/SearchFilterComp.vue'),
     SearchResComp,
-    SearchSortKeyComp,
-    SearchResHeaderComp
+    SearchResHeaderComp,
+    SearchSortKeyComp
   },
   // 限制分页的最大页数
   mixins: [PaginationMaxSizeLimit],
@@ -154,6 +161,7 @@ export default Vue.extend({
       // sort
       options: searchSortKeyOptions,
       // filter
+      showFilter: false,
       filters: {} as SearchFilterResponse,
       isError: false,
       isFilter: false // 是否正在过滤状态
@@ -285,6 +293,8 @@ export default Vue.extend({
     // filter
     // 使用二次筛选的条件进行搜索
     doFilterSearch(filter: SearchFilterChangedPayload) {
+      // 关闭drawer
+      this.showFilter = false;
       // 表单验证通过后再进行搜索
       if (filter.isValid) {
         this.filters = filter;
