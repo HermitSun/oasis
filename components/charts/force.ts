@@ -107,10 +107,8 @@ export function createForceChart(
               show:
                 percent !== colorList.length - 1 &&
                 percent !== colorList.length - 2,
-              formatter(item: EchartsItem<EChartsNode>) {
-                const nameList = item.data.name.split(' ');
-                return nameList.join('\n');
-              }
+              formatter: (item: EchartsItem<EChartsNode>) =>
+                item.data.name.split(' ').join('\n')
             }
           };
         }),
