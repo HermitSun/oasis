@@ -42,7 +42,7 @@
             </el-select>
           </span>
           <span class="label" style="margin-left: 10px">
-            <span class="hint">Time Range</span>
+            <span class="hint">Ranking Time Range</span>
             <el-select
               v-model="startYear"
               size="small"
