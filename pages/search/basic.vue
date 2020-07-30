@@ -51,6 +51,8 @@
             </p>
           </client-only>
         </div>
+        <!--搜索推荐-->
+        <SearchRecommendComp :keyword="keyword" />
       </div>
     </div>
     <!--过滤条件-->
@@ -71,16 +73,11 @@ import {
   Pagination,
   Select,
   Option,
-  Message,
   CheckboxGroup,
   Checkbox,
   Drawer
 } from 'element-ui';
-import {
-  basicSearch,
-  getBasicSearchFilterCondition,
-  basicFilterSearch
-} from '~/api';
+import { basicSearch, basicFilterSearch } from '~/api';
 import SearchBarComp from '~/components/search/SearchBarComp.vue';
 import SearchResComp from '~/components/search/SearchResComp.vue';
 import PaginationMaxSizeLimit from '~/components/mixins/PaginationMaxSizeLimit';
@@ -98,25 +95,7 @@ import {
 } from '~/interfaces/components/search/SearchFilterComp';
 import SearchResHeaderComp from '~/components/search/SearchResHeaderComp.vue';
 import SearchSortKeyComp from '~/components/search/SearchSortKeyComp.vue';
-
-async function requestBasicSearchFilterCondition(keyword: string) {
-  const res: { filters: SearchFilterResponse } = {
-    // 设置默认值
-    filters: {
-      authors: [],
-      affiliations: [],
-      conferences: [],
-      journals: []
-    }
-  };
-  try {
-    const filterResponse = await getBasicSearchFilterCondition({ keyword });
-    res.filters = filterResponse.data;
-  } catch (e) {
-    Message.error(e.toString());
-  }
-  return res;
-}
+import SearchRecommendComp from '~/components/search/SearchRecommendComp.vue';
 
 const defaultSortKey: sortKey = 'related';
 
@@ -131,6 +110,7 @@ export default Vue.extend({
     [Select.name]: Select,
     SearchBarComp,
     SearchFilterComp: () => import('~/components/search/SearchFilterComp.vue'),
+    SearchRecommendComp,
     SearchResComp,
     SearchResHeaderComp,
     SearchSortKeyComp
@@ -171,7 +151,7 @@ export default Vue.extend({
   // 在SSR时路由是非响应的，需要手动watch
   watch: {
     $route: {
-      async handler({ query }) {
+      handler({ query }) {
         // 手动更新路由
         this.keyword = query.keyword;
         this.author = query.author;
@@ -196,11 +176,6 @@ export default Vue.extend({
         } else {
           this.doSearch();
         }
-        // 这里可能成为性能瓶颈
-        const filterRes = await requestBasicSearchFilterCondition(
-          this.keyword as string
-        );
-        this.filters = filterRes.filters;
       }
     }
   },
