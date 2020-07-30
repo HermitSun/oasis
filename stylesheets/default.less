@@ -182,7 +182,8 @@ button {
   margin-top: calc(@searchPage-header-height__pc + 10px); // 为了去除顶部的bar
   width: 100vw;
   height: calc(100vh - @searchPage-header-height__pc);
-  padding: 10px 20px;
+  .pc-padding__mobile(10px 20px);
+  .mobile-padding(10px 10px);
 }
 
 // -----------标签页------------
@@ -205,13 +206,22 @@ button {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  .option {
-    float: right;
-    .label {
-      color: #c0c4cc;
-      font-size: @sub-middle-font;
-      font-weight: 500;
-      .hint {
+  .content {
+    .pc-flex__mobile(row);
+    @media @min-mobile-width {
+      .flex-space-between;
+    }
+    margin: 30px 0;
+    .menu {
+      .mobile-width(95vw);
+    }
+    .option {
+      .label {
+        color: #c0c4cc;
+        font-size: @sub-middle-font;
+        font-weight: 500;
+        .hint {
+        }
       }
     }
   }
@@ -242,7 +252,7 @@ button {
   text-align: left;
 }
 
-.card__no_shadow{
+.card__no_shadow {
   padding: @card-padding;
   border-radius: @card-border-radius;
   margin-bottom: 30px;

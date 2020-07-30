@@ -31,9 +31,24 @@
           <span class="name" @click="jumpToPortrait">{{ rank.keyword }} </span>
         </el-tooltip>
       </span>
-      <span class="value">{{ rank.citation }}</span>
-      <span class="value">{{ rank.count }}</span>
-      <span class="value">{{ rank.authorNum }}</span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.citation }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>citation: {{ rank.citation }}</el-tag></span
+        >
+      </span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.count }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>acceptance: {{ rank.count }}</el-tag></span
+        >
+      </span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.authorNum }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>authors: {{ rank.authorNum }}</el-tag></span
+        >
+      </span>
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
@@ -69,7 +84,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon, Tag } from 'element-ui';
 import { mapGetters } from 'vuex';
 import PaperInfoComp from '~/components/ranking/advanced/PaperInfoComp.vue';
 import { getKeywordDetailRanking } from '~/api';
@@ -81,7 +96,8 @@ export default Vue.extend({
   components: {
     PaperInfoComp,
     [Icon.name]: Icon,
-    [Tooltip.name]: Tooltip
+    [Tooltip.name]: Tooltip,
+    [Tag.name]: Tag
   },
   props: {
     rank: {

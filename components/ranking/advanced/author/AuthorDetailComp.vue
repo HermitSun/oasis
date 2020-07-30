@@ -33,8 +33,18 @@
           </span>
         </el-tooltip>
       </span>
-      <span class="value">{{ rank.citation }}</span>
-      <span class="value">{{ rank.count }}</span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.citation }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>citation: {{ rank.citation }}</el-tag></span
+        >
+      </span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.count }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>acceptance: {{ rank.count }}</el-tag></span
+        >
+      </span>
       <span class="value">
         <!--提前设定宽和高，避免重排-->
         <div
@@ -91,7 +101,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon, Tag } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AuthorDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AuthorAdvancedRankingResponse';
 import { getAuthorDetailRankingById } from '@/api';
@@ -104,7 +114,8 @@ export default Vue.extend({
   components: {
     PaperInfoComp,
     [Tooltip.name]: Tooltip,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Tag.name]: Tag
   },
   props: {
     rank: {

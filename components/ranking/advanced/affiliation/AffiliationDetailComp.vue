@@ -33,9 +33,24 @@
           </span>
         </el-tooltip>
       </span>
-      <span class="value">{{ rank.citation }}</span>
-      <span class="value">{{ rank.count }}</span>
-      <span class="value">{{ rank.authorNum }}</span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.citation }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>citation: {{ rank.citation }}</el-tag></span
+        >
+      </span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.count }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>acceptance: {{ rank.count }}</el-tag></span
+        >
+      </span>
+      <span class="value">
+        <span class="mobile-hidden">{{ rank.authorNum }}</span>
+        <span class="pc-hidden_mobile"
+          ><el-tag>authors: {{ rank.authorNum }}</el-tag></span
+        >
+      </span>
     </div>
     <!--关闭时没必要完全销毁组件，隐藏即可-->
     <!--避免重复渲染的开销-->
@@ -68,7 +83,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Tooltip, Icon } from 'element-ui';
+import { Tooltip, Icon, Tag } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { AffiliationDetailRankingResponse } from 'interfaces/responses/ranking/advanced/AffiliationAdvancedRankingResponse';
 import { getAffiliationDetailRankingById } from '@/api/index.ts';
@@ -79,7 +94,8 @@ export default Vue.extend({
   name: 'AffiliationDetailComp',
   components: {
     [Tooltip.name]: Tooltip,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Tag.name]: Tag
   },
   props: {
     rank: {

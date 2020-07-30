@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="subtitle">
-      <span style="margin: 0 20px 20px">{{ title }}</span>
+      <span style="margin-left: 20px">{{ title }}</span>
       <!--菜单-->
-      <div class="flex-space-between">
+      <div class="content">
         <el-menu
           background-color="transparent"
           active-text-color="#6C63FF"
@@ -11,7 +11,7 @@
           :default-active="currentRoute"
           mode="horizontal"
           router
-          style="height: 100%"
+          class="menu"
         >
           <el-menu-item
             v-for="(item, index) in navItems"

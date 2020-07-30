@@ -107,9 +107,10 @@
   }
 }
 
-.pc-flex__mobile {
+.pc-flex__mobile(@direction) {
   @media @min-mobile-width {
     display: flex;
+    flex-direction: @direction;
   }
 }
 
@@ -131,6 +132,16 @@
 }
 .pad-padding(@padding) {
   @media @max-pad-width {
+    padding: @padding;
+  }
+}
+.pc-padding__mobile(@padding) {
+  @media @min-mobile-width {
+    padding: @padding;
+  }
+}
+.mobile-padding(@padding) {
+  @media @max-mobile-width {
     padding: @padding;
   }
 }
