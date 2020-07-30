@@ -83,9 +83,10 @@
     </div>
     <!--展示学术关系图-->
     <el-dialog
-      title="Relation"
+      title="Scholar Network"
       :visible.sync="showRelation"
       width="90%"
+      top="4vh"
       @open="createAcademicRelationChart(authorId)"
       @opened="addBrowserBackHandler"
       @close="closeRelationDialog"
@@ -94,16 +95,13 @@
         type="primary"
         size="small"
         :disabled="isFirstRelationChart"
+        style="float: right"
         @click="backToPreviousRelation"
       >
         返回上一层
       </el-button>
-      <div id="force" class="chart" style="width: 100%; height: 800px;"></div>
-      <template #footer>
-        <el-button @click="showRelation = false">
-          确定
-        </el-button>
-      </template>
+      <span>Click the Scholar Node to Explore! 😄</span>
+      <div id="force" class="chart" style="width: 100%; min-height: 70vh"></div>
     </el-dialog>
   </div>
 </template>
