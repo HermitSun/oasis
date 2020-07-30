@@ -3,10 +3,10 @@
     <div>
       <SearchBarComp id="topAnchor" />
       <div class="homepage-header">
-        <h1 style="font-size: 5.5rem;letter-spacing:10px">
+        <h1 class="homepage-header__title">
           OASIS
         </h1>
-        <p style="font-size: 1.4rem;width: 45vw;margin-top:25px">
+        <p class="homepage-header__intro">
           Provide Comprehensive Search and Mining Services for Researcher Social
           Networks
         </p>
@@ -22,6 +22,7 @@
         <div class="flex-center-row" style="margin-top: 30px">
           <el-button
             type="primary"
+            :size="isMobile ? 'small' : ''"
             plain
             round
             @click="showAdvancedSearch = true"
@@ -33,7 +34,12 @@
             @close="showAdvancedSearch = false"
           />
           <div style="width: 20px"></div>
-          <el-button type="primary" round @click="showCommandSearch = true">
+          <el-button
+            type="primary"
+            round
+            :size="isMobile ? 'small' : ''"
+            @click="showCommandSearch = true"
+          >
             Command Search
           </el-button>
           <CommandSearchComp
@@ -59,9 +65,9 @@
         </div>
         <el-carousel
           :autoplay="false"
-          type="card"
+          :type="isMobile ? '' : 'card'"
           arrow="always"
-          height="550px"
+          :height="isMobile ? '400px' : '550px'"
         >
           <el-carousel-item key="0">
             <div class="homepage-content__carousel_1">
@@ -133,7 +139,7 @@
           OASIS RANKING
         </div>
         <div style="margin: 30px 0">
-          <el-tabs tab-position="right">
+          <el-tabs :tab-position="isMobile ? 'top' : 'right'">
             <el-tab-pane label="Author" lazy>
               <AuthorBasicRanking :ranking="authorRanking" class="rank" />
             </el-tab-pane>
@@ -175,8 +181,7 @@
           <el-image
             :src="require('~/assets/talents.png')"
             alt="talents"
-            class="mobile-hidden"
-            style="width: 40%"
+            class="pic"
             lazy
           />
           <div class="text">
@@ -378,6 +383,13 @@ export default Vue.extend({
       showCommandSearch: false
     } as HomePageComp;
   },
+  computed: {
+    isMobile() {
+      return typeof window !== 'undefined'
+        ? document.body.clientWidth <= 568
+        : false;
+    }
+  },
   methods: {
     async sendBasicSearch() {
       const defaultPage = '1';
@@ -415,29 +427,41 @@ export default Vue.extend({
   background: url(../assets/background.jpg) no-repeat;
   background-size: 100%;
   height: @homepage-header-height;
-  padding: 0 150px;
+  .pc-padding__pad(0 150px);
+  .pad-padding(0 30px);
 
-  .homepage-header__logo {
-    .mobile-width(70vw);
-    .pc-height__mobile(33vh);
+  .homepage-header__title {
+    font-size: 5.5rem;
+    letter-spacing: 10px;
   }
-
+  .homepage-header__intro {
+    .pc-width__mobile(45vw);
+    .mobile-width(100%);
+    font-size: 1.4rem;
+    margin-top: 25px;
+  }
   .homepage-header__input {
-    .mobile-width(90vw);
     .pc-width__mobile(40vw);
+    .mobile-width(100%);
   }
 }
 
 .homepage-content {
-  padding: 20px 100px;
+  .pc-padding__pad(20px 100px);
+  .pad-padding(20px 30px);
 
   .homepage-content__talents {
-    .flex-space-between;
-
-    .text {
-      width: 50%;
-      .flex-center-column;
+    @media @min-mobile-width {
+      .flex-space-between;
       padding-right: 50px;
+    }
+
+    .pic {
+      .pc-width__mobile(40%);
+    }
+    .text {
+      .pc-width__mobile(50%);
+      .flex-center-column;
       text-align: left;
 
       .title {
@@ -445,7 +469,6 @@ export default Vue.extend({
         font-size: 2.4rem;
         color: @background-blue;
         font-weight: 500;
-        .overflow-hidden-height(2);
         letter-spacing: 1px;
         margin: 20px 0;
       }

@@ -123,3 +123,14 @@
     overflow: @overflow;
   }
 }
+
+.pc-padding__pad(@padding) {
+  @media @min-pad-width {
+    padding: @padding;
+  }
+}
+.pad-padding(@padding) {
+  @media @max-pad-width {
+    padding: @padding;
+  }
+}
