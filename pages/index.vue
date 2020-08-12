@@ -58,150 +58,161 @@
       <!--</div>-->
       <!--</div>-->
     </div>
-    <div class="homepage-content">
-      <div class="tab">
-        <div class="intro-title">
-          OASIS SEARCH
-        </div>
-        <el-carousel
-          :autoplay="false"
-          :type="isMobile ? '' : 'card'"
-          arrow="always"
-          :height="isMobile ? '400px' : '550px'"
-        >
-          <el-carousel-item key="0">
-            <div class="homepage-content__carousel_1">
-              <div class="module">
-                <el-image
-                  :src="require('~/assets/basic-search1.png')"
-                  alt="basic-search"
-                  class="pic"
-                  lazy
-                />
-                <div class="text" style="text-align: left;padding-right: 20px">
-                  <span class="title"
-                    ><b>Powerful</b> Academic Search Engine</span
-                  >
-                  <span class="intro">
-                    OASIS provides a <b>simple</b> way to broadly search for
-                    paper. We returns the most relevant results first, based on
-                    an item's full text, author, source.
-                  </span>
-                </div>
-              </div>
-              <div class="module">
-                <div class="text" style="text-align: right;padding-left: 20px">
-                  <span class="title"
-                    ><b>Much More</b> than<br />
-                    Basic Search</span
-                  >
-                  <span class="intro"
-                    ><b>Advanced Search</b> allows users to specify additional
-                    requirements for a search. <b>Command Search </b>can satisfy
-                    complex search needs through a query with operators.</span
-                  >
-                </div>
-                <el-image
-                  :src="require('~/assets/basic-search2.png')"
-                  alt="basic-search"
-                  class="pic"
-                  lazy
-                />
-              </div>
-            </div>
-          </el-carousel-item>
-          <el-carousel-item key="1">
-            <!--<div class="homepage-content__carousel_1"></div>-->
-            <el-image
-              :src="require('~/assets/command-search.png')"
-              alt="command-search"
-              class="homepage-content__carousel"
-              lazy
-            />
-          </el-carousel-item>
-          <el-carousel-item key="2">
-            <el-image
-              :src="require('~/assets/advanced-search.png')"
-              alt="advanced-search"
-              class="homepage-content__carousel"
-              lazy
-            />
-          </el-carousel-item>
-        </el-carousel>
-        <div style="width: 100%;text-align: center;margin-top: 20px">
-          <el-button type="primary" plain @click="jumpToAnchor">
-            Start Searching
-          </el-button>
-        </div>
-      </div>
-      <div class="tab">
-        <div class="intro-title">
-          OASIS RANKING
-        </div>
-        <div style="margin: 30px 0">
-          <el-tabs :tab-position="isMobile ? 'top' : 'right'">
-            <el-tab-pane label="Author" lazy>
-              <AuthorBasicRanking :ranking="authorRanking" class="rank" />
-            </el-tab-pane>
-            <el-tab-pane label="Affiliation" lazy>
-              <AffiliationBasicRanking
-                :ranking="affiliationRanking"
-                class="rank"
-              />
-            </el-tab-pane>
-            <el-tab-pane label="Journal" lazy>
-              <JournalBasicRanking :ranking="journalRanking" class="rank" />
-            </el-tab-pane>
-            <el-tab-pane label="Conference" lazy>
-              <ConferenceBasicRanking
-                :ranking="conferenceRanking"
-                class="rank"
-              />
-            </el-tab-pane>
-            <el-tab-pane label="Keyword" lazy>
-              <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-        <div style="width: 100%;text-align: center;margin-top: 20px">
-          <el-button
-            type="primary"
-            plain
-            @click="$router.push('/ranking/author')"
+    <!--只有首屏内容在服务端渲染-->
+    <client-only>
+      <div class="homepage-content">
+        <div class="tab">
+          <div class="intro-title">
+            OASIS SEARCH
+          </div>
+          <el-carousel
+            :autoplay="false"
+            :type="isMobile ? '' : 'card'"
+            arrow="always"
+            :height="isMobile ? '400px' : '550px'"
           >
-            See Ranking Details
-          </el-button>
-        </div>
-      </div>
-      <div class="tab">
-        <div class="intro-title">
-          TALENTS BASE
-        </div>
-        <div class="homepage-content__talents">
-          <el-image
-            :src="require('~/assets/talents.png')"
-            alt="talents"
-            class="pic"
-            lazy
-          />
-          <div class="text">
-            <div class="title">
-              Stand on the Shoulders of <b>Giants</b>.<br />
-            </div>
-            <div class="content">
-              OASIS makes the collection of talents on hot topics and recommend
-              lists of "Must Reading Papers" for you, the selection of "Must
-              Reading Papers" on these topics are calculated by big data.
-            </div>
+            <el-carousel-item key="0">
+              <div class="homepage-content__carousel_1">
+                <div class="module">
+                  <el-image
+                    :src="require('~/assets/basic-search1.png')"
+                    alt="basic-search"
+                    class="pic"
+                    lazy
+                  />
+                  <div
+                    class="text"
+                    style="text-align: left;padding-right: 20px"
+                  >
+                    <span class="title"
+                      ><b>Powerful</b> Academic Search Engine</span
+                    >
+                    <span class="intro">
+                      OASIS provides a <b>simple</b> way to broadly search for
+                      paper. We returns the most relevant results first, based
+                      on an item's full text, author, source.
+                    </span>
+                  </div>
+                </div>
+                <div class="module">
+                  <div
+                    class="text"
+                    style="text-align: right;padding-left: 20px"
+                  >
+                    <span class="title"
+                      ><b>Much More</b> than<br />
+                      Basic Search</span
+                    >
+                    <span class="intro"
+                      ><b>Advanced Search</b> allows users to specify additional
+                      requirements for a search. <b>Command Search </b>can
+                      satisfy complex search needs through a query with
+                      operators.</span
+                    >
+                  </div>
+                  <el-image
+                    :src="require('~/assets/basic-search2.png')"
+                    alt="basic-search"
+                    class="pic"
+                    lazy
+                  />
+                </div>
+              </div>
+            </el-carousel-item>
+            <el-carousel-item key="1">
+              <!--<div class="homepage-content__carousel_1"></div>-->
+              <el-image
+                :src="require('~/assets/command-search.png')"
+                alt="command-search"
+                class="homepage-content__carousel"
+                lazy
+              />
+            </el-carousel-item>
+            <el-carousel-item key="2">
+              <el-image
+                :src="require('~/assets/advanced-search.png')"
+                alt="advanced-search"
+                class="homepage-content__carousel"
+                lazy
+              />
+            </el-carousel-item>
+          </el-carousel>
+          <div style="width: 100%;text-align: center;margin-top: 20px">
+            <el-button type="primary" plain @click="jumpToAnchor">
+              Start Searching
+            </el-button>
           </div>
         </div>
-        <div style="width: 100%;text-align: center;margin-top: 20px">
-          <el-button type="primary" plain @click="$router.push('/talent')">
-            See All Talents Bases
-          </el-button>
+        <div class="tab">
+          <div class="intro-title">
+            OASIS RANKING
+          </div>
+          <div style="margin: 30px 0">
+            <el-tabs :tab-position="isMobile ? 'top' : 'right'">
+              <el-tab-pane label="Author" lazy>
+                <AuthorBasicRanking :ranking="authorRanking" class="rank" />
+              </el-tab-pane>
+              <el-tab-pane label="Affiliation" lazy>
+                <AffiliationBasicRanking
+                  :ranking="affiliationRanking"
+                  class="rank"
+                />
+              </el-tab-pane>
+              <el-tab-pane label="Journal" lazy>
+                <JournalBasicRanking :ranking="journalRanking" class="rank" />
+              </el-tab-pane>
+              <el-tab-pane label="Conference" lazy>
+                <ConferenceBasicRanking
+                  :ranking="conferenceRanking"
+                  class="rank"
+                />
+              </el-tab-pane>
+              <el-tab-pane label="Keyword" lazy>
+                <KeywordBasicRanking :ranking="keywordRanking" class="rank" />
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+          <div style="width: 100%;text-align: center;margin-top: 20px">
+            <el-button
+              type="primary"
+              plain
+              @click="$router.push('/ranking/author')"
+            >
+              See Ranking Details
+            </el-button>
+          </div>
+        </div>
+        <div class="tab">
+          <div class="intro-title">
+            TALENTS BASE
+          </div>
+          <div class="homepage-content__talents">
+            <el-image
+              :src="require('~/assets/talents.png')"
+              alt="talents"
+              class="pic"
+              lazy
+            />
+            <div class="text">
+              <div class="title">
+                Stand on the Shoulders of <b>Giants</b>.<br />
+              </div>
+              <div class="content">
+                OASIS makes the collection of talents on hot topics and
+                recommend lists of "Must Reading Papers" for you, the selection
+                of "Must Reading Papers" on these topics are calculated by big
+                data.
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%;text-align: center;margin-top: 20px">
+            <el-button type="primary" plain @click="$router.push('/talent')">
+              See All Talents Bases
+            </el-button>
+          </div>
         </div>
       </div>
-    </div>
+    </client-only>
   </div>
 </template>
 
