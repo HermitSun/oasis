@@ -53,10 +53,8 @@ export default Vue.extend({
     };
   },
   watch: {
-    $route: {
-      handler() {
-        this.requestAffiliationAdvancedRanking();
-      }
+    $route() {
+      this.requestAffiliationAdvancedRanking();
     }
   },
   activated() {

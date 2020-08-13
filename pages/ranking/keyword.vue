@@ -76,10 +76,8 @@ export default Vue.extend({
     return {} as any;
   },
   watch: {
-    $route: {
-      handler() {
-        this.requestKeywordAdvancedRanking();
-      }
+    $route() {
+      this.requestKeywordAdvancedRanking();
     }
   },
   activated() {

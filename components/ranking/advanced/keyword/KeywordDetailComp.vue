@@ -119,7 +119,7 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as KeywordDetailRankingResponse,
-      cachedRankingDetail: {} as KeywordDetailRankingResponse,
+      cachedRankingDetail: new Map<string, KeywordDetailRankingResponse>(),
       isLoading: false
     };
   },
@@ -136,6 +136,18 @@ export default Vue.extend({
         : { opacity: 0.6, cursor: 'not-allowed' };
     }
   },
+  watch: {
+    // 数据更新时关闭所有打开的详情
+    '$route.query'(cur, last) {
+      this.showDetail = false;
+      // 年份范围发生变化时，清空缓存
+      const isTimeRangeChanged =
+        cur.startYear !== last.startYear || cur.endYear !== last.endYear;
+      if (isTimeRangeChanged) {
+        this.cachedRankingDetail.clear();
+      }
+    }
+  },
   methods: {
     initChart() {
       setTimeout(() => {
@@ -147,11 +159,7 @@ export default Vue.extend({
       // 加载完之后才能进行操作
       if (this.isWordCloudLoaded) {
         this.showDetail = !this.showDetail;
-        if (Object.keys(this.cachedRankingDetail).length === 0) {
-          this.requestRankingDetail();
-        } else {
-          this.rankingDetail = this.cachedRankingDetail;
-        }
+        this.requestRankingDetail();
       }
     },
     jumpToPortrait() {
@@ -165,14 +173,17 @@ export default Vue.extend({
     async requestRankingDetail() {
       this.isLoading = true;
       try {
-        const rankingDetailRes = await getKeywordDetailRanking(
-          this.rank.keyword
-        );
-        this.rankingDetail = rankingDetailRes.data;
-        this.cachedRankingDetail = this.rankingDetail;
-
+        const cache = this.cachedRankingDetail.get(this.rank.keyword);
+        if (cache) {
+          this.rankingDetail = cache;
+        } else {
+          const rankingDetailRes = await getKeywordDetailRanking(
+            this.rank.keyword
+          );
+          this.rankingDetail = rankingDetailRes.data;
+          this.cachedRankingDetail.set(this.rank.keyword, this.rankingDetail);
+        }
         this.initChart();
-
         this.showWordCloud = true;
         this.isLoading = false;
       } catch (e) {

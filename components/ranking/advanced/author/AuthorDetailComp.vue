@@ -135,7 +135,7 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as AuthorDetailRankingResponse,
-      cachedRankingDetail: {} as AuthorDetailRankingResponse,
+      cachedRankingDetail: new Map<string, AuthorDetailRankingResponse>(),
       isLoading: false
     };
   },
@@ -174,6 +174,16 @@ export default Vue.extend({
       if (val) {
         this.initChart();
       }
+    },
+    // 数据更新时关闭所有打开的详情
+    '$route.query'(cur, last) {
+      this.showDetail = false;
+      // 年份范围发生变化时，清空缓存
+      const isTimeRangeChanged =
+        cur.startYear !== last.startYear || cur.endYear !== last.endYear;
+      if (isTimeRangeChanged) {
+        this.cachedRankingDetail.clear();
+      }
     }
   },
   mounted() {
@@ -183,22 +193,18 @@ export default Vue.extend({
   },
   methods: {
     initChart() {
-      setTimeout(() => {
+      this.$nextTick(() => {
         createBarChart(
           this.rank.authorName.replace(/[^a-zA-Z]/g, '') + this.rank.authorId,
           this.rank.publicationTrend
         );
-      }, 0);
+      });
     },
     requestShowDetail() {
       // 加载完之后才能进行操作
       if (this.isWordCloudLoaded) {
         this.showDetail = !this.showDetail;
-        if (Object.keys(this.cachedRankingDetail).length === 0) {
-          this.requestRankingDetail();
-        } else {
-          this.rankingDetail = this.cachedRankingDetail;
-        }
+        this.requestRankingDetail();
       }
     },
     jumpToPortrait() {
@@ -212,15 +218,20 @@ export default Vue.extend({
     async requestRankingDetail() {
       this.isLoading = true;
       try {
-        const rankingDetailRes = await getAuthorDetailRankingById(
-          this.rank.authorId
-        );
-        this.rankingDetail = rankingDetailRes.data;
+        const cache = this.cachedRankingDetail.get(this.rank.authorId);
+        if (cache) {
+          this.rankingDetail = cache;
+        } else {
+          const rankingDetailRes = await getAuthorDetailRankingById(
+            this.rank.authorId
+          );
+          this.rankingDetail = rankingDetailRes.data;
+          this.cachedRankingDetail.set(this.rank.authorId, this.rankingDetail);
+        }
         createWordCloud(
           this.rank.authorName.replace(/[^a-zA-Z]/g, '') + 'wordcloud',
           this.rankingDetail.keywords
         );
-        this.cachedRankingDetail = this.rankingDetail;
         this.showWordCloud = true;
         this.isLoading = false;
       } catch (e) {

@@ -114,7 +114,7 @@ export default Vue.extend({
       showDetail: false,
       showWordCloud: false,
       rankingDetail: {} as AffiliationDetailRankingResponse,
-      cachedRankingDetail: {} as AffiliationDetailRankingResponse,
+      cachedRankingDetail: new Map<string, AffiliationDetailRankingResponse>(),
       isLoading: false
     };
   },
@@ -152,25 +152,31 @@ export default Vue.extend({
       if (val) {
         this.initChart();
       }
+    },
+    // 数据更新时关闭所有打开的详情
+    '$route.query'(cur, last) {
+      this.showDetail = false;
+      // 年份范围发生变化时，清空缓存
+      const isTimeRangeChanged =
+        cur.startYear !== last.startYear || cur.endYear !== last.endYear;
+      if (isTimeRangeChanged) {
+        this.cachedRankingDetail.clear();
+      }
     }
   },
   methods: {
     initChart() {
-      setTimeout(() => {
+      this.$nextTick(() => {
         const selector = this.rank.affiliationName.replace(/[^a-zA-Z]/g, '');
         createBarChart(selector + 'bar', this.rankingDetail.publicationTrend);
         createWordCloud(selector + 'wordcloud', this.rankingDetail.keywords);
-      }, 0);
+      });
     },
     requestShowDetail() {
       // 加载完之后才能进行操作
       if (this.isWordCloudLoaded) {
         this.showDetail = !this.showDetail;
-        if (Object.keys(this.cachedRankingDetail).length === 0) {
-          this.requestRankingDetail();
-        } else {
-          this.rankingDetail = this.cachedRankingDetail;
-        }
+        this.requestRankingDetail();
       }
     },
     jumpToPortrait() {
@@ -184,12 +190,20 @@ export default Vue.extend({
     async requestRankingDetail() {
       this.isLoading = true;
       try {
-        const rankingDetailRes = await getAffiliationDetailRankingById(
-          this.rank.affiliationId
-        );
-        this.rankingDetail = rankingDetailRes.data;
-        this.cachedRankingDetail = this.rankingDetail;
-
+        const cache = this.cachedRankingDetail.get(this.rank.affiliationId);
+        if (cache) {
+          this.rankingDetail = cache;
+        } else {
+          const rankingDetailRes = await getAffiliationDetailRankingById(
+            this.rank.affiliationId
+          );
+          this.rankingDetail = rankingDetailRes.data;
+          // 此处缓存可能有内存占用过大的问题，不过考虑到一页只有20个，应该不会出问题
+          this.cachedRankingDetail.set(
+            this.rank.affiliationId,
+            this.rankingDetail
+          );
+        }
         this.initChart();
         this.showWordCloud = true;
         this.isLoading = false;

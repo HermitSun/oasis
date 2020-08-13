@@ -49,10 +49,8 @@ export default Vue.extend({
     };
   },
   watch: {
-    $route: {
-      handler() {
-        this.requestAuthorAdvancedRanking();
-      }
+    $route() {
+      this.requestAuthorAdvancedRanking();
     }
   },
   activated() {
