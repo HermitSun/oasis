@@ -2,12 +2,33 @@
 
 ---
 
+# 4.3.2 (2020-08-13)
+
+### Bug Fixes
+
+- 修复排名页展开用户详情时切换排序标准，已展开内容不刷新的问题(#1)
+  - 迁移到GitHub后issue序号重新计算
+
+### Code Refactoring
+
+- 迁移到circle-ci
+
+### Performance Improvements
+
+- 调整首页服务端渲染和客户端渲染的比重，提高并发性
+- 移除无效的中间件
+
 # 4.3.1 (2020-07-30)
 
 ### Bug Fixes
 
 - 修复人才库里没有机构的作者的问题
 - 修复按钮中的中文问题
+
+### Performance Improvements
+
+- 移除无效的依赖和组件
+- 减少推荐请求数量
 
 ### Features
 
