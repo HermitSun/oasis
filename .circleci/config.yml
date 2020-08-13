@@ -1,5 +1,17 @@
 version: 2.1
 
+# basic env
+workspace: &workspace ~/wensun/oasis
+
+# deploy script
+step_save_script: &save_script
+  persist_to_workspace:
+    root: .
+    paths:
+      - dist/
+      - nginx/
+      - Dockerfile
+
 # image
 step_docker_login: &docker_login
   run: |
@@ -21,8 +33,10 @@ jobs:
   deploy:
     machine:
       enabled: true
+    working_directory: *workspace
     steps:
       - checkout
+      - *save_script
       - *docker_login
       - *add_ssh
       - *deploy_over_ssh
