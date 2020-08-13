@@ -35,7 +35,7 @@ const config: Configuration = {
     ]
   },
   router: {
-    middleware: ['authenticated', 'cancel-pending']
+    middleware: ['cancel-pending']
     // base: '/oasis/'
   },
   // serverMiddleware: ['~/server/index.ts'],

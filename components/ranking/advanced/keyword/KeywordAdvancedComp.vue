@@ -10,7 +10,7 @@
       <div v-for="(rank, index) in rankings" :key="index">
         <KeywordDetailComp :rank="rank" :index="index + 1" />
       </div>
-      <div v-if="!rankings" style="text-align: center;color:#333 ">
+      <div v-if="rankings.length === 0" style="text-align: center;color:#333 ">
         No Data
       </div>
     </div>
