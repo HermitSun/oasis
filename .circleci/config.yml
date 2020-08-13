@@ -3,13 +3,6 @@ version: 2.1
 # basic env
 workspace: &workspace ~/wensun/oasis
 
-# deploy script
-step_save_script: &save_script
-  persist_to_workspace:
-    root: .
-    paths:
-      - ci/
-
 # image
 step_docker_login: &docker_login
   run: |
@@ -25,7 +18,7 @@ step_deploy_over_ssh: &deploy_over_ssh
   run:
     name: Deploy Over SSH
     command: |
-      ssh $SSH_USER@$SSH_HOST < ci/proxy-restart.sh
+      ssh $SSH_USER@$SSH_HOST < ci/service-restart.sh
 
 jobs:
   deploy:
@@ -34,7 +27,6 @@ jobs:
     working_directory: *workspace
     steps:
       - checkout
-      - *save_script
       - *docker_login
       - *add_ssh
       - *deploy_over_ssh
