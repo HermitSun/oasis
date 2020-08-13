@@ -22,6 +22,7 @@ jobs:
     machine:
       enabled: true
     steps:
+      - checkout
       - *docker_login
       - *add_ssh
       - *deploy_over_ssh
