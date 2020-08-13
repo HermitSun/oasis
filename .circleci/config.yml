@@ -8,9 +8,7 @@ step_save_script: &save_script
   persist_to_workspace:
     root: .
     paths:
-      - dist/
-      - nginx/
-      - Dockerfile
+      - ci/
 
 # image
 step_docker_login: &docker_login
