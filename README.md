@@ -1,4 +1,4 @@
-# OASIS
+# OASIS [![CircleCI](https://circleci.com/gh/HermitSun/oasis.svg?style=svg&circle-token=0880e307ee9e49552c4265dd0b5e7bb131d861fa)]()
 
 ## 使用说明
 

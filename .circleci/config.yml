@@ -1,24 +1,21 @@
 version: 2.1
 
-# referred from vuejs/vue-next
-# author: Evan You
-
 # image
 step_docker_login: &docker_login
   run: |
-    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin registry.cn-hangzhou.aliyuncs.com
 
 # SSH
 step_add_ssh: &add_ssh
   add_ssh_keys:
     fingerprints:
-      - 76:e0:17:fa:a1:60:03:c0:06:60:c7:6b:3b:13:ec:d5
+      - b9:0e:9e:1a:c7:f8:45:ce:68:d8:c4:71:9c:79:12:0d
 
 step_deploy_over_ssh: &deploy_over_ssh
   run:
     name: Deploy Over SSH
     command: |
-      ssh $SSH_USER@$SSH_HOST < nginx/proxy-restart.sh
+      ssh $SSH_USER@$SSH_HOST < ci/proxy-restart.sh
 
 jobs:
   deploy:
@@ -30,7 +27,7 @@ jobs:
       - *deploy_over_ssh
 
 workflows:
-  release-entry:
+  release-app:
     jobs:
       - deploy:
           filters:
