@@ -38,7 +38,7 @@ const config: Configuration = {
     middleware: ['authenticated', 'cancel-pending']
     // base: '/oasis/'
   },
-  serverMiddleware: ['~/server/index.ts'],
+  // serverMiddleware: ['~/server/index.ts'],
   /*
    ** Customize the progress-bar color
    */
