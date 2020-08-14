@@ -16,9 +16,11 @@
           </span>
           <span class="number">
             <!--不太明白为什么会在number里出现string-->
+            <!--机构名里可能会出现特殊字符，不能依赖于router的默认转义，需要手动转义-->
+            <!--@see issue #4[[https://github.com/HermitSun/oasis/issues/4]]-->
             <router-link
               v-if="typeof info.number === 'string'"
-              :to="'/portrait/affiliation?affiliation=' + info.number"
+              :to="escapedAffiliation(info.number)"
             >
               {{ info.number }}
             </router-link>
@@ -58,6 +60,11 @@ export default Vue.extend({
     icon: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    escapedAffiliation(affiliation: string) {
+      return '/portrait/affiliation?affiliation=' + escape(affiliation);
     }
   }
 });
