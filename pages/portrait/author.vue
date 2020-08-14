@@ -148,12 +148,17 @@ import {
   ForceChartNode
 } from '~/interfaces/components/charts/force';
 
-const academicRelationCache: { academicRelation: ForceChartData }[] = [];
-const academicRelationCacheLookup = new Map<string, number>();
+const academicRelationCache = new Map<
+  string,
+  { academicRelation: ForceChartData }
+>();
 const academicRelationHistory = Vue.observable({
   history: [] as string[],
   size: 0
 });
+// 缓存计时清除
+let cacheTimer: NodeJS.Timeout;
+const cacheExpires = 60000;
 
 async function requestPortrait(authorId: string) {
   const res: { portrait: AuthorPortraitResponse } = {
@@ -196,10 +201,10 @@ async function requestInterests(authorId: string) {
 
 async function requestAcademicRelation(authorId: string) {
   // 有缓存去缓存拿
-  const cachedAcademicRelationIdx = academicRelationCacheLookup.get(authorId);
+  const cachedAcademicRelation = academicRelationCache.get(authorId);
   // 一定是和undefined判断，因为0也是falsy值
-  if (cachedAcademicRelationIdx !== undefined) {
-    return academicRelationCache[cachedAcademicRelationIdx];
+  if (cachedAcademicRelation !== undefined) {
+    return cachedAcademicRelation;
   }
   // 无缓存发请求
   const res = {
@@ -214,9 +219,7 @@ async function requestAcademicRelation(authorId: string) {
     );
     res.academicRelation = academicRelationResponse.data;
     // 存入缓存
-    academicRelationCache.push(res);
-    // 保存缓存中的下标
-    academicRelationCacheLookup.set(authorId, academicRelationHistory.size);
+    academicRelationCache.set(authorId, res);
     academicRelationHistory.history.push(authorId);
     ++academicRelationHistory.size;
   } catch (e) {
@@ -350,10 +353,15 @@ export default Vue.extend({
     if (this.isEchartsLoaded) {
       this.initCharts();
     }
+    clearTimeout(cacheTimer);
   },
   beforeDestroy() {
     academicRelationHistory.history = [];
     academicRelationHistory.size = 0;
+    // 开始计时，到时间后清空缓存
+    cacheTimer = setTimeout(() => {
+      academicRelationCache.clear();
+    }, cacheExpires);
   },
   methods: {
     // 初始化图表
@@ -436,6 +444,7 @@ export default Vue.extend({
     openRelationDialog() {
       if (this.currentTab === '1') {
         this.showRelation = true;
+        console.log('open: ', academicRelationHistory);
       }
     },
     closeRelationDialog() {
@@ -465,6 +474,7 @@ export default Vue.extend({
     // （在可以回退的情况下）返回上一层的学术关系图
     backToPreviousRelation() {
       if (academicRelationHistory.size > 1) {
+        console.log('back: ', academicRelationHistory);
         academicRelationHistory.history.pop();
         --academicRelationHistory.size;
         this.repaintRelationChart(

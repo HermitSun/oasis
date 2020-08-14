@@ -54,9 +54,9 @@ export function getEchartsForceOption({ nodes, links }: ForceChartData) {
         focusNodeAdjacency: true,
         roam: true,
         draggable: true,
-        symbolSize: (value: number, params: any) => {
+        symbolSize: (_: number, params: any) => {
           // return Math.min(Math.max(val, 10), 40);
-          console.log(value);
+          // console.log(value);
           const index = Math.round(
             (params.dataIndex / nodes.length) * (colorList.length - 1)
           );
