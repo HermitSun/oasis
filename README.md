@@ -1,4 +1,6 @@
-# OASIS [![CircleCI](https://circleci.com/gh/HermitSun/oasis.svg?style=svg&circle-token=0880e307ee9e49552c4265dd0b5e7bb131d861fa)]()
+# OASIS [![CircleCI](https://circleci.com/gh/HermitSun/oasis.svg?style=svg)](https://circleci.com/gh/HermitSun/oasis)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/60d45ecbcf1f47cbb145447bc5bd89f6)](https://www.codacy.com/manual/HermitSun/oasis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HermitSun/oasis&amp;utm_campaign=Badge_Grade)
 
 ## 使用说明
 
