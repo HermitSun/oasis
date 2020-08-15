@@ -1,5 +1,9 @@
 <template>
-  <div class="searchPage-content__filter mobile-hidden">
+  <!--支持回车进行过滤搜索-->
+  <div
+    class="searchPage-content__filter mobile-hidden"
+    @keypress.enter="notifyFilterChanged"
+  >
     <!--<span class="searchPage-content__sub-hint">Filter By</span>-->
     <div class="filter">
       <div class="filter-wrapper">
